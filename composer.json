@@ -1,9 +1,11 @@
 {
 	"name": "braghim-sistemas/framework",
-	"description": "Framework PHP web simples para criação de sites com alta produtividade.",
+	"description": "Framework PHP web simples para criação de sistemas com alta produtividade.",
 	"license": "MIT",
-	"keywords": ["app", "framework", "braghim-sistemas", "webapp", "web-simple-system", "aplicativo-web-simples"],
+	"keywords": ["app", "webapp", "framework", "braghim", "braghim-sistemas", "simple-web-system", "aplicativo-web-simples"],
 	"homepage": "https://braghim.com.br",
+	"authors": [{"name": "Braghim Sistemas", "email": "braghim.sistemas@gmail.com"}],
+    "support":{"email":"braghim.sistemas@gmail.com"},
 	"require": {
 		"php": ">=5.5",
 		"phpmailer/phpmailer": "v5.2.13",
