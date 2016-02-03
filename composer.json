@@ -1,0 +1,15 @@
+{
+	"name": "Framework Braghim Sistemas",
+	"description": "Framework PHP web simples para criação de sites com alta produtividade.",
+	"license": "MIT",
+	"keywords": ["app", "framework", "braghim-sistemas", "webapp", "web-simple-system", "aplicativo-web-simples"],
+	"homepage": "https://braghim.com.br",
+	"require": {
+		"php": ">=5.5",
+		"phpmailer/phpmailer": "v5.2.13",
+		"firephp/firephp-core": "dev-master",
+		"jayc89/php-mysql-pdo-database-class": "2.0.0",
+		"zendframework/zend-validator" : "2.5.*",
+		"verot/class.upload.php": "dev-master"
+	}
+}
