@@ -4,8 +4,11 @@
 	"license": "MIT",
 	"keywords": ["app", "webapp", "framework", "braghim", "braghim-sistemas", "simple-web-system", "aplicativo-web-simples"],
 	"homepage": "https://braghim.com.br",
-	"authors": [{"name": "Braghim Sistemas", "email": "braghim.sistemas@gmail.com"}],
-    "support":{"email":"braghim.sistemas@gmail.com"},
+	"authors": [{
+		"name": "Braghim Sistemas",
+		"email": "braghim.sistemas@gmail.com"
+	}],
+    "support": {"email":"braghim.sistemas@gmail.com"},
 	"require": {
 		"php": ">=5.5",
 		"phpmailer/phpmailer": "v5.2.13",
@@ -13,5 +16,6 @@
 		"jayc89/php-mysql-pdo-database-class": "2.0.0",
 		"zendframework/zend-validator" : "2.5.*",
 		"verot/class.upload.php": "dev-master"
-	}
+	},
+	"autoload": {"classmap": ["setup.php"]}
 }
