@@ -5,19 +5,41 @@
  */
 
 /**
- * Captura todas as exceções do sistema
+ * Captura todas as exceções não tratadas do sistema.
  * 
  * @param Exception $e
  */
 function throwNewExceptionFromAnywhere($e) {
+	$setup = BraghimSistemas::getInstance();
 	
-	dump(BraghimSistemas::getInstance());
+	// Tenta carregar a tela de erro do MODULO.
+	try {
+		$setup->mvc = $setup->resolve($setup->mvc->moduleName, 'error', 'error');
+	} catch (Exception $ex) {
+		
+		// Tenta carregar a tela de erro
+		// padrao do framework.
+		try {
+			$setup->mvc = $setup->resolve('ModuleError', 'error', 'error', __DIR__.DIRECTORY_SEPARATOR.'library');
+		} catch (Exception $ex2) {
+			echo "Exception sem possibilidade de tratamento.";
+			dump($e);
+		}
+	}
+	$setup->mvc->exception = $e;
 	
-	$result = resolve('ModuleError', 'error', 'error', 'library');
-	$result->exception = $e;
+	// Ultima tentativa de dar certo,
+	// se chegar aqui e der erro então
+	// o projeto esta configurado incorretamente.
+	try {
+		$setup->run();
+	} catch (Exception $ex3) {
+		echo "Exception sem possibilidade de tratamento.";
+		dump($ex3);
+	}
 }
 
-if (!function_exists('')) {
+if (!function_exists('dump')) {
 	
 	/**
 	 * Funçao para debug simplificada, semelhante ao Zend\Debug.

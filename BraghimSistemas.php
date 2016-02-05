@@ -113,6 +113,11 @@ class BraghimSistemas {
 			}
 		}
 
+		/**
+		 * Este escopo aqui eh referente a montagem de parametros
+		 * para o sistema saber quais classes e metodos chamar
+		 * e de onde. NÃO SE REFERE AO ESCOPO DE RODAR O APP.
+		 */
 		$result = new stdClass();
 		try {
 			// Se aqui não der erro é porque está tudo configurado
@@ -220,54 +225,12 @@ class BraghimSistemas {
 	 */
 	public function run()
 	{
-		try {
-			// Gatilho para fila de processos.
-			$this->triggerForProcessesQueue();
-
-		// Vai cair aqui sempre que houver uma exception dentro do próprio framework.
-		} catch (Exception $e) {
-			
-			dump(get_included_files());
-			
-			// Captura todas as exceções não tratadas do sistema
-			set_exception_handler('throwNewExceptionFromAnywhere');
-			
-//			$result = new stdClass();
-//			try {
-//				// Tenta chamar o Error Controller Do módulo, se não conseguir
-//				// Vai chamar o Padrão Geral em (library/ModuleError)
-//				$result = $this->resolve($this->mvc->moduleName, 'error', 'error');
-//				
-//				// Chama metodos por ordem
-//				$result->exception = $e;
-//				$result->controller->preDispatch();
-//				$result->controller->init();
-//				$result->controller->{$result->actionName}();
-//				$result->controller->posDispatch();
-//			} catch (Exception $ex) {
-//				try {
-//					// Aqui piorou, o sistema chama um módulo padrão de erros.
-//					$result = $this->resolve('ModuleError', 'error', 'not-found', __DIR__.DIRECTORY_SEPARATOR.'library');
-//					
-//					// Chama metodos por ordem
-//					$result->exception = $e;
-//					$result->controller->preDispatch();
-//					$result->controller->init();
-//					$result->controller->{$result->actionName}();
-//					$result->controller->posDispatch();
-//					
-//				} catch (Exception $ex2) {
-//					dump($ex2);
-//					dump($e);
-//				}
-//			}
-		}
-	}
-	
-	/**
-	 * Executa os passos de disparo dos metodos em ordem correta.
-	 */
-	public function triggerForProcessesQueue() {
+		// Captura todas as exceções não tratadas do sistema
+		set_exception_handler('throwNewExceptionFromAnywhere');
+		
+		// Gatilho para fila de processos.
+		// Se der alguma exception aqui vai
+		// cair na funcao descrita acima.
 		$this->mvc->controller->preDispatch();
 		$this->mvc->controller->init();
 		$this->mvc->controller->{$this->mvc->actionName}();
