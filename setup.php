@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Utilize este arquivo como entrada do framework.
  * Vide documentação online.
@@ -15,6 +14,12 @@ class BraghimSistemas {
 	 * @var string 
 	 */
 	private $modulesPath;
+	
+	/**
+	 * Todos os parametros necessarios para rodar a aplicacao.
+	 * @var stdClass
+	 */
+	public $mvc;
 	
 	/**
 	 * Primeiro metodo a ser chamado.
@@ -45,12 +50,23 @@ class BraghimSistemas {
 		return self::$instance;
 	}
 	
+	/**
+	 * Construtor, mas substituido para dar a oportunidade de carregar de modo diferente.
+	 */
 	public function load() {
 		/**
 		 * Primeiro carrega as classes do usuario e da biblioteca
 		 */
+		$loader = include 'vendor/autoload.php';
+		$loader->add('Braghim', __DIR__.DIRECTORY_SEPARATOR.'library/.');
+		$loader->add('ModuleError', __DIR__.DIRECTORY_SEPARATOR.'library/.');
 		
-		
+		// Carrega todos os modulos automaticamente
+		foreach (scandir($this->modulesPath) as $module) {
+			if (!in_array($module, array('.', '..')) && is_dir($this->modulesPath.DIRECTORY_SEPARATOR.$module)) {
+				$loader->add($module, $this->modulesPath);
+			}
+		}
 		
 		// Define a constante que encontra a raíz do projeto na URL
 		$route = preg_replace("/\?(" . preg_quote($_SERVER['QUERY_STRING'], "/") . ")/", "", trim($_SERVER['REQUEST_URI'], '/'));
@@ -117,7 +133,9 @@ class BraghimSistemas {
 			}
 			$result->exception = $e;
 		}
-		return $result;
+		
+		// Declara resultado para a variavel da classe.
+		$this->mvc = $result;
 	}
 
 	/**
@@ -128,6 +146,7 @@ class BraghimSistemas {
 	 * @param type $controller
 	 * @param type $action
 	 * @param type $path
+	 * 
 	 * @return \stdClass
 	 * @throws Exception
 	 */
@@ -192,34 +211,66 @@ class BraghimSistemas {
 			$abstractController = "Braghim\\MvcAbstractController";
 		}
 		$abstractController::$params = $result;
-
+		
 		return $result;
 	}
 
-	
+	/**
+	 * Roda efetivamente a aplicacao.
+	 */
 	public function run()
 	{
 		try {
-			// Chama metodos por ordem
-			$mvc->controller->preDispatch();
-			$mvc->controller->init();
-			$mvc->controller->{$mvc->actionName}();
-			$mvc->controller->posDispatch();
+			// Gatilho para fila de processos.
+			$this->triggerForProcessesQueue();
 
+		// Vai cair aqui sempre que houver uma exception dentro do próprio framework.
 		} catch (Exception $e) {
+			
+			dump(get_included_files());
+			
 			// Captura todas as exceções não tratadas do sistema
 			set_exception_handler('throwNewExceptionFromAnywhere');
-
-			// Tenta chamar o Error Controller Do módulo, se não conseguir
-			// Vai chamar o Padrão Geral em (library/ModuleError)
-			$result = resolve($mvc->moduleName, 'error', 'error');
-			$result->exception = $e;
-
-			// Chama metodos por ordem
-			$result->controller->preDispatch();
-			$result->controller->init();
-			$result->controller->{$result->actionName}();
-			$result->controller->posDispatch();
+			
+//			$result = new stdClass();
+//			try {
+//				// Tenta chamar o Error Controller Do módulo, se não conseguir
+//				// Vai chamar o Padrão Geral em (library/ModuleError)
+//				$result = $this->resolve($this->mvc->moduleName, 'error', 'error');
+//				
+//				// Chama metodos por ordem
+//				$result->exception = $e;
+//				$result->controller->preDispatch();
+//				$result->controller->init();
+//				$result->controller->{$result->actionName}();
+//				$result->controller->posDispatch();
+//			} catch (Exception $ex) {
+//				try {
+//					// Aqui piorou, o sistema chama um módulo padrão de erros.
+//					$result = $this->resolve('ModuleError', 'error', 'not-found', __DIR__.DIRECTORY_SEPARATOR.'library');
+//					
+//					// Chama metodos por ordem
+//					$result->exception = $e;
+//					$result->controller->preDispatch();
+//					$result->controller->init();
+//					$result->controller->{$result->actionName}();
+//					$result->controller->posDispatch();
+//					
+//				} catch (Exception $ex2) {
+//					dump($ex2);
+//					dump($e);
+//				}
+//			}
 		}
+	}
+	
+	/**
+	 * Executa os passos de disparo dos metodos em ordem correta.
+	 */
+	public function triggerForProcessesQueue() {
+		$this->mvc->controller->preDispatch();
+		$this->mvc->controller->init();
+		$this->mvc->controller->{$this->mvc->actionName}();
+		$this->mvc->controller->posDispatch();
 	}
 }

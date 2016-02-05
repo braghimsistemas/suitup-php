@@ -10,14 +10,11 @@
  * @param Exception $e
  */
 function throwNewExceptionFromAnywhere($e) {
+	
+	dump(BraghimSistemas::getInstance());
+	
 	$result = resolve('ModuleError', 'error', 'error', 'library');
 	$result->exception = $e;
-
-	// Chama metodos por ordem
-	$result->controller->preDispatch();
-	$result->controller->init();
-	$result->controller->{$result->actionName}();
-	$result->controller->posDispatch();
 }
 
 if (!function_exists('')) {
