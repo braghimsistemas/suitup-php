@@ -17,5 +17,8 @@
 		"zendframework/zend-validator" : "2.5.*",
 		"verot/class.upload.php": "dev-master"
 	},
-	"autoload": {"classmap": ["setup.php", "functions.php"]}
+	"autoload": {
+		"classmap": ["./BraghimSistemas.php"],
+		"files": ["./functions.php"]
+	}
 }
