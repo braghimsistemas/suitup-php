@@ -3,9 +3,16 @@ namespace Braghim;
 
 class Database extends Database\Persistence
 {
+	/**
+	 * Singleton
+	 */
 	private static $instance;
-	
 	private function __construct() {
+		if (!file_exists('config/database.config.php')) {
+			throw new \Exception(
+				"O arquivo 'config/database.config.php' não existe: return array('host' => '', 'database' => '', 'username' => '', 'password' => '');"
+			);
+		}
 		$params = include 'config/database.config.php';
 		$this->Connect($params['host'], $params['database'], $params['username'], $params['password']);
 		$this->parameters = array();

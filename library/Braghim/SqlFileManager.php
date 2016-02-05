@@ -247,9 +247,6 @@ class SqlFileManager
 	 * 
 	 * Zend Framework V = 1.11.4
      *
-     * If an array is passed as the value, the array values are quoted
-     * and then returned as a comma-separated string.
-     *
      * @param mixed $value The value to quote.
      * @param mixed $type  OPTIONAL the SQL datatype name, or constant, or null.
      * @return mixed An SQL-safe quoted value (or string of separated values).

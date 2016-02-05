@@ -1,5 +1,14 @@
 <?php
 /**
+ * Token para o sistema nao "confundir" as mensagens de sessao
+ * atual com mensagens que ja existian em outra pagina.
+ * Utilizado dentro da classe Braghim\MvcAbstractController
+ * 
+ * ¯\_(-.-)_/¯
+ */
+define('MSG_NSP_TOKEN', mctime());
+
+/**
  * Utilize este arquivo como entrada do framework.
  * Vide documentação online.
  */
@@ -7,7 +16,6 @@ class BraghimSistemas {
 
 	/** Singleton **/
 	private static $instance;
-	private function __construct() {}
 	
 	/**
 	 * Caminho, no projeto do usuario, onde se encontram as pastas dos módulos.
@@ -28,32 +36,31 @@ class BraghimSistemas {
 	 * @return type
 	 * @throws Exception
 	 */
-	public static function setup($modulesPath) {
+	public static function setup($modulesPath = null) {
 		if (self::$instance == null) {
-			self::$instance = new self();
-			
-			// caminho para os modulos
-			self::$instance->modulesPath = $modulesPath;
-		} else {
-			throw new Exception("Este método deve ser chamado uma única vez, utilize getInstance();");
+			if (!$modulesPath) {
+				throw new \Exception("Necessário informar a pasta onde os módulos serão criados.");
+			}
+			self::$instance = new self($modulesPath);
 		}
-		self::$instance->load();
 		return self::$instance;
 	}
 	
 	/**
 	 * Retorna instancia da classe
 	 * 
-	 * @return type
+	 * @return BraghimSistemas
 	 */
 	public static function getInstance() {
-		return self::$instance;
+		return self::setup();
 	}
 	
 	/**
 	 * Construtor, mas substituido para dar a oportunidade de carregar de modo diferente.
 	 */
-	public function load() {
+	private function __construct($modulesPath) {
+		$this->modulesPath = $modulesPath;
+		
 		/**
 		 * Primeiro carrega as classes do usuario e da biblioteca
 		 */

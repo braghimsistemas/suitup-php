@@ -51,6 +51,10 @@ if (!function_exists('dump')) {
 	function dump($var, $echo = true) {
 		ob_start();
 		var_dump($var);
+		
+		/**
+		 * $argv vem quando o script eh executado por linha de comando.
+		 */
 		if (isset($argv)) {
 			$output = preg_replace("/\]\=\>\n(\s+)/m", "] => ", ob_get_clean()) . "\n\n";
 		} else {
@@ -61,5 +65,16 @@ if (!function_exists('dump')) {
 			exit;
 		}
 		return $output;
+	}
+}
+
+if (!function_exists('mctime')) {
+	/**
+	 * Retorna o microtime em float.
+	 * @return float
+	 */
+	function mctime() {
+		list($usec, $sec) = explode(" ", microtime());
+		return ((float) $usec + (float) $sec);
 	}
 }

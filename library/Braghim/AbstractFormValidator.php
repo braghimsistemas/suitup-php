@@ -12,7 +12,7 @@ abstract class AbstractFormValidator
 	}
 	
 	/**
-	 * Validacao
+	 * Valida se um campo está vazio.
 	 * 
 	 * @param type $value
 	 * @return \stdClass
@@ -30,7 +30,7 @@ abstract class AbstractFormValidator
 	}
 	
 	/**
-	 * Validacao
+	 * Validacao de emails.
 	 * 
 	 * @param type $value
 	 * @return \stdClass
@@ -40,7 +40,8 @@ abstract class AbstractFormValidator
 		$result->error = false;
 		$result->message = "";
 		
-		if (!preg_match("/^[a-zA-Z0-9][a-zA-Z0-9\._-]+@([a-zA-Z0-9\._-]+\.)[a-zA-Z-0-9]{2}/", $value)) {
+		// Nao verifica validade do email caso ele esteja vazio.
+		if ($value && !preg_match("/^[a-zA-Z0-9][a-zA-Z0-9\._-]+@([a-zA-Z0-9\._-]+\.)[a-zA-Z-0-9]{2}/", $value)) {
 			$result->error = true;
 			$result->message = "Preencha com um endereço de e-mail válido";
 		}
@@ -67,14 +68,14 @@ abstract class AbstractFormValidator
 		return implode('-', array_reverse(explode('/', $value)));
 	}
 	
-	public function getData() {
-		$data = array();
-		foreach ($this->data as $key => $item) {
-			$data[$key] = $item['value'];
-		}
-		return $data;
-	}
-	
+	/**
+	 * Verifica de acordo com as regras definidas para cada campo
+	 * se todos os campos do formulario sao validos. Soh retorna
+	 * true caso TODOS eles sejam validos.
+	 * 
+	 * @return boolean
+	 * @throws \Exception
+	 */
 	public function isValid()
 	{
 		$result = true;
@@ -158,10 +159,36 @@ abstract class AbstractFormValidator
 		return $result;
 	}
 	
+	/**
+	 * Chame este metodo apos isValid() para capturar os
+	 * dados do post "limpos", ou seja, filtrados pelas
+	 * regras definidas para cada campo.
+	 * 
+	 * @return type
+	 */
+	public function getData() {
+		$data = array();
+		foreach ($this->data as $key => $item) {
+			$data[$key] = $item['value'];
+		}
+		return $data;
+	}
+	
+	/**
+	 * Adiciona um item ao array de retorno dos dados.
+	 * 
+	 * @param type $index
+	 * @param type $data
+	 */
 	public function addData($index, $data) {
 		$this->data[$index] = $data;
 	}
 	
+	/**
+	 * Retorna lista de mensagens de validacao.
+	 * 
+	 * @return type
+	 */
 	public function getMessages() {
 		return $this->messages;
 	}
