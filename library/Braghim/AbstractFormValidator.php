@@ -30,9 +30,9 @@ abstract class AbstractFormValidator
 	}
 	
 	/**
-	 * Validacao de emails.
+	 * Validacao de email. <b>Não verifica se o email está vazio</b>
 	 * 
-	 * @param type $value
+	 * @param string $value Se este parametro estiver vazio o resultado será <b>TRUE</b> (Válido)
 	 * @return \stdClass
 	 */
 	public function isEmail($value) {

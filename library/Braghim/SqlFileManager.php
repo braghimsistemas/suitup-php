@@ -242,10 +242,10 @@ class SqlFileManager
         return "'" . addcslashes($value, "\000\n\r\\'\"\032") . "'";
     }
 	
-	/**
+    /**
      * Safely quotes a value for an SQL statement.
-	 * 
-	 * Zend Framework V = 1.11.4
+     * 
+     * Zend Framework V = 1.11.4
      *
      * @param mixed $value The value to quote.
      * @param mixed $type  OPTIONAL the SQL datatype name, or constant, or null.

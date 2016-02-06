@@ -163,13 +163,13 @@ abstract class AbstractGateway
 	/**
 	 * Monta automaticamente a query para atualizar um registro no banco.
 	 * 
-	 * @param array $data
-	 * @param array $where
-	 * @param type $sure com o $where vazio este parametro permite apagar todos os registros do banco.
-	 * @return type
+	 * @param array $data Campos para serem modificados e seus valores.
+	 * @param array $where Campo com valor necessário para o banco identificar quais registros vao ser atualizados.
+	 * @param boolean $noWhereForSure com o $where vazio este parametro permite apagar todos os registros do banco.
+	 * @return boolean false Se nenhuma linha foi afetada
 	 * @throws \Exception
 	 */
-	public function update(array $data, array $where, $sure = false)
+	public function update(array $data, array $where, $noWhereForSure = false)
 	{
 		$this->checkGateway();
 		
@@ -185,11 +185,11 @@ abstract class AbstractGateway
 		$sql = trim($sql, ', ');
 		
 		// Nenhum parametro where, locão
-		if (!$where && !$sure) {
+		if (!$where && !$noWhereForSure) {
 			throw new \Exception("Nenhuma coluna apontada no WHERE, se tiver certeza de que quer atualizar todos os registros da tabela informe true no parametro \$sure");
 			
 		// Sure indica que o WHERE nao vai ser utilizado
-		} else if (!$sure) {
+		} else if (!$noWhereForSure) {
 			
 			// Where
 			$sql .= " WHERE ";

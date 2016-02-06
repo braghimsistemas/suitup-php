@@ -33,7 +33,7 @@ class BraghimSistemas {
 	 * Primeiro metodo a ser chamado.
 	 * Configura o sistema.
 	 * 
-	 * @return type
+	 * @return BraghimSistemas
 	 * @throws Exception
 	 */
 	public static function setup($modulesPath = null) {
