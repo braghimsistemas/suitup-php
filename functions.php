@@ -78,3 +78,26 @@ if (!function_exists('mctime')) {
 		return ((float) $usec + (float) $sec);
 	}
 }
+
+/**
+ * Renderiza um html incluindo variaveis
+ * 
+ * @param type $renderViewName
+ * @param type $vars
+ * @param type $renderViewPath
+ * @return type
+ */
+function renderView($renderViewName, $vars = array(), $renderViewPath = null) {
+	if (!$renderViewPath) {
+		$renderViewPath = Braghim\MvcAbstractController::$params->layoutPath;
+	}
+	
+	// Injeta variaveis na view
+	foreach ($vars as $n => $v) {
+		$$n = $v;
+	}
+
+	ob_start();
+	include $renderViewPath . DIRECTORY_SEPARATOR . $renderViewName;
+	return ob_get_clean();
+}

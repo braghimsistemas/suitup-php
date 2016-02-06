@@ -53,16 +53,6 @@ abstract class MvcAbstractController
 	}
 	
 	/**
-	 * O namespace eh relativo ao modulo, nao queremos
-	 * misturar as mensagens de um modulo com outro
-	 * 
-	 * @return string
-	 */
-	public function getMsgNsp() {
-		return $this->getModuleName().'_'.self::MSG_NSP;
-	}
-
-	/**
 	 * Metodos padrão
 	 */
 	public function init() {}
@@ -119,20 +109,61 @@ abstract class MvcAbstractController
 		}
 	}
 	
+	/**
+	 * O namespace eh relativo ao modulo, nao queremos
+	 * misturar as mensagens de um modulo com outro
+	 * 
+	 * @return string
+	 */
+	public function getMsgNsp() {
+		return $this->getModuleName().'_'.self::MSG_NSP;
+	}
+	
+	/**
+	 * Retorna o nome do módulo.
+	 * @return type
+	 */
 	public function getModuleName() {
 		return str_replace('Module', '', self::$params->moduleName);
 	}
 
+	/**
+	 * Nome do controlador
+	 * 
+	 * @return type
+	 */
 	public function getControllerName() {
 		return preg_replace("/Controller$/", '', self::$params->controllerName);
 	}
 
+	/**
+	 * Nome da ação.
+	 * 
+	 * @return type
+	 */
 	public function getActionName() {
 		return preg_replace("/Action$/", '', self::$params->actionName);
 	}
 
+	/**
+	 * Nome do arquivo de layout.
+	 * @return type
+	 */
 	public function getLayoutName() {
 		return self::$params->layoutName;
+	}
+	
+	/**
+	 * Troca o layout
+	 * 
+	 * @param type $name
+	 * @param type $path
+	 */
+	public function setLayout($name, $path = null) {
+		self::$params->layoutName = $name;
+		if ($path) {
+			self::$params->layoutPath = $path;
+		}
 	}
 	
 	/**
@@ -171,19 +202,6 @@ abstract class MvcAbstractController
 	}
 
 	/**
-	 * Troca o layout
-	 * 
-	 * @param type $name
-	 * @param type $path
-	 */
-	public function setLayout($name, $path = null) {
-		self::$params->layoutName = $name;
-		if ($path) {
-			self::$params->layoutPath = $path;
-		}
-	}
-
-	/**
 	 * Retorna todos os parametros GET
 	 * 
 	 * @return array
@@ -204,18 +222,39 @@ abstract class MvcAbstractController
 		return isset($params[$name]) ? $params[$name] : $default;
 	}
 
+	/**
+	 * True caso houve um post.
+	 * @return type
+	 */
 	public function isPost() {
 		return (bool) ($_SERVER['REQUEST_METHOD'] === "POST");
 	}
 	
+	/**
+	 * Retorna indice do POST.
+	 * 
+	 * @param string $name Indice desejado.
+	 * @param mixed $default Valor que será retornado caso o indice nao exista.
+	 * @return type
+	 */
 	public function getPost($name, $default = null) {
 		return isset($_POST[$name]) ? $_POST[$name] : $default;
 	}
 
+	/**
+	 * True caso o usuário tenha sessão de login.
+	 * @return type
+	 */
 	public function isLogged() {
 		return (bool) isset($_SESSION[self::$authNsp]);
 	}
 
+	/**
+	 * Retorna tudo que está gravado na sessão de login.
+	 * 
+	 * @param type $key
+	 * @return type
+	 */
 	public static function getLogin($key = null) {
 		$login = isset($_SESSION[self::$authNsp]) ? $_SESSION[self::$authNsp] : false;
 		
@@ -223,6 +262,12 @@ abstract class MvcAbstractController
 		return ($key && isset($login[$key])) ? $login[$key] : $login;
 	}
 	
+	/**
+	 * Atualiza um indice da sessão de login.
+	 * 
+	 * @param type $key
+	 * @param type $value
+	 */
 	public static function updateLoginKey($key, $value) {
 		if (isset($_SESSION[self::$authNsp][$key])) {
 			$_SESSION[self::$authNsp][$key] = $value;
@@ -230,7 +275,12 @@ abstract class MvcAbstractController
 	}
 
 	/**
-	 * Mensagens do sistema
+	 * Mensagens do sistema com ou sem redirecionamento
+	 * 
+	 * @param type $msg
+	 * @param type $type
+	 * @param type $withRedirect
+	 * @return \Braghim\MvcAbstractController
 	 */
 	public function addMsg($msg, $type = MsgType::INFO, $withRedirect = false) {
 		if ($withRedirect) {
@@ -251,6 +301,9 @@ abstract class MvcAbstractController
 	 * @return type
 	 */
 	public function sendEmail(array $to, $subject, $htmlBody, $emailType = 'contact') {
+		if (!function_exists('sendEmail')) {
+			throw new \Exception('Implemente a função sendEmail() em qualquer arquivo de seu projeto.');
+		}
 		return sendEmail($to, $subject, $htmlBody, $emailType);
 	}
 	
