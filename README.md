@@ -12,5 +12,29 @@ Ao utilizar um framework grande como o Zend 2 nós acabamos caindo em uma situa�
 `composer require braghim-sistemas/framework`
 
 ### Estrutura de projeto
-O projeto deve ser montado segundo esta estrutura, mas também pode ser moldado as suas necessidades.
+Esta é a estrutura recomendada do projeto, lembre-se que dentro da pasta onde os modulos fica, os controladores, views e models devem seguir a estrutura, os formulários não precisam. Você pode colocar a pasta de arquivos css, js, etc, onde julgar melhor.
+
+    config
+      database.config
+    modules
+      ModuleDefault
+        Controllers
+          IndexController.php
+          ErrorController.php
+        Form
+          Index
+            Contato.php
+        Model
+          Gateway
+            User.php
+          SqlFiles
+            user
+              getById.sql
+          UserBusiness.php
+        views
+      ModuleAdmin
+    .htaccess
+    composer.json
+    composer.phar
+    index.php
 
