@@ -8,33 +8,10 @@ Ao utilizar um framework grande como o Zend 2 nós acabamos caindo em uma situa�
 
 *Nosso famework também trabalha com módulos* e é focado na produtividade do projeto.
 
-### Instalação Composer
+### Composer
 `composer require braghim-sistemas/framework`
 
-### Estrutura de projeto
-Esta é a estrutura recomendada do projeto, lembre-se que dentro da pasta onde os modulos fica, os controladores, views e models devem seguir a estrutura, os formulários não precisam. Você pode colocar a pasta de arquivos css, js, etc, onde julgar melhor.
+### Instalação
+Visite nossa [wiki](https://github.com/braghimsistemas/framework/wiki) para saber como instalar o projeto e ser feliz.
 
-    config
-      database.config
-    modules
-      ModuleDefault
-        Controllers
-          IndexController.php
-          ErrorController.php
-        Form
-          Index
-            Contato.php
-        Model
-          Gateway
-            User.php
-          SqlFiles
-            user
-              getById.sql
-          UserBusiness.php
-        views
-      ModuleAdmin
-    .htaccess
-    composer.json
-    composer.phar
-    index.php
-
+Muito Obrigado, bom trabaho ;)
