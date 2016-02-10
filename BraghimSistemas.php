@@ -14,6 +14,11 @@ define('MSG_NSP_TOKEN', mctime());
  */
 class BraghimSistemas {
 
+	/**
+	 * Versão atual do sistema
+	 */
+	const VERSION = '1.0.3';
+	
 	/** Singleton **/
 	private static $instance;
 	
