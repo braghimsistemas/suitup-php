@@ -292,22 +292,6 @@ abstract class MvcAbstractController
 	}
 
 	/**
-	 * Envia um email. Foi feito no arquivo functions.php, para ser usado mesmo pelo terminal.
-	 * 
-	 * @param array $to
-	 * @param type $subject
-	 * @param type $htmlBody
-	 * @param type $emailType
-	 * @return type
-	 */
-	public function sendEmail(array $to, $subject, $htmlBody, $emailType = 'contact') {
-		if (!function_exists('sendEmail')) {
-			throw new \Exception('Implemente a função sendEmail() em qualquer arquivo de seu projeto.');
-		}
-		return sendEmail($to, $subject, $htmlBody, $emailType);
-	}
-	
-	/**
 	 * Efetua upload de arquivos.
 	 * 
 	 * @param array $file Arquivo da variável $_FILES['somefile']
