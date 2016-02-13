@@ -101,3 +101,54 @@ function renderView($renderViewName, $vars = array(), $renderViewPath = null) {
 	include $renderViewPath . DIRECTORY_SEPARATOR . $renderViewName;
 	return ob_get_clean();
 }
+
+/**
+ * Traduz um trace de exception para string.
+ * !!! CUIDADO !!! funcao recursiva....
+ * 
+ * @param type $args
+ * @param type $root
+ * @return type
+ */
+function getTraceArgsAsString($args, $root = true) {
+	
+	$argString = "";
+	
+	switch (gettype($args)) {
+		case 'string':
+			$argString .= '"'.$args.'"';
+		break;
+		case 'integer':
+		case 'float':
+		case 'double':
+			$argString .= $args;
+		break;
+		case 'boolean':
+			$argString .= ($args ? 'true' : 'false');
+		break;
+		case 'array':
+			if ($root) {
+				foreach($args as $key => $arg) {
+					$argString .= getTraceArgsAsString($arg, false).", ";
+				}
+				$argString = preg_replace("/,(\s)?$/", "", $argString);
+				
+			} else {
+				foreach($args as $key => $arg) {
+					$argString .= '"'.$key.'" => '.getTraceArgsAsString($arg, false).", ";
+				}
+				$argString = "array(".preg_replace("/,(\s)?$/", "", $argString).")";
+			}
+		break;
+		case 'NULL':
+			$argString .= "NULL";
+		break;
+		case 'object':
+			$argString .= ($args == null) ? "NULL" : get_class($args);
+		break;
+		default:
+			// O proprio type
+			$argString .= gettype($args);
+	}
+	return $argString;
+}
