@@ -207,7 +207,8 @@ abstract class MvcAbstractController
 	 * @return array
 	 */
 	public function getParams() {
-		return $_GET;
+		$routeParams = Routes::getInstance()->getParams();
+		return array_merge((array) filter_input_array(INPUT_GET), $routeParams);
 	}
 
 	/**

@@ -1,7 +1,7 @@
 <?php
 /**
  * Token para o sistema nao "confundir" as mensagens de sessao
- * atual com mensagens que ja existian em outra pagina.
+ * atual com mensagens que ja existiam em outra pagina.
  * Utilizado dentro da classe Braghim\MvcAbstractController
  * 
  * ¯\_(-.-)_/¯
@@ -17,7 +17,7 @@ class BraghimSistemas {
 	/**
 	 * Versão atual do sistema
 	 */
-	const VERSION = '1.0.3';
+	const VERSION = '1.0.4';
 	
 	/** Singleton **/
 	private static $instance;
@@ -80,51 +80,9 @@ class BraghimSistemas {
 			}
 		}
 		
-		// Define a constante que encontra a raíz do projeto na URL
-		$route = preg_replace("/\?(" . preg_quote($_SERVER['QUERY_STRING'], "/") . ")/", "", trim($_SERVER['REQUEST_URI'], '/'));
-
-		// Padroes de rota
-		$module = 'ModuleDefault';
-		$controller = 'index';
-		$action = 'index';
-
-		// Separa itens da URL.
-		if ($route) {
-
-			// controller OR
-			// module OR
-			// controller/action OR
-			// module/controller OR
-			// module/controller/action
-			$routeParts = explode('/', $route);
-			switch (count($routeParts)) {
-				case 1:
-					if (is_dir("mvc/Module" . ucfirst(strtolower($routeParts[0])))) {
-						$module = "Module" . ucfirst(strtolower($routeParts[0]));
-					} else {
-						$controller = $routeParts[0];
-					}
-					break;
-				case 2:
-					if (is_dir("mvc/Module" . ucfirst(strtolower($routeParts[0])))) {
-						$module = "Module" . ucfirst(strtolower($routeParts[0]));
-						$controller = $routeParts[1];
-					} else {
-						$controller = $routeParts[0];
-						$action = $routeParts[1];
-					}
-					break;
-				default:
-					// Se tiver mais que 3 parametros na URL
-					// ex.: /module/controller/action/naoseipraqueisso
-					// o ultimo sera ignorado
-					$module = "Module" . ucfirst(strtolower($routeParts[0]));
-					$controller = $routeParts[1];
-					$action = $routeParts[2];
-					break;
-			}
-		}
-
+		// Define rotas
+		$routes = Braghim\Routes::getInstance();
+		
 		/**
 		 * Este escopo aqui eh referente a montagem de parametros
 		 * para o sistema saber quais classes e metodos chamar
@@ -134,12 +92,12 @@ class BraghimSistemas {
 		try {
 			// Se aqui não der erro é porque está tudo configurado
 			// corretamente
-			$result = $this->resolve($module, $controller, $action);
+			$result = $this->resolve($routes->module, $routes->controller, $routes->action);
 		} catch (Exception $e) {
 			try {
 				// Aqui já deu merda, o usuário verá a tela de erro
 				// do módulo
-				$result = $this->resolve($module, 'error', 'not-found');
+				$result = $this->resolve($routes->module, 'error', 'not-found');
 			} catch (Exception $ex) {
 				try {
 					// Aqui piorou, o sistema chama um módulo padrão de erros.
