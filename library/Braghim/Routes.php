@@ -106,7 +106,9 @@ class Routes
 				$routeParts = array_values($routeParts);
 				
 				// Procura por rotas do tipo linear
-				$this->resolveLinearRoutes($routeParts);
+				if ($routeParts) {
+					$this->resolveLinearRoutes($routeParts);
+				}
 				
 				// Procura por rotas do tipo reverso
 				$this->resolveReverseRoutes($route);

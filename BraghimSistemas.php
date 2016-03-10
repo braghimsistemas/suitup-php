@@ -17,7 +17,7 @@ class BraghimSistemas {
 	/**
 	 * Versão atual do sistema
 	 */
-	const VERSION = '1.0.4';
+	const VERSION = '1.0.5';
 	
 	/** Singleton **/
 	private static $instance;
