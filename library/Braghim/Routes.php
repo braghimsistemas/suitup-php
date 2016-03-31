@@ -252,9 +252,36 @@ class Routes
 	/**
 	 * Retorna os parametros.
 	 * 
-	 * @return type
+	 * @return array
 	 */
 	public function getParams() {
 		return $this->params;
+	}
+	
+	/**
+	 * Retorna nome do modulo atual.
+	 * 
+	 * @return string
+	 */
+	public function getModuleName() {
+		return $this->moduleName;
+	}
+	
+	/**
+	 * Retorna o nome do controlador atual.
+	 * 
+	 * @return string
+	 */
+	public function getControllerName() {
+		return $this->controller;
+	}
+	
+	/**
+	 * Retorna o nome da acao atual.
+	 * 
+	 * @return string
+	 */
+	public function getActionName() {
+		return $this->action;
 	}
 }

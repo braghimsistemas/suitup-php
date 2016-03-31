@@ -121,7 +121,7 @@ function getTraceArgsAsString($args, $root = true) {
 		case 'integer':
 		case 'float':
 		case 'double':
-			$argString .= $args;
+			$argString .= '('.gettype($args).') '.$args;
 		break;
 		case 'boolean':
 			$argString .= ($args ? 'true' : 'false');

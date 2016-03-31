@@ -59,9 +59,11 @@ abstract class MvcAbstractController
 	public function indexAction() {}
 	
 	// Error Controller
-	public function errorAction() {}
+	public function errorAction() {
+		header(getenv('SERVER_PROTOCOL').' 500 Internal Server Error', true, 500);
+	}
 	public function notFoundAction() {
-		header("HTTP/1.0 404 Not Found");
+		header(getenv('SERVER_PROTOCOL').' 404 Not Found', true, 404);
 	}
 	
 	/**
