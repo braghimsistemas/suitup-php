@@ -1,5 +1,8 @@
 <?php
 
+use Braghim\MvcAbstractController;
+use ModuleManager\ModelLogs\Gateway\Log;
+
 /**
  * Funções uteis para serem usadas em qualquer lugar
  */
@@ -22,6 +25,10 @@ function throwNewExceptionFromAnywhere($e) {
 		try {
 			$setup->mvc = $setup->resolve('ModuleError', 'error', 'error', __DIR__.DIRECTORY_SEPARATOR.'library');
 		} catch (Exception $ex2) {
+			if (function_exists('createSystemLog')) {
+				createSystemLog($e, Log::EMERG);
+			}
+			
 			echo "Exception sem possibilidade de tratamento.";
 			dump($e);
 		}
@@ -34,6 +41,10 @@ function throwNewExceptionFromAnywhere($e) {
 	try {
 		$setup->run();
 	} catch (Exception $ex3) {
+		if (function_exists('createSystemLog')) {
+			createSystemLog($e, Log::EMERG);
+		}
+		
 		echo "Exception sem possibilidade de tratamento.";
 		dump($ex3);
 	}
@@ -89,7 +100,7 @@ if (!function_exists('mctime')) {
  */
 function renderView($renderViewName, $vars = array(), $renderViewPath = null) {
 	if (!$renderViewPath) {
-		$renderViewPath = Braghim\MvcAbstractController::$params->layoutPath;
+		$renderViewPath = MvcAbstractController::$params->layoutPath;
 	}
 	
 	// Injeta variaveis na view

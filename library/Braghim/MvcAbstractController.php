@@ -126,7 +126,7 @@ abstract class MvcAbstractController
 	 * @return type
 	 */
 	public function getModuleName() {
-		return str_replace('Module', '', self::$params->moduleName);
+		return lcfirst(str_replace('Module', '', self::$params->moduleName));
 	}
 
 	/**
@@ -135,7 +135,7 @@ abstract class MvcAbstractController
 	 * @return type
 	 */
 	public function getControllerName() {
-		return preg_replace("/Controller$/", '', self::$params->controllerName);
+		return lcfirst(preg_replace("/Controller$/", '', self::$params->controllerName));
 	}
 
 	/**
@@ -144,7 +144,7 @@ abstract class MvcAbstractController
 	 * @return type
 	 */
 	public function getActionName() {
-		return preg_replace("/Action$/", '', self::$params->actionName);
+		return lcfirst(preg_replace("/Action$/", '', self::$params->actionName));
 	}
 
 	/**
