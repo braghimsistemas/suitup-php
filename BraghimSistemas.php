@@ -17,7 +17,7 @@ class BraghimSistemas {
 	/**
 	 * Versão atual do sistema
 	 */
-	const VERSION = '1.0.6';
+	const VERSION = '1.0.7';
 	
 	/** Singleton **/
 	private static $instance;
@@ -156,6 +156,9 @@ class BraghimSistemas {
 			throw new Exception("Tem que apontar no loader este novo módulo, cabeção. (config.php)");
 		}
 		$result->controller = new $controllerNsp();
+		if (!$result->controller instanceof Braghim\MvcAbstractController) {
+			throw new Exception("Todo controlador deve ser uma instância de 'MvcAbstractController'");
+		}
 
 		// Define nome da acao
 		$actionName = preg_replace("/\s+/", "", lcfirst(ucwords(preg_replace("/\-/", " ", $action)))) . "Action";

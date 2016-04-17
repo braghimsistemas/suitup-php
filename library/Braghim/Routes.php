@@ -9,12 +9,50 @@ namespace Braghim;
 class Routes
 {
 	/**
-	 * O nome da rota fica no final da URL, os parametros veem antes.
+	 * O nome da rota fica no final da URL, os parametros antes.
+	 * 
+	 * Ex.: Rota = minha-rota.html = /param1/param2/param3/minha-rota.html
+	 * 
+	 * 'minha-rota.html' => array(
+	 *		'controller' => 'index',
+	 *		'action' => 'index',
+	 *		'type' => Braghim\Routes::TYPE_REVERSE
+	 * )
+	 * 
 	 */
 	const TYPE_REVERSE = 'reverse';
 	
 	/**
 	 * O nome da rota fica no início da URL e os parametros vem a seguir.
+	 * 
+	 * <b>Rotas lineares não aceitam URL, apenas nomes:</b>
+	 * 
+	 * CERTO
+	 * Rota: 'colaboradores.html'
+	 * URL : /modulo/colaboradores.html/perfis/param1/param2
+	 * Resultado: params = ['perfis', 'param1', 'param2']
+	 * 
+	 * ERRADO
+	 * Rota: 'colaboradores/perfis'
+	 * URL : /modulo/colaboradores/perfis/param1/param2
+	 * Resultado: Não funciona!
+	 * 
+	 * <b>Exemplos de rotas lineares</b>
+	 * return array(
+	 *		'dashboard' => array(
+	 *			'controller' => 'index',
+	 *			'action' => 'index',
+	 *		),
+	 *		'meu-perfil.html' => array(
+	 *			'controller' => 'perfil',
+	 *			'action' => 'index',
+	 *		),
+	 *		'colaboradores.mrc' => array(
+	 *			'controller' => 'besteira',
+	 *			'action' => 'blabla',
+	 *			'params' => array('id' => '2'),
+	 *		),
+	 * );
 	 */
 	const TYPE_LINEAR = 'linear';
 	
@@ -23,6 +61,12 @@ class Routes
 	 *	@var type 
 	 */
 	private static $instance;
+	
+	/**
+	 * Retorna a instancia da classe.
+	 * 
+	 * @return Routes
+	 */
 	public static function getInstance() {
 		if (self::$instance == null) {
 			self::$instance = new self();
@@ -51,7 +95,7 @@ class Routes
 	private function __construct()
 	{
 		// Define a constante que encontra a raíz do projeto na URL
-		$route = preg_replace("/\?(" . preg_quote($_SERVER['QUERY_STRING'], "/") . ")/", "", trim($_SERVER['REQUEST_URI'], '/'));
+		$route = preg_replace("/\?(" . preg_quote(getenv('QUERY_STRING'), "/") . ")/", "", trim(getenv('REQUEST_URI'), '/'));
 
 		// Separa itens da URL.
 		if ($route) {
@@ -163,6 +207,8 @@ class Routes
 	{
 		// Procura a rota no arquivo
 		foreach ($this->custom as $routeName => $configs) {
+			
+			$routeName = preg_replace("/\//", "\/", $routeName);
 			if (preg_match("/$routeName$/", $routeString) && isset($configs['type']) && ($configs['type'] == self::TYPE_REVERSE)) {
 				
 				// Define controlador e acao.

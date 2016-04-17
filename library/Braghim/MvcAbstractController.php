@@ -230,7 +230,7 @@ abstract class MvcAbstractController
 	 * @return type
 	 */
 	public function isPost() {
-		return (bool) ($_SERVER['REQUEST_METHOD'] === "POST");
+		return (bool) (getenv('REQUEST_METHOD') === "POST");
 	}
 	
 	/**
