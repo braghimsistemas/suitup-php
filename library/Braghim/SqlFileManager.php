@@ -90,7 +90,7 @@ class SqlFileManager
 				// Separa em duas partes
 				$parts = explode($instrucao, $ahead);
 				$this->$last = trim($parts[0]);
-				$ahead = trim($parts[1]);
+				$ahead = isset($parts[1]) ? trim($parts[1]) : '';
 				
 				$last = $next;
 			}
