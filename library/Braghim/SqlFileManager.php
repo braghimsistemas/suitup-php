@@ -12,6 +12,7 @@ class SqlFileManager
 	public $sql;
 	
 	private $select;
+	private $join;
 	private $where;
 	private $group;
 	private $order;
@@ -51,6 +52,7 @@ class SqlFileManager
 	 */
 	public function __toString() {
 		$sql = $this->select;
+		$sql .= $this->join ? $this->join : '';
 		$sql .= $this->where ? " WHERE ".$this->where : '';
 		$sql .= $this->group ? " GROUP BY ".$this->group : '';
 		$sql .= $this->order ? " ORDER BY ".$this->order : '';
@@ -72,7 +74,14 @@ class SqlFileManager
 		$ahead = $this->sql;
 		
 		// Separa a query por partes
-		$inst = array('where' => 'WHERE', 'group' => 'GROUP BY', 'order' => 'ORDER BY', 'having' => 'HAVING', 'limit' => 'LIMIT');
+		$inst = array(
+			'join' => '(INNER|LEFT|RIGHT) JOIN',
+			'where' => 'WHERE',
+			'group' => 'GROUP BY',
+			'order' => 'ORDER BY',
+			'having' => 'HAVING',
+			'limit' => 'LIMIT'
+		);
 		foreach($inst as $next => $instrucao) {
 			
 			// Instrucao existe na query
@@ -93,22 +102,67 @@ class SqlFileManager
 	}
 	
 	/**
-	 * Adiciona coluna na query
+	 * Adiciona coluna na query.
 	 * 
-	 * @param type $column
-	 * @return SqlFileManager
+	 * array('coluna');
+	 * OU
+	 * array('coluna' => 'apelido');
+	 * 
+	 * @param array $columns
+	 * @return \Braghim\SqlFileManager
 	 */
-	public function select($column, $alias = null)
+	public function select(array $columns)
 	{
 		$left = trim(preg_replace("/(FROM).+/", '', $this->select));
 		$right = trim(preg_replace("/.+(FROM)/", '', $this->select));
 		
-		$left .= ($left) ? ", ".$column : $column;
-		if ($alias) {
-			$left .= " AS $alias";
+		// Verifica se há alias para adicionar a coluna ou é simplesmente uma coluna.
+		foreach ($columns as $column => $aliasOrColumn) {
+			if (!is_string($column)) {
+				$left .= ($left) ? ", ".$aliasOrColumn : $aliasOrColumn;
+			} else {
+				$left .= ($left) ? ", ".$column : $column;
+				$left .= " AS $aliasOrColumn";
+			}
 		}
 		
 		$this->select = $left." FROM ".$right;
+		return $this;
+	}
+	
+	/**
+	 * Adiciona a particula para INNER JOIN.
+	 * 
+	 * @param type $table
+	 * @param type $onClause
+	 * @return \Braghim\SqlFileManager
+	 */
+	public function innerJoin($table, $onClause) {
+		$this->join .= " INNER JOIN $table ON $onClause";
+		return $this;
+	}
+	
+	/**
+	 * Adiciona a particula para LEFT JOIN.
+	 * 
+	 * @param type $table
+	 * @param type $onClause
+	 * @return \Braghim\SqlFileManager
+	 */
+	public function leftJoin($table, $onClause) {
+		$this->join .= " LEFT JOIN $table ON $onClause";
+		return $this;
+	}
+	
+	/**
+	 * Adiciona a particula para RIGHT JOIN.
+	 * 
+	 * @param type $table
+	 * @param type $onClause
+	 * @return \Braghim\SqlFileManager
+	 */
+	public function rightJoin($table, $onClause) {
+		$this->join .= " RIGHT JOIN $table ON $onClause";
 		return $this;
 	}
 	
@@ -131,7 +185,7 @@ class SqlFileManager
 		}
 		
 		// Se tem valor protege contra injection
-		if ($value) {
+		if (!is_null($value)) {
 			// No caso de subquery
 			if ($value instanceof SqlFileManager) {
 				$where = str_replace('?', $value, $where);
@@ -146,6 +200,47 @@ class SqlFileManager
 		// Se já tem alguma condição no WHERE adiciona 'AND'
 		if ($this->where) {
 			$where = " AND ".$where;
+		}
+		
+		// Junta tudo
+		$this-> where .= $where;
+		return $this;
+	}
+	
+	/**
+	 * Adiciona um OR WHERE na consulta.
+	 * 
+	 * @param type $where
+	 * @param \Braghim\SqlFileManager $value
+	 * @param type $type
+	 * @return \Braghim\SqlFileManager
+	 */
+	public function orWhere($where, $value = null, $type = null)
+	{
+		// Parametro passado como array
+		if (is_array($where)) {
+			foreach ($where as $text => $val) {
+				$this->where((string) $text, $val);
+			}
+			return $this;
+		}
+		
+		// Se tem valor protege contra injection
+		if (!is_null($value)) {
+			// No caso de subquery
+			if ($value instanceof SqlFileManager) {
+				$where = str_replace('?', $value, $where);
+			} else {
+				$where = str_replace('?', $this->quote($value, $type), $where);
+			}
+		}
+		
+		// Adiciona () se possível
+		$where = preg_match("/^\(.+\)$/", $where) ? $where : "(".$where.")";
+		
+		// Se já tem alguma condição no WHERE adiciona 'OR'
+		if ($this->where) {
+			$where = " OR ".$where;
 		}
 		
 		// Junta tudo

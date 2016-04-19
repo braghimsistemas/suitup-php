@@ -202,6 +202,26 @@ abstract class MvcAbstractController
 		}
 		return $this;
 	}
+	
+	/**
+	 * Retorna true se a variavel existe na lista.
+	 * 
+	 * @param string $name
+	 * @return bool
+	 */
+	protected function isViewVar($name) {
+		return isset($this->view[$name]);
+	}
+	
+	/**
+	 * Se a variavel da view com este nome existir retorna seu conteudo.
+	 * 
+	 * @param string $name
+	 * @return mixed
+	 */
+	protected function getViewVar($name) {
+		return $this->isViewVar($name) ? $this->view[$name] : false;
+	}
 
 	/**
 	 * Retorna todos os parametros GET
@@ -272,8 +292,13 @@ abstract class MvcAbstractController
 	 * @param type $value
 	 */
 	public static function updateLoginKey($key, $value) {
-		if (isset($_SESSION[self::$authNsp][$key])) {
-			$_SESSION[self::$authNsp][$key] = $value;
+		$login = (array) self::getLogin();
+		
+		// Isset não funciona aqui, maior loucura... =/
+		foreach (array_keys($login) as $i) {
+			if ($key == $i) {
+				$_SESSION[self::$authNsp][$key] = $value;
+			}
 		}
 	}
 
