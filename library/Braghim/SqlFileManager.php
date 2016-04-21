@@ -19,15 +19,20 @@ class SqlFileManager
 	private $having;
 	private $limit;
 
-	public function __construct($filename = null, $tablename = null) {
+	public function __construct($filename = null, $tablename = null, $modelNspc = null) {
 		if ($filename && $tablename) {
+			
+			// Se o arquivo eh de um banco que usa schema, remove o nome do schema.
+			$tablename = preg_replace("/^.+\./", "", $tablename);
+			
+			// Recupera parametros.
 			$params = MvcAbstractController::$params;
 
 			// Caminho para chegar aos arquivos SQL
 			$file = implode(DIRECTORY_SEPARATOR, array(
 				$params->mainPath,
 				$params->moduleName,
-				'Model',
+				($modelNspc) ? $modelNspc : 'Model',
 				'SqlFiles',
 				$tablename,
 				(string) $filename.'.sql'

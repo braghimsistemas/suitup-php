@@ -16,12 +16,6 @@ abstract class AbstractGateway
 	protected $primary;
 	
 	/**
-	 * Lista de chaves estrangeiras
-	 * @var array
-	 */
-	protected $foreign = array();
-	
-	/**
 	 * @var \Braghim\Database
 	 */
 	protected $db;
@@ -41,7 +35,19 @@ abstract class AbstractGateway
 	 * @throws \Exception
 	 */
 	public function sqlFile($filename) {
-		return new SqlFileManager((string) $filename, $this->name);
+		
+		// Recupera pasta do modulo e nome da classe (com seus namespaces)
+		$folderModule = MvcAbstractController::$params->moduleName;
+		$className = get_class($this);
+		
+		// Trata nome da pasta.
+		$modelNspc = trim(preg_replace(
+			array("/".$folderModule."/", "/(Gateway).+/"),
+			array("", ""),
+			$className
+		), "\\");
+		
+		return new SqlFileManager((string) $filename, $this->name, $modelNspc);
 	}
 	
 	/**
