@@ -260,15 +260,20 @@ abstract class MvcAbstractController
 	 * @param mixed $default Valor que será retornado caso o indice nao exista.
 	 * @return type
 	 */
-	public function getPost($name, $default = null) {
-		return isset($_POST[$name]) ? $_POST[$name] : $default;
+	public function getPost($name = null, $default = null) {
+		$post = (array) filter_input_array(INPUT_POST);
+		
+		if ($name) {
+			return isset($post[$name]) ? $post[$name] : $default;
+		}
+		return $post;
 	}
 
 	/**
 	 * True caso o usuário tenha sessão de login.
 	 * @return type
 	 */
-	public function isLogged() {
+	public static function isLogged() {
 		return (bool) isset($_SESSION[self::$authNsp]);
 	}
 
@@ -318,7 +323,7 @@ abstract class MvcAbstractController
 		}
 		return $this;
 	}
-
+	
 	/**
 	 * Efetua upload de arquivos.
 	 * 
@@ -406,7 +411,7 @@ abstract class MvcAbstractController
 	 * 
 	 * @param type $data
 	 */
-	public function ajax($data) {
+	public function ajax(array $data) {
 		header("Content-Type: application/json; Charset=UTF-8");
 		echo json_encode($data);
 		exit;
