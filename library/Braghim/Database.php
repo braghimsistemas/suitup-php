@@ -27,6 +27,16 @@ class Database extends Database\Persistence
 	}
 	
 	/**
+	 * Retorna o objeto de paginacao.
+	 * 
+	 * @param type $query
+	 * @return \Braghim\Paginate
+	 */
+	public function paginate($query) {
+		return new Paginate($this, $query);
+	}
+	
+	/**
 	 * Inicia transacao com o banco de dados
 	 * 
 	 * @return bool

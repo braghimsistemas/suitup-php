@@ -56,7 +56,7 @@ abstract class AbstractGateway
 	 * @param string $query
 	 * @return \Braghim\SqlFileManager
 	 */
-	public function query($query) {
+	public function select($query) {
 		$sqlFileManager = new SqlFileManager();
 		$sqlFileManager->sql = $query;
 		$sqlFileManager->split();

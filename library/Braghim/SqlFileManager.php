@@ -116,7 +116,7 @@ class SqlFileManager
 	 * @param array $columns
 	 * @return \Braghim\SqlFileManager
 	 */
-	public function select(array $columns)
+	public function columns(array $columns)
 	{
 		$left = trim(preg_replace("/(FROM).+/", '', $this->select));
 		$right = trim(preg_replace("/.+(FROM)/", '', $this->select));
