@@ -416,4 +416,58 @@ abstract class MvcAbstractController
 		echo json_encode($data);
 		exit;
 	}
+	
+	/**
+	 * Retorna o que tem gravado na sessao de filtros.
+	 * 
+	 * @return type
+	 */
+	public function getSessionFilter() {
+		$namespace = implode('.', array($this->getModuleName(), $this->getControllerName(), $this->getActionName()));
+		if (!isset($_SESSION[$namespace])) {
+			$_SESSION[$namespace] = array();
+		}
+		return $_SESSION[$namespace];
+	}
+	
+	/**
+	 * Aqui nos controlamos as sessoes de filtros.
+	 * 
+	 * @param mixed $name
+	 * @param mixed $value
+	 * @return array
+	 */
+	public function addSessionFilter($name, $value = null) {
+		$namespace = implode('.', array($this->getModuleName(), $this->getControllerName(), $this->getActionName()));
+		
+		if (is_array($name)) {
+			foreach ($name as $i => $v) {
+				$_SESSION[$namespace][$i] = $v;
+			}
+		} else {
+			$_SESSION[$namespace][$name] = $value;
+		}
+		return $_SESSION[$namespace];
+	}
+	
+	/**
+	 * Remove um item de sessao de filtro.
+	 * 
+	 * @param mixed $key
+	 */
+	public function removeSessionFilter($key = null) {
+		$namespace = implode('.', array($this->getModuleName(), $this->getControllerName(), $this->getActionName()));
+		
+		if ($key && $_SESSION[$namespace][$key]) {
+			unset($_SESSION[$namespace][$key]);
+		}
+	}
+	
+	/**
+	 * Limpa todos os filtros deste namespace
+	 */
+	public function clearSessionFilter() {
+		$namespace = implode('.', array($this->getModuleName(), $this->getControllerName(), $this->getActionName()));
+		unset($_SESSION[$namespace]);
+	}
 }
