@@ -192,12 +192,13 @@ function paginateControl(Braghim\Paginate $object, $renderViewName = 'paginacao.
 	}
 
 	// Define a url base.
-	$url = preg_replace('/'.getenv('QUERY_STRING').'/', '', getenv('REQUEST_URI'));
+	$url = '/'.preg_replace("/\?(" . preg_quote(getenv('QUERY_STRING'), "/") . ")/", "", trim(getenv('REQUEST_URI'), '/'))."?";
 	foreach((array) filter_input_array(INPUT_GET) as $i => $value) {
 		if ($i != 'pagina') {
 			$url .= $i.'='.$value.'&';
 		}
 	}
+	$url = trim(trim($url, '?'), '&');
 	
 	// Envia para view que monta o html da paginacao
 	return renderView($renderViewName, array(
@@ -206,7 +207,7 @@ function paginateControl(Braghim\Paginate $object, $renderViewName = 'paginacao.
 		'currentPage' => $currentPage,
 		'nextPage' => in_array(($currentPage + 1), $items) ? $currentPage + 1 : false,
 		'previousPage' => in_array(($currentPage - 1), $items) ? $currentPage - 1 : false,
-		'baseUrl' => trim(trim($url, '?'), '&').'?',
+		'baseUrl' => $url . (preg_match("/\?/", $url) ? '&' : '?'),
 	));
 }
 
