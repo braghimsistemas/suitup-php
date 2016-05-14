@@ -283,11 +283,19 @@ abstract class MvcAbstractController
 	 * @param type $key
 	 * @return type
 	 */
-	public static function getLogin($key = null) {
+	public static function getLogin($key = null, $default = null) {
 		$login = isset($_SESSION[self::$authNsp]) ? $_SESSION[self::$authNsp] : false;
 		
-		// Se pediu apenas um item do login e ela existe entao retorna, senao retorna todo o login
-		return ($key && isset($login[$key])) ? $login[$key] : $login;
+		if ($key) {
+			if (!isset($login[$key]) || !$login[$key]) {
+				return $default;
+
+			} else {
+				return $login[$key];
+			}
+		} else {
+			return $login;
+		}
 	}
 	
 	/**
