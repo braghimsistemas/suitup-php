@@ -46,7 +46,7 @@ class BraghimSistemas {
 			if (!$modulesPath) {
 				throw new \Exception("Necessário informar a pasta onde os módulos serão criados.");
 			}
-			self::$instance = new self($modulesPath);
+			self::$instance = new self(trim($modulesPath, DIRECTORY_SEPARATOR));
 		}
 		return self::$instance;
 	}
@@ -65,20 +65,13 @@ class BraghimSistemas {
 	 */
 	private function __construct($modulesPath) {
 		$this->modulesPath = $modulesPath;
-		
+
 		/**
 		 * Primeiro carrega as classes do usuario e da biblioteca
 		 */
 		$loader = include 'vendor/autoload.php';
 		$loader->add('Braghim', __DIR__.DIRECTORY_SEPARATOR.'library/.');
 		$loader->add('ModuleError', __DIR__.DIRECTORY_SEPARATOR.'library/.');
-		
-		// Carrega todos os modulos automaticamente
-		foreach (scandir($this->modulesPath) as $module) {
-			if (!in_array($module, array('.', '..')) && is_dir($this->modulesPath.DIRECTORY_SEPARATOR.$module)) {
-				$loader->add($module, $this->modulesPath);
-			}
-		}
 		
 		// Define rotas
 		$routes = Braghim\Routes::getInstance();
@@ -90,6 +83,17 @@ class BraghimSistemas {
 		 */
 		$result = new stdClass();
 		try {
+			if (!is_dir($this->modulesPath)) {
+				throw new Exception("O diretório de módulos '{$this->modulesPath}' não existe");
+			}
+
+			// Carrega todos os modulos automaticamente
+			foreach (scandir($this->modulesPath) as $module) {
+				if (!in_array($module, array('.', '..')) && is_dir($this->modulesPath.DIRECTORY_SEPARATOR.$module)) {
+					$loader->add($module, $this->modulesPath);
+				}
+			}
+
 			// Se aqui não der erro é porque está tudo configurado
 			// corretamente
 			$result = $this->resolve($routes->module, $routes->controller, $routes->action);
@@ -181,7 +185,7 @@ class BraghimSistemas {
 		 * pois quando a acao devolve um ajax não renderiza html
 		 */
 		$result->viewName = $action . ".phtml";
-		$result->viewPath = "$path/$module/views/" . $controller;
+		$result->viewPath = "$path/$module/views/$controller";
 
 		// Cada módulo tem um
 		$abstractController = "$module\\Controllers\\AbstractController";

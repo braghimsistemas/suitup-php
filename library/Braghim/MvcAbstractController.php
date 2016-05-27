@@ -86,10 +86,19 @@ abstract class MvcAbstractController
 			$exception = self::$params->exception;
 		}
 		
+		// Expressao regular para remover barras repetidas.
+		$er = "/\\".DIRECTORY_SEPARATOR."\\".DIRECTORY_SEPARATOR."+/";
+		
 		// Verifica se o arquivo da View existe
-		$viewFile = self::$params->viewPath . DIRECTORY_SEPARATOR . self::$params->viewName;
+		$viewFile =  preg_replace($er, DIRECTORY_SEPARATOR, self::$params->viewPath.DIRECTORY_SEPARATOR.self::$params->viewName);
 		if (!file_exists($viewFile)) {
 			throw new \Exception("View '$viewFile' não existe, se este for um AJAX então utilize o método \$this->ajax()");
+		}
+		
+		// Inclui o arquivo de layout
+		$layoutfile = preg_replace($er, DIRECTORY_SEPARATOR, self::$params->layoutPath.DIRECTORY_SEPARATOR.self::$params->layoutName);
+		if (!file_exists($layoutfile)) {
+			throw new \Exception("Arquivo de layout '$layoutfile' não existe, se este for um AJAX então utilize o método \$this->ajax()");
 		}
 		
 		// Pega conteúdo da view
@@ -98,7 +107,7 @@ abstract class MvcAbstractController
 		$content = ob_get_clean();
 
 		// mostra conteúdo do layout já com a view injetada
-		include self::$params->layoutPath . DIRECTORY_SEPARATOR . self::$params->layoutName;
+		include $layoutfile;
 		
 		// Remove possiveis mensagens de sessão
 		// mas somente com o token antigo
