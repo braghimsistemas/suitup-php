@@ -17,7 +17,7 @@ class BraghimSistemas {
 	/**
 	 * Versão atual do sistema
 	 */
-	const VERSION = '1.0.7';
+	const VERSION = '1.0.8';
 	
 	/** Singleton **/
 	private static $instance;
@@ -103,7 +103,7 @@ class BraghimSistemas {
 					// Aqui piorou, o sistema chama um módulo padrão de erros.
 					$result = $this->resolve('ModuleError', 'error', 'not-found', __DIR__.DIRECTORY_SEPARATOR.'library', true);
 				} catch (Exception $ex2) {
-					exit('Mexeu no framework né Zé!?');
+					exit('Confira a estrutura de arquivos, pois parece que algo está fora do padrão. https://github.com/braghimsistemas/framework/wiki/Instala%C3%A7%C3%A3o#estrutura-do-projeto');
 				}
 			}
 			$result->exception = $e;
