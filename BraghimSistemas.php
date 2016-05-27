@@ -150,10 +150,10 @@ class BraghimSistemas {
 		}
 		$result->controllerName = $controllerName;
 
-		// Cria instancia do controlador se o módulo foi carregado no loader do config.php
+		// Tentando acessar o controlador encontrado.
 		$controllerNsp = $module . "\\Controllers\\$controllerName";
 		if (!class_exists($controllerNsp)) {
-			throw new Exception("Tem que apontar no loader este novo módulo, cabeção. (config.php)");
+			throw new Exception("O sistema não conseguiu encontrar a classe deste controlador '$controllerNsp'");
 		}
 		$result->controller = new $controllerNsp();
 		if (!$result->controller instanceof Braghim\MvcAbstractController) {
