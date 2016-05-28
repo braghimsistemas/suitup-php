@@ -5,7 +5,7 @@ Este é um framework para projetos web no qual podemos considerar tanto pequenos
 `composer require braghim-sistemas/framework`
 
 ### Instalação
-Visite nossa [wiki](https://github.com/braghimsistemas/framework/wiki/1.-Home) para saber como instalar o projeto e ser feliz.
+Visite nossa [wiki](https://github.com/braghimsistemas/framework/wiki) para saber como instalar o projeto e ser feliz.
 
 ## Entendendo o projeto
 ### Porquê este framework e não outro?
