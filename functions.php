@@ -25,7 +25,7 @@ function throwNewExceptionFromAnywhere($e) {
 			$setup->mvc = $setup->resolve('ModuleError', 'error', 'error', __DIR__.DIRECTORY_SEPARATOR.'library');
 		} catch (Exception $ex2) {
 			if (function_exists('createSystemLog')) {
-				createSystemLog($e, Log::EMERG);
+				createSystemLog($e);
 			}
 			
 			echo "Exception sem possibilidade de tratamento.";
