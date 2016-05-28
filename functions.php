@@ -1,7 +1,6 @@
 <?php
 
 use Braghim\MvcAbstractController;
-use ModuleManager\ModelLogs\Gateway\Log;
 
 /**
  * Funções uteis para serem usadas em qualquer lugar
@@ -42,7 +41,7 @@ function throwNewExceptionFromAnywhere($e) {
 		$setup->run();
 	} catch (Exception $ex3) {
 		if (function_exists('createSystemLog')) {
-			createSystemLog($e, Log::EMERG);
+			createSystemLog($e);
 		}
 		
 		echo "Exception sem possibilidade de tratamento.";
