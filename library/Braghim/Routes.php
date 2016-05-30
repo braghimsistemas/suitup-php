@@ -57,8 +57,15 @@ class Routes
 	const TYPE_LINEAR = 'linear';
 	
 	/**
+	 * Pasta com os modulos do sistema.
+	 *
+	 * @var string 
+	 */
+	public static $modulesPath;
+	
+	/**
 	 *	Singleton
-	 *	@var type 
+	 *	@var Routes 
 	 */
 	private static $instance;
 	
@@ -108,7 +115,7 @@ class Routes
 			$routeParts = explode('/', $route);
 			switch (count($routeParts)) {
 				case 1:
-					if (is_dir("mvc/Module" . ucfirst(strtolower($routeParts[0])))) {
+					if (is_dir(self::$modulesPath."/Module" . ucfirst(strtolower($routeParts[0])))) {
 						$this->moduleName = strtolower($routeParts[0]);
 						$this->module = "Module" . ucfirst($this->moduleName);
 					} else {
@@ -116,7 +123,7 @@ class Routes
 					}
 					break;
 				case 2:
-					if (is_dir("mvc/Module" . ucfirst(strtolower($routeParts[0])))) {
+					if (is_dir(self::$modulesPath."/Module" . ucfirst(strtolower($routeParts[0])))) {
 						
 						$this->moduleName = strtolower($routeParts[0]);
 						$this->module = "Module" . ucfirst($this->moduleName);

@@ -17,7 +17,7 @@ class BraghimSistemas {
 	/**
 	 * Versão atual do sistema
 	 */
-	const VERSION = '1.0.9';
+	const VERSION = '1.1.0';
 	
 	/** Singleton **/
 	private static $instance;
@@ -74,6 +74,7 @@ class BraghimSistemas {
 		$loader->add('ModuleError', __DIR__.DIRECTORY_SEPARATOR.'library/.');
 		
 		// Define rotas
+		Braghim\Routes::$modulesPath = $modulesPath;
 		$routes = Braghim\Routes::getInstance();
 		
 		/**
