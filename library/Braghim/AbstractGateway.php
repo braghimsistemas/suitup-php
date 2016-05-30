@@ -16,6 +16,14 @@ abstract class AbstractGateway
 	protected $primary;
 	
 	/**
+	 * Eh possivel configurar uma coluna do banco para ser atualizada
+	 * em cada update automaticamente.
+	 *
+	 * @var array 
+	 */
+	protected $onUpdate;
+	
+	/**
 	 * @var \Braghim\Database
 	 */
 	protected $db;
@@ -152,10 +160,14 @@ abstract class AbstractGateway
 		
 		// Valores
 		foreach($data as $column => $value) {
-			$sql .= ":".$column.", ";
-			
-			// Query segura
-			$this->db->bind($column, $value);
+			if (!is_null($value)) {
+				$sql .= ":".$column.", ";
+
+				// Query segura
+				$this->db->bind($column, $value);
+			} else {
+				$sql .= $column." = NULL, ";
+			}
 		}
 		$sql = trim($sql, ', ').")";
 		
@@ -183,11 +195,29 @@ abstract class AbstractGateway
 		
 		// Colunas
 		foreach($data as $column => $value) {
-			$sql .= $column." = :".$column.", ";
-			
-			// Query segura
-			$this->db->bind($column, $value);
+			if (!is_null($value)) {
+				$sql .= $column." = :".$column.", ";
+
+				// Query segura
+				$this->db->bind($column, $value);
+			} else {
+				$sql .= $column." = NULL, ";
+			}
 		}
+		
+		/**
+		 * Indicando este atributo o sistema irá atualizar as colunas
+		 * em questão em todos os updates sem precisar indicar isso nos
+		 * arrays.
+		 */
+		if ($this->onUpdate && is_array($this->onUpdate)) {
+			foreach ($this->onUpdate as $column => $value) {
+				if (!isset($data[$column])) {
+					$sql .= $column." = ".$value.", ";
+				}
+			}
+		}
+		
 		$sql = trim($sql, ', ');
 		
 		// Nenhum parametro where, locão

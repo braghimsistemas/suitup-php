@@ -17,7 +17,7 @@ class BraghimSistemas {
 	/**
 	 * Versão atual do sistema
 	 */
-	const VERSION = '1.0.8';
+	const VERSION = '1.0.9';
 	
 	/** Singleton **/
 	private static $instance;
@@ -87,6 +87,14 @@ class BraghimSistemas {
 				throw new Exception("O diretório de módulos '{$this->modulesPath}' não existe");
 			}
 
+			// Tenta criar um arquivo .htaccess para proteger a pasta de modulos
+			if (!file_exists($this->modulesPath.DIRECTORY_SEPARATOR.'.htaccess') && is_writable($this->modulesPath)) {
+				
+				// Este .htaccess impede que esta pasta liste seus arquivos.
+				file_put_contents($this->modulesPath.DIRECTORY_SEPARATOR.'.htaccess', "Options -Indexes\n");
+				chmod($this->modulesPath.DIRECTORY_SEPARATOR.'.htaccess', 0644);
+			}
+			
 			// Carrega todos os modulos automaticamente
 			foreach (scandir($this->modulesPath) as $module) {
 				if (!in_array($module, array('.', '..')) && is_dir($this->modulesPath.DIRECTORY_SEPARATOR.$module)) {
