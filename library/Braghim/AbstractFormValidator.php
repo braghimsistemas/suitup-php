@@ -8,7 +8,7 @@ abstract class AbstractFormValidator
 	public $post = array();
 	
 	public function __construct() {
-		$this->post = $_POST;
+		$this->post = (array) filter_input_array(INPUT_POST);
 	}
 	
 	/**
