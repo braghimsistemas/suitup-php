@@ -6,6 +6,7 @@ abstract class AbstractFormValidator
 	protected $data = array();
 	public $messages = array();
 	public $post = array();
+	private $valid = null;
 	
 	public function __construct() {
 		$this->post = (array) filter_input_array(INPUT_POST);
@@ -74,9 +75,63 @@ abstract class AbstractFormValidator
 	 * true caso TODOS eles sejam validos.
 	 * 
 	 * @return boolean
-	 * @throws \Exception
 	 */
 	public function isValid()
+	{
+		if ($this->valid === null) {
+			$this->validateForm();
+		}
+		return $this->valid;
+	}
+	
+	/**
+	 * Chame este metodo apos isValid() para capturar os
+	 * dados do post "limpos", ou seja, filtrados pelas
+	 * regras definidas para cada campo.
+	 * 
+	 * @return type
+	 */
+	public function getData() {
+		
+		// Se o formulario ainda não foi validado vamos valida-lo.
+		if ($this->valid === null) {
+			$this->validateForm();
+		}
+		
+		// Captura os resultados da validacao
+		$data = array();
+		foreach ($this->data as $key => $item) {
+			$data[$key] = $item['value'];
+		}
+		return $data;
+	}
+	
+	/**
+	 * Adiciona um item ao array de retorno dos dados.
+	 * 
+	 * @param type $index
+	 * @param type $data
+	 */
+	public function addData($index, $data) {
+		$this->data[$index] = $data;
+	}
+	
+	/**
+	 * Retorna lista de mensagens de validacao.
+	 * 
+	 * @return type
+	 */
+	public function getMessages() {
+		return $this->messages;
+	}
+	
+	/**
+	 * Efetua as validacoes necessarias.
+	 * 
+	 * @throws \Exception
+	 * @return bool
+	 */
+	private function validateForm()
 	{
 		$result = true;
 		foreach ($this->data as $field => $item) {
@@ -156,40 +211,8 @@ abstract class AbstractFormValidator
 			}
 		}
 		
-		return $result;
-	}
-	
-	/**
-	 * Chame este metodo apos isValid() para capturar os
-	 * dados do post "limpos", ou seja, filtrados pelas
-	 * regras definidas para cada campo.
-	 * 
-	 * @return type
-	 */
-	public function getData() {
-		$data = array();
-		foreach ($this->data as $key => $item) {
-			$data[$key] = $item['value'];
-		}
-		return $data;
-	}
-	
-	/**
-	 * Adiciona um item ao array de retorno dos dados.
-	 * 
-	 * @param type $index
-	 * @param type $data
-	 */
-	public function addData($index, $data) {
-		$this->data[$index] = $data;
-	}
-	
-	/**
-	 * Retorna lista de mensagens de validacao.
-	 * 
-	 * @return type
-	 */
-	public function getMessages() {
-		return $this->messages;
+		// Seta o objeto
+		$this->valid = (bool) $result;
+		return $this->valid;
 	}
 }

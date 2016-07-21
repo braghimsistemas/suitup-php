@@ -6,6 +6,15 @@ use Braghim\MvcAbstractController;
  * Funções uteis para serem usadas em qualquer lugar
  */
 
+
+/**
+ * Valores fixos de tamanhos diversos em Bytes
+ */
+define('KB', 1024);				// Em bytes
+define('MB', 1048576);			// Em bytes
+define('GB', 1073741824);		// Em bytes
+define('TB', 1099511627776);	// Em bytes
+
 /**
  * Captura todas as exceções não tratadas do sistema.
  * 

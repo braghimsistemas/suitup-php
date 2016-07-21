@@ -2,6 +2,11 @@
 namespace Braghim;
 
 use Braghim\Enum\MsgType;
+use Exception;
+use ModuleManager\ModelLogs\Gateway\Log;
+use stdClass;
+use System\Exception\ExceptionErroSistema;
+use upload;
 
 abstract class MvcAbstractController
 {
@@ -17,6 +22,21 @@ abstract class MvcAbstractController
 	
 	// Mensagens do sistema
 	private $msgs = array();
+	
+	/**
+	 * Tipos de erro de upload de arquivos.
+	 * @var array
+	 */
+	public static $uploadErrors = array(
+		UPLOAD_ERR_OK => 'UPLOAD_ERR_OK',
+		UPLOAD_ERR_INI_SIZE => 'UPLOAD_ERR_INI_SIZE',
+		UPLOAD_ERR_FORM_SIZE => 'UPLOAD_ERR_FORM_SIZE',
+		UPLOAD_ERR_PARTIAL => 'UPLOAD_ERR_PARTIAL',
+		UPLOAD_ERR_NO_FILE => 'UPLOAD_ERR_NO_FILE',
+		UPLOAD_ERR_NO_TMP_DIR => 'UPLOAD_ERR_NO_TMP_DIR',
+		UPLOAD_ERR_CANT_WRITE => 'UPLOAD_ERR_CANT_WRITE',
+		UPLOAD_ERR_EXTENSION => 'UPLOAD_ERR_EXTENSION',
+	);
 
 	/**
 	 * Este metodo é chamado antes da ação do controlador.
@@ -92,13 +112,13 @@ abstract class MvcAbstractController
 		// Verifica se o arquivo da View existe
 		$viewFile =  preg_replace($er, DIRECTORY_SEPARATOR, self::$params->viewPath.DIRECTORY_SEPARATOR.self::$params->viewName);
 		if (!file_exists($viewFile)) {
-			throw new \Exception("View '$viewFile' não existe, se este for um AJAX então utilize o método \$this->ajax()");
+			throw new Exception("View '$viewFile' não existe, se este for um AJAX então utilize o método \$this->ajax()");
 		}
 		
 		// Inclui o arquivo de layout
 		$layoutfile = preg_replace($er, DIRECTORY_SEPARATOR, self::$params->layoutPath.DIRECTORY_SEPARATOR.self::$params->layoutName);
 		if (!file_exists($layoutfile)) {
-			throw new \Exception("Arquivo de layout '$layoutfile' não existe, se este for um AJAX então utilize o método \$this->ajax()");
+			throw new Exception("Arquivo de layout '$layoutfile' não existe, se este for um AJAX então utilize o método \$this->ajax()");
 		}
 		
 		// Pega conteúdo da view
@@ -330,7 +350,7 @@ abstract class MvcAbstractController
 	 * @param type $msg
 	 * @param type $type
 	 * @param type $withRedirect
-	 * @return \Braghim\MvcAbstractController
+	 * @return MvcAbstractController
 	 */
 	public function addMsg($msg, $type = MsgType::INFO, $withRedirect = false) {
 		if ($withRedirect) {
@@ -348,17 +368,17 @@ abstract class MvcAbstractController
 	 * @param string $where Caminho absoluto para onde salvar o arquivo, ex.: FILES_PATH . '/somewhere'
 	 * @param string $exitFilename Nome do arquivo no final do processo de upload
 	 * @param array $allowedExt Lista de extenssoes permitidas para o upload
-	 * @return \stdClass
+	 * @return stdClass
 	 * @throws Exception
 	 */
 	public function uploadFile($file, $where, $exitFilename = null, array $allowedExt = array('jpeg', 'jpg', 'pdf', 'png', 'gif'))
 	{
-		$result = new \stdClass();
+		$result = new stdClass();
 		$result->filename = "";
 		$result->pathAndFilename = "";
 		$result->fileExt = "";
 		
-		$upload = new \upload($file);
+		$upload = new upload($file);
 		if ($upload->uploaded)
 		{
 			// Formatos Aceitos (Extensoes)
@@ -401,15 +421,65 @@ abstract class MvcAbstractController
 						$result->pathAndFilename = $where.$exitFilename.'.'.$upload->file_src_name_ext;
 					}
 				} else {
-					throw new \Exception($upload->error);
+					throw new Exception($upload->error);
 				}
 			} else {
-				throw new \Exception("Extenssão inválida");
+				throw new Exception("Extenssão inválida");
 			}
 		} else {
-			throw new \Exception($upload->error);
+			throw new Exception($upload->error);
 		}
 		return $result;
+	}
+	
+	/**
+	 * Captura uma imagem e transforma seu conteúdo para Base64.
+	 * - Deixa a imagem em torno de 33% maior segundo a documentação do PHP.
+	 * 
+	 * @param type $file Item $_FILES['arquivo']
+	 * @param int $maxFilesize 3Mb por padrão.
+	 */
+	public function uploadFileImageBase64($file, $maxFilesize = 3145728)
+	{
+		// Valida erros
+		if ($file['error'] != UPLOAD_ERR_OK) {
+			
+			ExceptionErroSistema::createLog(new Exception("Erro de Upload: ".self::$uploadErrors[$file['error']]), Log::WARN);
+			throw new Exception("Erro ao fazer o upload da imagem, tente novamente");
+		}
+		
+		// Valida tamanho
+		if ($file['size'] > $maxFilesize) {
+			throw new Exception("Arquivo muito grande, por favor envie um arquivo até ".($maxFilesize/MB)."Mb");
+		}
+		
+		// Define exts e mimetypes
+		$mimeTypes = array(
+			'jpg' => 'image/jpeg',
+            'jpeg' => 'image/jpeg',
+            'jpe' => 'image/jpeg',
+            'gif' => 'image/gif',
+            'png' => 'image/png',
+            'bmp' => 'image/bmp',
+		);
+		
+		// Valida EXT
+		$fileExt = preg_replace("/^.+\./", '', $file['name']);
+		if (!array_key_exists($fileExt, $mimeTypes)) {
+			throw new Exception("Extensão do arquivo é inválida, por favor envie arquivos desta lista (".implode(", ", array_keys($mimeTypes)).")");
+		}
+		
+		// Valida MimeType
+		if (!isset($mimeTypes[$fileExt]) || ($file['type'] != $mimeTypes[$fileExt])) {
+			throw new Exception("Arquivo inválido, por favor envie arquivos desta lista (".implode(", ", array_keys($mimeTypes)).")");
+		}
+		
+		// Valida se o arquivo existe.
+		if (!file_exists($file['tmp_name']) || !is_readable($file['tmp_name'])) {
+			throw new Exception("Erro inesperado ao fazer upload do arquivo, tente novamente");
+		}
+		// Não deu erro até aqui, então codifica o cara para base64
+		return 'data:'.$mimeTypes[$fileExt].';base64,'.base64_encode(file_get_contents($file['tmp_name']));
 	}
 	
 	/**
