@@ -50,6 +50,25 @@ abstract class AbstractFormValidator
 	}
 	
 	/**
+	 * Validacao de CEP. <b>Não verifica se o cep está vazio</b>
+	 * 
+	 * @param string $value Cep no formato 99999-999
+	 * @return \stdClass Objeto simples
+	 */
+	public function isCep($value) {
+		$result = new \stdClass();
+		$result->error = false;
+		$result->message = "";
+		
+		// Se estiver vazio ignora
+		if ($value && !preg_match("/^\d{5}-\d{3}$/", $value)) {
+			$result->error = true;
+			$result->message = "Preencha com um número de CEP válido";
+		}
+		return $result;
+	}
+	
+	/**
 	 * Filtro
 	 * 
 	 * @param type $value
