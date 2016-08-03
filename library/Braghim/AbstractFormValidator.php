@@ -157,7 +157,7 @@ abstract class AbstractFormValidator
 			
 			// Tipos de campos que nem chegaram no post
 			if (!isset($this->post[$field])) {
-				$this->setErrorMessage($field, "Este campo é obrigatório");
+				$this->messages[$field][] = "Este campo é obrigatório";
 				continue;
 			}
 			

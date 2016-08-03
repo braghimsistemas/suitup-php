@@ -437,9 +437,9 @@ abstract class MvcAbstractController
 	 * - Deixa a imagem em torno de 33% maior segundo a documentação do PHP.
 	 * 
 	 * @param type $file Item $_FILES['arquivo']
-	 * @param int $maxFilesize 3Mb por padrão.
+	 * @param int $maxFilesize 512kb por padrão.
 	 */
-	public function uploadFileImageBase64($file, $maxFilesize = 3145728)
+	public function uploadFileImageBase64($file, $maxFilesize = 524288)
 	{
 		// Valida erros
 		if ($file['error'] != UPLOAD_ERR_OK) {
