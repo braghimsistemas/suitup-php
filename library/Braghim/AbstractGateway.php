@@ -245,7 +245,7 @@ abstract class AbstractGateway
 	/**
 	 * Remove um registro do banco de dados.
 	 * 
-	 * @return type
+	 * @return bool
 	 */
 	public function delete(array $where) {
 		$this->checkGateway();

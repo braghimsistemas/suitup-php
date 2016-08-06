@@ -68,7 +68,7 @@ abstract class AbstractBusiness
 	/**
 	 * Remove um registro do banco de dados.
 	 * 
-	 * @return type
+	 * @return bool
 	 */
 	public function delete(array $where) {
 		return $this->gateway->delete($where);

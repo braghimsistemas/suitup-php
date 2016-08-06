@@ -19,11 +19,34 @@ class Database extends Database\Persistence
 	}
 	private function __clone() { }
 	
+	/**
+	 * Instancia do banco de dados.
+	 * @return Database
+	 */
 	public static function getInstance() {
 		if (self::$instance === null) {
 			self::$instance = new self();
 		}
+		
+		// Em casos onde houve um bug relacionado a alguma query
+		// pode acontecer do objeto (Database) estar ainda carregado
+		// com as informações da ultima query, por isso resetamos ele
+		// antes de retornar a instancia.
+		self::$instance->reset();
+		
 		return self::$instance;
+	}
+	
+	/**
+	 * Renova a instancia do banco de dados.
+	 * Pense bem antes de utilizar este método, pois ele remove a conexão antiga
+	 * e cria uma nova. Isto pode deixar o sistema mais lento.
+	 * 
+	 * @return Database
+	 */
+	public static function renewInstance() {
+		self::$instance = null;
+		return self::getInstance();
 	}
 	
 	/**

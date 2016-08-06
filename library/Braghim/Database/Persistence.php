@@ -106,6 +106,19 @@ abstract class Persistence
 		# Reset the parameters
 		$this->parameters = array();
 	}
+	
+	/**
+	 * Reseta o objeto para poder rodar a proxima query.
+	 * 
+	 * @return \Braghim\Database\Persistence
+	 */
+	public function reset() {
+		$this->sQuery = null;
+		$this->parameters = array();
+		$this->success = false;
+		
+		return $this;
+	}
 
 	/**
 	 * 	@void 
@@ -152,13 +165,19 @@ abstract class Persistence
 		# Which SQL statement is used 
 		$statement = strtolower($rawStatement[0]);
 
+		// Prepara para pagar o resultado
+		$result = null;
 		if ($statement === 'select' || $statement === 'show') {
-			return $this->sQuery->fetchAll($fetchmode);
+			$result = $this->sQuery->fetchAll($fetchmode);
 		} elseif ($statement === 'insert' || $statement === 'update' || $statement === 'delete') {
-			return $this->sQuery->rowCount();
-		} else {
-			return NULL;
+			$result = $this->sQuery->rowCount();
 		}
+		
+		// Reseta a instancia para preparar
+		// para proxima query
+		$this->reset();
+		
+		return $result;
 	}
 
 	/**
@@ -186,6 +205,10 @@ abstract class Persistence
 			$column[] = $cells[0];
 		}
 
+		// Reseta a instancia para preparar
+		// para proxima query
+		$this->reset();
+		
 		return $column;
 	}
 
@@ -199,7 +222,13 @@ abstract class Persistence
 	 */
 	public function row($query, $params = null, $fetchmode = \PDO::FETCH_ASSOC) {
 		$this->Init($query, $params);
-		return $this->sQuery->fetch($fetchmode);
+		$result = $this->sQuery->fetch($fetchmode);
+		
+		// Reseta a instancia para preparar
+		// para proxima query
+		$this->reset();
+		
+		return $result;
 	}
 
 	/**
@@ -211,7 +240,13 @@ abstract class Persistence
 	 */
 	public function single($query, $params = null) {
 		$this->Init($query, $params);
-		return $this->sQuery->fetchColumn();
+		$result = $this->sQuery->fetchColumn();
+		
+		// Reseta a instancia para preparar
+		// para proxima query
+		$this->reset();
+		
+		return $result;
 	}
 
 	/** 	
