@@ -46,7 +46,7 @@ abstract class Validation
 		// Captura os resultados da validacao
 		$data = array();
 		foreach ($this->data as $key => $item) {
-			$data[$key] = $item['value'];
+			$data[$key] = isset($item['value']) ? $item['value'] : '';
 		}
 		return $data;
 	}
