@@ -30,7 +30,7 @@ class Paginate implements Countable, PaginateI
      * @access private
      * @var integer
      */
-    private $totalPages;
+    private $totalPages = 1;
 
     /**
      * Numero de paginas que sera mostrada na paginacao
@@ -46,7 +46,7 @@ class Paginate implements Countable, PaginateI
      * @access private
      * @var integer
      */
-    private $currentPage;
+    private $currentPage = 1;
 
     /**
      * Quantidade maxima de registros mostrados por pagina
@@ -165,7 +165,7 @@ class Paginate implements Countable, PaginateI
 	 * @return int
 	 */
     public function getCurrentPage() {
-        return $this->currentPage;
+        return (int) $this->currentPage;
     }
 
     /**
@@ -188,7 +188,7 @@ class Paginate implements Countable, PaginateI
 	 * @return int
 	 */
     public function getNumberPerPage() {
-        return $this->numberPerPage;
+        return (int) $this->numberPerPage;
     }
 
     /**
@@ -197,7 +197,7 @@ class Paginate implements Countable, PaginateI
 	 * @return int
 	 */
     public function getTotalPages() {
-        return $this->totalPages;
+        return (int) $this->totalPages;
     }
 
     /**
@@ -207,11 +207,14 @@ class Paginate implements Countable, PaginateI
 	 * @return int
 	 */
     public function count() {
-		$count = count($this->result);
-		if (!$this->result) {
-			$count = (int) $this->db->single("SELECT COUNT(1) FROM ({$this->getAdapter()}) as tmp");
+		if ($this->result === null) {
+			$this->rewind();
 		}
-        return $count;
+		
+		/**
+		 * Contagem total de registros, direto pelo banco de dados.
+		 */
+        return (int) $this->db->single("SELECT COUNT(1) FROM ({$this->getAdapter()}) as tmp");
     }
 
     /**
@@ -230,7 +233,7 @@ class Paginate implements Countable, PaginateI
 	 * @return array
 	 */
     public function current() {
-		if (!$this->result) {
+		if ($this->result === null) {
 			$this->rewind();
 		}
 		
@@ -314,6 +317,12 @@ class Paginate implements Countable, PaginateI
 	 * @return array
 	 */
     public function getResult() {
+		
+		// @TODO: Watch
+		if ($this->result === null) {
+			$this->rewind();
+		}
+		
         return $this->result;
     }
 }

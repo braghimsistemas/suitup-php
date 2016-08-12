@@ -16,7 +16,7 @@ abstract class AbstractBusiness
 		
 		// Nome do gateway
 		$gateway =  str_replace($className, 'Gateway', get_class($this)) .'\\'. str_replace('Business', '', $className);
-		$this->gateway = new $gateway();
+		$this->gateway = new $gateway(AbstractGateway::SALT);
 	}
 	
 	/**

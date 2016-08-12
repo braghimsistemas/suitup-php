@@ -4,6 +4,11 @@ namespace Braghim;
 abstract class AbstractGateway
 {
 	/**
+	 * Validacao de instancia da gateway.
+	 */
+	const SALT = '56fas43df5a7';
+	
+	/**
 	 * Nome da tabela
 	 * @var string
 	 */
@@ -28,7 +33,22 @@ abstract class AbstractGateway
 	 */
 	protected $db;
 	
-	public function __construct() {
+	/**
+	 * O construtor recebe este parâmetro estático
+	 * para evitar que um Gateway seja instanciado
+	 * por acidente.
+	 * 
+	 * @param type $valid
+	 * @throws \Exception
+	 */
+	public function __construct($valid = false) {
+		
+		// Valida instancia da classe
+		// @TODO: Avaliar outras possibilidades
+		if (!$valid || ($valid != self::SALT)) {
+			throw new \Exception("Não utilize uma instância de 'Gateway' fora de sua respectiva 'Business'");
+		}
+		
 		$this->db = Database::getInstance();
 		
 		// Validação 
