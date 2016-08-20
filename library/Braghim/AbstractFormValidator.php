@@ -81,4 +81,14 @@ abstract class AbstractFormValidator extends FormValidator\Validation
 	public function toDbDate($value) {
 		return implode('-', array_reverse(explode('/', $value)));
 	}
+	
+	/**
+	 * Retorna apenas os números do valor incluído.
+	 * 
+	 * @param type $value
+	 * @return type
+	 */
+	public function digits($value) {
+		return preg_replace("/\D+/", '', (string) $value);
+	}
 }
