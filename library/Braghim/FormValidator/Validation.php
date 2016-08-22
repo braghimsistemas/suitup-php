@@ -88,11 +88,11 @@ abstract class Validation
 			}
 			
 			// Validacoes
-			foreach ($item['validation'] as $zendValidator => $method) {
+			foreach ($item['validation'] as $methodOrClass => $method) {
 				
 				
 				// Validacao do ZEND =)
-				if (class_exists($zendValidator)) {
+				if (class_exists($methodOrClass)) {
 					
 					// Campo não vazio, pois é claro que estando
 					// vazio toda validacao será falsa.
@@ -106,7 +106,7 @@ abstract class Validation
 					// então nao é um metodo que chega como valor,
 					// mas as opções do validador
 					$options = $method;
-					$validator = new $zendValidator($options);
+					$validator = new $methodOrClass($options);
 					
 					if (!$validator->isValid($this->post[$field])) {
 						$result = false;
@@ -117,15 +117,30 @@ abstract class Validation
 					continue;
 				}
 				
-				if (!method_exists($this, $method)) {
-					throw new \Exception("O metodo '$method' não existe para validar o campo");
+				// É um metodo de validacao dentro da classe, mas que referencia outro campo
+				if (method_exists($this, $methodOrClass)) {
+					
+					$options = $method;
+					$validation = $this->$methodOrClass($this->post[$field], $options);
+					if ($validation->error) {
+						$result = false;
+						$this->messages[$field][] = $validation->message;
+					}
+					continue;
 				}
 				
-				$validation = $this->$method($this->post[$field]);
-				if ($validation->error) {
-					$result = false;
-					$this->messages[$field][] = $validation->message;
+				// É um metodo comum de validacao dentro da propria classe
+				if (method_exists($this, $method)) {
+					$validation = $this->$method($this->post[$field]);
+					if ($validation->error) {
+						$result = false;
+						$this->messages[$field][] = $validation->message;
+					}
+					continue;
 				}
+				
+				// Se chegar aqui é pq não tem metodo para validar o campo =/
+				throw new \Exception("O metodo '$methodOrClass' ou '$method' não existe para validar o campo");
 			}
 			
 			// Filtros
