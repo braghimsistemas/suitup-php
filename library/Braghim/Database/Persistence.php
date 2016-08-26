@@ -25,6 +25,11 @@ abstract class Persistence
 	# @array, The parameters of the SQL query
 	protected $parameters;
 	
+	/** Monitoramento de SQL **/
+	
+	# @bool Enable/Disable SQL monitoring
+	protected $monitoring = false;
+	
 	# @array Queries list to log
 	protected $queryLogs = array();
 	
@@ -268,13 +273,28 @@ abstract class Persistence
 	}
 	
 	/**
+	 * Enable/Disable SQL monitoring
+	 * 
+	 * @param bool $status
+	 * @return \Braghim\Database\Persistence
+	 */
+	public function setMonitoring($status) {
+		$this->monitoring = (bool) $status;
+		return $this;
+	}
+	
+	/**
 	 * Se estiver habilitado retornara a lista de todas as queries rodadas nesta sessão.
 	 * @return array
 	 */
 	public function getQueryLog() {
-		$html = file_get_contents(__DIR__.'/query-log.html');
+		if (!$this->monitoring) {
+			return "";
+		}
 		
-		$html .= '<div id="__braghim-query-log-tab__">Queries <span id="close">X</span></div>';
+		$html = file_get_contents(__DIR__.'/query-log.min.html');
+		
+		$html .= '<div id="__braghim-query-log-tab__">SQL <span id="close">X</span></div>';
 		
 		$html .= '<div id="__braghim-query-log__">';
 		$html .= '<div class="headding">Queries executadas nesta página <span id="closebox">X</span></div>';

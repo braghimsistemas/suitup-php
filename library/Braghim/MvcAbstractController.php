@@ -121,10 +121,8 @@ abstract class MvcAbstractController
 			throw new Exception("Arquivo de layout '$layoutfile' não existe, se este for um AJAX então utilize o método \$this->ajax()");
 		}
 		
-		// Captura a lista de queries rodadas para log caso necessário
-		if (DEVELOPMENT) {
-			$queryLog = Database::getInstance()->getQueryLog();
-		}
+		// Lista de instruções SQL rodadas nesta pagina
+		$queryLog = Database::getInstance()->getQueryLog();
 		
 		// Pega conteúdo da view
 		ob_start();

@@ -205,6 +205,15 @@ class BraghimSistemas {
 		
 		return $result;
 	}
+	
+	/**
+	 * Habilita ou desabilita monitoramento de SQL de banco de dados.
+	 * @param type $status
+	 */
+	public function setSqlMonitor($status = false) {
+		Braghim\Database::getInstance()->setMonitoring($status);
+		return $this;
+	}
 
 	/**
 	 * Roda efetivamente a aplicacao.
