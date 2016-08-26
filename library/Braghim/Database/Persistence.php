@@ -28,6 +28,7 @@ abstract class Persistence
 	# @array Queries list to log
 	protected $queryLogs = array();
 	
+	# @int contador para os logs de query
 	private $i = 0;
 
 	/**
