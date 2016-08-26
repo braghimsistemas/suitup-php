@@ -27,6 +27,8 @@ abstract class Persistence
 	
 	# @array Queries list to log
 	protected $queryLogs = array();
+	
+	private $i = 0;
 
 	/**
 	 * 	This method makes connection to the database.
@@ -105,7 +107,7 @@ abstract class Persistence
 			}
 			
 			// Adiciona aos logs
-			$this->queryLogs[] = array(
+			$this->queryLogs[(string) ++$this->i.' - '.mctime()] = array(
 				'query' => (is_object($query) ? $query->__toString() : $query),
 				'params' => $logParamsList
 			);
@@ -269,7 +271,7 @@ abstract class Persistence
 	 * @return array
 	 */
 	public function getQueryLog() {
-		return array_reverse($this->queryLogs);
+		return $this->queryLogs;
 	}
 
 	/** 	
