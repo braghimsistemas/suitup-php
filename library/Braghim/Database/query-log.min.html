@@ -18,7 +18,11 @@ div#__braghim-query-log-tab__{margin:0;padding:0;border:0;outline:0;font-weight:
 		var tab = document.querySelector('div#__braghim-query-log-tab__');
 		tab.onclick = function(e) {
 			tab.style.display = 'none';
-			if (e.toElement.localName == 'div') {
+			
+			// e.originalTarget = Firefox
+			// e.toElement = Chrome
+			var targetE = e.originalTarget || e.toElement;
+			if (targetE.localName == 'div') {
 				box.style.display = 'block';
 			}
 		};
