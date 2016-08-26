@@ -24,6 +24,9 @@ abstract class Persistence
 
 	# @array, The parameters of the SQL query
 	protected $parameters;
+	
+	# @array Queries list to log
+	protected $queryLogs = array();
 
 	/**
 	 * 	This method makes connection to the database.
@@ -87,13 +90,25 @@ abstract class Persistence
 			# Add parameters to the parameter array	
 			$this->bindMore($parameters);
 
+			// Lista de parametros que podem ser recuperados no log
+			$logParamsList = array();
+			
 			# Bind parameters
 			if (!empty($this->parameters)) {
 				foreach ($this->parameters as $param) {
 					$parameters = explode("\x7F", $param);
 					$this->sQuery->bindParam($parameters[0], $parameters[1]);
+					
+					// Guarda parametros para exibir no log.
+					$logParamsList[$parameters[0]] = $parameters[1];
 				}
 			}
+			
+			// Adiciona aos logs
+			$this->queryLogs[] = array(
+				'query' => (is_object($query) ? $query->__toString() : $query),
+				'params' => $logParamsList
+			);
 
 			# Execute SQL 
 			$this->success = $this->sQuery->execute();
@@ -247,6 +262,14 @@ abstract class Persistence
 		$this->reset();
 		
 		return $result;
+	}
+	
+	/**
+	 * Se estiver habilitado retornara a lista de todas as queries rodadas nesta sessão.
+	 * @return array
+	 */
+	public function getQueryLog() {
+		return array_reverse($this->queryLogs);
 	}
 
 	/** 	
