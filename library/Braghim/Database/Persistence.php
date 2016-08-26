@@ -272,7 +272,28 @@ abstract class Persistence
 	 * @return array
 	 */
 	public function getQueryLog() {
-		return $this->queryLogs;
+		$html = file_get_contents(__DIR__.'/query-log.html');
+		
+		$html .= '<div id="__braghim-query-log-tab__">Queries <span id="close">X</span></div>';
+		
+		$html .= '<div id="__braghim-query-log__">';
+		$html .= '<div class="headding">Queries executadas nesta página <span id="closebox">X</span></div>';
+		$html .= '<div class="mainbox">';
+		
+		// query e parametros
+		foreach (array_reverse($this->queryLogs) as $k => $item) {
+			
+			if ($item['params']) {
+				foreach ($item['params'] as $param => $value) {
+					$item['query'] = str_replace($param, "'$value'", $item['query']);
+				}
+			}
+			
+			// $params = html_entity_decode(dump($item['params'], false));
+			$html .= '<span>#'.$k.' - '.count($item['params']).' parâmetro(s)</span><p>'.$item['query'].'</p><hr/>';
+		}
+		$html .= '</div>';
+		return $html;
 	}
 
 	/** 	

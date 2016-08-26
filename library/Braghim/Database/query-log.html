@@ -1,0 +1,101 @@
+<style type="text/css">
+	/** Tab ***/
+	div#__braghim-query-log-tab__ {
+		font-family: monospace, arial, verdana;
+		color: #333;
+		font-size: 9pt;
+		position: fixed;
+		bottom: 0;
+		right: 30px;
+		padding: 5px 10px;
+		border: 1px solid #999;
+		border-bottom: 0;
+		border-radius: 5px 5px 0 0;
+		background: #C6DCC7;
+		color: #333;
+		cursor: pointer;
+		z-index: 99999;
+	}
+	div#__braghim-query-log-tab__ span#close {
+		background: #fff;
+		color: #333;
+		padding: 0px 6px;
+		border: 1px solid #333;
+		border-radius: 100%;
+		float: right;
+		margin-right: -15px;
+		margin-top: -15px;
+		font-size: 7pt;
+		font-weight: bold;
+	}
+	
+	/** Painel ***/
+	div#__braghim-query-log__ {
+		font-family: monospace, arial, verdana;
+		color: #333;
+		font-size: 9pt;
+		position: fixed;
+		bottom: 0;
+		left: 10px;
+		right: 10px;
+		z-index: 99999;
+		display: none;
+	}
+	div#__braghim-query-log__ div.headding {
+		color: #fff;
+		background: #333;
+		padding: 7px;
+		border: 1px solid #fff;
+		border-bottom: 0;
+		border-radius: 5px 5px 0 0;
+		cursor: pointer;
+	}
+	div#__braghim-query-log__ div.headding span#closebox {
+		float: right;
+	}
+	div#__braghim-query-log__ .mainbox {
+		min-height: 200px;
+		height: calc(100vh / 4);
+		overflow-y: scroll;
+		background: #fff;
+		padding: 20px;
+	}
+	div#__braghim-query-log__ .mainbox > span {
+		display: block;
+		font-size: 11pt;
+	}
+	div#__braghim-query-log__ .mainbox > p {
+		
+	}
+</style>
+<script type="text/javascript">
+	window.onload = function() {
+		
+		// Box onde aparecem as queries
+		var box = document.querySelector('div#__braghim-query-log__');
+		
+		// Tab para mostrar o box
+		var tab = document.querySelector('div#__braghim-query-log-tab__');
+		tab.onclick = function(e) {
+			tab.style.display = 'none';
+			if (e.toElement.localName == 'div') {
+				box.style.display = 'block';
+			}
+		};
+		
+		// Topo do box, onde é possível clicar para ele ser escondido
+		var heading = document.querySelector('div#__braghim-query-log__ div.headding');
+		heading.onclick = function(e) {
+			box.style.display = 'none';
+			tab.style.display = 'block';
+		};
+		
+		// Ao apertar 'q' no teclado a tab reaparece
+		document.onkeypress = function (e) {
+			e = e || window.event;
+			if ((e.code == "KeyQ") && !e.ctrlKey && !e.shiftKey && !e.altKey && (box.style.display == 'none')) {
+				tab.style.display = 'block';
+			}
+		};
+	};
+</script>
