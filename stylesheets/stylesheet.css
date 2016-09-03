@@ -56,7 +56,7 @@ a {
 .page-header {
     color: #fff;
     text-align: center;
-    background-color: #999999;
+    background-color: #333333;
     background: url("texture.png") repeat;
     padding-bottom: 20px !important;
 }
@@ -128,7 +128,7 @@ a {
   margin-top: 2rem;
   margin-bottom: 1rem;
   font-weight: 600;
-  color: #E91E63; }
+  color: #E63264; }
 .main-content p {
   margin-bottom: 1em; }
 .main-content code {
