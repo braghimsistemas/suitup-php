@@ -13,9 +13,11 @@
 		"php": ">=5.5",
 		"zendframework/zend-validator" : "2.5.*",
 		"phpmailer/phpmailer": "v5.2.13",
-		"verot/class.upload.php": "dev-master",
 		"matthiasmullie/minify": "1.3.35"
 	},
+	"require-dev": {
+		"verot/class.upload.php": "dev-master"
+	}
 	"autoload": {
 		"classmap": ["./BraghimSistemas.php"],
 		"files": ["./functions.php"]
