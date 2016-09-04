@@ -1,9 +1,9 @@
 {
-	"name": "braghim-sistemas/framework",
-	"description": "Framework PHP web simples para criação de sistemas com alta produtividade.",
+	"name": "braghim-sistemas/suitup-php",
+	"description": "Framework PHP web simples para aplicativos incríveis",
 	"license": "MIT",
-	"keywords": ["app", "webapp", "framework", "braghim", "braghim-sistemas", "simple-web-system", "aplicativo-web-simples"],
-	"homepage": "https://braghim.com.br",
+	"keywords": ["Suit up", "app", "webapp", "framework", "braghim", "braghim-sistemas", "simple-web-system", "aplicativo-web-simples"],
+	"homepage": "https://framework.braghim.com.br",
 	"authors": [{
 		"name": "Braghim Sistemas",
 		"email": "braghim.sistemas@gmail.com"
@@ -12,9 +12,7 @@
 	"require": {
 		"php": ">=5.5",
 		"jayc89/php-mysql-pdo-database-class": "2.0.0",
-		"zendframework/zend-validator" : "2.5.*"
-	},
-	"require-dev": {
+		"zendframework/zend-validator" : "2.5.*",
 		"verot/class.upload.php": "dev-master"
 	},
 	"autoload": {
