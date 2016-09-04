@@ -8,7 +8,7 @@
 		"name": "Braghim Sistemas",
 		"email": "braghim.sistemas@gmail.com"
 	}],
-	"support": {"email":"braghim.sistemas@gmail.com"},
+	"support": { "email":"braghim.sistemas@gmail.com" },
 	"require": {
 		"php": ">=5.5",
 		"jayc89/php-mysql-pdo-database-class": "2.0.0",
