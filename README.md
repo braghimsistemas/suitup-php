@@ -7,7 +7,7 @@ quanto grandes aplicativos. Um pequeno sistema feito de forma simples, mas
 efetivo e de alta produtividade.
 
 ### Composer
-`composer require braghim-sistemas/framework`
+`composer require braghim-sistemas/suitup-php`
 
 ### Instalação
 Visite nossa [wiki](https://github.com/braghimsistemas/suitup-php/wiki) para saber como instalar o projeto e ser feliz.
