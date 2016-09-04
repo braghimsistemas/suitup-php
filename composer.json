@@ -17,7 +17,7 @@
 	},
 	"require-dev": {
 		"verot/class.upload.php": "dev-master"
-	}
+	},
 	"autoload": {
 		"classmap": ["./BraghimSistemas.php"],
 		"files": ["./functions.php"]
