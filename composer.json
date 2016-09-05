@@ -16,7 +16,7 @@
 		"verot/class.upload.php": "0.33"
 	},
 	"suggest": {
-		"phpmailer/phpmailer": "Not implemented in framework itself, but helps a lot and it's very simple.",
+		"phpmailer/phpmailer": "Not implemented in framework itself, but helps a lot and it's very simple."
 	},
 	"autoload": {
 		"classmap": ["./BraghimSistemas.php"],
