@@ -146,9 +146,16 @@ abstract class Validation
 			// Filtros
 			$this->data[$field]['value'] = $this->post[$field];
 			if (isset($item['filter'])) {
-				foreach ($item['filter'] as $method) {
+				foreach ($item['filter'] as $withOptions => $method) {
+
+					// É um metodo que tem opcoes
+					if (method_exists($this, $withOptions)) {
+
+						$filterOptions = $method;
+						$this->data[$field]['value'] = $this->$withOptions($this->data[$field]['value'], $filterOptions);
+
 					// É um metodo?
-					if (method_exists($this, $method)) {
+					} else if (method_exists($this, $method)) {
 						$this->data[$field]['value'] = $this->$method($this->data[$field]['value']);
 
 					// É uma função?
