@@ -87,7 +87,7 @@ class Paginate implements Countable, PaginateI
 	/**
 	 * Retorna a classe que executa as queries.
 	 * 
-	 * @return Database
+	 * @return Database\Persistence
 	 */
 	public function getDb() {
 		return $this->db;
