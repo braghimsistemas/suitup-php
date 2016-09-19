@@ -118,7 +118,7 @@ abstract class Persistence
 				'params' => $logParamsList
 			);
 
-			# Execute SQL 
+			# Execute SQL
 			$this->success = $this->sQuery->execute();
 		} catch (\PDOException $e) {
 			# Write into log and display Exception

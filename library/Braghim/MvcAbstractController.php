@@ -121,13 +121,13 @@ abstract class MvcAbstractController
 			throw new Exception("Arquivo de layout '$layoutfile' não existe, se este for um AJAX então utilize o método \$this->ajax()");
 		}
 		
-		// Lista de instruções SQL rodadas nesta pagina
-		$queryLog = Database::getInstance()->getQueryLog();
-		
 		// Pega conteúdo da view
 		ob_start();
 		include $viewFile;
 		$content = ob_get_clean();
+
+		// Lista de instruções SQL rodadas nesta pagina
+		$queryLog = Database::getInstance()->getQueryLog();
 
 		// mostra conteúdo do layout já com a view injetada
 		include $layoutfile;
@@ -350,9 +350,9 @@ abstract class MvcAbstractController
 	/**
 	 * Mensagens do sistema com ou sem redirecionamento
 	 * 
-	 * @param type $msg
-	 * @param type $type
-	 * @param type $withRedirect
+	 * @param string $msg
+	 * @param string $type
+	 * @param boolean $withRedirect
 	 * @return MvcAbstractController
 	 */
 	public function addMsg($msg, $type = MsgType::INFO, $withRedirect = false) {
