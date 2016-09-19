@@ -484,11 +484,27 @@ abstract class MvcAbstractController
 		// Não deu erro até aqui, então codifica o cara para base64
 		return 'data:'.$mimeTypes[$fileExt].';base64,'.base64_encode(file_get_contents($file['tmp_name']));
 	}
-	
+
+	/**
+	 * Pega a pagina anterior se houver e for diferente da atual.
+	 * @return bool|string
+	 */
+	public function getReferer() {
+		// Dados do servidor
+		$referer = getenv('HTTP_REFERER');
+		$page = getenv('REQUEST_SCHEME').'://'.getenv('HTTP_HOST').getenv('REQUEST_URI');
+
+		// Se o referer (que nao é la muito confiavel) for diferente da URL atual
+		if ($referer != $page) {
+			return $referer;
+		}
+		return false;
+	}
+
 	/**
 	 * Efetua redirecionamento
 	 * 
-	 * @param type $to
+	 * @param string $to
 	 */
 	public function redirect($to) {
 		header("Location: $to");

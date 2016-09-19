@@ -204,6 +204,24 @@ abstract class AbstractFormValidator extends FormValidator\Validation
 		}
 		return $result;
 	}
+
+	/**
+	 * Verifica se o item $value está no array de opcoes
+	 * @param $value
+	 * @param array $options
+	 * @return \stdClass
+	 */
+	public function inArray($value, array $options = array()) {
+		$result = new \stdClass();
+		$result->error = false;
+		$result->message = "";
+
+		if ($value && !in_array($value, $options)) {
+			$result->error = true;
+			$result->message = "Este valor não está entre as opções";
+		}
+		return $result;
+	}
 	
 	// ===============================================================
 	//                         FILTROS
