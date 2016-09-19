@@ -208,7 +208,16 @@ abstract class AbstractFormValidator extends FormValidator\Validation
 	// ===============================================================
 	//                         FILTROS
 	// ===============================================================
-	
+
+	/**
+	 * Remove espacos em branco e protege contra inserção de tags.
+	 * @param $value
+	 * @return string
+	 */
+	public function string($value) {
+		return strip_tags(trim($value));
+	}
+
 	/**
 	 * Remove espacos no inicio e fim da string.
 	 * @param string $value
@@ -217,7 +226,7 @@ abstract class AbstractFormValidator extends FormValidator\Validation
 	public function trim($value) {
 		return trim($value);
 	}
-	
+
 	/**
 	 * Filtro. Converte data no formato brasileiro para do banco.
 	 * 
@@ -245,9 +254,15 @@ abstract class AbstractFormValidator extends FormValidator\Validation
 	 * @TODO: i18n Necessário reformular para outros tipos de padrões de dinheiros
 	 * 
 	 * @param string $value Valor para ser filtrado
+	 * @param array $options Valor padrão para quando o valor estiver vazio
 	 * @return float
 	 */
-	public function toDouble($value) {
-		return (!$value) ? 0.0 : (double) preg_replace(array("/[^0-9,.]/", "/\./", "/\,/"), array('', '', '.'), $value);
+	public function toDouble($value, $options = array('default' => 0.0)) {
+
+		if (!isset($options['default'])) {
+			throw new \Exception("O filtro 'toDouble' necessita de um índice de opções 'default'");
+		}
+
+		return (!$value) ? $options['default'] : (double) preg_replace(array("/[^0-9,.]/", "/\./", "/\,/"), array('', '', '.'), $value);
 	}
 }

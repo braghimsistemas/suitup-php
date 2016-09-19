@@ -176,7 +176,7 @@ abstract class Persistence
 	 *  @param  string $query
 	 * 	@param  array  $params
 	 * 	@param  int    $fetchmode
-	 * 	@return mixed
+	 * 	@return array
 	 */
 	public function query($query, $params = null, $fetchmode = \PDO::FETCH_ASSOC) {
 		$query = trim($query);
