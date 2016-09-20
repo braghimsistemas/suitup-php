@@ -19,3 +19,9 @@ before_script:
     - composer install
     - git config --global user.name braghimsistemas
     - git config --global user.email braghim.sistemas@gmail.com
+script:
+  - mkdir -p build/logs
+  - php vendor/bin/phpunit -c phpunit.xml.dist
+
+after_success:
+  - travis_retry php vendor/bin/coveralls -v
