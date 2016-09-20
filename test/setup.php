@@ -8,7 +8,13 @@ if (is_dir('../../vendor')) {
 	chdir('../../../vendor');
 }
 
-include 'autoload.php';
+if (file_exists('autoload.php')) {
+	include 'autoload.php';
+} else {
+	echo "\n\nEstamos em: ".__DIR__."\n\n";
+
+}
+
 
 if (class_exists('BraghimSistemas')) {
 	echo "Classe BraghimSistemas encontrada =)\n\n";
