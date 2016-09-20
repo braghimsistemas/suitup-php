@@ -1,19 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:noNamespaceSchemaLocation="./vendor/phpunit/phpunit/phpunit.xsd"
+		 xsi:noNamespaceSchemaLocation="../../phpunit/phpunit/phpunit.xsd"
 		 bootstrap="./test/setup.php"
 		 colors="true">
+
 	<testsuites>
 		<testsuite name="SuitUp Test Suite">
 			<directory>./test/</directory>
 		</testsuite>
 	</testsuites>
+
+	<filter>
+		<whitelist>
+			<directory>.</directory>
+			<exclude>
+				<directory>./build</directory>
+				<directory>./tests</directory>
+				<directory>./vendor</directory>
+			</exclude>
+		</whitelist>
+	</filter>
+
 	<groups>
 		<exclude>
 			<group>disable</group>
 		</exclude>
 	</groups>
+
 	<php>
 		<ini name="date.timezone" value="America/Sao_Paulo"/>
 	</php>
+
+	<logging>
+		<log type="coverage-clover" target="build/logs/clover.xml"/>
+		<log type="json" target="build/logs/json.xml" logIncompleteSkipped="false"/>
+	</logging>
 </phpunit>
