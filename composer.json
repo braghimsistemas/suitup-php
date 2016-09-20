@@ -16,6 +16,9 @@
 		"matthiasmullie/minify": "1.3.35",
 		"verot/class.upload.php": "0.33"
 	},
+	"require-dev": {
+		"phpunit/phpunit": "5.5.*"
+	}
 	"suggest": {
 		"phpmailer/phpmailer": "Not implemented in framework itself, but helps a lot and it's very simple."
 	},
