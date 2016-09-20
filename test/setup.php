@@ -6,8 +6,8 @@ if (is_dir('../../vendor')) {
 
 } else if (is_dir('../../../vendor')) {
 	chdir('../../../vendor');
-} else if (is_dir('../vendor')) {
-	chdir('../vendor');
+} else if (is_dir(__DIR__ . '/../vendor')) {
+	chdir(__DIR__ . '/../vendor');
 }
 
 if (file_exists('autoload.php')) {
