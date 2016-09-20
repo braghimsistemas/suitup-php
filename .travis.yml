@@ -17,6 +17,5 @@ matrix:
 
 before_script:
     - composer install
-    - bin/composer install
     - git config --global user.name braghim.sistemas
     - git config --global user.email braghim.sistemas@gmail.com
