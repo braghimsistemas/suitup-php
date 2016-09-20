@@ -11,10 +11,10 @@ if (is_dir('../../vendor')) {
 if (file_exists('autoload.php')) {
 	include 'autoload.php';
 } else {
-	echo "\n\nEstamos em: ".__DIR__."\n\n";
-
+	echo "\n\n";
+	print_r(scandir('/home/travis/build'));
+	echo "\n\n";
 }
-
 
 if (class_exists('BraghimSistemas')) {
 	echo "Classe BraghimSistemas encontrada =)\n\n";
