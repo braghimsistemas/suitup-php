@@ -1,4 +1,7 @@
 # SuitUp PHP Framework
+
+[![Build Status](https://travis-ci.org/braghimsistemas/suitup-php.svg?branch=master)](https://travis-ci.org/braghimsistemas/suitup-php)
+
 **Legendary Web Applications**
 [http://framework.braghim.com.br](http://framework.braghim.com.br)
 
