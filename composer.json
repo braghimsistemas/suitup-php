@@ -17,7 +17,6 @@
 		"verot/class.upload.php": "0.33"
 	},
 	"require-dev": {
-		"satooshi/php-coveralls": "dev-master",
 		"phpunit/phpunit": "4.8.*"
 	},
 	"suggest": {
