@@ -16,7 +16,7 @@ matrix:
     - php: nightly
 
 install:
-  - composer require satooshi/php-coveralls:@dev-master
+  - composer require satooshi/php-coveralls
 
 before_script:
   - composer install
