@@ -1,3 +1,6 @@
 /nbproject
 .idea/
 suitup-php.iml
+composer.lock
+composer.phar
+
