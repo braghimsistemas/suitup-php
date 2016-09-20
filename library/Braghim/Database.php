@@ -52,11 +52,12 @@ class Database extends Database\Persistence
 	/**
 	 * Retorna o objeto de paginacao.
 	 * 
-	 * @param type $query
+	 * @param type $query Instrucao SQL para executar no banco de dados com paginacao.
+	 * @param \Closure $clousureFunc Adiciona a paginacao uma funcao que sera executada em cada item retornado na query.
 	 * @return \Braghim\Paginate
 	 */
-	public function paginate($query) {
-		return new Paginate($this, $query);
+	public function paginate($query, $clousureFunc = null) {
+		return new Paginate($this, $query, $clousureFunc);
 	}
 	
 	/**
