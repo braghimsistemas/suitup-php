@@ -1,8 +1,8 @@
 <?php
 error_reporting(E_ALL | E_STRICT);
 
-if (is_dir('../vendor')) {
-	chdir('../vendor');
+if (is_dir('../../vendor')) {
+	chdir('../../vendor');
 
 } else if (is_dir('../../../vendor')) {
 	chdir('../../../vendor');
