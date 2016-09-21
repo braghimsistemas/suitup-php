@@ -11,9 +11,9 @@
 	"support": { "email":"braghim.sistemas@gmail.com" },
 	"require": {
 		"php": ">=5.5",
-		"zendframework/zend-validator" : "2.5.*",
-		"zendframework/zend-uri": "2.5.*",
-		"matthiasmullie/minify": "1.3.35",
+		"zendframework/zend-validator" : "2.*",
+		"zendframework/zend-uri": "2.*",
+		"matthiasmullie/minify": "1.*",
 		"verot/class.upload.php": "0.33"
 	},
 	"require-dev": {
