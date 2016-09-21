@@ -9,8 +9,6 @@ php:
 #  - 7.1
 #  - hhvm
 
-rootDir: pwd
-
 matrix:
   fast_finish: true
 
@@ -28,7 +26,6 @@ script:
   - phpunit --coverage-clover braghim-sistemas/suitup-php/build/logs/clover.xml
 
 after_script:
-  - cat braghim-sistemas/suitup-php/build/logs/clover.xml
   - php vendor/bin/coveralls -v
 
 #after_success:
