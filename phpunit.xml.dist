@@ -28,6 +28,6 @@
 	-->
 
 	<logging>
-		<log type="coverage-clover" target="braghim-sistemas/suitup-php/build/logs/clover.xml"/>
+		<log type="coverage-clover" target="./build/logs/clover.xml"/>
 	</logging>
 </phpunit>
