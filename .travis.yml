@@ -1,13 +1,13 @@
 language: php
 
-sudo: false
+sudo: required
 
 php:
   - 5.5
-  - 5.6
-  - 7.0
-  - 7.1
-  - hhvm
+#  - 5.6
+#  - 7.0
+#  - 7.1
+#  - hhvm
 
 matrix:
   fast_finish: true
@@ -24,6 +24,7 @@ before_script:
 script:
   - mkdir -p build/logs
   - phpunit --coverage-clover build/logs/clover.xml
+  - pwd
 
 after_script:
   - php vendor/bin/coveralls -v
