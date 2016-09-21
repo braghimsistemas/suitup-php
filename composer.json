@@ -17,7 +17,6 @@
 		"verot/class.upload.php": "0.33"
 	},
 	"require-dev": {
-//		"phpunit/phpunit": "4.8.*"
 	  "phpunit/phpunit": "5.5.*"
 	},
 	"suggest": {
