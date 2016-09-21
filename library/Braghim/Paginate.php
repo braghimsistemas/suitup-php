@@ -6,8 +6,15 @@ include_once 'Paginate/PaginateI.php';
 use Braghim\Paginate\PaginateI;
 use Countable;
 
+/**
+ * Class Paginate
+ * @package Braghim
+ */
 class Paginate implements Countable, PaginateI
 {
+	/**
+	 * @var \Braghim\Database
+	 */
 	private $db;
 
 	/**
@@ -71,6 +78,7 @@ class Paginate implements Countable, PaginateI
 	 *
 	 * @param \Braghim\Database $db
 	 * @param \Braghim\SqlFileManager $adapter
+	 * @param \Closure $clousureFunc
 	 */
 	public function __construct(Database $db, SqlFileManager $adapter, $clousureFunc = null)
 	{
@@ -137,13 +145,13 @@ class Paginate implements Countable, PaginateI
 	 *
 	 * @param string $pageRange
 	 * @return \Braghim\Paginate
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function setPageRange($pageRange)
 	{
 		if (is_integer($pageRange)) {
 			if ($pageRange <= 2) {
-				throw new Exception("O mínimo de paginas para o range é 3");
+				throw new \Exception("O mínimo de paginas para o range é 3");
 			}
 		} else {
 			$pageRange = 'total';
@@ -391,7 +399,6 @@ class Paginate implements Countable, PaginateI
 	 */
 	public function getResult()
 	{
-
 		// @TODO: Watch
 		if ($this->result === null) {
 			$this->rewind();

@@ -3,12 +3,21 @@ namespace Braghim;
 
 include_once 'Database/Persistence.php';
 
+/**
+ * Class Database
+ * @package Braghim
+ */
 class Database extends Database\Persistence
 {
 	/**
 	 * Singleton
 	 */
 	private static $instance;
+
+	/**
+	 * Database constructor.
+	 * @throws \Exception
+	 */
 	private function __construct() {
 		if (!file_exists('config/database.config.php')) {
 			throw new \Exception(
@@ -19,6 +28,10 @@ class Database extends Database\Persistence
 		$this->Connect($params['host'], $params['database'], $params['username'], $params['password']);
 		$this->parameters = array();
 	}
+
+	/**
+	 *
+	 */
 	private function __clone() { }
 	
 	/**
@@ -54,7 +67,7 @@ class Database extends Database\Persistence
 	/**
 	 * Retorna o objeto de paginacao.
 	 * 
-	 * @param type $query Instrucao SQL para executar no banco de dados com paginacao.
+	 * @param mixed $query Instrucao SQL para executar no banco de dados com paginacao.
 	 * @param \Closure $clousureFunc Adiciona a paginacao uma funcao que sera executada em cada item retornado na query.
 	 * @return \Braghim\Paginate
 	 */

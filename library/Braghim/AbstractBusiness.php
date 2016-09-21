@@ -35,7 +35,7 @@ abstract class AbstractBusiness
 	 * o metodo na mão mesmo.
 	 * 
 	 * @param array $data
-	 * @return type
+	 * @return bool|string
 	 * @throws \Exception
 	 */
 	public function save(array $data) {
@@ -46,7 +46,7 @@ abstract class AbstractBusiness
 	 * Monta automaticamente a query para inserir um registro no banco.
 	 * 
 	 * @param array $data
-	 * @return type
+	 * @return string
 	 */
 	public function insert(array $data) {
 		return $this->gateway->insert($data);
@@ -67,7 +67,8 @@ abstract class AbstractBusiness
 	
 	/**
 	 * Remove um registro do banco de dados.
-	 * 
+	 *
+	 * @param array $where O que deve ser deletado
 	 * @return bool
 	 */
 	public function delete(array $where) {

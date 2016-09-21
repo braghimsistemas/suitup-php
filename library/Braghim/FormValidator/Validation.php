@@ -1,13 +1,36 @@
 <?php
 namespace Braghim\FormValidator;
+use Zend\Validator\AbstractValidator;
 
+/**
+ * Class Validation
+ * @package Braghim\FormValidator
+ */
 abstract class Validation
 {
+	/**
+	 * @var array Parametros que serao validados
+	 */
 	protected $data = array();
+
+	/**
+	 * @var array Mensagens de erro para os campos que nao passaram na validacao. Disponivel apenas apos o isValid.
+	 */
 	public $messages = array();
+
+	/**
+	 * @var array Post do formulario
+	 */
 	public $post = array();
+
+	/**
+	 * @var null|bool Status das validacoes
+	 */
 	private $valid = null;
-	
+
+	/**
+	 * Validation constructor.
+	 */
 	public function __construct() {
 		$this->post = (array) filter_input_array(INPUT_POST);
 	}
@@ -54,8 +77,8 @@ abstract class Validation
 	/**
 	 * Adiciona um item ao array de retorno dos dados.
 	 * 
-	 * @param type $index
-	 * @param type $data
+	 * @param string $index
+	 * @param mixed $data
 	 */
 	public function addData($index, $data) {
 		$this->data[$index] = $data;
@@ -64,7 +87,7 @@ abstract class Validation
 	/**
 	 * Retorna lista de mensagens de validacao.
 	 * 
-	 * @return type
+	 * @return array
 	 */
 	public function getMessages() {
 		return $this->messages;
@@ -106,6 +129,10 @@ abstract class Validation
 					// então nao é um metodo que chega como valor,
 					// mas as opções do validador
 					$options = $method;
+
+					/**
+					 * @var AbstractValidator
+					 */
 					$validator = new $methodOrClass($options);
 					
 					if (!$validator->isValid($this->post[$field])) {

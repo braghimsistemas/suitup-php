@@ -8,6 +8,10 @@ use stdClass;
 use System\Exception\ExceptionErroSistema;
 use upload;
 
+/**
+ * Class MvcAbstractController
+ * @package Braghim
+ */
 abstract class MvcAbstractController
 {
 	const MSG_NSP = 'MSGRedir';
@@ -77,13 +81,29 @@ abstract class MvcAbstractController
 	/**
 	 * Metodos padrão
 	 */
+
+	/**
+	 *
+	 */
 	public function init() {}
+
+	/**
+	 *
+	 */
 	public function indexAction() {}
 	
 	// Error Controller
+
+	/**
+	 *
+	 */
 	public function errorAction() {
 		header(getenv('SERVER_PROTOCOL').' 500 Internal Server Error', true, 500);
 	}
+
+	/**
+	 *
+	 */
 	public function notFoundAction() {
 		header(getenv('SERVER_PROTOCOL').' 404 Not Found', true, 404);
 	}
@@ -101,6 +121,10 @@ abstract class MvcAbstractController
 			$$key = $var;
 		}
 
+		/**
+		 * Mensagens que vao para o layout
+		 * @var mixed
+		 */
 		$layoutMessages = $this->msgs;
 
 		// Caso tenha excessao
@@ -157,7 +181,7 @@ abstract class MvcAbstractController
 	
 	/**
 	 * Retorna o nome do módulo.
-	 * @return type
+	 * @return string
 	 */
 	public function getModuleName() {
 		return lcfirst(str_replace('Module', '', self::$params->moduleName));
@@ -166,7 +190,7 @@ abstract class MvcAbstractController
 	/**
 	 * Nome do controlador
 	 * 
-	 * @return type
+	 * @return string
 	 */
 	public function getControllerName() {
 		return lcfirst(preg_replace("/Controller$/", '', self::$params->controllerName));
@@ -175,7 +199,7 @@ abstract class MvcAbstractController
 	/**
 	 * Nome da ação.
 	 * 
-	 * @return type
+	 * @return string
 	 */
 	public function getActionName() {
 		return lcfirst(preg_replace("/Action$/", '', self::$params->actionName));
@@ -183,7 +207,7 @@ abstract class MvcAbstractController
 
 	/**
 	 * Nome do arquivo de layout.
-	 * @return type
+	 * @return string
 	 */
 	public function getLayoutName() {
 		return self::$params->layoutName;
@@ -192,8 +216,8 @@ abstract class MvcAbstractController
 	/**
 	 * Troca o layout
 	 * 
-	 * @param type $name
-	 * @param type $path
+	 * @param string $name Nome do arquivo de layout
+	 * @param string $path Caminho para o arquivo de layout
 	 */
 	public function setLayout($name, $path = null) {
 		self::$params->layoutName = $name;
@@ -206,10 +230,10 @@ abstract class MvcAbstractController
 	 * Pega conteúdo da view
 	 * Foi feito no arquivo functions.php, para ser usado mesmo pelo terminal.
 	 * 
-	 * @param type $renderViewName
-	 * @param type $vars
-	 * @param type $renderViewPath
-	 * @return type
+	 * @param string $renderViewName Nome do arquivo para renderizar
+	 * @param array $vars Variaveis que serao visiveis dentro deste arquivo
+	 * @param string $renderViewPath Caminho até este arquivo
+	 * @return string
 	 */
 	public function renderView($renderViewName, $vars = array(), $renderViewPath = null) {
 		if (!$renderViewPath) {
@@ -270,9 +294,9 @@ abstract class MvcAbstractController
 	/**
 	 * Pega parametro do GET
 	 * 
-	 * @param type $name
-	 * @param type $default
-	 * @return type
+	 * @param string $name
+	 * @param mixed $default
+	 * @return mixed
 	 */
 	public function getParam($name, $default = null) {
 		$params = $this->getParams();
@@ -281,7 +305,7 @@ abstract class MvcAbstractController
 
 	/**
 	 * True caso houve um post.
-	 * @return type
+	 * @return bool
 	 */
 	public function isPost() {
 		return (bool) (getenv('REQUEST_METHOD') === "POST");
@@ -292,7 +316,7 @@ abstract class MvcAbstractController
 	 * 
 	 * @param string $name Indice desejado.
 	 * @param mixed $default Valor que será retornado caso o indice nao exista.
-	 * @return type
+	 * @return array
 	 */
 	public function getPost($name = null, $default = null) {
 		$post = (array) filter_input_array(INPUT_POST);
@@ -305,7 +329,7 @@ abstract class MvcAbstractController
 
 	/**
 	 * True caso o usuário tenha sessão de login.
-	 * @return type
+	 * @return bool
 	 */
 	public static function isLogged() {
 		return (bool) isset($_SESSION[self::$authNsp]);
@@ -314,8 +338,9 @@ abstract class MvcAbstractController
 	/**
 	 * Retorna tudo que está gravado na sessão de login.
 	 * 
-	 * @param type $key
-	 * @return type
+	 * @param string $key
+	 * @param mixed $default
+	 * @return mixed
 	 */
 	public static function getLogin($key = null, $default = null) {
 		$login = isset($_SESSION[self::$authNsp]) ? $_SESSION[self::$authNsp] : false;
@@ -335,8 +360,8 @@ abstract class MvcAbstractController
 	/**
 	 * Atualiza um indice da sessão de login.
 	 * 
-	 * @param type $key
-	 * @param type $value
+	 * @param string $key
+	 * @param mixed $value
 	 */
 	public static function updateLoginKey($key, $value) {
 		$login = (array) self::getLogin();
@@ -401,7 +426,7 @@ abstract class MvcAbstractController
 					'application/download',
 					'application/applefile'
 				);
-				$upload->Process($where);
+				$upload->process($where);
 
 				// Upload deu tudo certo?
 				if ($upload->processed) {
@@ -441,15 +466,15 @@ abstract class MvcAbstractController
 	 * Captura uma imagem e transforma seu conteúdo para Base64.
 	 * - Deixa a imagem em torno de 33% maior segundo a documentação do PHP.
 	 * 
-	 * @param type $file Item $_FILES['arquivo']
+	 * @param array $file Item $_FILES['arquivo']
 	 * @param int $maxFilesize 512kb por padrão.
+	 * @throws \Exception
+	 * @return string
 	 */
 	public function uploadFileImageBase64($file, $maxFilesize = 524288)
 	{
 		// Valida erros
 		if ($file['error'] != UPLOAD_ERR_OK) {
-			
-			ExceptionErroSistema::createLog(new Exception("Erro de Upload: ".self::$uploadErrors[$file['error']]), Log::WARN);
 			throw new Exception("Erro ao fazer o upload da imagem, tente novamente");
 		}
 		
@@ -517,7 +542,7 @@ abstract class MvcAbstractController
 	 * Quando a ação for um ajax basta inserir o conteudo do retorno
 	 * neste metodo.
 	 * 
-	 * @param type $data
+	 * @param array $data
 	 */
 	public function ajax(array $data) {
 		header("Content-Type: application/json; Charset=UTF-8");
@@ -527,8 +552,8 @@ abstract class MvcAbstractController
 	
 	/**
 	 * Retorna o que tem gravado na sessao de filtros.
-	 * 
-	 * @return type
+	 *
+	 * @return mixed
 	 */
 	public function getSessionFilter() {
 		$namespace = implode('.', array($this->getModuleName(), $this->getControllerName(), $this->getActionName()));

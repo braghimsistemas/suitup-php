@@ -1,6 +1,10 @@
 <?php
 namespace Braghim\Enum;
 
+/**
+ * Class Status
+ * @package Braghim\Enum
+ */
 class Status
 {
 	const INATIVO = 0;

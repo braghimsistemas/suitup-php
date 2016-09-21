@@ -16,7 +16,7 @@ abstract class AbstractGateway
 	
 	/**
 	 * Chaves primarias da tabela
-	 * @var mixed string|array
+	 * @var string|array
 	 */
 	protected $primary;
 	
@@ -38,7 +38,7 @@ abstract class AbstractGateway
 	 * para evitar que um Gateway seja instanciado
 	 * por acidente.
 	 * 
-	 * @param type $valid
+	 * @param bool|string $valid
 	 * @throws \Exception
 	 */
 	public function __construct($valid = false) {
@@ -58,8 +58,8 @@ abstract class AbstractGateway
 	/**
 	 * Encontra e faz a leitura do arquivo .sql baseado no nome da tabela.
 	 * 
-	 * @param type $filename
-	 * @return type
+	 * @param string $filename
+	 * @return \Braghim\SqlFileManager
 	 * @throws \Exception
 	 */
 	public function sqlFile($filename) {
@@ -130,7 +130,7 @@ abstract class AbstractGateway
 	 * o metodo na mão mesmo.
 	 * 
 	 * @param array $data
-	 * @return type
+	 * @return bool|string
 	 * @throws \Exception
 	 */
 	public function save(array $data)
@@ -164,7 +164,7 @@ abstract class AbstractGateway
 	 * Monta automaticamente a query para inserir um registro no banco.
 	 * 
 	 * @param array $data
-	 * @return type
+	 * @return string
 	 */
 	public function insert(array $data)
 	{

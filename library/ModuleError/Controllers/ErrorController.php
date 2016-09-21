@@ -1,7 +1,13 @@
 <?php
 namespace ModuleError\Controllers;
 
-class ErrorController extends \Braghim\MvcAbstractController
+use Braghim\MvcAbstractController;
+
+/**
+ * Class ErrorController
+ * @package ModuleError\Controllers
+ */
+class ErrorController extends MvcAbstractController
 {
 	
 }

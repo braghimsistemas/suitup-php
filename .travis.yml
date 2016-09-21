@@ -1,5 +1,11 @@
 language: php
 
+sudo: required
+
+notifications:
+  email:
+    - braghim.sistemas@gmail.com
+
 php:
   - 5.5
   - 5.6

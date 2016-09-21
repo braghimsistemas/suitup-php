@@ -13,27 +13,46 @@ abstract class Persistence
 	 */
 	protected $pdo;
 
-	# @object, PDO statement object
+	/**
+	 * @var \PDOStatement PDO statement object
+	 */
 	protected $sQuery;
 
-	# @bool ,  Connected to the database
+	/**
+	 * @var bool Connected to the database
+	 */
 	protected $bConnected = false;
 
-	# @object, Object for logging exceptions	
+	/**
+	 * @var Object for logging exceptions
+	 */
 	protected $log;
 
-	# @array, The parameters of the SQL query
+	/**
+	 * @var array, The parameters of the SQL query
+	 */
 	protected $parameters;
-	
+
+	/**
+	 * @var bool Query rodou com sucesso?
+	 */
+	protected $success = false;
+
 	/** Monitoramento de SQL **/
-	
-	# @bool Enable/Disable SQL monitoring
+
+	/**
+	 * @var bool Enable/Disable SQL monitoring
+	 */
 	protected $monitoring = false;
-	
-	# @array Queries list to log
+
+	/**
+	 * @var array Queries list to log
+	 */
 	protected $queryLogs = array();
-	
-	# @int contador para os logs de query
+
+	/**
+	 * @var int contador para os logs de query
+	 */
 	private $i = 0;
 
 	/**
@@ -43,8 +62,15 @@ abstract class Persistence
 	 * 	2. Puts  the ini content into the settings array.
 	 * 	3. Tries to connect to the database.
 	 * 	4. If connection failed, exception is displayed and a log file gets created.
+	 *
+	 * @param string $hostname Host
+	 * @param string $database databaseschema
+	 * @param string $username usuario
+	 * @param string $password senha
+	 * @throws \Exception
+	 * @return void
 	 */
-	protected function Connect($hostname, $database, $username, $password) {
+	protected function Connect($hostname = '', $database = '', $username = '', $password = '') {
 		$dsn = 'mysql:dbname=' . $database . ';host=' . $hostname;
 		try {
 			# Read settings from INI file, set UTF8
@@ -85,6 +111,10 @@ abstract class Persistence
 	 * 	4. Execute Query.	
 	 * 	5. On exception : Write Exception into the log + SQL query.
 	 * 	6. Reset the Parameters.
+	 *
+	 * @param mixed $query
+	 * @param string $parameters
+	 * @throws \Exception
 	 */
 	private function Init($query, $parameters = "") {
 		# Connect to database
@@ -133,7 +163,7 @@ abstract class Persistence
 	/**
 	 * Reseta o objeto para poder rodar a proxima query.
 	 * 
-	 * @return \Braghim\Database\Persistence
+	 * @return Persistence
 	 */
 	public function reset() {
 		$this->sQuery = null;
@@ -321,7 +351,6 @@ abstract class Persistence
 	 *
 	 * @param  string $message
 	 * @param  string $sql
-	 * @return string
 	 */
 	private function ExceptionLog($message, $sql = "") {
 		$exception = "========================================================\n";

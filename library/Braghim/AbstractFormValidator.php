@@ -3,12 +3,16 @@ namespace Braghim;
 
 include_once 'FormValidator/Validation.php';
 
+/**
+ * Class AbstractFormValidator
+ * @package Braghim
+ */
 abstract class AbstractFormValidator extends FormValidator\Validation
 {
 	/**
 	 * Valida se um campo está vazio.
 	 * 
-	 * @param type $value
+	 * @param mixed $value
 	 * @return \stdClass
 	 */
 	public function notEmpty($value) {
@@ -123,7 +127,6 @@ abstract class AbstractFormValidator extends FormValidator\Validation
 		$result->error = false;
 		$result->message = "";
 		
-		$target = 0;
 		if (isset($options['target'])) {
 			$target = $this->post[$options['target']];
 			
@@ -156,7 +159,6 @@ abstract class AbstractFormValidator extends FormValidator\Validation
 		$result->error = false;
 		$result->message = "";
 		
-		$target = 0;
 		if (isset($options['target'])) {
 			$target = $this->post[$options['target']];
 			
@@ -188,7 +190,6 @@ abstract class AbstractFormValidator extends FormValidator\Validation
 		$result->error = false;
 		$result->message = "";
 		
-		$target = 0;
 		if (isset($options['target'])) {
 			$target = $this->post[$options['target']];
 			
@@ -250,8 +251,8 @@ abstract class AbstractFormValidator extends FormValidator\Validation
 	/**
 	 * Filtro. Converte data no formato brasileiro para do banco.
 	 * 
-	 * @param type $value
-	 * @return type
+	 * @param string $value
+	 * @return string
 	 */
 	public function toDbDate($value) {
 		return implode('-', array_reverse(explode('/', $value)));
@@ -260,8 +261,8 @@ abstract class AbstractFormValidator extends FormValidator\Validation
 	/**
 	 * Retorna apenas os números do valor incluído.
 	 * 
-	 * @param type $value
-	 * @return type
+	 * @param string $value
+	 * @return string
 	 */
 	public function digits($value) {
 		return preg_replace("/\D+/", '', (string) $value);

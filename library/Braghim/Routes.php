@@ -2,9 +2,8 @@
 namespace Braghim;
 
 /**
- * Description of Routes
- *
- * @author pedepano
+ * Class Routes
+ * @package Braghim
  */
 class Routes
 {
@@ -209,6 +208,7 @@ class Routes
 	 * Procura por rotas definidas pelo usuario que sao do tipo reverso.
 	 * 
 	 * @param string $routeString
+	 * @return Routes
 	 */
 	private function resolveReverseRoutes($routeString)
 	{
@@ -249,6 +249,7 @@ class Routes
 	 * 
 	 * @param array $routeParams
 	 * @param array $urlParams
+	 * @return Routes
 	 */
 	private function resolveParams(array $routeParams, array $urlParams)
 	{

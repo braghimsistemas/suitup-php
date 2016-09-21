@@ -1,14 +1,24 @@
 <?php
+use Braghim\MvcAbstractController;
+
 /**
  * Token para o sistema nao "confundir" as mensagens de sessao
  * atual com mensagens que ja existiam em outra pagina.
  * Utilizado dentro da classe Braghim\MvcAbstractController
- * 
+ *
  * ¯\_(-.-)_/¯
  */
-use Braghim\MvcAbstractController;
-
 define('MSG_NSP_TOKEN', mctime());
+
+/**
+ * Define a Constante DEVELOPMENT caso ainda não tenha sido.
+ */
+defined('DEVELOPMENT') || define('DEVELOPMENT', false);
+
+/**
+ * Define a Constante SHOW_ERRORS caso ainda não tenha sido.
+ */
+defined('SHOW_ERRORS') || define('SHOW_ERRORS', false);
 
 /**
  * Utilize este arquivo como entrada do framework.
@@ -20,8 +30,10 @@ class BraghimSistemas {
 	 * Versão atual do sistema
 	 */
 	const VERSION = '1.1.5';
-	
-	/** Singleton **/
+
+	/**
+	 * @var BraghimSistemas
+	 */
 	private static $instance;
 	
 	/**
