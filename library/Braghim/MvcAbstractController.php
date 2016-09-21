@@ -13,8 +13,10 @@ abstract class MvcAbstractController
 	const MSG_NSP = 'MSGRedir';
 
 	public static $authNsp = 'LogINAuth';
-	
-	// Parametros criados ao iniciar o sistema
+
+	/**
+	 * @var array
+	 */
 	public static $params;
 	
 	// Variaveis que serao passadas para view

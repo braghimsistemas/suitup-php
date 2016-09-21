@@ -64,8 +64,9 @@ if (!function_exists('dump')) {
 	 * Funçao para debug simplificada, semelhante ao Zend\Debug.
 	 * 
 	 * @author Marco A. Braghim <marco.a.braghim@gmail.com>
-	 * @param type $var
-	 * @param type $echo
+	 * @param mixed $var
+	 * @param bool $echo
+	 * @return string
 	 */
 	function dump($var, $echo = true) {
 		ob_start();
@@ -101,10 +102,10 @@ if (!function_exists('mctime')) {
 /**
  * Renderiza um html incluindo variaveis
  * 
- * @param type $renderViewName
- * @param type $vars
- * @param type $renderViewPath
- * @return type
+ * @param string $renderViewName Nome do arquivo .phtml que será renderizado.
+ * @param array|mixed $vars Variaveis que estarão disponíveis na views
+ * @param string $renderViewPath Caminho para o arquivo .phtml que será renderizado
+ * @return string
  */
 function renderView($renderViewName, $vars = array(), $renderViewPath = null) {
 	if (!$renderViewPath) {
@@ -124,8 +125,9 @@ function renderView($renderViewName, $vars = array(), $renderViewPath = null) {
 /**
  * Renderiza um template de paginacao.
  * 
- * @param Braghim\Paginate $object
- * @param string $renderViewName
+ * @param Braghim\Paginate $object Objeto de paginacao criado na query.
+ * @param string $renderViewName Nome do arquivo .phtml de paginacao
+ * @return string Html pronto dos botoes de paginacao
  */
 function paginateControl(Braghim\Paginate $object, $renderViewName = 'paginacao.phtml') {
 	
@@ -223,9 +225,9 @@ function paginateControl(Braghim\Paginate $object, $renderViewName = 'paginacao.
  * Traduz um trace de exception para string.
  * !!! CUIDADO !!! funcao recursiva....
  * 
- * @param type $args
- * @param type $root
- * @return type
+ * @param mixed $args
+ * @param bool $root
+ * @return string
  */
 function getTraceArgsAsString($args, $root = true) {
 	

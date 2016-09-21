@@ -6,6 +6,8 @@
  * 
  * ¯\_(-.-)_/¯
  */
+use Braghim\MvcAbstractController;
+
 define('MSG_NSP_TOKEN', mctime());
 
 /**
@@ -37,7 +39,8 @@ class BraghimSistemas {
 	/**
 	 * Primeiro metodo a ser chamado.
 	 * Configura o sistema.
-	 * 
+	 *
+	 * @param string $modulesPath Caminho para as pastas de modulos do sistema.
 	 * @return BraghimSistemas
 	 * @throws Exception
 	 */
@@ -62,6 +65,8 @@ class BraghimSistemas {
 	
 	/**
 	 * Construtor, mas substituido para dar a oportunidade de carregar de modo diferente.
+	 * @param string $modulesPath Caminho para os modulos
+	 * @throws \Exception
 	 */
 	private function __construct($modulesPath) {
 		$this->modulesPath = $modulesPath;
@@ -98,7 +103,6 @@ class BraghimSistemas {
 		 * para o sistema saber quais classes e metodos chamar
 		 * e de onde. NÃO SE REFERE AO ESCOPO DE RODAR O APP.
 		 */
-		$result = new stdClass();
 		try {
 			if (!is_dir($this->modulesPath)) {
 				throw new Exception("O diretório de módulos '{$this->modulesPath}' não existe");
@@ -130,7 +134,7 @@ class BraghimSistemas {
 			} catch (Exception $ex) {
 				try {
 					// Aqui piorou, o sistema chama um módulo padrão de erros.
-					$result = $this->resolve('ModuleError', 'error', 'not-found', __DIR__.DIRECTORY_SEPARATOR.'library', true);
+					$result = $this->resolve('ModuleError', 'error', 'not-found', __DIR__.DIRECTORY_SEPARATOR.'library');
 				} catch (Exception $ex2) {
 					exit('Confira a estrutura de arquivos, pois parece que algo está fora do padrão. https://github.com/braghimsistemas/framework/wiki/Instala%C3%A7%C3%A3o#estrutura-do-projeto');
 				}
@@ -146,10 +150,10 @@ class BraghimSistemas {
 	 * A partir das informacoes busca os arquivos correspondentes para
 	 * renderizar o sistema corretamente.
 	 * 
-	 * @param type $module
-	 * @param type $controller
-	 * @param type $action
-	 * @param type $path
+	 * @param string $module Modulo do sistema (pasta). Primeiro parametro da URL
+	 * @param string $controller Controlador - Classe.
+	 * @param string $action Acao - Metodo da classe do controlador
+	 * @param string $path Caminho.
 	 * 
 	 * @return \stdClass
 	 * @throws Exception
@@ -212,7 +216,10 @@ class BraghimSistemas {
 		$result->viewName = $action . ".phtml";
 		$result->viewPath = "$path/$module/views/$controller";
 
-		// Cada módulo tem um
+		/**
+		 * Cada módulo pode ter um
+		 * @var Braghim\MvcAbstractController
+		 */
 		$abstractController = "$module\\Controllers\\AbstractController";
 		if (!class_exists($abstractController)) {
 			$abstractController = "Braghim\\MvcAbstractController";
@@ -224,7 +231,8 @@ class BraghimSistemas {
 	
 	/**
 	 * Habilita ou desabilita monitoramento de SQL de banco de dados.
-	 * @param type $status
+	 * @param boolean $status
+	 * @return BraghimSistemas
 	 */
 	public function setSqlMonitor($status = false) {
 		Braghim\Database::getInstance()->setMonitoring($status);
@@ -233,6 +241,7 @@ class BraghimSistemas {
 
 	/**
 	 * Roda efetivamente a aplicacao.
+	 * @return void
 	 */
 	public function run()
 	{
