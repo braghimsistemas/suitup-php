@@ -1,13 +1,20 @@
 <?php
 namespace Braghim;
 
+/**
+ * Class AbstractBusiness
+ * @package Braghim
+ */
 abstract class AbstractBusiness
 {
 	/**
 	 * @var AbstractGateway
 	 */
 	protected $gateway;
-	
+
+	/**
+	 * AbstractBusiness constructor.
+	 */
 	public function __construct()
 	{
 		// Nome da classe

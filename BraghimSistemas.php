@@ -54,7 +54,7 @@ class BraghimSistemas {
 	 *
 	 * @param string $modulesPath Caminho para as pastas de modulos do sistema.
 	 * @return BraghimSistemas
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public static function setup($modulesPath = null) {
 		if (self::$instance == null) {
@@ -117,7 +117,7 @@ class BraghimSistemas {
 		 */
 		try {
 			if (!is_dir($this->modulesPath)) {
-				throw new Exception("O diretório de módulos '{$this->modulesPath}' não existe");
+				throw new \Exception("O diretório de módulos '{$this->modulesPath}' não existe");
 			}
 
 			// Tenta criar um arquivo .htaccess para proteger a pasta de modulos
@@ -138,16 +138,16 @@ class BraghimSistemas {
 			// Se aqui não der erro é porque está tudo configurado
 			// corretamente
 			$result = $this->resolve($routes->module, $routes->controller, $routes->action);
-		} catch (Exception $e) {
+		} catch (\Exception $e) {
 			try {
 				// Aqui já deu merda, o usuário verá a tela de erro
 				// do módulo
 				$result = $this->resolve($routes->module, 'error', 'not-found');
-			} catch (Exception $ex) {
+			} catch (\Exception $ex) {
 				try {
 					// Aqui piorou, o sistema chama um módulo padrão de erros.
 					$result = $this->resolve('ModuleError', 'error', 'not-found', __DIR__.DIRECTORY_SEPARATOR.'library');
-				} catch (Exception $ex2) {
+				} catch (\Exception $ex2) {
 					exit('Confira a estrutura de arquivos, pois parece que algo está fora do padrão. https://github.com/braghimsistemas/framework/wiki/Instala%C3%A7%C3%A3o#estrutura-do-projeto');
 				}
 			}
@@ -168,7 +168,7 @@ class BraghimSistemas {
 	 * @param string $path Caminho.
 	 * 
 	 * @return \stdClass
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function resolve($module, $controller, $action, $path = null) {
 		if (!$path) {
@@ -181,7 +181,7 @@ class BraghimSistemas {
 
 		// Define modulo
 		if (!is_dir($path . DIRECTORY_SEPARATOR . $module) || !is_readable($path . DIRECTORY_SEPARATOR . $module)) {
-			throw new Exception("Módulo '$module' não existe");
+			throw new \Exception("Módulo '$module' não existe");
 		}
 		$result->moduleName = $module;
 
@@ -191,18 +191,18 @@ class BraghimSistemas {
 		// Verifica se controlador existe
 		$controllerFile = $path . "/$module/Controllers" . DIRECTORY_SEPARATOR . $controllerName . ".php";
 		if (!file_exists($controllerFile)) {
-			throw new Exception("Controlador '$controllerFile' não existe ou não pode ser lido");
+			throw new \Exception("Controlador '$controllerFile' não existe ou não pode ser lido");
 		}
 		$result->controllerName = $controllerName;
 
 		// Tentando acessar o controlador encontrado.
 		$controllerNsp = $module . "\\Controllers\\$controllerName";
 		if (!class_exists($controllerNsp)) {
-			throw new Exception("O sistema não conseguiu encontrar a classe deste controlador '$controllerNsp'");
+			throw new \Exception("O sistema não conseguiu encontrar a classe deste controlador '$controllerNsp'");
 		}
 		$result->controller = new $controllerNsp();
 		if (!$result->controller instanceof Braghim\MvcAbstractController) {
-			throw new Exception("Todo controlador deve ser uma instância de 'MvcAbstractController'");
+			throw new \Exception("Todo controlador deve ser uma instância de 'MvcAbstractController'");
 		}
 
 		// Define nome da acao
@@ -210,13 +210,13 @@ class BraghimSistemas {
 
 		// Verifica se ação existe no controlador
 		if (!method_exists($result->controller, $actionName)) {
-			throw new Exception("Ação '$actionName' não existe no controlador '$controllerNsp'");
+			throw new \Exception("Ação '$actionName' não existe no controlador '$controllerNsp'");
 		}
 		$result->actionName = $actionName;
 
 		// Diretorio de views do modulo
 		if (!is_dir("$path/$module/views/")) {
-			throw new Exception("Diretório de views não existe para o módulo '$module'");
+			throw new \Exception("Diretório de views não existe para o módulo '$module'");
 		}
 		$result->layoutPath = "$path/$module/views/";
 
@@ -247,7 +247,7 @@ class BraghimSistemas {
 	 * @return BraghimSistemas
 	 */
 	public function setSqlMonitor($status = false) {
-		Braghim\Database::getInstance()->setMonitoring($status);
+		\Braghim\Database::getInstance()->setMonitoring($status);
 		return $this;
 	}
 
