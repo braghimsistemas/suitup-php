@@ -26,9 +26,11 @@ before_script:
 
 script:
   - mkdir -p build/logs
+  - ls -lha
   - phpunit --coverage-clover build/logs/clover.xml
 
 after_script:
+  - ls -lha
   - php vendor/bin/coveralls -v
 
 #after_success:
