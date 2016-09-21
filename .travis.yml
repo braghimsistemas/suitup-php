@@ -27,7 +27,8 @@ before_script:
 script:
   - mkdir -p build/logs
   - ls -lha build/logs
-  - phpunit --coverage-clover build/logs/clover.xml
+#  - phpunit --coverage-clover build/logs/clover.xml
+  - php vendor/bin/phpunit -c phpunit.xml.dist
 
 after_script:
   - ls -lha build/logs
