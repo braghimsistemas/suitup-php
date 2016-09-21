@@ -25,10 +25,10 @@ before_script:
 
 script:
   - mkdir -p build/logs
-  - phpunit --coverage-clover ${rootDir}/build/logs/clover.xml
+  - phpunit --coverage-clover braghim-sistemas/suitup-php/build/logs/clover.xml
 
 after_script:
-  - cat ${rootDir}/build/logs/clover.xml
+  - cat braghim-sistemas/suitup-php/build/logs/clover.xml
   - php vendor/bin/coveralls -v
 
 #after_success:
