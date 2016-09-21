@@ -1,35 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:noNamespaceSchemaLocation="../../phpunit/phpunit/phpunit.xsd"
+<!--
+	phpunit -c phpunit.xml
+-->
+<phpunit convertErrorsToExceptions="true"
+		 convertNoticesToExceptions="true"
+		 convertWarningsToExceptions="true"
+		 syntaxCheck="true"
 		 bootstrap="./test/setup.php"
 		 colors="true">
 
 	<testsuites>
-		<testsuite name="SuitUp Test Suite">
+		<testsuite name="test">
 			<directory>./test/</directory>
 		</testsuite>
 	</testsuites>
 
 	<filter>
 		<whitelist processUncoveredFilesFromWhitelist="true">
-			<directory suffix=".php">.</directory>
-			<exclude>
-				<directory>./build</directory>
-				<directory>./test</directory>
-			</exclude>
+			<directory suffix=".php">library</directory>
 		</whitelist>
 	</filter>
-
-	<groups>
-		<exclude>
-			<group>disable</group>
-		</exclude>
-	</groups>
 
 	<php>
 		<ini name="date.timezone" value="America/Sao_Paulo" />
 	</php>
-	<logging>
-		<log type="coverage-clover" target="./build/logs/clover.xml" />
-	</logging>
 </phpunit>
