@@ -1,6 +1,6 @@
 language: php
 
-sudo: required
+sudo: false
 
 php:
   - 5.5
@@ -22,8 +22,8 @@ before_script:
   - git config --global user.email braghim.sistemas@gmail.com
 
 script:
-  - mkdir -p suitup-php/build/logs
-  - phpunit --coverage-clover suitup-php/build/logs/clover.xml
+  - mkdir -p build/logs
+  - phpunit --coverage-clover build/logs/clover.xml
 
 after_script:
   - php vendor/bin/coveralls -v
