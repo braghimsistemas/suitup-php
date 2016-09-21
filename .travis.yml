@@ -9,6 +9,8 @@ php:
 #  - 7.1
 #  - hhvm
 
+rootDir: pwd
+
 matrix:
   fast_finish: true
 
@@ -23,10 +25,10 @@ before_script:
 
 script:
   - mkdir -p build/logs
-  - phpunit --coverage-clover ./build/logs/clover.xml
+  - phpunit --coverage-clover ${rootDir}/build/logs/clover.xml
 
 after_script:
-  - cat ./build/logs/clover.xml
+  - cat ${rootDir}/build/logs/clover.xml
   - php vendor/bin/coveralls -v
 
 #after_success:
