@@ -1,6 +1,8 @@
 <?php
 namespace Braghim;
 
+include_once 'FormValidator/Validation.php';
+
 abstract class AbstractFormValidator extends FormValidator\Validation
 {
 	/**

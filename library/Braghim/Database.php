@@ -1,6 +1,8 @@
 <?php
 namespace Braghim;
 
+include_once 'Database/Persistence.php';
+
 class Database extends Database\Persistence
 {
 	/**

@@ -23,10 +23,9 @@ before_script:
   - git config --global user.name braghimsistemas
   - git config --global user.email braghim.sistemas@gmail.com
   - mkdir -p build/logs
-  - echo "<?xml version="1.0" encoding="UTF-8"?>" >> build/logs/clover.xml
 
 script:
-  - phpunit --coverage-clover build/logs/clover.xml
+  - phpunit --coverage-clover ./build/logs/clover.xml
 
 after_success:
   - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then php vendor/bin/coveralls -v; fi;'

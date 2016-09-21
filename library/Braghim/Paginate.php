@@ -1,6 +1,8 @@
 <?php
 namespace Braghim;
 
+include_once 'Paginate/PaginateI.php';
+
 use Braghim\Paginate\PaginateI;
 use Countable;
 

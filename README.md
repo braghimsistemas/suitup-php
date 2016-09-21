@@ -6,6 +6,7 @@
 [![Latest Stable Version](https://poser.pugx.org/braghim-sistemas/suitup-php/v/stable)](https://packagist.org/packages/braghim-sistemas/suitup-php)
 [![Latest Unstable Version](https://poser.pugx.org/braghim-sistemas/suitup-php/v/unstable)](https://packagist.org/packages/braghim-sistemas/suitup-php)
 [![License](https://poser.pugx.org/braghim-sistemas/suitup-php/license)](https://packagist.org/packages/braghim-sistemas/suitup-php)
+[![Dependency Status](https://www.versioneye.com/user/projects/57e1ca3e79806f0039830407/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/57e1ca3e79806f0039830407)
 
 **Legendary Web Applications**
 [http://framework.braghim.com.br](http://framework.braghim.com.br)
