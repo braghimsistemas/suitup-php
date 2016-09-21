@@ -11,13 +11,13 @@
 
 	<testsuites>
 		<testsuite name="test">
-			<directory>./test/</directory>
+			<directory>./suitup-php/test/</directory>
 		</testsuite>
 	</testsuites>
 
 	<filter>
 		<whitelist processUncoveredFilesFromWhitelist="true">
-			<directory suffix=".php">library</directory>
+			<directory suffix=".php">./suitup-php/library</directory>
 		</whitelist>
 	</filter>
 

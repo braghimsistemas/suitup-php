@@ -8,12 +8,9 @@ php:
   - 7.0
   - 7.1
   - hhvm
-  - nightly
-  
+
 matrix:
   fast_finish: true
-  allow_failures:
-    - php: nightly
 
 install:
   - composer require satooshi/php-coveralls:dev-master
@@ -25,8 +22,8 @@ before_script:
   - git config --global user.email braghim.sistemas@gmail.com
 
 script:
-  - mkdir -p build/logs
-  - phpunit --coverage-clover build/logs/clover.xml
+  - mkdir -p suitup-php/build/logs
+  - phpunit --coverage-clover suitup-php/build/logs/clover.xml
 
 after_script:
   - php vendor/bin/coveralls -v
