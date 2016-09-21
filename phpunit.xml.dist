@@ -15,6 +15,7 @@
 			<directory suffix=".php">.</directory>
 			<exclude>
 				<directory>./build</directory>
+				<directory>./test</directory>
 			</exclude>
 		</whitelist>
 	</filter>
