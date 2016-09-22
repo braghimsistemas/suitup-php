@@ -24,8 +24,8 @@
 		"phpmailer/phpmailer": "Not implemented in framework itself, but helps a lot and it's very simple."
 	},
 	"autoload": {
-		"classmap": ["./BraghimSistemas.php"],
-		"files": ["./functions.php"]
+		"classmap": ["./src/BraghimSistemas.php"],
+		"files": ["./src/functions.php"]
 	},
 	"autoload-dev": {
 		"psr-4": {
