@@ -1,4 +1,6 @@
 <?php
+include_once "functions.php";
+
 use Braghim\MvcAbstractController;
 
 /**
@@ -86,25 +88,25 @@ class BraghimSistemas {
 		/**
 		 * Primeiro carrega as classes do usuario e da biblioteca
 		 */
-		$loader = null;
-		if (file_exists('autoload.php')) {
-
-			// Quando rodamos um teste apontamos o sistema
-			// diretamente para dentro da pasta vendor ;)
-			$loader = include 'autoload.php';
-		} else if (file_exists('vendor/autoload.php')) {
-
-			// O cara está utilizando o framework normalmente em seu projeto.
-			$loader = include 'vendor/autoload.php';
-		}
-
-		// Os caminhos estão corretos, então adiciona as classes do projeto.
-		if ($loader) {
-			$loader->add('Braghim', __DIR__.DIRECTORY_SEPARATOR.'library/.');
-			$loader->add('ModuleError', __DIR__.DIRECTORY_SEPARATOR.'library/.');
-		} else {
-			throw new \Exception("Não é possível carregar as bibliotecas do SuitUp. Há algo errado com as dependências");
-		}
+//		$loader = null;
+//		if (file_exists('autoload.php')) {
+//
+//			// Quando rodamos um teste apontamos o sistema
+//			// diretamente para dentro da pasta vendor ;)
+//			$loader = include 'autoload.php';
+//		} else if (file_exists('vendor/autoload.php')) {
+//
+//			// O cara está utilizando o framework normalmente em seu projeto.
+//			$loader = include 'vendor/autoload.php';
+//		}
+//
+//		// Os caminhos estão corretos, então adiciona as classes do projeto.
+//		if ($loader) {
+//			$loader->add('Braghim', __DIR__.DIRECTORY_SEPARATOR.'library/.');
+//			$loader->add('ModuleError', __DIR__.DIRECTORY_SEPARATOR.'library/.');
+//		} else {
+//			throw new \Exception("Não é possível carregar as bibliotecas do SuitUp. Há algo errado com as dependências");
+//		}
 
 		// Define rotas
 		Braghim\Routes::$modulesPath = $modulesPath;
@@ -129,11 +131,11 @@ class BraghimSistemas {
 			}
 			
 			// Carrega todos os modulos automaticamente
-			foreach (scandir($this->modulesPath) as $module) {
-				if (!in_array($module, array('.', '..')) && is_dir($this->modulesPath.DIRECTORY_SEPARATOR.$module)) {
-					$loader->add($module, $this->modulesPath);
-				}
-			}
+//			foreach (scandir($this->modulesPath) as $module) {
+//				if (!in_array($module, array('.', '..')) && is_dir($this->modulesPath.DIRECTORY_SEPARATOR.$module)) {
+//					$loader->add($module, $this->modulesPath);
+//				}
+//			}
 
 			// Se aqui não der erro é porque está tudo configurado
 			// corretamente
@@ -146,7 +148,7 @@ class BraghimSistemas {
 			} catch (\Exception $ex) {
 				try {
 					// Aqui piorou, o sistema chama um módulo padrão de erros.
-					$result = $this->resolve('ModuleError', 'error', 'not-found', __DIR__.DIRECTORY_SEPARATOR.'library');
+					$result = $this->resolve('ModuleError', 'error', 'not-found', __DIR__);
 				} catch (\Exception $ex2) {
 					exit('Confira a estrutura de arquivos, pois parece que algo está fora do padrão. https://github.com/braghimsistemas/framework/wiki/Instala%C3%A7%C3%A3o#estrutura-do-projeto');
 				}
