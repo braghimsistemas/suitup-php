@@ -18,12 +18,12 @@ define('MSG_NSP_TOKEN', mctime());
 /**
  * Define a Constante DEVELOPMENT caso ainda não tenha sido.
  */
-defined('DEVELOPMENT') || define('DEVELOPMENT', false);
+defined('DEVELOPMENT') || define('DEVELOPMENT', (bool) getenv('DEVELOPMENT'));
 
 /**
  * Define a Constante SHOW_ERRORS caso ainda não tenha sido.
  */
-defined('SHOW_ERRORS') || define('SHOW_ERRORS', false);
+defined('SHOW_ERRORS') || define('SHOW_ERRORS', (bool) getenv('DEVELOPMENT'));
 
 /**
  * Utilize este arquivo como entrada do framework.
@@ -93,7 +93,7 @@ class BraghimSistemas {
 	private function __construct($modulesPath) {
 
 		// Adiciona a classe o caminho real para pasta de modulos
-		$this->modulesPath = realpath($modulesPath).DIRECTORY_SEPARATOR;
+		$this->modulesPath = (realpath($modulesPath) === false) ? $modulesPath : realpath($modulesPath).DIRECTORY_SEPARATOR;
 
 		/**
 		 * Carrega os namespaces do projeto.
@@ -106,7 +106,7 @@ class BraghimSistemas {
 		// Define rotas
 		Routes::$modulesPath = $modulesPath;
 		$routes = Routes::getInstance();
-		
+
 		/**
 		 * Este escopo aqui eh referente a montagem de parametros
 		 * para o sistema saber quais classes e metodos chamar
@@ -145,6 +145,8 @@ class BraghimSistemas {
 					// Aqui piorou, o sistema chama um módulo padrão de erros.
 					$result = $this->resolve('ModuleError', 'error', 'not-found', __DIR__);
 				} catch (\Exception $ex2) {
+
+					if (DEVELOPMENT) dump($e);
 					exit('Confira a estrutura de arquivos, pois parece que algo está fora do padrão. https://github.com/braghimsistemas/framework/wiki/Instala%C3%A7%C3%A3o#estrutura-do-projeto');
 				}
 			}

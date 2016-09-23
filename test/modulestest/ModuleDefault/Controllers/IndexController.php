@@ -2,7 +2,7 @@
 /**
  * hybrid - Braghim Sistemas - Software Privado
  *
- * Copyright 20 de Setembro, 2016
+ * Copyright 22 de Setembro, 2016
  *
  * Este é um sistema privado pertencente à empresa Braghim Sistemas.
  * Este software não foi desenvolvido com intuito de ser vendido ou mesmo
@@ -17,28 +17,24 @@
  *
  * Em poucas palavras: NENHUMA LINHA DE CÓDIGO DESTE SISTEMA DEVE SER COPIADA!
  *
- * @author Marco A. Braghim <braghim.sistemas@gmail.com>
- * @since 20/09/16
+ * @author jackie
+ * @since 22/09/16
  */
 
-namespace BraghimTest;
+namespace ModuleDefault\Controllers;
 
-use BraghimSistemas;
+use Braghim\MvcAbstractController;
 
 /**
  * Um arquivo que tem classe
  *
- * @author Marco A. Braghim <braghim.sistemas@gmail.com>
- * @since 20/09/16
+ * @author jackie
+ * @since 22/09/16
  */
-class BraghimSistemasTest extends \PHPUnit_Framework_TestCase
+class IndexController extends MvcAbstractController
 {
-	/**
-	 *
-	 */
-	public function testSetup()
+	public function indexAction()
 	{
-		$b = BraghimSistemas::setup(__DIR__.'/modulestest');
-		$this->assertEquals(true, $b instanceof BraghimSistemas);
+		echo "\nChegou ao index/index/ \\o/\n";
 	}
 }
