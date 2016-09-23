@@ -312,6 +312,14 @@ abstract class Persistence
 		$this->monitoring = (bool) $status;
 		return $this;
 	}
+
+	/**
+	 * Retorna o status do monitoramento de SQL.
+	 * @return bool
+	 */
+	public function getMonitoring() {
+		return $this->monitoring;
+	}
 	
 	/**
 	 * Se estiver habilitado retornara a lista de todas as queries rodadas nesta sessão.

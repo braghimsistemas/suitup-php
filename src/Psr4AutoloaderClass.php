@@ -92,12 +92,9 @@ class Psr4AutoloaderClass
 	 * @param string $prefix The namespace prefix.
 	 * @param string $base_dir A base directory for class files in the
 	 * namespace.
-	 * @param bool $prepend If true, prepend the base directory to the stack
-	 * instead of appending it; this causes it to be searched first rather
-	 * than last.
 	 * @return void
 	 */
-	public function addNamespace($prefix, $base_dir, $prepend = false)
+	public function addNamespace($prefix, $base_dir)
 	{
 		// normalize namespace prefix
 		$prefix = trim($prefix, '\\') . '\\';
@@ -111,11 +108,7 @@ class Psr4AutoloaderClass
 		}
 
 		// retain the base directory for the namespace prefix
-		if ($prepend) {
-			array_unshift($this->prefixes[$prefix], $base_dir);
-		} else {
-			array_push($this->prefixes[$prefix], $base_dir);
-		}
+		array_push($this->prefixes[$prefix], $base_dir);
 	}
 
 	/**

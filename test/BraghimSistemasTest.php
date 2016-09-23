@@ -33,12 +33,27 @@ use BraghimSistemas;
  */
 class BraghimSistemasTest extends \PHPUnit_Framework_TestCase
 {
-	/**
-	 *
-	 */
 	public function testSetup()
 	{
-		$b = BraghimSistemas::setup(__DIR__.'/modulestest');
-		$this->assertEquals(true, $b instanceof BraghimSistemas);
+		$a = BraghimSistemas::setup(__DIR__.'/modulestest');
+		$this->assertEquals(true, $a instanceof BraghimSistemas);
 	}
+
+	public function testExceptionSetup()
+	{
+		try {
+			BraghimSistemas::setup(__DIR__.'/modulestes');
+		} catch (\Exception $e) {
+			$this->assertInstanceOf("\Exception", $e);
+		}
+	}
+
+//	public function testSqlMonitor()
+//	{
+//		$a = BraghimSistemas::setup(__DIR__.'/modulestest');
+//		$a->setSqlMonitor(true);
+//
+//		$this->assertEquals(true, \Braghim\Database::getInstance()->getMonitoring());
+//	}
+
 }
