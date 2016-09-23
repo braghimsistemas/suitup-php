@@ -1,7 +1,10 @@
 <?php
-include_once "functions.php";
+include_once __DIR__."/Psr4AutoloaderClass.php";
+include_once __DIR__."/functions.php";
 
 use Braghim\MvcAbstractController;
+use Braghim\Database;
+use Braghim\Routes;
 
 /**
  * Token para o sistema nao "confundir" as mensagens de sessao
@@ -49,6 +52,11 @@ class BraghimSistemas {
 	 * @var stdClass
 	 */
 	public $mvc;
+
+	/**
+	 * @var Psr4AutoloaderClass
+	 */
+	public $loader;
 	
 	/**
 	 * Primeiro metodo a ser chamado.
@@ -63,7 +71,7 @@ class BraghimSistemas {
 			if (!$modulesPath) {
 				throw new \Exception("Necessário informar a pasta onde os módulos serão criados.");
 			}
-			self::$instance = new self(trim($modulesPath, DIRECTORY_SEPARATOR));
+			self::$instance = new self($modulesPath);
 		}
 		return self::$instance;
 	}
@@ -83,34 +91,21 @@ class BraghimSistemas {
 	 * @throws \Exception
 	 */
 	private function __construct($modulesPath) {
-		$this->modulesPath = $modulesPath;
+
+		// Adiciona a classe o caminho real para pasta de modulos
+		$this->modulesPath = realpath($modulesPath).DIRECTORY_SEPARATOR;
 
 		/**
-		 * Primeiro carrega as classes do usuario e da biblioteca
+		 * Carrega os namespaces do projeto.
 		 */
-//		$loader = null;
-//		if (file_exists('autoload.php')) {
-//
-//			// Quando rodamos um teste apontamos o sistema
-//			// diretamente para dentro da pasta vendor ;)
-//			$loader = include 'autoload.php';
-//		} else if (file_exists('vendor/autoload.php')) {
-//
-//			// O cara está utilizando o framework normalmente em seu projeto.
-//			$loader = include 'vendor/autoload.php';
-//		}
-//
-//		// Os caminhos estão corretos, então adiciona as classes do projeto.
-//		if ($loader) {
-//			$loader->add('Braghim', __DIR__.DIRECTORY_SEPARATOR.'library/.');
-//			$loader->add('ModuleError', __DIR__.DIRECTORY_SEPARATOR.'library/.');
-//		} else {
-//			throw new \Exception("Não é possível carregar as bibliotecas do SuitUp. Há algo errado com as dependências");
-//		}
+		$this->loader = new Psr4AutoloaderClass();
+		$this->loader->register();
+		$this->loader->addNamespace('Braghim\\', __DIR__);
+		$this->loader->addNamespace('ModuleError\\', __DIR__.'/ModuleError');
 
 		// Define rotas
-		Braghim\Routes::$modulesPath = $modulesPath;
-		$routes = Braghim\Routes::getInstance();
+		Routes::$modulesPath = $modulesPath;
+		$routes = Routes::getInstance();
 		
 		/**
 		 * Este escopo aqui eh referente a montagem de parametros
@@ -131,11 +126,11 @@ class BraghimSistemas {
 			}
 			
 			// Carrega todos os modulos automaticamente
-//			foreach (scandir($this->modulesPath) as $module) {
-//				if (!in_array($module, array('.', '..')) && is_dir($this->modulesPath.DIRECTORY_SEPARATOR.$module)) {
-//					$loader->add($module, $this->modulesPath);
-//				}
-//			}
+			foreach (scandir($this->modulesPath) as $module) {
+				if (!in_array($module, array('.', '..')) && is_dir($this->modulesPath.DIRECTORY_SEPARATOR.$module)) {
+					$this->loader->addNamespace($module, $this->modulesPath);
+				}
+			}
 
 			// Se aqui não der erro é porque está tudo configurado
 			// corretamente
@@ -182,7 +177,7 @@ class BraghimSistemas {
 		$result->mainPath = $path;
 
 		// Define modulo
-		if (!is_dir($path . DIRECTORY_SEPARATOR . $module) || !is_readable($path . DIRECTORY_SEPARATOR . $module)) {
+		if (!is_dir($path.DIRECTORY_SEPARATOR.$module) || !is_readable($path.DIRECTORY_SEPARATOR.$module)) {
 			throw new \Exception("Módulo '$module' não existe");
 		}
 		$result->moduleName = $module;
@@ -191,19 +186,21 @@ class BraghimSistemas {
 		$controllerName = ucfirst(strtolower($controller)) . "Controller";
 		
 		// Verifica se controlador existe
-		$controllerFile = $path . "/$module/Controllers" . DIRECTORY_SEPARATOR . $controllerName . ".php";
+		$controllerFile = $path."$module/Controllers".DIRECTORY_SEPARATOR.$controllerName.".php";
 		if (!file_exists($controllerFile)) {
 			throw new \Exception("Controlador '$controllerFile' não existe ou não pode ser lido");
 		}
 		$result->controllerName = $controllerName;
 
 		// Tentando acessar o controlador encontrado.
-		$controllerNsp = $module . "\\Controllers\\$controllerName";
+		$controllerNsp = $module."\\Controllers\\$controllerName";
 		if (!class_exists($controllerNsp)) {
 			throw new \Exception("O sistema não conseguiu encontrar a classe deste controlador '$controllerNsp'");
 		}
+
+		// Cria uma instancia do controlador
 		$result->controller = new $controllerNsp();
-		if (!$result->controller instanceof Braghim\MvcAbstractController) {
+		if (!$result->controller instanceof MvcAbstractController) {
 			throw new \Exception("Todo controlador deve ser uma instância de 'MvcAbstractController'");
 		}
 
@@ -227,7 +224,7 @@ class BraghimSistemas {
 		 * Aqui não é necessário validar a existência do arquivo da view,
 		 * pois quando a acao devolve um ajax não renderiza html
 		 */
-		$result->viewName = $action . ".phtml";
+		$result->viewName = $action.".phtml";
 		$result->viewPath = "$path/$module/views/$controller";
 
 		/**
@@ -236,7 +233,7 @@ class BraghimSistemas {
 		 */
 		$abstractController = "$module\\Controllers\\AbstractController";
 		if (!class_exists($abstractController)) {
-			$abstractController = "Braghim\\MvcAbstractController";
+			$abstractController = "\\Braghim\\MvcAbstractController";
 		}
 		$abstractController::$params = $result;
 		
@@ -249,7 +246,7 @@ class BraghimSistemas {
 	 * @return BraghimSistemas
 	 */
 	public function setSqlMonitor($status = false) {
-		\Braghim\Database::getInstance()->setMonitoring($status);
+		Database::getInstance()->setMonitoring($status);
 		return $this;
 	}
 
