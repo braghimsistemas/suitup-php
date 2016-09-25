@@ -361,7 +361,8 @@ abstract class Persistence
 	 * @param  string $sql
 	 */
 	private function ExceptionLog($message, $sql = "") {
-		$exception = "========================================================\n";
+		$exception = date('H:i:s')."\n";
+		$exception .= "========================================================\n";
 		$exception .= $message;
 
 		if (!empty($sql)) {
@@ -370,13 +371,13 @@ abstract class Persistence
 		}
 		
 		// Se nao existe pasta cria
-		$dirlog = 'var/logs/database/'.date('d-m-Y');
+		$dirlog = 'var/logs';
 		if (!is_dir($dirlog)) {
 			mkdir($dirlog, 0777, true);
 		}
 				
 		# Write into log
-		error_log($exception."\n\n", 3, $dirlog.'/'.date('H-i').'.log');
-		chmod($dirlog.'/'.date('H-i').'.log', 0777);
+		error_log($exception."\n\n", 3, $dirlog.'/database'.date('d-m-Y').'.log');
+		chmod($dirlog.'/database'.date('d-m-Y').'.log', 0777);
 	}
 }

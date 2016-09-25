@@ -33,27 +33,43 @@ use BraghimSistemas;
  */
 class BraghimSistemasTest extends \PHPUnit_Framework_TestCase
 {
+	/**
+	 * Testa configuracao sem indicar pasta de modulos (erro)
+	 */
+	public function testExceptionSetup()
+	{
+		try {
+			BraghimSistemas::setup();
+
+			// Force error
+			$this->assertEquals(false, true);
+
+		} catch (\Exception $e) {
+			$this->assertInstanceOf("\Exception", $e);
+		}
+	}
+
+	/**
+	 * Um setup que funciona
+	 */
 	public function testSetup()
 	{
 		$a = BraghimSistemas::setup(__DIR__.'/modulestest');
 		$this->assertEquals(true, $a instanceof BraghimSistemas);
 	}
 
-	public function testExceptionSetup()
+	// Habilitando ou desabilitando os logs de queries
+	public function testSqlMonitor()
 	{
-		try {
-			BraghimSistemas::setup(__DIR__.'/modulestes');
-		} catch (\Exception $e) {
-			$this->assertInstanceOf("\Exception", $e);
-		}
-	}
+		$a = BraghimSistemas::setup(__DIR__.'/modulestest');
 
-//	public function testSqlMonitor()
-//	{
-//		$a = BraghimSistemas::setup(__DIR__.'/modulestest');
-//		$a->setSqlMonitor(true);
-//
-//		$this->assertEquals(true, \Braghim\Database::getInstance()->getMonitoring());
-//	}
+		// True
+		$a->setSqlMonitor(true);
+		$this->assertEquals(true, \Braghim\Database::getInstance()->getMonitoring());
+
+		// False
+		$a->setSqlMonitor(false);
+		$this->assertNotTrue(\Braghim\Database::getInstance()->getMonitoring());
+	}
 
 }

@@ -1,6 +1,8 @@
 <?php
 namespace Braghim;
 
+use Braghim\Database\Config;
+
 include_once 'Database/Persistence.php';
 
 /**
@@ -15,17 +17,39 @@ class Database extends Database\Persistence
 	private static $instance;
 
 	/**
+	 * @var Database/Config
+	 */
+	private static $config;
+
+	/**
 	 * Database constructor.
 	 * @throws \Exception
 	 */
 	private function __construct() {
-		if (!file_exists('config/database.config.php')) {
-			throw new \Exception(
-				"O arquivo 'config/database.config.php' não existe: return array('host' => '', 'database' => '', 'username' => '', 'password' => '');"
-			);
+
+		/**
+		 * Não foram setadas configuracoes para DB. Vamos
+		 * procurar o arquivo database.config.php na pasta
+		 * config que deveria estar na raiz do projeto.
+		 */
+		if (null == self::$config) {
+			$dbConfigFile = dirname(MvcAbstractController::$params->mainPath).'/config/database.config.php';
+
+			if (!file_exists($dbConfigFile)) {
+				throw new \Exception("Nenhuma configuração de banco de dados configurada.");
+			}
+
+			// Encontrou arquivo, então vamos usa-lo para configurar.
+			self::setConfig(include $dbConfigFile);
 		}
-		$params = include 'config/database.config.php';
-		$this->Connect($params['host'], $params['database'], $params['username'], $params['password']);
+
+		// Inclui as configuracoes
+		$this->Connect(
+			self::getConfig()->getHost(),
+			self::getConfig()->getDatabase(),
+			self::getConfig()->getUsername(),
+			self::getConfig()->getPassword()
+		);
 		$this->parameters = array();
 	}
 
@@ -63,7 +87,34 @@ class Database extends Database\Persistence
 		self::$instance = null;
 		return self::getInstance();
 	}
-	
+
+	/**
+	 * Inclui a configuração do banco de dados.
+	 *
+	 * @param array|\Braghim\Database\Config $configs
+	 * @throws \Exception
+	 */
+	public static function setConfig($configs) {
+
+		if (is_array($configs)) {
+			$configs = new Config($configs);
+		}
+
+		if (!$configs instanceof Config) {
+			throw new \Exception("As configurações de banco de dados devem ser um 'array' ou uma instância de '\\Braghim\\Database\\Config'");
+		}
+
+		// Instancia de Database\Config
+		self::$config = $configs;
+	}
+
+	/**
+	 * @return \Braghim\Database\Config
+	 */
+	public static function getConfig() {
+		return self::$config;
+	}
+
 	/**
 	 * Retorna o objeto de paginacao.
 	 * 
