@@ -13,6 +13,9 @@ php:
   - 7.1
   - hhvm
 
+services:
+  - mysql
+
 env:
   global:
     - DEVELOPMENT=true
@@ -22,6 +25,9 @@ matrix:
   fast_finish: true
   allow_failures:
       - php: hhvm
+
+before_install:
+  - mysql -e "create database IF NOT EXISTS test;" -uroot
 
 before_script:
   - wget http://getcomposer.org/composer.phar

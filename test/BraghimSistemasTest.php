@@ -23,6 +23,7 @@
 
 namespace BraghimTest;
 
+use Braghim\Database;
 use BraghimSistemas;
 
 /**
@@ -62,6 +63,12 @@ class BraghimSistemasTest extends \PHPUnit_Framework_TestCase
 	public function testSqlMonitor()
 	{
 		$a = BraghimSistemas::setup(__DIR__.'/modulestest');
+		Database::setConfig(new Database\Config(array(
+			'host' => 'localhost',
+			'database' => 'test',
+			'username' => 'root',
+			'password' => ''
+		)));
 
 		// True
 		$a->setSqlMonitor(true);
