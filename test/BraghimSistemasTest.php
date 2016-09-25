@@ -23,6 +23,10 @@
 
 namespace BraghimTest;
 
+// Define 'env' que indica que quem está rodando o teste é o Travis.
+defined('TRAVIS') || define('TRAVIS', (bool) getenv('TRAVIS'));
+
+
 use Braghim\Database;
 use BraghimSistemas;
 
@@ -63,12 +67,18 @@ class BraghimSistemasTest extends \PHPUnit_Framework_TestCase
 	public function testSqlMonitor()
 	{
 		$a = BraghimSistemas::setup(__DIR__.'/modulestest');
-		Database::setConfig(new Database\Config(array(
-			'host' => 'localhost',
-			'database' => 'test',
-			'username' => 'root',
-			'password' => ''
-		)));
+
+		// Se quem está rodando o teste é o Travis, usa as configuracoes
+		// dele, senão usa as configuracoes do arquivo database.config.php
+		// que não é integrado ao git por questoes de seguranca...
+		if (TRAVIS) {
+			Database::setConfig(new Database\Config(array(
+				'host' => 'localhost',
+				'database' => 'test',
+				'username' => 'root',
+				'password' => ''
+			)));
+		}
 
 		// True
 		$a->setSqlMonitor(true);
