@@ -532,10 +532,11 @@ abstract class MvcAbstractController
 	 * Efetua redirecionamento
 	 * 
 	 * @param string $to
+	 * @return string
 	 */
 	public function redirect($to) {
 		header("Location: $to");
-		exit;
+		return exit;
 	}
 	
 	/**
@@ -543,11 +544,12 @@ abstract class MvcAbstractController
 	 * neste metodo.
 	 * 
 	 * @param array $data
+	 * @return string
 	 */
 	public function ajax(array $data) {
 		header("Content-Type: application/json; Charset=UTF-8");
 		echo json_encode($data);
-		exit;
+		return exit;
 	}
 	
 	/**

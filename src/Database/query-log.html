@@ -1,6 +1,6 @@
 <style type="text/css">
 	/** Tab ***/
-	div#__braghim-query-log-tab__ {
+	div#__SuitUp-query-log-tab__ {
 		/** Reset **/
 		margin: 0;
 		padding: 0;
@@ -32,7 +32,7 @@
 		cursor: pointer;
 		z-index: 99999;
 	}
-	div#__braghim-query-log-tab__ span#close {
+	div#__SuitUp-query-log-tab__ span#close {
 		position: absolute;
 		top: -6px;
 		right: -6px;
@@ -46,7 +46,7 @@
 	}
 	
 	/** Painel ***/
-	div#__braghim-query-log__ {
+	div#__SuitUp-query-log__ {
 		/** Reset **/
 		margin: 0;
 		padding: 0;
@@ -71,7 +71,7 @@
 		z-index: 99999;
 		display: none;
 	}
-	div#__braghim-query-log__ div.headding {
+	div#__SuitUp-query-log__ div.headding {
 		color: #fff;
 		background: #333;
 		padding: 7px;
@@ -79,10 +79,10 @@
 		border-radius: 5px 5px 0 0;
 		cursor: pointer;
 	}
-	div#__braghim-query-log__ div.headding span#closebox {
+	div#__SuitUp-query-log__ div.headding span#closebox {
 		float: right;
 	}
-	div#__braghim-query-log__ .mainbox {
+	div#__SuitUp-query-log__ .mainbox {
 		min-height: 200px;
 		height: calc(100vh / 2);
 		overflow-y: scroll;
@@ -91,13 +91,13 @@
 		border-left: 1px solid #BBB;
 		border-right: 1px solid #BBB;
 	}
-	div#__braghim-query-log__ .mainbox hr {
+	div#__SuitUp-query-log__ .mainbox hr {
 		margin-top: 5px;
 		margin-bottom: 15px;
 		border: 0;
 		border-top: 1px solid #DDD;
 	}
-	div#__braghim-query-log__ .mainbox > span {
+	div#__SuitUp-query-log__ .mainbox > span {
 		display: block;
 		font-size: 11pt;
 		font-weight: bold;
@@ -108,10 +108,10 @@
 	window.onload = function() {
 		
 		// Box onde aparecem as queries
-		var box = document.querySelector('div#__braghim-query-log__');
+		var box = document.querySelector('div#__SuitUp-query-log__');
 		
 		// Tab para mostrar o box
-		var tab = document.querySelector('div#__braghim-query-log-tab__');
+		var tab = document.querySelector('div#__SuitUp-query-log-tab__');
 		tab.onclick = function(e) {
 			tab.style.display = 'none';
 			
@@ -124,7 +124,7 @@
 		};
 		
 		// Topo do box, onde é possível clicar para ele ser escondido
-		var heading = document.querySelector('div#__braghim-query-log__ div.headding');
+		var heading = document.querySelector('div#__SuitUp-query-log__ div.headding');
 		heading.onclick = function(e) {
 			box.style.display = 'none';
 			tab.style.display = 'block';

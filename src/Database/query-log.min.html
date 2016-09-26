@@ -6,16 +6,16 @@
  * @link http://braghim.com.br
  * @checksum f84e0b82f18ed4b217b220802c9e5c11
  */
-div#__braghim-query-log-tab__{margin:0;padding:0;border:0;outline:0;font-weight:inherit;font-style:inherit;font-size:100%;font-family:inherit;vertical-align:baseline;line-height:initial;text-align:left;font-family:arial,verdana;color:#333;font-size:9pt;font-weight:700;position:fixed;bottom:0;right:30px;padding:5px 15px 10px 15px;border-bottom:0;border-radius:5px 5px 0 0;background:#000;opacity:.7;filter:alpha(opacity=70);color:#FFF;cursor:pointer;z-index:99999}div#__braghim-query-log-tab__ span#close{position:absolute;top:-6px;right:-6px;background:#fff;color:#333;padding:2px 5px;border:1px solid #BBB;border-radius:100%;font-size:7pt;font-weight:700}div#__braghim-query-log__{margin:0;padding:0;border:0;outline:0;font-weight:inherit;font-style:inherit;font-size:100%;font-family:inherit;vertical-align:baseline;line-height:initial;text-align:left;font-family:monospace,arial,verdana;color:#333;font-size:9pt;position:fixed;bottom:0;left:20px;right:20px;z-index:99999;display:none}div#__braghim-query-log__ div.headding{color:#fff;background:#333;padding:7px;border:0;border-radius:5px 5px 0 0;cursor:pointer}div#__braghim-query-log__ div.headding span#closebox{float:right}div#__braghim-query-log__ .mainbox{min-height:200px;height:calc(100vh / 2);overflow-y:scroll;background:#fff;padding:20px;border-left:1px solid #BBB;border-right:1px solid #BBB}div#__braghim-query-log__ .mainbox hr{margin-top:5px;margin-bottom:15px;border:0;border-top:1px solid #DDD}div#__braghim-query-log__ .mainbox>span{display:block;font-size:11pt;font-weight:700;color:#999}
+div#__SuitUp-query-log-tab__{margin:0;padding:0;border:0;outline:0;font-weight:inherit;font-style:inherit;font-size:100%;font-family:inherit;vertical-align:baseline;line-height:initial;text-align:left;font-family:arial,verdana;color:#333;font-size:9pt;font-weight:700;position:fixed;bottom:0;right:30px;padding:5px 15px 10px 15px;border-bottom:0;border-radius:5px 5px 0 0;background:#000;opacity:.7;filter:alpha(opacity=70);color:#FFF;cursor:pointer;z-index:99999}div#__SuitUp-query-log-tab__ span#close{position:absolute;top:-6px;right:-6px;background:#fff;color:#333;padding:2px 5px;border:1px solid #BBB;border-radius:100%;font-size:7pt;font-weight:700}div#__SuitUp-query-log__{margin:0;padding:0;border:0;outline:0;font-weight:inherit;font-style:inherit;font-size:100%;font-family:inherit;vertical-align:baseline;line-height:initial;text-align:left;font-family:monospace,arial,verdana;color:#333;font-size:9pt;position:fixed;bottom:0;left:20px;right:20px;z-index:99999;display:none}div#__SuitUp-query-log__ div.headding{color:#fff;background:#333;padding:7px;border:0;border-radius:5px 5px 0 0;cursor:pointer}div#__SuitUp-query-log__ div.headding span#closebox{float:right}div#__SuitUp-query-log__ .mainbox{min-height:200px;height:calc(100vh / 2);overflow-y:scroll;background:#fff;padding:20px;border-left:1px solid #BBB;border-right:1px solid #BBB}div#__SuitUp-query-log__ .mainbox hr{margin-top:5px;margin-bottom:15px;border:0;border-top:1px solid #DDD}div#__SuitUp-query-log__ .mainbox>span{display:block;font-size:11pt;font-weight:700;color:#999}
 </style>
 <script type="text/javascript">
 	window.onload = function() {
 		
 		// Box onde aparecem as queries
-		var box = document.querySelector('div#__braghim-query-log__');
+		var box = document.querySelector('div#__SuitUp-query-log__');
 		
 		// Tab para mostrar o box
-		var tab = document.querySelector('div#__braghim-query-log-tab__');
+		var tab = document.querySelector('div#__SuitUp-query-log-tab__');
 		tab.onclick = function(e) {
 			tab.style.display = 'none';
 			
@@ -28,7 +28,7 @@ div#__braghim-query-log-tab__{margin:0;padding:0;border:0;outline:0;font-weight:
 		};
 		
 		// Topo do box, onde é possível clicar para ele ser escondido
-		var heading = document.querySelector('div#__braghim-query-log__ div.headding');
+		var heading = document.querySelector('div#__SuitUp-query-log__ div.headding');
 		heading.onclick = function(e) {
 			box.style.display = 'none';
 			tab.style.display = 'block';
