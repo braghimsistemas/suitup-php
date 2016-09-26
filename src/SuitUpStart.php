@@ -36,7 +36,7 @@ class SuitUpStart {
 	/**
 	 * Versão atual do sistema
 	 */
-	const VERSION = '1.1.5';
+	const VERSION = '1.1.6';
 
 	/**
 	 * @var SuitUpStart
