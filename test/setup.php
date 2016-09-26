@@ -2,7 +2,7 @@
 error_reporting(E_ALL | E_STRICT);
 ini_set('display_errors', true);
 
-include_once __DIR__."/../src/BraghimSistemas.php";
+include_once __DIR__ . "/../src/SuitUpStart.php";
 
 // Para quando estamos mexendo diretamente no código
 if (file_exists(__DIR__.'/../vendor/autoload.php')) {

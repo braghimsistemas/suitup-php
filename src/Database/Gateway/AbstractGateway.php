@@ -1,5 +1,9 @@
 <?php
-namespace Braghim;
+namespace Braghim\Database\Gateway;
+
+use Braghim\Mvc\MvcAbstractController;
+use Braghim\Database\SqlFileManager;
+use Braghim\Database\Database;
 
 abstract class AbstractGateway
 {
@@ -29,7 +33,7 @@ abstract class AbstractGateway
 	protected $onUpdate;
 	
 	/**
-	 * @var \Braghim\Database
+	 * @var \Braghim\Database\Database
 	 */
 	protected $db;
 	
@@ -59,7 +63,7 @@ abstract class AbstractGateway
 	 * Encontra e faz a leitura do arquivo .sql baseado no nome da tabela.
 	 * 
 	 * @param string $filename
-	 * @return \Braghim\SqlFileManager
+	 * @return \Braghim\Database\SqlFileManager
 	 * @throws \Exception
 	 */
 	public function sqlFile($filename) {
@@ -82,7 +86,7 @@ abstract class AbstractGateway
 	 * Cria uma nova query a partir de uma string no lugar de usar arquivo.
 	 * 
 	 * @param string $query
-	 * @return \Braghim\SqlFileManager
+	 * @return \Braghim\Database\SqlFileManager
 	 */
 	public function select($query) {
 		$sqlFileManager = new SqlFileManager();

@@ -1,11 +1,11 @@
 <?php
-namespace Braghim;
+namespace Braghim\Mvc;
 
 use Braghim\Enum\MsgType;
+use Braghim\Database\Database;
+use Braghim\Routes\Routes;
 use Exception;
-use ModuleManager\ModelLogs\Gateway\Log;
 use stdClass;
-use System\Exception\ExceptionErroSistema;
 use upload;
 
 /**

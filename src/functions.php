@@ -3,14 +3,14 @@
  * Funções uteis para serem usadas em qualquer lugar
  */
 
-use Braghim\MvcAbstractController;
+use Braghim\Mvc\MvcAbstractController;
 
 /**
  * Valores fixos de tamanhos diversos em Bytes
  */
-define('KB', 1024);                // Em bytes
-define('MB', 1048576);            // Em bytes
-define('GB', 1073741824);        // Em bytes
+define('KB', 1024);             // Em bytes
+define('MB', 1048576);          // Em bytes
+define('GB', 1073741824);       // Em bytes
 define('TB', 1099511627776);    // Em bytes
 
 /**
@@ -20,7 +20,7 @@ define('TB', 1099511627776);    // Em bytes
  */
 function throwNewExceptionFromAnywhere($e)
 {
-	$setup = BraghimSistemas::getInstance();
+	$setup = SuitUpStart::getInstance();
 
 	// Tenta carregar a tela de erro do MODULO.
 	try {
@@ -127,11 +127,11 @@ function renderView($renderViewName, $vars = array(), $renderViewPath = null)
 /**
  * Renderiza um template de paginacao.
  *
- * @param Braghim\Paginate $object Objeto de paginacao criado na query.
+ * @param Braghim\Paginate\Paginate $object Objeto de paginacao criado na query.
  * @param string $renderViewName Nome do arquivo .phtml de paginacao
  * @return string Html pronto dos botoes de paginacao
  */
-function paginateControl(Braghim\Paginate $object, $renderViewName = 'paginacao.phtml')
+function paginateControl(\Braghim\Paginate\Paginate $object, $renderViewName = 'paginacao.phtml')
 {
 
 	// Return

@@ -28,7 +28,7 @@ defined('TRAVIS') || define('TRAVIS', (bool) getenv('TRAVIS'));
 
 
 use Braghim\Database;
-use BraghimSistemas;
+use SuitUpStart;
 
 /**
  * Um arquivo que tem classe
@@ -44,7 +44,7 @@ class BraghimSistemasTest extends \PHPUnit_Framework_TestCase
 	public function testExceptionSetup()
 	{
 		try {
-			BraghimSistemas::setup();
+			SuitUpStart::setup();
 
 			// Force error
 			$this->assertEquals(false, true);
@@ -59,14 +59,14 @@ class BraghimSistemasTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testSetup()
 	{
-		$a = BraghimSistemas::setup(__DIR__.'/modulestest');
-		$this->assertEquals(true, $a instanceof BraghimSistemas);
+		$a = SuitUpStart::setup(__DIR__.'/modulestest');
+		$this->assertEquals(true, $a instanceof SuitUpStart);
 	}
 
 	// Habilitando ou desabilitando os logs de queries
 	public function testSqlMonitor()
 	{
-		$a = BraghimSistemas::setup(__DIR__.'/modulestest');
+		$a = SuitUpStart::setup(__DIR__.'/modulestest');
 
 		// Se quem está rodando o teste é o Travis, usa as configuracoes
 		// dele, senão usa as configuracoes do arquivo database.config.php
@@ -82,11 +82,11 @@ class BraghimSistemasTest extends \PHPUnit_Framework_TestCase
 
 		// True
 		$a->setSqlMonitor(true);
-		$this->assertEquals(true, \Braghim\Database::getInstance()->getMonitoring());
+		$this->assertEquals(true, \Braghim\Database\Database::getInstance()->getMonitoring());
 
 		// False
 		$a->setSqlMonitor(false);
-		$this->assertNotTrue(\Braghim\Database::getInstance()->getMonitoring());
+		$this->assertNotTrue(\Braghim\Database\Database::getInstance()->getMonitoring());
 	}
 
 }

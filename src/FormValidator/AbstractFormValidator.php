@@ -1,13 +1,11 @@
 <?php
-namespace Braghim;
-
-include_once 'FormValidator/Validation.php';
+namespace Braghim\FormValidator;
 
 /**
  * Class AbstractFormValidator
  * @package Braghim
  */
-abstract class AbstractFormValidator extends FormValidator\Validation
+abstract class AbstractFormValidator extends Validation
 {
 	/**
 	 * Valida se um campo está vazio.
@@ -276,6 +274,7 @@ abstract class AbstractFormValidator extends FormValidator\Validation
 	 * 
 	 * @param string $value Valor para ser filtrado
 	 * @param array $options Valor padrão para quando o valor estiver vazio
+	 * @throws \Exception Obrigatori um indice 'default' nas opcoes
 	 * @return float
 	 */
 	public function toDouble($value, $options = array('default' => 0.0)) {

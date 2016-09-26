@@ -1,5 +1,5 @@
 <?php
-namespace Braghim;
+namespace Braghim\Routes;
 
 /**
  * Class Routes
@@ -148,6 +148,7 @@ class Routes
 			
 			// Verifica se o usuario definiu um
 			// arquivo para rotas personalizadas
+			// @todo: Usar caminho absoluto para incluir arquivos aqui.
 			if (file_exists("config/{$this->moduleName}.routes.php")) {
 				$this->custom = include "config/{$this->moduleName}.routes.php";
 
@@ -170,7 +171,7 @@ class Routes
 	 * Procura por rotas que sejam lineares, ou seja, o nome fica no inicio da rota e os parametros no final.
 	 * 
 	 * @param array $routeParts
-	 * @return \Braghim\Routes
+	 * @return \Braghim\Routes\Routes
 	 */
 	private function resolveLinearRoutes(array $routeParts)
 	{

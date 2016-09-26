@@ -1,15 +1,14 @@
 <?php
-namespace Braghim;
+namespace Braghim\Database;
 
-use Braghim\Database\Config;
-
-include_once 'Database/Persistence.php';
+use Braghim\Mvc\MvcAbstractController;
+use Braghim\Paginate\Paginate;
 
 /**
  * Class Database
  * @package Braghim
  */
-class Database extends Database\Persistence
+class Database extends Persistence
 {
 	/**
 	 * Singleton
@@ -17,7 +16,7 @@ class Database extends Database\Persistence
 	private static $instance;
 
 	/**
-	 * @var Database/Config
+	 * @var Config
 	 */
 	private static $config;
 
@@ -120,7 +119,7 @@ class Database extends Database\Persistence
 	 * 
 	 * @param mixed $query Instrucao SQL para executar no banco de dados com paginacao.
 	 * @param \Closure $clousureFunc Adiciona a paginacao uma funcao que sera executada em cada item retornado na query.
-	 * @return \Braghim\Paginate
+	 * @return \Braghim\Paginate\Paginate
 	 */
 	public function paginate($query, $clousureFunc = null) {
 		return new Paginate($this, $query, $clousureFunc);

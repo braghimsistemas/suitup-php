@@ -1,6 +1,5 @@
 <?php
 namespace Braghim\FormValidator;
-use Zend\Validator\AbstractValidator;
 
 /**
  * Class Validation
@@ -131,7 +130,7 @@ abstract class Validation
 					$options = $method;
 
 					/**
-					 * @var AbstractValidator
+					 * @var \Zend\Validator\AbstractValidator
 					 */
 					$validator = new $methodOrClass($options);
 					

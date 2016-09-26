@@ -1,5 +1,7 @@
 <?php
-namespace Braghim;
+namespace Braghim\Database\Business;
+
+use Braghim\Database\Gateway\AbstractGateway;
 
 /**
  * Class AbstractBusiness
@@ -8,7 +10,7 @@ namespace Braghim;
 abstract class AbstractBusiness
 {
 	/**
-	 * @var AbstractGateway
+	 * @var \Braghim\Database\Gateway\AbstractGateway
 	 */
 	protected $gateway;
 

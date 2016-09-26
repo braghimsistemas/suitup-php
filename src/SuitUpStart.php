@@ -1,10 +1,10 @@
 <?php
-include_once __DIR__."/Psr4AutoloaderClass.php";
+include_once __DIR__."/Autoload/Psr4AutoloaderClass.php";
 include_once __DIR__."/functions.php";
 
-use Braghim\MvcAbstractController;
-use Braghim\Database;
-use Braghim\Routes;
+use Braghim\Mvc\MvcAbstractController;
+use Braghim\Database\Database;
+use Braghim\Routes\Routes;
 
 /**
  * Token para o sistema nao "confundir" as mensagens de sessao
@@ -29,7 +29,7 @@ defined('SHOW_ERRORS') || define('SHOW_ERRORS', (bool) getenv('DEVELOPMENT'));
  * Utilize este arquivo como entrada do framework.
  * Vide documentação online.
  */
-class BraghimSistemas {
+class SuitUpStart {
 
 	/**
 	 * Versão atual do sistema
@@ -37,7 +37,7 @@ class BraghimSistemas {
 	const VERSION = '1.1.5';
 
 	/**
-	 * @var BraghimSistemas
+	 * @var SuitUpStart
 	 */
 	private static $instance;
 	
@@ -63,7 +63,7 @@ class BraghimSistemas {
 	 * Configura o sistema.
 	 *
 	 * @param string $modulesPath Caminho para as pastas de modulos do sistema.
-	 * @return BraghimSistemas
+	 * @return SuitUpStart
 	 * @throws \Exception
 	 */
 	public static function setup($modulesPath = null) {
@@ -79,7 +79,7 @@ class BraghimSistemas {
 	/**
 	 * Retorna instancia da classe
 	 * 
-	 * @return BraghimSistemas
+	 * @return SuitUpStart
 	 */
 	public static function getInstance() {
 		return self::setup();
@@ -231,11 +231,11 @@ class BraghimSistemas {
 
 		/**
 		 * Cada módulo pode ter um
-		 * @var Braghim\MvcAbstractController
+		 * @var \Braghim\Mvc\MvcAbstractController
 		 */
 		$abstractController = "$module\\Controllers\\AbstractController";
 		if (!class_exists($abstractController)) {
-			$abstractController = "\\Braghim\\MvcAbstractController";
+			$abstractController = "\\Braghim\\Mvc\\MvcAbstractController";
 		}
 		$abstractController::$params = $result;
 		
@@ -245,7 +245,7 @@ class BraghimSistemas {
 	/**
 	 * Habilita ou desabilita monitoramento de SQL de banco de dados.
 	 * @param boolean $status
-	 * @return BraghimSistemas
+	 * @return SuitUpStart
 	 */
 	public function setSqlMonitor($status = false) {
 		Database::getInstance()->setMonitoring($status);
