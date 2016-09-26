@@ -1,9 +1,9 @@
 <?php
-namespace Braghim\FormValidator;
+namespace SuitUp\FormValidator;
 
 /**
  * Class Validation
- * @package Braghim\FormValidator
+ * @package SuitUp\FormValidator
  */
 abstract class Validation
 {

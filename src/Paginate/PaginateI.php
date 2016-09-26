@@ -1,41 +1,41 @@
 <?php
-namespace Braghim\Paginate;
+namespace SuitUp\Paginate;
 
-use Braghim\Database\Database;
-use Braghim\Database\SqlFileManager;
+use SuitUp\Database\Database;
+use SuitUp\Database\SqlFileManager;
 use Iterator;
 
 /**
  * Interface PaginateI
- * @package Braghim\Paginate
+ * @package SuitUp\Paginate
  */
 interface PaginateI extends Iterator {
 
 	/**
-	 * @param \Braghim\Database\Database $db
-	 * @return \Braghim\Paginate\Paginate
+	 * @param \SuitUp\Database\Database $db
+	 * @return \SuitUp\Paginate\Paginate
 	 */
 	public function setDb(Database $db);
 
 	/**
-	 * @return \Braghim\Database\Persistence
+	 * @return \SuitUp\Database\Persistence
 	 */
 	public function getDb();
 
 	/**
-	 * @param \Braghim\Database\SqlFileManager $adapter
-	 * @return \Braghim\Database\SqlFileManager
+	 * @param \SuitUp\Database\SqlFileManager $adapter
+	 * @return \SuitUp\Database\SqlFileManager
 	 */
 	public function setAdapter(SqlFileManager $adapter);
 
 	/**
-	 * @return \Braghim\Database\SqlFileManager
+	 * @return \SuitUp\Database\SqlFileManager
 	 */
 	public function getAdapter();
 
 	/**
 	 * @param $pageRange
-	 * @return \Braghim\Paginate\Paginate
+	 * @return \SuitUp\Paginate\Paginate
 	 */
 	public function setPageRange($pageRange);
 
@@ -46,7 +46,7 @@ interface PaginateI extends Iterator {
 
 	/**
 	 * @param $currentPage
-	 * @return \Braghim\Paginate\Paginate
+	 * @return \SuitUp\Paginate\Paginate
 	 */
 	public function setCurrentPage($currentPage);
 
@@ -57,7 +57,7 @@ interface PaginateI extends Iterator {
 
 	/**
 	 * @param $numberPerPage
-	 * @return \Braghim\Paginate\Paginate
+	 * @return \SuitUp\Paginate\Paginate
 	 */
 	public function setNumberPerPage($numberPerPage);
 

@@ -1,16 +1,16 @@
 <?php
-namespace Braghim\Database\Business;
+namespace SuitUp\Database\Business;
 
-use Braghim\Database\Gateway\AbstractGateway;
+use SuitUp\Database\Gateway\AbstractGateway;
 
 /**
  * Class AbstractBusiness
- * @package Braghim
+ * @package SuitUp\Database\Business
  */
 abstract class AbstractBusiness
 {
 	/**
-	 * @var \Braghim\Database\Gateway\AbstractGateway
+	 * @var \SuitUp\Database\Gateway\AbstractGateway
 	 */
 	protected $gateway;
 

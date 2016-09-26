@@ -23,7 +23,7 @@
 
 namespace ModuleDefault\Controllers;
 
-use Braghim\Mvc\MvcAbstractController;
+use SuitUp\Mvc\MvcAbstractController;
 
 /**
  * Um arquivo que tem classe

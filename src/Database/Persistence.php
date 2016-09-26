@@ -1,10 +1,14 @@
 <?php
-namespace Braghim\Database;
+namespace SuitUp\Database;
 
 /**
+ * Class Persistence
+ *
  * @author		Author: Vivek Wicky Aswal. (https://twitter.com/#!/VivekWickyAswal)
  * @git			https://github.com/indieteq/PHP-MySQL-PDO-Database-Class
  * @version		0.2ab
+ *
+ * @package SuitUp\Database
  */
 abstract class Persistence
 {
@@ -306,7 +310,7 @@ abstract class Persistence
 	 * Enable/Disable SQL monitoring
 	 * 
 	 * @param bool $status
-	 * @return \Braghim\Database\Persistence
+	 * @return \SuitUp\Database\Persistence
 	 */
 	public function setMonitoring($status) {
 		$this->monitoring = (bool) $status;
@@ -332,9 +336,9 @@ abstract class Persistence
 		
 		$html = file_get_contents(__DIR__.'/query-log.min.html');
 		
-		$html .= '<div id="__braghim-query-log-tab__">SQL <span id="close">X</span></div>';
+		$html .= '<div id="__SuitUp-query-log-tab__">SQL <span id="close">X</span></div>';
 		
-		$html .= '<div id="__braghim-query-log__">';
+		$html .= '<div id="__SuitUp-query-log__">';
 		$html .= '<div class="headding">Queries executadas nesta página <span id="closebox">X</span></div>';
 		$html .= '<div class="mainbox">';
 		

@@ -1,16 +1,16 @@
 <?php
-namespace Braghim\Mvc;
+namespace SuitUp\Mvc;
 
-use Braghim\Enum\MsgType;
-use Braghim\Database\Database;
-use Braghim\Routes\Routes;
+use SuitUp\Enum\MsgType;
+use SuitUp\Database\Database;
+use SuitUp\Routes\Routes;
 use Exception;
 use stdClass;
 use upload;
 
 /**
  * Class MvcAbstractController
- * @package Braghim
+ * @package SuitUp\Mvc
  */
 abstract class MvcAbstractController
 {

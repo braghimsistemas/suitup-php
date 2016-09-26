@@ -1,9 +1,9 @@
 <?php
-namespace Braghim\Routes;
+namespace SuitUp\Routes;
 
 /**
  * Class Routes
- * @package Braghim
+ * @package SuitUp\Routes
  */
 class Routes
 {
@@ -15,7 +15,7 @@ class Routes
 	 * 'minha-rota.html' => array(
 	 *		'controller' => 'index',
 	 *		'action' => 'index',
-	 *		'type' => Braghim\Routes::TYPE_REVERSE
+	 *		'type' => SuitUp\Routes::TYPE_REVERSE
 	 * )
 	 * 
 	 */
@@ -171,7 +171,7 @@ class Routes
 	 * Procura por rotas que sejam lineares, ou seja, o nome fica no inicio da rota e os parametros no final.
 	 * 
 	 * @param array $routeParts
-	 * @return \Braghim\Routes\Routes
+	 * @return \SuitUp\Routes\Routes
 	 */
 	private function resolveLinearRoutes(array $routeParts)
 	{

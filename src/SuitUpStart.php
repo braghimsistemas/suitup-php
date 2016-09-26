@@ -2,14 +2,14 @@
 include_once __DIR__."/Autoload/Psr4AutoloaderClass.php";
 include_once __DIR__."/functions.php";
 
-use Braghim\Mvc\MvcAbstractController;
-use Braghim\Database\Database;
-use Braghim\Routes\Routes;
+use SuitUp\Mvc\MvcAbstractController;
+use SuitUp\Database\Database;
+use SuitUp\Routes\Routes;
 
 /**
  * Token para o sistema nao "confundir" as mensagens de sessao
  * atual com mensagens que ja existiam em outra pagina.
- * Utilizado dentro da classe Braghim\MvcAbstractController
+ * Utilizado dentro da classe \SuitUp\Mvc\MvcAbstractController
  *
  * ¯\_(-.-)_/¯
  */
@@ -26,6 +26,8 @@ defined('DEVELOPMENT') || define('DEVELOPMENT', (bool) getenv('DEVELOPMENT'));
 defined('SHOW_ERRORS') || define('SHOW_ERRORS', (bool) getenv('DEVELOPMENT'));
 
 /**
+ * Class SuitUpStart
+ *
  * Utilize este arquivo como entrada do framework.
  * Vide documentação online.
  */
@@ -100,7 +102,7 @@ class SuitUpStart {
 		 */
 		$this->loader = new Psr4AutoloaderClass();
 		$this->loader->register();
-		$this->loader->addNamespace('Braghim\\', __DIR__);
+		$this->loader->addNamespace('SuitUp\\', __DIR__);
 		$this->loader->addNamespace('ModuleError\\', __DIR__.'/ModuleError');
 
 		// Define rotas
@@ -147,7 +149,7 @@ class SuitUpStart {
 				} catch (\Exception $ex2) {
 
 					if (DEVELOPMENT) dump($e);
-					exit('Confira a estrutura de arquivos, pois parece que algo está fora do padrão. https://github.com/braghimsistemas/framework/wiki/Instala%C3%A7%C3%A3o#estrutura-do-projeto');
+					exit('Confira a estrutura de arquivos, pois parece que algo está fora do padrão. https://github.com/SuitUpsistemas/framework/wiki/Instala%C3%A7%C3%A3o#estrutura-do-projeto');
 				}
 			}
 			$result->exception = $e;
@@ -231,11 +233,11 @@ class SuitUpStart {
 
 		/**
 		 * Cada módulo pode ter um
-		 * @var \Braghim\Mvc\MvcAbstractController
+		 * @var \SuitUp\Mvc\MvcAbstractController
 		 */
 		$abstractController = "$module\\Controllers\\AbstractController";
 		if (!class_exists($abstractController)) {
-			$abstractController = "\\Braghim\\Mvc\\MvcAbstractController";
+			$abstractController = "\\SuitUp\\Mvc\\MvcAbstractController";
 		}
 		$abstractController::$params = $result;
 		

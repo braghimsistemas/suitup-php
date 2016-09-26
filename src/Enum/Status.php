@@ -1,9 +1,9 @@
 <?php
-namespace Braghim\Enum;
+namespace SuitUp\Enum;
 
 /**
  * Class Status
- * @package Braghim\Enum
+ * @package SuitUp\Enum
  */
 class Status
 {

@@ -1,21 +1,21 @@
 <?php
-namespace Braghim\Paginate;
+namespace SuitUp\Paginate;
 
 include_once 'PaginateI.php';
 
 use Countable;
-use Braghim\Database\Database;
-use Braghim\Database\SqlFileManager;
-use Braghim\Routes\Routes;
+use SuitUp\Database\Database;
+use SuitUp\Database\SqlFileManager;
+use SuitUp\Routes\Routes;
 
 /**
  * Class Paginate
- * @package Braghim
+ * @package SuitUp\Paginate
  */
 class Paginate implements Countable, PaginateI
 {
 	/**
-	 * @var \Braghim\Database\Database
+	 * @var \SuitUp\Database\Database
 	 */
 	private $db;
 
@@ -78,8 +78,8 @@ class Paginate implements Countable, PaginateI
 	/**
 	 * Basta indicar o objeto de banco de dados e a query em forma de objeto SqlFileManager.
 	 *
-	 * @param \Braghim\Database\Database $db
-	 * @param \Braghim\Database\SqlFileManager $adapter
+	 * @param \SuitUp\Database\Database $db
+	 * @param \SuitUp\Database\SqlFileManager $adapter
 	 * @param \Closure $clousureFunc
 	 */
 	public function __construct(Database $db, SqlFileManager $adapter, $clousureFunc = null)
@@ -100,8 +100,8 @@ class Paginate implements Countable, PaginateI
 	/**
 	 * Instancia do controlador de queries.
 	 *
-	 * @param \Braghim\Database\Database $db
-	 * @return \Braghim\Paginate\Paginate
+	 * @param \SuitUp\Database\Database $db
+	 * @return \SuitUp\Paginate\Paginate
 	 */
 	public function setDb(Database $db)
 	{
@@ -112,7 +112,7 @@ class Paginate implements Countable, PaginateI
 	/**
 	 * Retorna a classe que executa as queries.
 	 *
-	 * @return \Braghim\Database\Persistence
+	 * @return \SuitUp\Database\Persistence
 	 */
 	public function getDb()
 	{
@@ -122,8 +122,8 @@ class Paginate implements Countable, PaginateI
 	/**
 	 * Set adapter data
 	 *
-	 * @param \Braghim\Database\SqlFileManager $adapter
-	 * @return \Braghim\Paginate\Paginate
+	 * @param \SuitUp\Database\SqlFileManager $adapter
+	 * @return \SuitUp\Paginate\Paginate
 	 */
 	public function setAdapter(SqlFileManager $adapter)
 	{
@@ -146,7 +146,7 @@ class Paginate implements Countable, PaginateI
 	 * Set page to range in view to user
 	 *
 	 * @param string $pageRange
-	 * @return \Braghim\Paginate\Paginate
+	 * @return \SuitUp\Paginate\Paginate
 	 * @throws \Exception
 	 */
 	public function setPageRange($pageRange)
@@ -178,7 +178,7 @@ class Paginate implements Countable, PaginateI
 	 * Set current page. The offset of slice.
 	 *
 	 * @param int $currentPage
-	 * @return \Braghim\Paginate\Paginate
+	 * @return \SuitUp\Paginate\Paginate
 	 */
 	public function setCurrentPage($currentPage)
 	{
@@ -203,7 +203,7 @@ class Paginate implements Countable, PaginateI
 	 * Number of rows per page
 	 *
 	 * @param int $numberPerPage
-	 * @return \Braghim\Paginate\Paginate
+	 * @return \SuitUp\Paginate\Paginate
 	 */
 	public function setNumberPerPage($numberPerPage)
 	{
@@ -281,7 +281,7 @@ class Paginate implements Countable, PaginateI
 	/**
 	 * Iterator. This method set in each loop the actual result
 	 *
-	 * @return \Braghim\Paginate\Paginate
+	 * @return \SuitUp\Paginate\Paginate
 	 */
 	public function rewind()
 	{
@@ -324,7 +324,7 @@ class Paginate implements Countable, PaginateI
 	/**
 	 * Iterator SPL. Gives the next data of object as an array
 	 *
-	 * @return \Braghim\Paginate\Paginate
+	 * @return \SuitUp\Paginate\Paginate
 	 */
 	public function next()
 	{
@@ -345,7 +345,7 @@ class Paginate implements Countable, PaginateI
 	/**
 	 * Determine the total of pages the data will sliced
 	 *
-	 * @return \Braghim\Paginate\Paginate
+	 * @return \SuitUp\Paginate\Paginate
 	 */
 	private function _setTotalPages()
 	{
@@ -361,7 +361,7 @@ class Paginate implements Countable, PaginateI
 	 * based on number per page and the relation between current page with number
 	 * per page.
 	 *
-	 * @return \Braghim\Paginate\Paginate
+	 * @return \SuitUp\Paginate\Paginate
 	 */
 	private function _setResult()
 	{

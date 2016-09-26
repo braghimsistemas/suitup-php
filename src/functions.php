@@ -3,7 +3,7 @@
  * Funções uteis para serem usadas em qualquer lugar
  */
 
-use Braghim\Mvc\MvcAbstractController;
+use SuitUp\Mvc\MvcAbstractController;
 
 /**
  * Valores fixos de tamanhos diversos em Bytes
@@ -62,7 +62,6 @@ if (!function_exists('dump')) {
 	/**
 	 * Funçao para debug simplificada, semelhante ao Zend\Debug.
 	 *
-	 * @author Marco A. Braghim <marco.a.braghim@gmail.com>
 	 * @param mixed $var
 	 * @param bool $echo
 	 * @return string
@@ -127,11 +126,11 @@ function renderView($renderViewName, $vars = array(), $renderViewPath = null)
 /**
  * Renderiza um template de paginacao.
  *
- * @param Braghim\Paginate\Paginate $object Objeto de paginacao criado na query.
+ * @param SuitUp\Paginate\Paginate $object Objeto de paginacao criado na query.
  * @param string $renderViewName Nome do arquivo .phtml de paginacao
  * @return string Html pronto dos botoes de paginacao
  */
-function paginateControl(\Braghim\Paginate\Paginate $object, $renderViewName = 'paginacao.phtml')
+function paginateControl(\SuitUp\Paginate\Paginate $object, $renderViewName = 'paginacao.phtml')
 {
 
 	// Return

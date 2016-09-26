@@ -1,7 +1,7 @@
 <?php
 namespace ModuleError\Controllers;
 
-use Braghim\MvcAbstractController;
+use SuitUp\MvcAbstractController;
 
 /**
  * Class ErrorController

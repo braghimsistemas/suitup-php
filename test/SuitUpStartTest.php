@@ -21,13 +21,13 @@
  * @since 20/09/16
  */
 
-namespace BraghimTest;
+namespace SuitUpTest;
 
 // Define 'env' que indica que quem está rodando o teste é o Travis.
 defined('TRAVIS') || define('TRAVIS', (bool) getenv('TRAVIS'));
 
 
-use Braghim\Database;
+use SuitUp\Database\Database;
 use SuitUpStart;
 
 /**
@@ -36,7 +36,7 @@ use SuitUpStart;
  * @author Marco A. Braghim <braghim.sistemas@gmail.com>
  * @since 20/09/16
  */
-class BraghimSistemasTest extends \PHPUnit_Framework_TestCase
+class SuitUpStartTest extends \PHPUnit_Framework_TestCase
 {
 	/**
 	 * Testa configuracao sem indicar pasta de modulos (erro)
@@ -82,11 +82,11 @@ class BraghimSistemasTest extends \PHPUnit_Framework_TestCase
 
 		// True
 		$a->setSqlMonitor(true);
-		$this->assertEquals(true, \Braghim\Database\Database::getInstance()->getMonitoring());
+		$this->assertEquals(true, Database::getInstance()->getMonitoring());
 
 		// False
 		$a->setSqlMonitor(false);
-		$this->assertNotTrue(\Braghim\Database\Database::getInstance()->getMonitoring());
+		$this->assertNotTrue(Database::getInstance()->getMonitoring());
 	}
 
 }

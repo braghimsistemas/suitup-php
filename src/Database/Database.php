@@ -1,12 +1,12 @@
 <?php
-namespace Braghim\Database;
+namespace SuitUp\Database;
 
-use Braghim\Mvc\MvcAbstractController;
-use Braghim\Paginate\Paginate;
+use SuitUp\Mvc\MvcAbstractController;
+use SuitUp\Paginate\Paginate;
 
 /**
  * Class Database
- * @package Braghim
+ * @package SuitUp\Database
  */
 class Database extends Persistence
 {
@@ -90,7 +90,7 @@ class Database extends Persistence
 	/**
 	 * Inclui a configuração do banco de dados.
 	 *
-	 * @param array|\Braghim\Database\Config $configs
+	 * @param array|\SuitUp\Database\Config $configs
 	 * @throws \Exception
 	 */
 	public static function setConfig($configs) {
@@ -100,7 +100,7 @@ class Database extends Persistence
 		}
 
 		if (!$configs instanceof Config) {
-			throw new \Exception("As configurações de banco de dados devem ser um 'array' ou uma instância de '\\Braghim\\Database\\Config'");
+			throw new \Exception("As configurações de banco de dados devem ser um 'array' ou uma instância de '\\SuitUp\\Database\\Config'");
 		}
 
 		// Instancia de Database\Config
@@ -108,7 +108,7 @@ class Database extends Persistence
 	}
 
 	/**
-	 * @return \Braghim\Database\Config
+	 * @return \SuitUp\Database\Config
 	 */
 	public static function getConfig() {
 		return self::$config;
@@ -119,7 +119,7 @@ class Database extends Persistence
 	 * 
 	 * @param mixed $query Instrucao SQL para executar no banco de dados com paginacao.
 	 * @param \Closure $clousureFunc Adiciona a paginacao uma funcao que sera executada em cada item retornado na query.
-	 * @return \Braghim\Paginate\Paginate
+	 * @return \SuitUp\Paginate\Paginate
 	 */
 	public function paginate($query, $clousureFunc = null) {
 		return new Paginate($this, $query, $clousureFunc);

@@ -1,12 +1,12 @@
 <?php
-namespace Braghim\Database;
+namespace SuitUp\Database;
 
 use Exception;
-use Braghim\Mvc\MvcAbstractController;
+use SuitUp\Mvc\MvcAbstractController;
 
 /**
  * Class SqlFileManager
- * @package Braghim
+ * @package SuitUp\Database
  */
 class SqlFileManager
 {
@@ -121,7 +121,7 @@ class SqlFileManager
 	 * array('coluna' => 'apelido');
 	 *
 	 * @param array $columns
-	 * @return \Braghim\Database\SqlFileManager
+	 * @return \SuitUp\Database\SqlFileManager
 	 */
 	public function columns(array $columns)
 	{
@@ -147,7 +147,7 @@ class SqlFileManager
 	 *
 	 * @param string $table "schema_database.table alias"
 	 * @param string $onClause
-	 * @return \Braghim\Database\SqlFileManager
+	 * @return \SuitUp\Database\SqlFileManager
 	 */
 	public function innerJoin($table, $onClause)
 	{
@@ -160,7 +160,7 @@ class SqlFileManager
 	 *
 	 * @param string $table "schema_database.table alias"
 	 * @param string $onClause
-	 * @return \Braghim\Database\SqlFileManager
+	 * @return \SuitUp\Database\SqlFileManager
 	 */
 	public function leftJoin($table, $onClause)
 	{
@@ -173,7 +173,7 @@ class SqlFileManager
 	 *
 	 * @param string $table "schema_database.table alias"
 	 * @param string $onClause
-	 * @return \Braghim\Database\SqlFileManager
+	 * @return \SuitUp\Database\SqlFileManager
 	 */
 	public function rightJoin($table, $onClause)
 	{
@@ -187,7 +187,7 @@ class SqlFileManager
 	 * @param array|string $where
 	 * @param mixed $value
 	 * @param mixed $type
-	 * @return \Braghim\Database\SqlFileManager
+	 * @return \SuitUp\Database\SqlFileManager
 	 */
 	public function where($where, $value = null, $type = null)
 	{
@@ -228,7 +228,7 @@ class SqlFileManager
 	 * @param array|string $where
 	 * @param mixed $value
 	 * @param mixed $type
-	 * @return \Braghim\Database\SqlFileManager
+	 * @return \SuitUp\Database\SqlFileManager
 	 */
 	public function orWhere($where, $value = null, $type = null)
 	{
@@ -267,7 +267,7 @@ class SqlFileManager
 	 * Adiciona instrucao GROUP
 	 *
 	 * @param array|string $column
-	 * @return \Braghim\Database\SqlFileManager
+	 * @return \SuitUp\Database\SqlFileManager
 	 */
 	public function group($column)
 	{
@@ -289,7 +289,7 @@ class SqlFileManager
 	 * Adiciona instrucao ORDER
 	 *
 	 * @param array|string $column
-	 * @return \Braghim\Database\SqlFileManager
+	 * @return \SuitUp\Database\SqlFileManager
 	 */
 	public function order($column)
 	{
