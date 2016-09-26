@@ -28,6 +28,7 @@ defined('TRAVIS') || define('TRAVIS', (bool) getenv('TRAVIS'));
 
 
 use SuitUp\Database\Database;
+use SuitUp\Database\Config;
 use SuitUpStart;
 
 /**
@@ -72,7 +73,7 @@ class SuitUpStartTest extends \PHPUnit_Framework_TestCase
 		// dele, senão usa as configuracoes do arquivo database.config.php
 		// que não é integrado ao git por questoes de seguranca...
 		if (TRAVIS) {
-			Database::setConfig(new Database\Config(array(
+			Database::setConfig(new Config(array(
 				'host' => 'localhost',
 				'database' => 'test',
 				'username' => 'root',
