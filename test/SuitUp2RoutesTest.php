@@ -29,11 +29,10 @@ use SuitUpStart;
  * Class RoutesTest
  * @package SuitUpTest
  */
-class RoutesTest extends \PHPUnit_Framework_TestCase
+class SuitUp2RoutesTest extends \PHPUnit_Framework_TestCase
 {
 	public function testParams()
 	{
-		SuitUpStart::setup(__DIR__.'/modulestest');
 		$this->assertEquals(array(), Routes::getInstance()->getParams());
 	}
 

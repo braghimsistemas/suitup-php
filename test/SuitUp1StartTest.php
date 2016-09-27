@@ -37,7 +37,7 @@ use SuitUpStart;
  * @author Marco A. Braghim <braghim.sistemas@gmail.com>
  * @since 20/09/16
  */
-class SuitUpStartTest extends \PHPUnit_Framework_TestCase
+class SuitUp1StartTest extends \PHPUnit_Framework_TestCase
 {
 	/**
 	 * Testa configuracao sem indicar pasta de modulos (erro)
@@ -126,5 +126,4 @@ class SuitUpStartTest extends \PHPUnit_Framework_TestCase
 
 		$this->assertEquals("Temos o layout\ne a view", $content);
 	}
-
 }
