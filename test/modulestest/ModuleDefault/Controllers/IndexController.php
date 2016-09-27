@@ -35,6 +35,6 @@ class IndexController extends MvcAbstractController
 {
 	public function indexAction()
 	{
-		echo "\nChegou ao index/index/ \\o/\n";
+
 	}
 }

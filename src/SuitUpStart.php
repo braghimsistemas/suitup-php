@@ -86,6 +86,13 @@ class SuitUpStart {
 	public static function getInstance() {
 		return self::setup();
 	}
+
+	/**
+	 * Reseta a instancia.
+	 */
+	public static function clearInstance() {
+		self::$instance = null;
+	}
 	
 	/**
 	 * Construtor, mas substituido para dar a oportunidade de carregar de modo diferente.
@@ -138,6 +145,10 @@ class SuitUpStart {
 			// corretamente
 			$result = $this->resolve($routes->module, $routes->controller, $routes->action);
 		} catch (\Exception $e) {
+
+			// Reset instance because of error.
+			self::$instance = null;
+
 			try {
 				// Aqui já deu merda, o usuário verá a tela de erro
 				// do módulo
@@ -145,11 +156,9 @@ class SuitUpStart {
 			} catch (\Exception $ex) {
 				try {
 					// Aqui piorou, o sistema chama um módulo padrão de erros.
-					$result = $this->resolve('ModuleError', 'error', 'not-found', __DIR__);
+					$result = $this->resolve('ModuleError', 'error', 'not-found', __DIR__.'/');
 				} catch (\Exception $ex2) {
-
-					if (DEVELOPMENT) dump($e);
-					exit('Confira a estrutura de arquivos, pois parece que algo está fora do padrão. https://github.com/SuitUpsistemas/framework/wiki/Instala%C3%A7%C3%A3o#estrutura-do-projeto');
+					throw new \Exception("Confira a estrutura de arquivos, pois parece que algo está fora do padrão. https://github.com/SuitUpsistemas/framework/wiki/Instala%C3%A7%C3%A3o#estrutura-do-projeto");
 				}
 			}
 			$result->exception = $e;
@@ -175,7 +184,7 @@ class SuitUpStart {
 		if (!$path) {
 			$path = $this->modulesPath;
 		}
-		
+
 		$result = new stdClass();
 		$result->layoutName = "layout.phtml";
 		$result->mainPath = $path;

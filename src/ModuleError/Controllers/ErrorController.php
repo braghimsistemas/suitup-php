@@ -1,7 +1,7 @@
 <?php
 namespace ModuleError\Controllers;
 
-use SuitUp\MvcAbstractController;
+use SuitUp\Mvc\MvcAbstractController;
 
 /**
  * Class ErrorController
