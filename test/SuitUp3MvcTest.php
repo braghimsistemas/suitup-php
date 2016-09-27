@@ -79,8 +79,7 @@ class SuitUp3MvcTest extends \PHPUnit_Framework_TestCase
 	{
 		$result = $this->app->renderView(
 			'render-view-test.phtml',
-			array('resposta' => 42),
-			__DIR__.'/modulestest/ModuleDefault/views/'
+			array('resposta' => 42)
 		);
 
 		$this->assertEquals("Qual a resposta para a vida, o universo e tudo mais?\nR: 42", $result);
