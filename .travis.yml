@@ -20,6 +20,7 @@ env:
   global:
     - DEVELOPMENT=true
     - SHOW_ERRORS=true
+
     - TRAVIS=true
 
 matrix:
