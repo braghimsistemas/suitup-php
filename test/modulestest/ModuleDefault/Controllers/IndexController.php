@@ -1,35 +1,34 @@
 <?php
 /**
- * hybrid - Braghim Sistemas - Software Privado
+ * The MIT License (MIT)
  *
- * Copyright 22 de Setembro, 2016
+ * Copyright (c) 2016 Braghim Sistemas
  *
- * Este é um sistema privado pertencente à empresa Braghim Sistemas.
- * Este software não foi desenvolvido com intuito de ser vendido ou mesmo
- * liberado para ser distribuído a nenhuma pessoa, mesmo que este seja ou
- * tenha sido um dia colaborador da empresa em nível de funcionário, freelancer
- * (trabalhos temporários) ou gerenciador de servidores aos quais a empresa
- * pode ter utilizado para manter os arquivos ou versões.
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Apenas a própria empresa Braghim Sistemas tem o direito de utilizá-lo a
- * menos que isto tenha sido contestado através de contrato devidamente
- * legal firmado com a empresa.
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
  *
- * Em poucas palavras: NENHUMA LINHA DE CÓDIGO DESTE SISTEMA DEVE SER COPIADA!
- *
- * @author jackie
- * @since 22/09/16
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
-
 namespace ModuleDefault\Controllers;
 
 use SuitUp\Mvc\MvcAbstractController;
 
 /**
- * Um arquivo que tem classe
- *
- * @author jackie
- * @since 22/09/16
+ * Class IndexController
+ * @package ModuleDefault\Controllers
  */
 class IndexController extends MvcAbstractController
 {
