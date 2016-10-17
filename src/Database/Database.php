@@ -54,10 +54,15 @@ class Database extends Persistence
 		 * procurar o arquivo database.config.php na pasta
 		 * config que deveria estar na raiz do projeto.
 		 */
-		if (null == self::$config && (MvcAbstractController::$params->moduleName != 'ModuleError')) {
+		if (null == self::$config) {
 			$dbConfigFile = dirname(MvcAbstractController::$params->mainPath).'/config/database.config.php';
 
 			if (!file_exists($dbConfigFile)) {
+
+				// O arquivo não existe, mas é um erro do sistema (provavelmente estrutura) então nao faz nada.
+				if (MvcAbstractController::$params->moduleName == 'ModuleError') {
+					return;
+				}
 				throw new \Exception("Nenhuma configuração de banco de dados configurada.");
 			}
 
