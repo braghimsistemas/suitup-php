@@ -134,6 +134,9 @@ class Database extends Persistence
 	 * @return \SuitUp\Database\Config
 	 */
 	public static function getConfig() {
+		if (null == self::$config) {
+			self::setConfig(new Config());
+		}
 		return self::$config;
 	}
 
