@@ -176,7 +176,9 @@ abstract class MvcAbstractController
 		$content = ob_get_clean();
 
 		// Lista de instruções SQL rodadas nesta pagina
-		$queryLog = Database::getInstance()->getQueryLog();
+		if (Database::getInstance()) {
+			$queryLog = Database::getInstance()->getQueryLog();
+		}
 
 		// mostra conteúdo do layout já com a view injetada
 		include $layoutfile;
