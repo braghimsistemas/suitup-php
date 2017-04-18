@@ -1,4 +1,5 @@
-# SuitUp PHP Framework
+# SuitUp PHP Framework  
+> Legendary web applications
 
 [![Build Status](https://travis-ci.org/braghimsistemas/suitup-php.svg?branch=master)](https://travis-ci.org/braghimsistemas/suitup-php)
 [![Coverage Status](https://coveralls.io/repos/github/braghimsistemas/suitup-php/badge.svg?branch=master)](https://coveralls.io/github/braghimsistemas/suitup-php?branch=master)
@@ -8,34 +9,22 @@
 [![Latest Unstable Version](https://poser.pugx.org/braghim-sistemas/suitup-php/v/unstable)](https://packagist.org/packages/braghim-sistemas/suitup-php)
 [![License](https://poser.pugx.org/braghim-sistemas/suitup-php/license)](https://packagist.org/packages/braghim-sistemas/suitup-php)
 
-**Legendary Web Applications**
-[http://framework.braghim.com.br](http://framework.braghim.com.br)
-
-Este é um framework para projetos web no qual podemos considerar tanto pequenos
-quanto grandes aplicativos. Um pequeno sistema feito de forma simples, mas
-efetivo e de alta produtividade.
-
 ### Composer
 `composer require braghim-sistemas/suitup-php`
 
-### Instalação
-Visite nossa [wiki](https://github.com/braghimsistemas/suitup-php/wiki) para saber como instalar o projeto e ser feliz.
+### How to do?
+Check out our [wiki](https://github.com/braghimsistemas/suitup-php/wiki), there you will be able to install the project quickly and start a web application with productivity focus.
 
-## Entendendo o projeto
-### Porquê este framework e não outro?
-Você deve se perguntar porquê utilizar este framework e não um Zend, por exemplo.
-Nós fizemos a nós mesmos a mesma pergunta e podemos dizer o seguinte.
-Ao utilizar um framework grande como o Zend 2 nós acabamos caindo em uma
-situação que acaba prejudicando a produtividade do proejto por que a configuração
-é massiva e requer muita análise e muito tempo gasto com a estruturação. Para
-criar um novo controlador com Zend 2 por exemplo é necessário além de criar o
-arquivo, configurar o módulo para entende-lo. Isso tudo, além de sua biblioteca
-ser grande e ocupar bastante espaço físico no servidor com uma grande quantidade
-de arquivos que muitas vezes nem são utilizados pelo projeto, nos fez repensar a
-questão de utilizar o Zend e em vez disso usarmos um framework pequeno e simples,
-mas que utiliza as bibliotecas do Zend 2 como suporte para ferramentas que ele
-provê, que são fantásticas e muito bem feitas.
+**Legendary Web Applications**  
+While you write the code for an application there is a lot of code you probably will use again and again and will have to copy for another application in future. Because of this, someone too smarty for whon we have to congrats a lot, created a project which works as a structure (just like a wireframe) with a lot of features you just have to use, not create. With this project is possible to create whatever kind of application quickly and it's just awesome!
 
-**Nosso famework também trabalha com módulos** e é focado na produtividade do projeto.
+_SuitUp_ is a PHP\* OOP\*\* framework which helps you to do what you have to do quickly, it's focused on productivity without forget about security and good practices.
 
-Muito Obrigado, bom trabaho ;)
+\* Works on [PHP](//php.net) applications based  
+\*\* OOP - [Object-oriented programming](//en.wikipedia.org/wiki/Object-oriented_programming) where programming projects works with _objects_ concepts.  
+
+### SuitUp works with modules
+What it means? You can write kind a different and separated applications in the same code just changing the base URL.
+
+Made with love by Braghim Sistemas.  
+Thank you very much!
