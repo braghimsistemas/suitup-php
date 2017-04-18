@@ -24,7 +24,7 @@ _SuitUp_ is a PHP\* OOP\*\* framework which helps you to do what you have to do 
 \*\* OOP - [Object-oriented programming](//en.wikipedia.org/wiki/Object-oriented_programming) where programming projects works with _objects_ concepts.  
 
 ### SuitUp works with modules
-What it means? You can write kind a different and separated applications in the same code just changing the base URL.
+What it means? You can write others different and separate applications in the same project which will be accessed just changing the base URL.
 
 Made with love by Braghim Sistemas.  
 Thank you very much!
