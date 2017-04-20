@@ -26,5 +26,16 @@ _SuitUp_ is a PHP\* OOP\*\* framework which helps you to do what you have to do 
 ### SuitUp works with modules
 What it means? You can write others different and separate applications in the same project which will be accessed just changing the base URL.
 
+---
+### Why we keep this project?
+At the start, we created this project just for personal use, because the usual frameworks wasn't giving us the speed and facility we expected from a framework PHP. We just want to create a web project as quick as the client can pay for it before change his mind. Anyway, we don't wanna to make a fucking crap project missmashed up where seem that the Santa Claus just sited down on it. Where we can't found a thing and everything is just mixed without no order or pattern. So we created SuitUp, a framework which you can create your web project truly fast and everything is really patterned. We are really happy and satisfied with the results we got with SuitUp yet here.
+
+Try it you too, awesome web projects with SuitUp PHP Framework!
+
+### Contributors
+Everyone is welcome to contribute with _SuitUp PHP Framework_. Just fork it, make your changes as minimal as possible and create a _pull request_. We ask to create minimal changes because by this way it's easier to merge your request to the project in approve case.
+
+---
+
 Made with love by Braghim Sistemas.  
 Thank you very much!
