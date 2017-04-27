@@ -15,6 +15,9 @@
 ### How to do?
 Check out our [wiki](https://github.com/braghimsistemas/suitup-php/wiki), there you will be able to install the project quickly and start a web application with productivity focus.
 
+#### PHP Documentation
+You can find all code documentation [here](https://codedoc.pub/braghimsistemas/suitup-php/master/index.html), but remember that the wiki is really complete and give you really explanations about how to do.
+
 **Legendary Web Applications**  
 While you write the code for an application there is a lot of code you probably will use again and again and will have to copy for another application in future. Because of this, someone too smarty for whon we have to congrats a lot, created a project which works as a structure (just like a wireframe) with a lot of features you just have to use, not create. With this project is possible to create whatever kind of application quickly and it's just awesome!
 
