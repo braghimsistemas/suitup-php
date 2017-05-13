@@ -1,5 +1,4 @@
 # SuitUp PHP Framework  
-> Legendary web applications
 
 [![Build Status](https://travis-ci.org/braghimsistemas/suitup-php.svg?branch=master)](https://travis-ci.org/braghimsistemas/suitup-php)
 [![Coverage Status](https://coveralls.io/repos/github/braghimsistemas/suitup-php/badge.svg?branch=master)](https://coveralls.io/github/braghimsistemas/suitup-php?branch=master)
@@ -40,9 +39,9 @@ Everyone is welcome to contribute with _SuitUp PHP Framework_. Just fork it, mak
 
 
 ### Get in touch
-Doubts and sugestions get in touch with [malito:braghim.sistemas@gmail.com](braghim.sistemas@gmail.com). Find us on [facebook](https://www.facebook.com/braghimsistemas)
+Doubts and sugestions get in touch with [braghim.sistemas@gmail.com](malito:braghim.sistemas@gmail.com). Find us on [facebook](https://www.facebook.com/braghimsistemas)
 
 ---
 
-Made with :heart: by Braghim Sistemas.  
+Made with ♥ by Braghim Sistemas.  
 Thank you very much!
