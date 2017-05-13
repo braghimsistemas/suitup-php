@@ -3,5 +3,7 @@
 
 @import "{{ site.theme }}";
 
-
+#suitup-logo img {
+  max-width: 75px;
+}
 
