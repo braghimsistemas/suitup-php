@@ -1,7 +1,7 @@
 title: SuitUp PHP Framework
 description: Legendary web applications <br/> (productivity and quickly apps starts here)
 google_analytics: UA-64023203-5
-show_downloads: true
+show_downloads: false
 theme: jekyll-theme-architect
 
 gems:
