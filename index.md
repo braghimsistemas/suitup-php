@@ -33,7 +33,7 @@ Everyone is welcome to contribute with _SuitUp PHP Framework_. Just fork it, mak
 
 
 ### Get in touch
-Doubts and sugestions get in touch with [braghim.sistemas@gmail.com](malito:braghim.sistemas@gmail.com). Find us on [facebook](https://www.facebook.com/braghimsistemas)
+Doubts and sugestions get in touch with [braghim.sistemas@gmail.com](mailto:braghim.sistemas@gmail.com). Find us on [facebook](https://www.facebook.com/braghimsistemas)
 
 ---
 
