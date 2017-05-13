@@ -3,7 +3,7 @@
 [![Latest Unstable Version](https://poser.pugx.org/braghim-sistemas/suitup-php/v/unstable)](https://packagist.org/packages/braghim-sistemas/suitup-php)
 [![License](https://poser.pugx.org/braghim-sistemas/suitup-php/license)](https://packagist.org/packages/braghim-sistemas/suitup-php)
 
-### Download - [Download Latest](https://github.com/braghimsistemas/suitup-php/releases/latest)
+### [Download Latest](https://github.com/braghimsistemas/suitup-php/releases/latest)
 **Prefer to add in your project with composer as shown below.**
 
 ### Composer
