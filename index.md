@@ -1,5 +1,5 @@
 
-[[suitup-php/stylesheets/suitup-logo.png|SuitUp Framework]]
+[[https://github.com/braghimsistemas/suitup-php/raw/gh-pages/stylesheets/suitup-logo.png|SuitUp Framework]]
 
 [![Latest Stable Version](https://poser.pugx.org/braghim-sistemas/suitup-php/v/stable)](https://packagist.org/packages/braghim-sistemas/suitup-php)
 [![Latest Unstable Version](https://poser.pugx.org/braghim-sistemas/suitup-php/v/unstable)](https://packagist.org/packages/braghim-sistemas/suitup-php)
