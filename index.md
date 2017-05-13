@@ -4,7 +4,7 @@
 [![License](https://poser.pugx.org/braghim-sistemas/suitup-php/license)](https://packagist.org/packages/braghim-sistemas/suitup-php)
 
 ### Download
-Prefer to add in your project with composer as shown below, but feel free to download.
+**Prefer to add in your project with composer as shown below.**
 
 [Download Latest](https://github.com/braghimsistemas/suitup-php/releases/latest)
 
