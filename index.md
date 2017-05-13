@@ -1,7 +1,3 @@
----
-title: SuitUp PHP Framework - productivity and quickly apps starts here
-layout: post
----
 
 [![Latest Stable Version](https://poser.pugx.org/braghim-sistemas/suitup-php/v/stable)](https://packagist.org/packages/braghim-sistemas/suitup-php)
 [![Latest Unstable Version](https://poser.pugx.org/braghim-sistemas/suitup-php/v/unstable)](https://packagist.org/packages/braghim-sistemas/suitup-php)
