@@ -6,8 +6,7 @@
 ### Download
 Prefer to add in your project with composer as shown below, but feel free to download.
 
-{{ site.github.zip_url }}
-{{ site.github.tar_url }}
+[Download Latest](https://github.com/braghimsistemas/suitup-php/releases/latest)
 
 ### Composer
 `composer require braghim-sistemas/suitup-php`
