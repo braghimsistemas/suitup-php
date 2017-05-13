@@ -9,8 +9,7 @@
 ### Composer
 `composer require braghim-sistemas/suitup-php`
 
-## What is it?
-### How to do?
+### What is it and How to do?
 Check out our [wiki](https://github.com/braghimsistemas/suitup-php/wiki), there you will be able to install the project quickly and start a web application with productivity focus.
 
 ### Legendary Web Applications
