@@ -43,7 +43,12 @@ class SuitUp3MvcTest extends \PHPUnit_Framework_TestCase
 	public function __construct($name = null, array $data = array(), $dataName = '')
 	{
 		parent::__construct($name, $data, $dataName);
-		$this->app = SuitUpStart::setup(__DIR__.'/modulestest')->mvc->controller;
+		
+		// Instance of SuitUp
+		$suitUp = new SuitUpStart(__DIR__.'/modulestest');
+		
+		// Get controller Object from instance
+		$this->app = $suitUp->mvc->controller;
 	}
 
 	public function testMsgNsp()
