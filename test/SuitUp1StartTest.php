@@ -45,30 +45,31 @@ class SuitUp1StartTest extends \PHPUnit_Framework_TestCase
 	public function testExceptionSetup()
 	{
 		try {
-			SuitUpStart::setup();
+			new SuitUpStart(null);
 
 		} catch (\Exception $e) {
 
+			echo $e->getMessage();
+			
 			// Exception instance
 			$this->assertInstanceOf("\Exception", $e);
-
-			// Error message indicate right error type
-			$this->assertEquals("Necessário informar a pasta onde os módulos serão criados.", $e->getMessage());
 		}
 	}
 
 	public function testExceptionWrongPath()
 	{
 		try {
+			
 			SuitUpStart::setup('wrong-path');
+			throw new TesteException("Ops, will never get here if it is all right.");
 
 		} catch (\Exception $e) {
+			
+			//dump($e);
 
 			// Exception instance
-			$this->assertInstanceOf("\Exception", $e);
-
-			// Error message indicate right error type
-			$this->assertEquals("O diretório de módulos 'wrong-path' não existe", $e->getMessage());
+			$this->assertInstanceOf("\Exception", $e); // Right
+			//$this->assertNotInstanceOf("\SuitUpTest\TesteException", $e); // Error
 		}
 	}
 
@@ -77,20 +78,8 @@ class SuitUp1StartTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testSetup()
 	{
-		// Limpa a instancia.
-		SuitUpStart::clearInstance();
-
-		$a = SuitUpStart::setup(__DIR__.'/modulestest');
+		$a = new SuitUpStart(__DIR__.'/modulestest');
 		$this->assertInstanceOf("SuitUpStart", $a);
-	}
-
-	/**
-	 * getInstance() retorna instancia da classe?
-	 */
-	public function testSingleton() {
-
-		// Não usar clearInstance aqui.
-		$this->assertInstanceOf("SuitUpStart", SuitUpStart::getInstance());
 	}
 
 	// Habilitando ou desabilitando os logs de queries
@@ -108,12 +97,14 @@ class SuitUp1StartTest extends \PHPUnit_Framework_TestCase
 			)));
 		}
 
+		$mvc = new SuitUpStart(__DIR__.'/modulestest');
+		
 		// True
-		SuitUpStart::getInstance()->setSqlMonitor(true);
+		$mvc->setSqlMonitor(true);
 		$this->assertEquals(true, Database::getInstance()->getMonitoring());
 
 		// False
-		SuitUpStart::getInstance()->setSqlMonitor(false);
+		$mvc->setSqlMonitor(false);
 		$this->assertNotTrue(Database::getInstance()->getMonitoring());
 	}
 
@@ -121,7 +112,8 @@ class SuitUp1StartTest extends \PHPUnit_Framework_TestCase
 	{
 		// Captura a saida como se fosse html
 		ob_start();
-		SuitUpStart::getInstance()->run();
+		$mvc = new SuitUpStart(__DIR__.'/modulestest');
+		$mvc->run();
 		$content = ob_get_clean();
 
 		$this->assertEquals("Temos o layout\ne a view", $content);

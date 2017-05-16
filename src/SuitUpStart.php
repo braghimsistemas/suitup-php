@@ -107,6 +107,11 @@ class SuitUpStart {
 		// Adiciona a classe o caminho real para pasta de modulos
 		$this->modulesPath = (realpath($modulesPath) === false) ? $modulesPath : realpath($modulesPath).DIRECTORY_SEPARATOR;
 
+		// Validate modules dir path
+		if (!$this->modulesPath || !is_dir($this->modulesPath)) {
+			throw new Exception("The directory '".$this->modulesPath."' could not be found by system.");
+		}
+		
 		/**
 		 * Carrega os namespaces do projeto.
 		 */
