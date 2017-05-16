@@ -65,7 +65,7 @@ class SuitUpStart {
 	/**
 	 * @var SuitUpStart
 	 */
-	private static $instance;
+// 	private static $instance;
 	
 	/**
 	 * Caminho, no projeto do usuario, onde se encontram as pastas dos módulos.
@@ -85,49 +85,33 @@ class SuitUpStart {
 	public $loader;
 	
 	/**
-	 * Primeiro metodo a ser chamado.
-	 * Configura o sistema.
+	 * Alias to __construct. Sustained just for compatibility with old versions.
 	 *
-	 * @param string $modulesPath Caminho para as pastas de modulos do sistema.
+	 * @deprecated Use __construct instead
+	 * @param string $modulesPath Path from project root to the modules folder.
 	 * @return SuitUpStart
 	 * @throws \Exception
 	 */
-	public static function setup($modulesPath = null) {
-		if (self::$instance == null) {
-			if (!$modulesPath) {
-				throw new \Exception("Necessário informar a pasta onde os módulos serão criados.");
-			}
-			self::$instance = new self($modulesPath);
-		}
-		return self::$instance;
+	public static function setup($modulesPath = './') {
+		return new self($modulesPath);
 	}
 	
 	/**
-	 * Retorna instancia da classe
-	 * 
-	 * @return SuitUpStart
-	 */
-	public static function getInstance() {
-		return self::setup();
-	}
-
-	/**
-	 * Reseta a instancia.
-	 */
-	public static function clearInstance() {
-		self::$instance = null;
-	}
-	
-	/**
-	 * Construtor, mas substituido para dar a oportunidade de carregar de modo diferente.
+	 * Inicia a instancia do sistema.
+	 *
 	 * @param string $modulesPath Caminho para os modulos
 	 * @throws \Exception
 	 */
-	private function __construct($modulesPath) {
+	public function __construct($modulesPath = './') {
 
 		// Adiciona a classe o caminho real para pasta de modulos
 		$this->modulesPath = (realpath($modulesPath) === false) ? $modulesPath : realpath($modulesPath).DIRECTORY_SEPARATOR;
 
+		// Validate modules dir path
+		if (!$this->modulesPath || !is_dir($this->modulesPath)) {
+			throw new Exception("The directory '".$this->modulesPath."' could not be found by system.");
+		}
+		
 		/**
 		 * Carrega os namespaces do projeto.
 		 */
@@ -171,7 +155,7 @@ class SuitUpStart {
 		} catch (\Exception $e) {
 
 			// Reset instance because of error.
-			self::$instance = null;
+// 			self::$instance = null;
 
 			try {
 				// Aqui já deu merda, o usuário verá a tela de erro

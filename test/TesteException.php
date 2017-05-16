@@ -22,24 +22,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+namespace SuitUpTest;
 
-error_reporting(E_ALL | E_STRICT);
-ini_set('display_errors', true);
-
-include_once __DIR__ . "/../src/SuitUpStart.php";
-
-// Para quando estamos mexendo diretamente no código
-if (file_exists(__DIR__.'/../vendor/autoload.php')) {
-	$autoload = include __DIR__.'/../vendor/autoload.php';
-	$autoload->add('SuitUpTest\\', __DIR__.DIRECTORY_SEPARATOR.'.');
-
-// Para quando estamos alterando dentro do projeto que usa o SuitUp
-} else if (file_exists(__DIR__.'/../../../autoload.php')) {
-	$autoload = include __DIR__.'/../../../autoload.php';
-	$autoload->add('SuitUpTest\\', __DIR__.DIRECTORY_SEPARATOR.'.');
-
-// Para os testes dentro do Travis.ci
-} else {
-	echo "\n\nNão encontramos a pasta vendor, o sistema não presseguirá com os testes.\n\n";
+class TesteException extends \Exception {
+  
+  /**
+   * Just to identify the Exception thrown
+   * 
+   * @param string $message Message to be shown
+   * @param int $code A code to identify
+   * @param \Exception $previous The exception thrown before it
+   */
+  public function __construct($message, $code = 0, \Exception $previous = null) {
+    parent::__construct($message, $code, $previous);
+  }
 }
-
