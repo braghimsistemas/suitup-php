@@ -79,7 +79,7 @@ abstract class AbstractFormValidator extends Validation
 		$result->message = "";
 		
 		// Se estiver vazio ignora
-		if ($value && !preg_match("/^\d{5}-\d{3}$/", $value)) {
+		if ($value && !preg_match("/^\d{5}(-?)\d{3}$/", $value)) {
 			$result->error = true;
 			$result->message = "Preencha com um número de CEP válido";
 		}
@@ -305,7 +305,15 @@ abstract class AbstractFormValidator extends Validation
 		if (!isset($options['default'])) {
 			throw new \Exception("O filtro 'toDouble' necessita de um índice de opções 'default'");
 		}
-
+		
+		// Ja chegou como float
+		if (gettype($value) == 'float' || gettype($value) == 'double') {
+			return $value;
+			
+		} else if (gettype($value) == 'integer') {
+			return (double) $value;
+		}
+		
 		return (!$value) ? $options['default'] : (double) preg_replace(array("/[^0-9,.]/", "/\./", "/\,/"), array('', '', '.'), $value);
 	}
 }
