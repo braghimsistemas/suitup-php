@@ -118,6 +118,8 @@ class SuitUp4FormValidationTest extends \PHPUnit_Framework_TestCase
   
   /**
    * Test Validation minLen
+   * 
+   * @expectedException \Exception
    */
   public function testMinLen()
   {
@@ -131,8 +133,8 @@ class SuitUp4FormValidationTest extends \PHPUnit_Framework_TestCase
     $this->assertTrue($this->val->minLen('abcd', array('size' => 5))->error);
     $this->assertTrue($this->val->minLen(1000, '5')->error);
     
-    // Does nothing (false positive)
-    $this->assertFalse($this->val->minLen('', 0)->error);
+    // No size
+    $this->assertInstanceof('\Exception', $this->val->minLen(''));
     
     // Messages
     $this->assertEquals('Este campo deve ter pelo menos 5 caractéres', $this->val->minLen('abcd', 5)->message);
@@ -144,6 +146,8 @@ class SuitUp4FormValidationTest extends \PHPUnit_Framework_TestCase
   
   /**
    * Test Validation maxLen
+   * 
+   * @expectedException \Exception
    */
   public function testMaxLen()
   {
@@ -157,9 +161,9 @@ class SuitUp4FormValidationTest extends \PHPUnit_Framework_TestCase
     $this->assertTrue($this->val->maxLen('abcd', array('size' => 1))->error);
     $this->assertTrue($this->val->maxLen(1000, '1')->error);
     
-    // Does nothing (false positive)
-    $this->assertFalse($this->val->maxLen('', 0)->error);
-    
+    // No size
+    $this->assertInstanceof('\Exception', $this->val->maxLen(''));
+       
     // Messages
     $this->assertEquals('Este campo não deve ter mais que 1 caractéres', $this->val->maxLen('abcd', 1)->message);
     $this->assertEquals('A custom message', $this->val->maxLen('abcd', array(
@@ -170,6 +174,8 @@ class SuitUp4FormValidationTest extends \PHPUnit_Framework_TestCase
   
   /**
    * Test Validation maiorQue
+   * 
+   * @expectedException \Exception
    */
   public function testMaiorQue()
   {
@@ -185,8 +191,8 @@ class SuitUp4FormValidationTest extends \PHPUnit_Framework_TestCase
     $this->assertTrue($this->val->maiorQue('99', self::TARGET)->error);
     $this->assertTrue($this->val->maiorQue('99,99', self::TARGET)->error);
     
-    // Does nothing (false positive)
-    $this->assertFalse($this->val->maiorQue('0', 0)->error);
+    // No target
+    $this->assertInstanceof('\Exception', $this->val->maiorQue(''));
     
     // Message
     $this->assertEquals(
@@ -201,6 +207,8 @@ class SuitUp4FormValidationTest extends \PHPUnit_Framework_TestCase
   
   /**
    * Test Validation menorQue
+   *
+   * @expectedException \Exception
    */
   public function testMenorQue()
   {
@@ -216,8 +224,8 @@ class SuitUp4FormValidationTest extends \PHPUnit_Framework_TestCase
     $this->assertTrue($this->val->menorQue('101', self::TARGET)->error);
     $this->assertTrue($this->val->menorQue('101,99', self::TARGET)->error);
     
-    // Does nothing (false positive)
-    $this->assertFalse($this->val->menorQue('0', 0)->error);
+    // No target
+    $this->assertInstanceof('\Exception', $this->val->menorQue(''));
     
     // Message
     $this->assertEquals(
@@ -231,7 +239,9 @@ class SuitUp4FormValidationTest extends \PHPUnit_Framework_TestCase
   }
   
   /**
-   * Test Validation identico
+   * Test Validation identico - identicalTo
+   * 
+   * @expectedException \Exception
    */
   public function testIdentico()
   {
@@ -247,8 +257,8 @@ class SuitUp4FormValidationTest extends \PHPUnit_Framework_TestCase
     $this->assertTrue($this->val->identico((float) 99.9, self::TARGET)->error);
     $this->assertTrue($this->val->identico((double) 99.9, self::TARGET)->error);
     
-    // Does nothing (false positive)
-    $this->assertFalse($this->val->identico('', '')->error);
+    // No target
+    $this->assertInstanceof('\Exception', $this->val->identico(''));
     
     // Messages
     $this->assertEquals('Campos não são idênticos', $this->val->identico('99', self::TARGET)->message);

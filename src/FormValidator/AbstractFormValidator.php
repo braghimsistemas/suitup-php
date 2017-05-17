@@ -127,17 +127,22 @@ abstract class AbstractFormValidator extends Validation
 	 *		message: The custom message to be dispatched.
 	 * @return \stdClass
 	 */
-	public function minLen($value, $options)
+	public function minLen($value, $options = null)
 	{
 		$result = new \stdClass();
 		$result->error = false;
 		$result->message = "";
 		
 		// Length size
-		$size = (int) (isset($options['size'])) ? $options['size'] : $options;
+		$size = (isset($options['size'])) ? $options['size'] : $options;
+		
+		// size?
+		if (null == $size) {
+			throw new \Exception("Required 'size' with the number of min length accepted.");
+		}
 		
 		// Ignored if empty
-		if ($value && (strlen($value) < $size)) {
+		if ($value && (strlen($value) < (int) $size)) {
 			$result->error = true;
 			$result->message = isset($options['message']) ? $options['message'] : "Este campo deve ter pelo menos $size caractéres";
 		}
@@ -153,7 +158,7 @@ abstract class AbstractFormValidator extends Validation
 	 *		message: The custom message to be dispatched.
 	 * @return \stdClass
 	 */
-	public function maxLen($value, $options)
+	public function maxLen($value, $options = null)
 	{
 		$result = new \stdClass();
 		$result->error = false;
@@ -161,6 +166,11 @@ abstract class AbstractFormValidator extends Validation
 		
 		// Length size
 		$size = (int) (isset($options['size'])) ? $options['size'] : $options;
+		
+		// size?
+		if (null == $size) {
+			throw new \Exception("Required 'size' with the number of max length accepted.");
+		}
 		
 		// Ignored if empty
 		if ($value && (strlen($value) > $size)) {
@@ -183,7 +193,7 @@ abstract class AbstractFormValidator extends Validation
 	 * 		Message: A custom message to be dispatch in error case.
 	 * @return \stdClass
 	 */
-	public function maiorQue($value, $options) {
+	public function maiorQue($value, $options = null) {
 		return $this->greaterThan($value, $options);
 	}
 	
@@ -198,7 +208,7 @@ abstract class AbstractFormValidator extends Validation
 	 * 		Message: A custom message to be dispatch in error case.
 	 * @return \stdClass
 	 */
-	public function greaterThan($value, $options)
+	public function greaterThan($value, $options = null)
 	{
 		$result = new \stdClass();
 		$result->error = false;
@@ -212,6 +222,11 @@ abstract class AbstractFormValidator extends Validation
 			
 		} else {
 			$target = $options;
+		}
+		
+		// Target?
+		if (null == $target) {
+			throw new \Exception("Required 'target' with the name of the other field to compare.");
 		}
 			
 		// Ignored if empty
@@ -235,7 +250,7 @@ abstract class AbstractFormValidator extends Validation
 	 * 		Message: A custom message to be dispatch in error case.
 	 * @return \stdClass
 	 */
-	public function menorQue($value, $options) {
+	public function menorQue($value, $options = null) {
 		return $this->lessThan($value, $options);
 	}
 	
@@ -250,7 +265,7 @@ abstract class AbstractFormValidator extends Validation
 	 * 		Message: A custom message to be dispatch in error case.
 	 * @return \stdClass
 	 */
-	public function lessThan($value, $options)
+	public function lessThan($value, $options = null)
 	{
 		$result = new \stdClass();
 		$result->error = false;
@@ -264,6 +279,11 @@ abstract class AbstractFormValidator extends Validation
 			
 		} else {
 			$target = $options;
+		}
+		
+		// Target?
+		if (null == $target) {
+			throw new \Exception("Required 'target' with the name of the other field to compare.");
 		}
 		
 		// Ignored if empty
@@ -286,7 +306,7 @@ abstract class AbstractFormValidator extends Validation
 	 * @see identicalTo
 	 * @return \stdClass
 	 */
-	public function identico($value, $options) {
+	public function identico($value, $options = null) {
 		return $this->identicalTo($value, $options);
 	}
 	
@@ -299,7 +319,7 @@ abstract class AbstractFormValidator extends Validation
 	 * 		Message: A custom message to be dispatch in error case.
 	 * @return \stdClass
 	 */
-	public function identicalTo($value, $options)
+	public function identicalTo($value, $options = null)
 	{
 		$result = new \stdClass();
 		$result->error = false;
@@ -313,6 +333,11 @@ abstract class AbstractFormValidator extends Validation
 			
 		} else {
 			$target = $options;
+		}
+		
+		// Target?
+		if (null == $target) {
+			throw new \Exception("Required 'target' with the name of the other field to compare.");
 		}
 		
 		// Ignora vazio
