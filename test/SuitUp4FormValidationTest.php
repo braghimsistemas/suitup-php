@@ -25,7 +25,6 @@
 namespace SuitUpTest;
 
 use SuitUpTest\Forms\TestValidations;
-use SuitUpStart;
 
 class SuitUp4FormValidationTest extends \PHPUnit_Framework_TestCase
 {
@@ -63,6 +62,11 @@ class SuitUp4FormValidationTest extends \PHPUnit_Framework_TestCase
     $this->assertFalse($this->val->notEmpty(0.1)->error);
     $this->assertFalse($this->val->notEmpty(true)->error);
     $this->assertFalse($this->val->notEmpty(array('something'))->error);
+    
+    // Message
+    $this->assertEquals('Este campo não pode ficar vazio', $this->val->notEmpty('')->message);
+    $this->assertEquals('A custom message', $this->val->notEmpty('', 'A custom message')->message);
+    $this->assertEquals('A custom message', $this->val->notEmpty('', array('message' => 'A custom message'))->message);
   }
   
   /**
@@ -80,6 +84,11 @@ class SuitUp4FormValidationTest extends \PHPUnit_Framework_TestCase
     
     // Does nothing (false positive)
     $this->assertFalse($this->val->isEmail('')->error);
+    
+    // Message
+    $this->assertEquals('Preencha com um endereço de e-mail válido', $this->val->isEmail('no')->message);
+    $this->assertEquals('A custom message', $this->val->isEmail('no', 'A custom message')->message);
+    $this->assertEquals('A custom message', $this->val->isEmail('no', array('message' => 'A custom message'))->message);
   }
   
   /**
@@ -100,6 +109,11 @@ class SuitUp4FormValidationTest extends \PHPUnit_Framework_TestCase
     
     // Does nothing (false positive)
     $this->assertFalse($this->val->isCep('')->error);
+    
+    // Message
+    $this->assertEquals('Preencha com um número de CEP válido', $this->val->isCep('no')->message);
+    $this->assertEquals('A custom message', $this->val->isCep('no', 'A custom message')->message);
+    $this->assertEquals('A custom message', $this->val->isCep('no', array('message' => 'A custom message'))->message);
   }
   
   /**
@@ -111,22 +125,21 @@ class SuitUp4FormValidationTest extends \PHPUnit_Framework_TestCase
     $this->assertFalse($this->val->minLen('abcd', 4)->error);
     $this->assertFalse($this->val->minLen('abcd', array('size' => 4))->error);
     $this->assertFalse($this->val->minLen(1000, '4')->error);
-    $this->assertEquals('A message', $this->val->minLen('abcd', array(
-      'size' => 5,
-      'message' => 'A message'
-    ))->message);
     
     // Invalid
     $this->assertTrue($this->val->minLen('abcd', 5)->error);
     $this->assertTrue($this->val->minLen('abcd', array('size' => 5))->error);
     $this->assertTrue($this->val->minLen(1000, '5')->error);
-    $this->assertNotEquals('A wrong message', $this->val->minLen('abcd', array(
-      'size' => 5,
-      'message' => 'A message'
-    ))->message);
     
     // Does nothing (false positive)
     $this->assertFalse($this->val->minLen('', 0)->error);
+    
+    // Messages
+    $this->assertEquals('Este campo deve ter pelo menos 5 caractéres', $this->val->minLen('abcd', 5)->message);
+    $this->assertEquals('A custom message', $this->val->minLen('abcd', array(
+      'message' => 'A custom message',
+      'size' => 5,
+    ))->message);
   }
   
   /**
@@ -139,25 +152,20 @@ class SuitUp4FormValidationTest extends \PHPUnit_Framework_TestCase
     $this->assertFalse($this->val->maxLen('abcd', array('size' => 4))->error);
     $this->assertFalse($this->val->maxLen(1000, '4')->error);
     
-    // Error message
-    $this->assertEquals('A message', $this->val->maxLen('abcd', array(
-      'size' => 1,
-      'message' => 'A message'
-    ))->message);
-    
     // Invalid
     $this->assertTrue($this->val->maxLen('abcd', 1)->error);
     $this->assertTrue($this->val->maxLen('abcd', array('size' => 1))->error);
     $this->assertTrue($this->val->maxLen(1000, '1')->error);
     
-    // Error message
-    $this->assertNotEquals('A wrong message', $this->val->maxLen('abcd', array(
-      'size' => 1,
-      'message' => 'A message'
-    ))->message);
-    
     // Does nothing (false positive)
     $this->assertFalse($this->val->maxLen('', 0)->error);
+    
+    // Messages
+    $this->assertEquals('Este campo não deve ter mais que 1 caractéres', $this->val->maxLen('abcd', 1)->message);
+    $this->assertEquals('A custom message', $this->val->maxLen('abcd', array(
+      'message' => 'A custom message',
+      'size' => 1,
+    ))->message);
   }
   
   /**
@@ -179,6 +187,16 @@ class SuitUp4FormValidationTest extends \PHPUnit_Framework_TestCase
     
     // Does nothing (false positive)
     $this->assertFalse($this->val->maiorQue('0', 0)->error);
+    
+    // Message
+    $this->assertEquals(
+      'Verifique que este campo não pode ser menor que o início',
+      $this->val->maiorQue(99, self::TARGET)->message
+    );
+    $this->assertEquals(
+      'A custom message',
+      $this->val->maiorQue(99, array('target' => self::TARGET, 'message' => 'A custom message'))->message
+    );
   }
   
   /**
@@ -200,6 +218,16 @@ class SuitUp4FormValidationTest extends \PHPUnit_Framework_TestCase
     
     // Does nothing (false positive)
     $this->assertFalse($this->val->menorQue('0', 0)->error);
+    
+    // Message
+    $this->assertEquals(
+      'Verifique que este campo não pode ser maior que o fim',
+      $this->val->menorQue(101, self::TARGET)->message
+    );
+    $this->assertEquals(
+      'A custom message',
+      $this->val->menorQue(101, array('target' => self::TARGET, 'message' => 'A custom message'))->message
+    );
   }
   
   /**
@@ -221,6 +249,13 @@ class SuitUp4FormValidationTest extends \PHPUnit_Framework_TestCase
     
     // Does nothing (false positive)
     $this->assertFalse($this->val->identico('', '')->error);
+    
+    // Messages
+    $this->assertEquals('Campos não são idênticos', $this->val->identico('99', self::TARGET)->message);
+    $this->assertEquals('A custom message', $this->val->identico('99', array(
+      'message' => 'A custom message',
+      'target' => self::TARGET,
+    ))->message);
   }
   
   /**
@@ -242,6 +277,13 @@ class SuitUp4FormValidationTest extends \PHPUnit_Framework_TestCase
     
     // Does nothing (false positive)
     $this->assertFalse($this->val->inArray('')->error);
+    
+    // Messages
+    $this->assertEquals('Este valor não está entre as opções', $this->val->inArray('99', array(100))->message);
+    $this->assertEquals('A custom message', $this->val->inArray('99', array(
+      'message' => 'A custom message',
+      'values' => array(100),
+    ))->message);
   }
   
   /**
