@@ -24,14 +24,35 @@
  */
 namespace SuitUpTest\Forms;
 
-use SuitUp\FormValidator\AbstractFormValidator;
+use Zend\Validator\EmailAddress;
 
-class TestValidations extends AbstractFormValidator
+class TestForm extends \SuitUp\FormValidator\AbstractFormValidator
 {
   protected $data = array(
-    // No data, tests will be realized by direct method access
-    // So, why we have to create this class instead direct instanciate
-    // AbstractFormValidator? It's because that class is abstract,
-    // so we can not instanciate.
+    
+    // Test com simple strings
+    'name' => array('validation' => array(
+      'notEmpty',
+      'minLen' => 5,
+    ), 'filter' => array('string')),
+    
+    // E-mail test
+    'email' => array(
+      'validation' => array('\Zend\Validator\EmailAddress' => array(), 'isEmail'),
+      'filter' => array('string')
+    ),
   );
 }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
