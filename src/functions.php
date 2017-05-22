@@ -38,56 +38,74 @@ define('GB', 1073741824);       // Em bytes
 define('TB', 1099511627776);    // Em bytes
 
 /**
- * Captura todas as exceções não tratadas do sistema.
+ * Get all non treated exceptions on the system.
  *
- * @param Exception $e
+ * @param Exception $e The exception
+ * @param bool $isTest In test environment will no cause exception outputs
  */
-function throwNewExceptionFromAnywhere($e)
+function throwNewExceptionFromAnywhere(\Exception $e, $isTest = false)
 {
-	$setup = SuitUpStart::getInstance();
+	$setup = new SuitUpStart();
 
-	// Tenta carregar a tela de erro do MODULO.
+	// Module ErrorController
 	try {
 		$setup->mvc = $setup->resolve($setup->mvc->moduleName, 'error', 'error');
-	} catch (Exception $ex) {
+	} catch (\Exception $ex) {
 
-		// Tenta carregar a tela de erro
-		// padrao do framework.
+		// SuitUp default module error.
 		try {
-			$setup->mvc = $setup->resolve('ModuleError', 'error', 'error', __DIR__ . DIRECTORY_SEPARATOR . 'library');
-		} catch (Exception $ex2) {
+			$setup->mvc = $setup->resolve('ModuleError', 'error', 'error', __DIR__ . DIRECTORY_SEPARATOR . '.');
+		} catch (\Exception $ex2) {
+			
+			// It's possible to create this function in your project to
+			// generate your own logs controll.
 			if (function_exists('createSystemLog')) {
 				createSystemLog($e);
 			}
 
-			echo "Exception sem possibilidade de tratamento.";
-			dump($e);
+			if (!$isTest) {
+				echo "Non treated exception thrown";
+				
+				(DEVELOPMENT) ? dump($e) : exit;
+				
+			} else {
+				return $e->getMessage();
+			}
 		}
 	}
+	
+	// Store exception to be used on the controller or view from ErrorController
 	$setup->mvc->exception = $e;
 
-	// Ultima tentativa de dar certo,
-	// se chegar aqui e der erro então
-	// o projeto esta configurado incorretamente.
+	// Last try
 	try {
 		$setup->run();
-	} catch (Exception $ex3) {
+	} catch (\Exception $ex3) {
+		
+		// It's possible to create this function in your project to
+		// generate your own logs controll.
 		if (function_exists('createSystemLog')) {
 			createSystemLog($e);
 		}
 
-		echo "Exception sem possibilidade de tratamento.";
-		dump($ex3);
+		if (!$isTest) {
+			echo "Non treated exception thrown";
+
+			(DEVELOPMENT) ? dump($ex3) : exit;
+
+		} else {
+			return $ex3->getMessage();
+		}
 	}
 }
 
 if (!function_exists('dump')) {
 
 	/**
-	 * Funçao para debug simplificada, semelhante ao Zend\Debug.
+	 * Simple debug function, just like Zend\Debug.
 	 *
-	 * @param mixed $var
-	 * @param bool $echo
+	 * @param mixed $var What you want to debug.
+	 * @param bool $echo If false, this function will return the result.
 	 * @return string
 	 */
 	function dump($var, $echo = true)
@@ -96,7 +114,7 @@ if (!function_exists('dump')) {
 		var_dump($var);
 
 		/**
-		 * $argv vem quando o script eh executado por linha de comando.
+		 * $argv when you run this function by command line.
 		 */
 		if (isset($argv)) {
 			$output = preg_replace("/\]\=\>\n(\s+)/m", "] => ", ob_get_clean()) . "\n\n";
