@@ -57,7 +57,7 @@ class SuitUp7FunctionsTest extends \PHPUnit_Framework_TestCase
   }
   
   public function testDebug() {
-    $this->assertEquals('string(17) "Just another test"', trim(strip_tags(dump('Just another test', false))));
+    $this->assertContains('Just another test', dump('Just another test', false));
   }
   
   public function testMctime()
