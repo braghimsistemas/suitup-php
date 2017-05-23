@@ -176,8 +176,10 @@ class Routes
 				$this->custom = include "config/{$this->moduleName}.routes.php";
 
 				// Remove o item que é o nome do modulo
-				unset($routeParts[array_search($this->moduleName, $routeParts)]);
-				$routeParts = array_values($routeParts);
+				$itemModuleName = array_search($this->moduleName, $routeParts);
+				if (false !== $itemModuleName) {
+					unset($routeParts[$itemModuleName]);
+				}
 				
 				// Procura por rotas do tipo linear
 				if ($routeParts) {
