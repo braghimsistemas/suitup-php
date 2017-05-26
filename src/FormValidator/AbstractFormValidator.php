@@ -137,7 +137,7 @@ abstract class AbstractFormValidator extends Validation
 		$size = (isset($options['size'])) ? $options['size'] : $options;
 		
 		// size?
-		if (null == $size) {
+		if ($value && null == $size) {
 			throw new \Exception("Required 'size' with the number of min length accepted.");
 		}
 		
@@ -168,7 +168,7 @@ abstract class AbstractFormValidator extends Validation
 		$size = (int) (isset($options['size'])) ? $options['size'] : $options;
 		
 		// size?
-		if (null == $size) {
+		if ($value && null == $size) {
 			throw new \Exception("Required 'size' with the number of max length accepted.");
 		}
 		
@@ -225,7 +225,7 @@ abstract class AbstractFormValidator extends Validation
 		}
 		
 		// Target?
-		if (null == $target) {
+		if ($value && null == $target) {
 			throw new \Exception("Required 'target' with the name of the other field to compare.");
 		}
 			
@@ -282,7 +282,7 @@ abstract class AbstractFormValidator extends Validation
 		}
 		
 		// Target?
-		if (null == $target) {
+		if ($value && null == $target) {
 			throw new \Exception("Required 'target' with the name of the other field to compare.");
 		}
 		
@@ -336,7 +336,7 @@ abstract class AbstractFormValidator extends Validation
 		}
 		
 		// Target?
-		if (null == $target) {
+		if ($value && null == $target) {
 			throw new \Exception("Required 'target' with the name of the other field to compare.");
 		}
 		
