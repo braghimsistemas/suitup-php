@@ -218,12 +218,34 @@ class Routes
 				$this->controller = isset($configs['controller']) ? $configs['controller'] : $this->controller;
 				$this->action = isset($configs['action']) ? $configs['action'] : $this->action;
 
-
 				// Metodo para separar corretamente os parametros
 				$this->resolveParams(
 					isset($configs['params']) ? $configs['params'] : array(),
 					$pathParams
 				);
+			}
+		} else {
+			
+			// REGEX
+			// Pode ser que esta rota seja expressão regular
+			foreach ($this->custom as $route => $configs) {
+				if (preg_match("/^\/.+\/$/", $route) && preg_match($route, $routeName)) {
+					
+					// Verifica se eh do tipo linear
+					if (!isset($configs['type']) || ($configs['type'] == self::TYPE_LINEAR)) {
+
+						// Sobrescreve os atributos da rota
+						$this->controller = isset($configs['controller']) ? $configs['controller'] : $this->controller;
+						$this->action = isset($configs['action']) ? $configs['action'] : $this->action;
+
+						// Metodo para separar corretamente os parametros
+						$this->resolveParams(
+							isset($configs['params']) ? $configs['params'] : array(),
+							$pathParams
+						);
+					}
+					break;
+				}
 			}
 		}
 		
@@ -241,29 +263,57 @@ class Routes
 		// Procura a rota no arquivo
 		foreach ($this->custom as $routeName => $configs) {
 			
-			$routeName = preg_replace("/\//", "\/", $routeName);
-			if (preg_match("/$routeName$/", $routeString) && isset($configs['type']) && ($configs['type'] == self::TYPE_REVERSE)) {
+			// REGEX route
+			if (preg_match("/^\/.+\/$/", $routeName)) {
 				
-				// Define controlador e acao.
-				$this->controller = isset($configs['controller']) ? $configs['controller'] : $this->controller;
-				$this->action = isset($configs['action']) ? $configs['action'] : $this->action;
+				// Split array parts
+				$regRouteParts = explode("/", $routeString);
+				$regRouteValue = array_pop($regRouteParts); // Remove route name
 				
-				// Remove da URL o nome do módulo e a rota em si.
-				$routeString = trim(preg_replace(
-					array("/^{$this->moduleName}/", "/$routeName$/"),
-					array('', ''),
-					$routeString
-				), '/');
-				
-				// Separa as partes em array
-				$routeParts = explode("/", $routeString);
-				
-				// Metodo para separar corretamente os parametros
-				$this->resolveParams(
-					isset($configs['params']) ? $configs['params'] : array(),
-					$routeParts
-				);
-				break;
+				// Add route value, because if it's a regex may needed to be used for something
+				$configs['params']['routeMatch'] = $regRouteValue;
+					
+				// The regex matches to the URL AND is reverse?
+				if (preg_match($routeName, $regRouteValue) && isset($configs['type']) && ($configs['type'] == self::TYPE_REVERSE)) {
+					
+					// Define controlador e acao.
+					$this->controller = isset($configs['controller']) ? $configs['controller'] : $this->controller;
+					$this->action = isset($configs['action']) ? $configs['action'] : $this->action;
+					
+					// Metodo para separar corretamente os parametros
+					$this->resolveParams(
+						isset($configs['params']) ? $configs['params'] : array(),
+						$regRouteParts
+					);
+					break;
+				}
+			} else {
+			
+				// Prepara para verificar se a rota eh correta atraves de regex
+				$routeName = preg_replace("/\//", "\/", $routeName);
+				if (preg_match("/$routeName$/", $routeString) && isset($configs['type']) && ($configs['type'] == self::TYPE_REVERSE)) {
+
+					// Define controlador e acao.
+					$this->controller = isset($configs['controller']) ? $configs['controller'] : $this->controller;
+					$this->action = isset($configs['action']) ? $configs['action'] : $this->action;
+
+					// Remove da URL o nome do módulo e a rota em si.
+					$routeString = trim(preg_replace(
+						array("/^{$this->moduleName}/", "/$routeName$/"),
+						array('', ''),
+						$routeString
+					), '/');
+
+					// Separa as partes em array
+					$routeParts = explode("/", $routeString);
+
+					// Metodo para separar corretamente os parametros
+					$this->resolveParams(
+						isset($configs['params']) ? $configs['params'] : array(),
+						$routeParts
+					);
+					break;
+				}
 			}
 		}
 		
@@ -327,6 +377,15 @@ class Routes
 		}
 		
 		return $this;
+	}
+	
+	/**
+	 * Returns the custom routes list.
+	 *
+	 * @return array
+	 */
+	public function getCustom() {
+		return $this->custom;
 	}
 	
 	/**

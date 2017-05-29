@@ -43,7 +43,7 @@ define('TB', 1099511627776);    // Em bytes
  * @param Exception $e The exception
  * @param bool $isTest In test environment will no cause exception outputs
  */
-function throwNewExceptionFromAnywhere(\Exception $e, $isTest = false)
+function throwNewExceptionFromAnywhere($e, $isTest = false)
 {
 	$setup = new SuitUpStart();
 
