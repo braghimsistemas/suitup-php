@@ -52,12 +52,12 @@ function throwNewExceptionFromAnywhere($e, $isTest = false)
 		$setup->mvc = $setup->resolve($setup->mvc->moduleName, 'error', 'error');
 	} catch (\Exception $ex) {
 
-		// SuitUp default module error.
+        // SuitUp default module error.
 		try {
-			$setup->mvc = $setup->resolve('ModuleError', 'error', 'error', __DIR__ . DIRECTORY_SEPARATOR . '.');
+			$setup->mvc = $setup->resolve('ModuleError', 'error', 'error', __DIR__ . DIRECTORY_SEPARATOR);
 		} catch (\Exception $ex2) {
-			
-			// It's possible to create this function in your project to
+
+            // It's possible to create this function in your project to
 			// generate your own logs controll.
 			if (function_exists('createSystemLog')) {
 				createSystemLog($e);
@@ -65,15 +65,15 @@ function throwNewExceptionFromAnywhere($e, $isTest = false)
 
 			if (!$isTest) {
 				echo "Non treated exception thrown";
-				
+
 				(DEVELOPMENT) ? dump($e) : exit;
-				
+
 			} else {
 				return $e->getMessage();
 			}
 		}
 	}
-	
+
 	// Store exception to be used on the controller or view from ErrorController
 	$setup->mvc->exception = $e;
 
@@ -81,7 +81,7 @@ function throwNewExceptionFromAnywhere($e, $isTest = false)
 	try {
 		$setup->run();
 	} catch (\Exception $ex3) {
-		
+
 		// It's possible to create this function in your project to
 		// generate your own logs controll.
 		if (function_exists('createSystemLog')) {

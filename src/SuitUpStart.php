@@ -63,16 +63,11 @@ class SuitUpStart {
 	const VERSION = '1.2.1';
 
 	/**
-	 * @var SuitUpStart
-	 */
-// 	private static $instance;
-	
-	/**
 	 * Caminho, no projeto do usuario, onde se encontram as pastas dos módulos.
-	 * @var string 
+	 * @var string
 	 */
 	private $modulesPath;
-	
+
 	/**
 	 * Todos os parametros necessarios para rodar a aplicacao.
 	 * @var stdClass
@@ -83,7 +78,7 @@ class SuitUpStart {
 	 * @var Psr4AutoloaderClass
 	 */
 	public $loader;
-	
+
 	/**
 	 * Alias to __construct. Sustained just for compatibility with old versions.
 	 *
@@ -95,7 +90,7 @@ class SuitUpStart {
 	public static function setup($modulesPath = './') {
 		return new self($modulesPath);
 	}
-	
+
 	/**
 	 * Inicia a instancia do sistema.
 	 *
@@ -104,14 +99,21 @@ class SuitUpStart {
 	 */
 	public function __construct($modulesPath = './') {
 
-		// Adiciona a classe o caminho real para pasta de modulos
-		$this->modulesPath = (realpath($modulesPath) === false) ? $modulesPath : realpath($modulesPath).DIRECTORY_SEPARATOR;
+        // First, we check if there is a modulesPath indicated on the setup.php file.
+        $mPConf = $this->getSetup('modulesPath');
+        if ($mPConf) {
+          $this->modulesPath = rtrim($mPConf, '/').DIRECTORY_SEPARATOR;
+
+        } else {
+          // Adiciona a classe o caminho real para pasta de modulos
+          $this->modulesPath = (realpath($modulesPath) === false) ? $modulesPath : realpath($modulesPath).DIRECTORY_SEPARATOR;
+        }
 
 		// Validate modules dir path
 		if (!$this->modulesPath || !is_dir($this->modulesPath)) {
 			throw new Exception("The directory '".$this->modulesPath."' could not be found by system.");
 		}
-		
+
 		/**
 		 * Carrega os namespaces do projeto.
 		 */
@@ -136,12 +138,12 @@ class SuitUpStart {
 
 			// Tenta criar um arquivo .htaccess para proteger a pasta de modulos
 			if (!file_exists($this->modulesPath.DIRECTORY_SEPARATOR.'.htaccess') && is_writable($this->modulesPath)) {
-				
+
 				// Este .htaccess impede que esta pasta liste seus arquivos.
 				file_put_contents($this->modulesPath.DIRECTORY_SEPARATOR.'.htaccess', "Options -Indexes\n");
 				chmod($this->modulesPath.DIRECTORY_SEPARATOR.'.htaccess', 0644);
 			}
-			
+
 			// Carrega todos os modulos automaticamente
 			foreach (scandir($this->modulesPath) as $module) {
 				if (!in_array($module, array('.', '..')) && is_dir($this->modulesPath.DIRECTORY_SEPARATOR.$module)) {
@@ -153,10 +155,6 @@ class SuitUpStart {
 			// corretamente
 			$result = $this->resolve($routes->module, $routes->controller, $routes->action);
 		} catch (\Exception $e) {
-
-			// Reset instance because of error.
-// 			self::$instance = null;
-
 			try {
 				// Aqui já deu merda, o usuário verá a tela de erro
 				// do módulo
@@ -171,7 +169,7 @@ class SuitUpStart {
 			}
 			$result->exception = $e;
 		}
-		
+
 		// Declara resultado para a variavel da classe.
 		$this->mvc = $result;
 	}
@@ -179,12 +177,12 @@ class SuitUpStart {
 	/**
 	 * A partir das informacoes busca os arquivos correspondentes para
 	 * renderizar o sistema corretamente.
-	 * 
+	 *
 	 * @param string $module Modulo do sistema (pasta). Primeiro parametro da URL
 	 * @param string $controller Controlador - Classe.
 	 * @param string $action Acao - Metodo da classe do controlador
 	 * @param string $path Caminho.
-	 * 
+	 *
 	 * @return \stdClass
 	 * @throws \Exception
 	 */
@@ -205,7 +203,7 @@ class SuitUpStart {
 
 		// Define nome do controlador e acao
 		$controllerName = ucfirst(strtolower($controller)) . "Controller";
-		
+
 		// Verifica se controlador existe
 		$controllerFile = $path."$module/Controllers".DIRECTORY_SEPARATOR.$controllerName.".php";
 		if (!file_exists($controllerFile)) {
@@ -257,10 +255,10 @@ class SuitUpStart {
 			$abstractController = "\\SuitUp\\Mvc\\MvcAbstractController";
 		}
 		$abstractController::$params = $result;
-		
+
 		return $result;
 	}
-	
+
 	/**
 	 * Habilita ou desabilita monitoramento de SQL de banco de dados.
 	 * @param boolean $status
@@ -279,7 +277,7 @@ class SuitUpStart {
 	{
 		// Captura todas as exceções não tratadas do sistema
 		set_exception_handler('throwNewExceptionFromAnywhere');
-		
+
 		// Gatilho para fila de processos.
 		// Se der alguma exception aqui vai
 		// cair na funcao descrita acima.
@@ -288,4 +286,24 @@ class SuitUpStart {
 		$this->mvc->controller->{$this->mvc->actionName}();
 		$this->mvc->controller->posDispatch();
 	}
+
+    /**
+     * If exists a setup file on config/setup.php we'll return
+     * configs with $key or everything.
+     *
+     * @param string $key The key you looking for.
+     * @return mixed
+     */
+    public function getSetup($key = null) {
+      if (file_exists('config/setup.php')) {
+        $setup = include 'config/setup.php';
+
+        if ($key) {
+          return isset($setup[$key]) ? $setup[$key] : null;
+        } else {
+          return $setup;
+        }
+      }
+      return null;
+    }
 }
