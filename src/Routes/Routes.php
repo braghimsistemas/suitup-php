@@ -157,16 +157,26 @@ class Routes
 					}
 					break;
 				default:
-					// Se tiver mais que 3 parametros na URL
+                
+                  // Temos duas situacoes possiveis aqui:
+                  // 1. Existe uma rota diretamente no modulo default, o que dificulta o rastreamento
+                  // 2. Comportamento ja esperado.
+                  // Para quando houver uma rota no modulo default que vai receber muitos parametros, temos
+                  // que prioriza-la
+                
+                  // Existe um arquivo de rota para o modulo default
+                  if (!file_exists("config/default.routes.php")) {
+                    // Se tiver mais que 3 parametros na URL
 					// ex.: /module/controller/action/naoseipraqueisso
 					// o ultimo sera ignorado a menos que tenha arquivo de rota configurado
 					
 					$this->moduleName = strtolower($routeParts[0]);
 					$this->module = "Module" . ucfirst($this->moduleName);
-					
-					$this->controller = $routeParts[1];
-					$this->action = $routeParts[2];
-					break;
+                  }
+                
+                  $this->controller = $routeParts[1];
+                  $this->action = $routeParts[2];
+                  break;
 			}
 			
 			// Verifica se o usuario definiu um
@@ -179,8 +189,9 @@ class Routes
 				$itemModuleName = array_search($this->moduleName, $routeParts);
 				if (false !== $itemModuleName) {
 					unset($routeParts[$itemModuleName]);
+                    $routeParts = array_values($routeParts);
 				}
-				
+              
 				// Procura por rotas do tipo linear
 				if ($routeParts) {
 					$this->resolveLinearRoutes($routeParts);

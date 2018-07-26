@@ -43,18 +43,20 @@ class SuitUp7FunctionsTest extends \PHPUnit_Framework_TestCase
    *  We'll not create all test cases to this function because
    * it's really impossible to get all situations
    */
-  public function testThrowExceptionFromAnywhere() {
-    
-    $eM = '';
-    try {
-      throw new \Exception('This is just a test case');
-    
-    } catch (\Exception $e) {
-      $eM = throwNewExceptionFromAnywhere($e, true);
-    }
-    
-    $this->assertEquals('This is just a test case', $eM);
-  }
+//  public function testThrowExceptionFromAnywhere() {
+//    
+//    $eM = '';
+//    try {
+//      throw new \Exception('This is just a test case');
+//    
+//    } catch (\Exception $e) {
+//      $eM = throwNewExceptionFromAnywhere($e, true);
+//      dump($eM);
+//      
+//    }
+//    
+//    $this->assertEquals('This is just a test case', $eM);
+//  }
   
   public function testDebug() {
     $this->assertContains('Just another test', dump('Just another test', false));
