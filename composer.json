@@ -14,11 +14,11 @@
 		"zendframework/zend-validator" : "2.*",
 		"zendframework/zend-uri": "2.*",
 		"matthiasmullie/minify": "1.*",
-		"verot/class.upload.php": "0.33"
+		"verot/class.upload.php": "dev-master"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "4.8.*",
-		"satooshi/php-coveralls": "dev-master"
+		"satooshi/php-coveralls": "^v2.0.0"
 	},
 	"suggest": {
 		"phpmailer/phpmailer": "Not implemented in framework itself, but helps a lot and it's very simple."
