@@ -3,7 +3,7 @@
 
 [![Build Status](https://travis-ci.org/braghimsistemas/suitup-php.svg?branch=master)](https://travis-ci.org/braghimsistemas/suitup-php)
 [![Coverage Status](https://coveralls.io/repos/github/braghimsistemas/suitup-php/badge.svg?branch=master)](https://coveralls.io/github/braghimsistemas/suitup-php?branch=master)
-[![Dependency Status](https://www.versioneye.com/user/projects/57e1ca3e79806f0039830407/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/57e1ca3e79806f0039830407)
+[![Awesome](https://awesome.re/badge-flat.svg)](https://awesome.re)
 
 [![Latest Stable Version](https://poser.pugx.org/braghim-sistemas/suitup-php/v/stable)](https://packagist.org/packages/braghim-sistemas/suitup-php)
 [![Latest Unstable Version](https://poser.pugx.org/braghim-sistemas/suitup-php/v/unstable)](https://packagist.org/packages/braghim-sistemas/suitup-php)
