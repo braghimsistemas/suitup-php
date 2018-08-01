@@ -100,6 +100,10 @@ abstract class Persistence
 	protected function Connect($hostname = '', $database = '', $username = '', $password = '') {
 		$dsn = 'mysql:dbname=' . $database . ';host=' . $hostname;
 		try {
+            if (!class_exists('PDO')) {
+              throw new Exception("You don't have the PDO php plugin installed, fix it before start your application.");
+            }
+          
 			# Read settings from INI file, set UTF8
 			$this->pdo = new \PDO($dsn, $username, $password, array(\PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 
