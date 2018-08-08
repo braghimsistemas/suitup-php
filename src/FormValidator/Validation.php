@@ -129,6 +129,7 @@ abstract class Validation
 			// Tipos de campos que nem chegaram no post
 			if (!isset($this->post[$field])) {
 				$this->messages[$field][] = "Este campo é obrigatório";
+                $result = false;
 				continue;
 			}
 			
