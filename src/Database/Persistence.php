@@ -401,14 +401,24 @@ abstract class Persistence
 			$exception .= "\r\nRaw SQL : " . $sql;
 		}
 		
-		// Se nao existe pasta cria
-		$dirlog = 'var/logs';
-		if (!is_dir($dirlog)) {
-			mkdir($dirlog, 0777, true);
-		}
-				
-		# Write into log
-		error_log($exception."\n\n", 3, $dirlog.'/database'.date('d-m-Y').'.log');
-		chmod($dirlog.'/database'.date('d-m-Y').'.log', 0777);
+        // It should work just like a try/catch
+        set_error_handler(function($a, $b, $c, $d) {
+          // dump([$a, $b, $c, $d]);
+          /* ignore errors */
+        });
+      
+        // If folder doesn't exists try to create
+        $dirlog = 'var/log';
+        if (!is_dir($dirlog)) {
+            mkdir($dirlog, 0777, true);
+        }
+
+        # Write into log
+        error_log($exception."\n\n", 3, $dirlog.'/database'.date('d-m-Y').'.log');
+        chmod($dirlog.'/database'.date('d-m-Y').'.log', 0777);
+      
+        // So let's restore error handler (from functions.php file)
+        // @todo: Test it as right
+        restore_error_handler();
 	}
 }
