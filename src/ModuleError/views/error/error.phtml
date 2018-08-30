@@ -1,31 +1,33 @@
 <div class="page-header">
-	<h1 class="text-danger"><i class="fa fa-exclamation-circle"></i> Default Error Handler</h1>
+  <h1 class="text-danger">
+    <i class="fa fa-exclamation-circle"></i> Default Error Handler
+  </h1>
 </div>
 <?php if (DEVELOPMENT && isset($exception)): ?>
-	<div class="row">
-		<div class="col-sm-12">
-			<div class="panel panel-danger">
-				<div class="panel-heading">System Error</div>
-				<table class="table table-striped">
-					<thead>
-						<tr>
-							<td>Message: </td>
-							<td><?php echo $exception->getMessage(); ?></td>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>File: </td>
-							<td><?php echo $exception->getFile(); ?> :: (( <b><?php echo $exception->getLine(); ?></b> ))</td>
-						</tr>
+<div class="row">
+  <div class="col-sm-12">
+    <div class="panel panel-danger">
+      <div class="panel-heading">System Error</div>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <td>Message:</td>
+            <td><?php echo $exception->getMessage(); ?></td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>File:</td>
+            <td><?php echo $exception->getFile(); ?> :: (( <b><?php echo $exception->getLine(); ?></b> ))</td>
+          </tr>
 						<?php if ($exception->getTrace()): ?>
-							<tr>
-								<td>Stack Trace: </td>
-								<td>
+						  <tr>
+                <td>Stack Trace:</td>
+                <td>
 									<?php foreach ($exception->getTrace() as $key => $trace): ?>
 										<div class="well well-sm">
 											#<?php echo $key + 1; ?> - Arquivo: <?php echo $trace['file']; ?>::(<?php echo $trace['line']; ?>)
-											<br/>
+											<br />
 											<?php if ($trace['args']): ?>
 												<?php echo $trace['function']; ?>(<?php echo getTraceArgsAsString($trace['args']); ?>);
 											<?php else: ?>
@@ -34,17 +36,17 @@
 										</div>
 									<?php endforeach; ?>
 								</td>
-							</tr>
+              </tr>
 						<?php endif; ?>
 					</tbody>
-					<tfoot>
-						<tr>
-							<td>String: </td>
-							<td><div class="well well-sm"><?php echo nl2br($exception->__toString()); ?></div></td>
-						</tr>
-					</tfoot>
-				</table>
-			</div>
-		</div>
-	</div>
+        <tfoot>
+          <tr>
+            <td>String:</td>
+            <td><div class="well well-sm"><?php echo nl2br($exception->__toString()); ?></div></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</div>
 <?php endif; ?>

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * The MIT License (MIT)
  *
@@ -71,92 +72,93 @@
  */
 class Psr4AutoloaderClass
 {
-	/**
-	 * An associative array where the key is a namespace prefix and the value
-	 * is an array of base directories for classes in that namespace.
-	 *
-	 * @var array
-	 */
-	protected $prefixes = array();
 
-	/**
-	 * Register loader with SPL autoloader stack.
-	 *
-	 * @return void
-	 */
-	public function register() {
-		spl_autoload_register(array($this, 'loadClass'));
-	}
+  /**
+   * An associative array where the key is a namespace prefix and the value
+   * is an array of base directories for classes in that namespace.
+   *
+   * @var array
+   */
+  protected $prefixes = array();
 
-	/**
-	 * Adds a base directory for a namespace prefix.
-	 *
-	 * @param string $prefix The namespace prefix.
-	 * @param string $base_dir A base directory for class files in the
-	 * namespace.
-	 * @return void
-	 */
-	public function addNamespace($prefix, $base_dir)
-	{
-		// normalize namespace prefix
-		$prefix = trim($prefix, '\\') . '\\';
+  /**
+   * Register loader with SPL autoloader stack.
+   *
+   * @return void
+   */
+  public function register() {
+    spl_autoload_register(array(
+      $this,
+      'loadClass'
+    ));
+  }
 
-		// normalize the base directory with a trailing separator
-		$base_dir = rtrim($base_dir, DIRECTORY_SEPARATOR) . '/';
+  /**
+   * Adds a base directory for a namespace prefix.
+   *
+   * @param string $prefix The namespace prefix.
+   * @param string $base_dir A base directory for class files in the
+   * namespace.
+   * @return void
+   */
+  public function addNamespace($prefix, $base_dir) {
+    // normalize namespace prefix
+    $prefix = trim($prefix, '\\') . '\\';
 
-		// initialize the namespace prefix array
-		if (isset($this->prefixes[$prefix]) === false) {
-			$this->prefixes[$prefix] = array();
-		}
+    // normalize the base directory with a trailing separator
+    $base_dir = rtrim($base_dir, DIRECTORY_SEPARATOR) . '/';
 
-		// retain the base directory for the namespace prefix
-		array_push($this->prefixes[$prefix], $base_dir);
-	}
+    // initialize the namespace prefix array
+    if (isset($this->prefixes[$prefix]) === false) {
+      $this->prefixes[$prefix] = array();
+    }
 
-	/**
-	 * Loads the class file for a given class name.
-	 *
-	 * @param string $class The fully-qualified class name.
-	 * @return mixed The mapped file name on success, or boolean false on
-	 * failure.
-	 */
-	public function loadClass($class)
-	{
-		$fileFound = false;
+    // retain the base directory for the namespace prefix
+    array_push($this->prefixes[$prefix], $base_dir);
+  }
 
-		foreach ($this->prefixes as $prefix => $paths) {
+  /**
+   * Loads the class file for a given class name.
+   *
+   * @param string $class The fully-qualified class name.
+   * @return mixed The mapped file name on success, or boolean false on
+   * failure.
+   */
+  public function loadClass($class) {
+    $fileFound = false;
 
-			// Encontra o prefixo que casa com esta classe
-			if (strpos($class, $prefix) === 0) {
+    foreach ($this->prefixes as $prefix => $paths) {
 
-				foreach ($paths as $path) {
+      // Encontra o prefixo que casa com esta classe
+      if (strpos($class, $prefix) === 0) {
 
-					// Pode ser que tenha apontado a classe na raiz do namespace
-					$rootClass = str_replace($prefix, '', $class);
-					$rootFilename = implode(DIRECTORY_SEPARATOR, explode('\\', $path.$rootClass.'.php'));
+        foreach ($paths as $path) {
 
-					// Ou apontado a classe no diretório interior ao namespace
-					$filename = implode(DIRECTORY_SEPARATOR, explode('\\', $path.$class.'.php'));
+          // Pode ser que tenha apontado a classe na raiz do namespace
+          $rootClass = str_replace($prefix, '', $class);
+          $rootFilename = implode(DIRECTORY_SEPARATOR, explode('\\', $path . $rootClass . '.php'));
 
-					if (file_exists($rootFilename) && is_readable($rootFilename)) {
-						$fileFound = $rootFilename;
-						break;
-						break;
+          // Ou apontado a classe no diretório interior ao namespace
+          $filename = implode(DIRECTORY_SEPARATOR, explode('\\', $path . $class . '.php'));
 
-					} else if (file_exists($filename) && is_readable($filename)) {
-						$fileFound = $filename;
-						break;
-						break;
-					}
-				}
-			}
-		}
+          if (file_exists($rootFilename) && is_readable($rootFilename)) {
+            $fileFound = $rootFilename;
+            break;
+            break;
+          } else if (file_exists($filename) && is_readable($filename)) {
+            $fileFound = $filename;
+            break;
+            break;
+          }
+        }
+      }
+    }
 
-		// Valendo um include que vale mais que dinheiro!
-		if ($fileFound) {
-			include_once $fileFound;
-			return true;
-		}
-		return false;
-	}
+    // Valendo um include que vale mais que dinheiro!
+    if ($fileFound) {
+      include_once $fileFound;
+      return true;
+    }
+    return false;
+  }
 }

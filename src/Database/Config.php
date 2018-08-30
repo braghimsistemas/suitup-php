@@ -30,108 +30,109 @@ namespace SuitUp\Database;
  */
 class Config
 {
-	/**
-	 * @var string
-	 */
-	private $host = 'localhost';
 
-	/**
-	 * @var string
-	 */
-	private $database = '';
+  /**
+   * @var string
+   */
+  private $host = 'localhost';
 
-	/**
-	 * @var string
-	 */
-	private $username = 'root';
+  /**
+   * @var string
+   */
+  private $database = '';
 
-	/**
-	 * @var string
-	 */
-	private $password = '';
+  /**
+   * @var string
+   */
+  private $username = 'root';
 
-	/**
-	 * Config constructor.
-	 * @param array $configs
-	 */
-	public function __construct(array $configs = array()) {
+  /**
+   * @var string
+   */
+  private $password = '';
 
-		// Host
-		if (isset($configs['host'])) {
-			$this->setHost($configs['host']);
-		}
+  /**
+   * Config constructor.
+   * @param array $configs
+   */
+  public function __construct(array $configs = array()) {
 
-		// Database
-		if (isset($configs['database'])) {
-			$this->setDatabase($configs['database']);
-		}
+    // Host
+    if (isset($configs['host'])) {
+      $this->setHost($configs['host']);
+    }
 
-		// Username
-		if (isset($configs['username'])) {
-			$this->setUsername($configs['username']);
-		}
+    // Database
+    if (isset($configs['database'])) {
+      $this->setDatabase($configs['database']);
+    }
 
-		// Password
-		if (isset($configs['password'])) {
-			$this->setPassword($configs['password']);
-		}
-	}
+    // Username
+    if (isset($configs['username'])) {
+      $this->setUsername($configs['username']);
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getHost() {
-		return $this->host;
-	}
+    // Password
+    if (isset($configs['password'])) {
+      $this->setPassword($configs['password']);
+    }
+  }
 
-	/**
-	 * @param string $host
-	 * @return Config
-	 */
-	public function setHost($host) {
-		$this->host = $host;
-		return $this;
-	}
+  /**
+   * @return string
+   */
+  public function getHost() {
+    return $this->host;
+  }
 
-	/**
-	 * @return string
-	 */
-	public function getDatabase() {
-		return $this->database;
-	}
+  /**
+   * @param string $host
+   * @return Config
+   */
+  public function setHost($host) {
+    $this->host = $host;
+    return $this;
+  }
 
-	/**
-	 * @param string $database
-	 */
-	public function setDatabase($database) {
-		$this->database = $database;
-	}
+  /**
+   * @return string
+   */
+  public function getDatabase() {
+    return $this->database;
+  }
 
-	/**
-	 * @return string
-	 */
-	public function getUsername() {
-		return $this->username;
-	}
+  /**
+   * @param string $database
+   */
+  public function setDatabase($database) {
+    $this->database = $database;
+  }
 
-	/**
-	 * @param string $username
-	 */
-	public function setUsername($username) {
-		$this->username = $username;
-	}
+  /**
+   * @return string
+   */
+  public function getUsername() {
+    return $this->username;
+  }
 
-	/**
-	 * @return string
-	 */
-	public function getPassword() {
-		return $this->password;
-	}
+  /**
+   * @param string $username
+   */
+  public function setUsername($username) {
+    $this->username = $username;
+  }
 
-	/**
-	 * @param string $password
-	 */
-	public function setPassword($password) {
-		$this->password = $password;
-	}
+  /**
+   * @return string
+   */
+  public function getPassword() {
+    return $this->password;
+  }
+
+  /**
+   * @param string $password
+   */
+  public function setPassword($password) {
+    $this->password = $password;
+  }
 }

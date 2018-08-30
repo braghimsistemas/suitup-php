@@ -32,5 +32,4 @@ use SuitUp\Mvc\MvcAbstractController;
  */
 class ErrorController extends MvcAbstractController
 {
-	
 }
