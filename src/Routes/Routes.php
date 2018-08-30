@@ -162,25 +162,33 @@ class Routes
           }
           break;
         default:
-
-          // Temos duas situacoes possiveis aqui:
-          // 1. Existe uma rota diretamente no modulo default, o que dificulta o rastreamento
-          // 2. Comportamento ja esperado.
-          // Para quando houver uma rota no modulo default que vai receber muitos parametros, temos
-          // que prioriza-la
-
-          // Existe um arquivo de rota para o modulo default
-          if (! file_exists("config/default.routes.php")) {
-            // Se tiver mais que 3 parametros na URL
-            // ex.: /module/controller/action/naoseipraqueisso
-            // o ultimo sera ignorado a menos que tenha arquivo de rota configurado
-
+          if (is_dir(self::$modulesPath . "/Module" . ucfirst(strtolower($routeParts[0])))) {
+            
+            /**
+             * Here we got 3 or more params from URL
+             *
+             * If the first one is the name of some module folder
+             * we have no choise but point the system to that.
+             */
+            
             $this->moduleName = strtolower($routeParts[0]);
             $this->module = "Module" . ucfirst($this->moduleName);
+            $this->controller = $routeParts[1];
+            $this->action = $routeParts[2];
+          } else {
+            
+            /**
+             * Absolutely normal behavior.
+             * Module keeps being defaulf.
+             * Controller is the first param.
+             * Action is the second.
+             *
+             * Ps.: Everything else will be ignored
+             */
+            
+            $this->controller = $routeParts[0];
+            $this->action = $routeParts[1];
           }
-
-          $this->controller = $routeParts[1];
-          $this->action = $routeParts[2];
           break;
       }
 
