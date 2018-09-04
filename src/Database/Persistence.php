@@ -102,7 +102,7 @@ abstract class Persistence
     $dsn = 'mysql:dbname=' . $database . ';host=' . $hostname;
     try {
       if (! class_exists('PDO')) {
-        throw new Exception("You don't have the PDO php plugin installed, fix it before start your application.");
+        throw new \Exception("You don't have the PDO php plugin installed, fix it before start your application.");
       }
 
       # Read settings from INI file, set UTF8
@@ -333,6 +333,17 @@ abstract class Persistence
     $this->reset();
 
     return $result;
+  }
+  
+  /**
+   * Shortcut to call query method with fetchmode as keypairs
+   * 
+   * @param string $query The query itself
+   * @param array $params 
+   * @return array
+   */
+  public function pairs($query, $params = null) {
+    return $this->query($query, $params, \PDO::FETCH_KEY_PAIR);
   }
 
   /**
