@@ -360,6 +360,19 @@ abstract class MvcAbstractController
   }
 
   /**
+   * Set session with data. Can use a non default namespace
+   * 
+   * @param array $data
+   * @param string $namespace
+   */
+  public static function setLogin(array $data, $namespace = null) {
+    if (!$namespace) {
+      $namespace = self::$authNsp;
+    }
+    $_SESSION[$namespace] = $data;
+  }
+  
+  /**
    * Retorna tudo que está gravado na sessão de login.
    * 
    * @param string $key

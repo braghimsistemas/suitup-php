@@ -106,7 +106,7 @@ abstract class Validation {
    * @param mixed $data
    */
   public function addData($index, $data) {
-    $this->data[$index] = $data;
+    $this->data[$index]['value'] = $data;
   }
 
   /**
