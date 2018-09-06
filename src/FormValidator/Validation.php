@@ -1,4 +1,5 @@
 <?php
+
 /**
  * The MIT License (MIT)
  *
@@ -22,14 +23,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 namespace SuitUp\FormValidator;
 
 /**
  * Class Validation
  * @package SuitUp\FormValidator
  */
-abstract class Validation
-{
+abstract class Validation {
 
   /**
    * @var array Parametros que serao validados
@@ -53,9 +54,11 @@ abstract class Validation
 
   /**
    * Validation constructor.
+   * 
+   * @param int $method It could be INPUT_GET
    */
-  public function __construct() {
-    $this->post = (array) filter_input_array(INPUT_POST);
+  public function __construct($method = INPUT_POST) {
+    $this->post = (array) filter_input_array($method);
   }
 
   /**
@@ -126,7 +129,7 @@ abstract class Validation
     foreach ($this->data as $field => $item) {
 
       // Tipos de campos que nem chegaram no post
-      if (! isset($this->post[$field])) {
+      if (!isset($this->post[$field])) {
         $this->messages[$field][] = "Este campo é obrigatório";
         $result = false;
         continue;
@@ -142,7 +145,7 @@ abstract class Validation
           // vazio toda validacao será falsa.
           // Se quer validar se esta vazio deve utilizar
           // o metodo notEmpty
-          if (! $this->post[$field]) {
+          if (!$this->post[$field]) {
             continue;
           }
 
@@ -156,7 +159,7 @@ abstract class Validation
            */
           $validator = new $methodOrClass($options);
 
-          if (! $validator->isValid($this->post[$field])) {
+          if (!$validator->isValid($this->post[$field])) {
             $result = false;
             foreach ($validator->getMessages() as $msg) {
               $this->messages[$field][] = $msg;
@@ -172,7 +175,18 @@ abstract class Validation
           $validation = $this->$methodOrClass($this->post[$field], $options);
           if ($validation->error) {
             $result = false;
-            $this->messages[$field][] = $validation->message;
+
+            // Create index if not exists
+            if (!isset($this->messages[$field])) {
+              $this->messages[$field] = array();
+            }
+
+            // We may return an array with more than one message
+            if (is_array($validation->message)) {
+              $this->messages[$field] += $validation->message;
+            } else {
+              $this->messages[$field][] = $validation->message;
+            }
           }
           continue;
         }
@@ -182,7 +196,18 @@ abstract class Validation
           $validation = $this->$method($this->post[$field]);
           if ($validation->error) {
             $result = false;
-            $this->messages[$field][] = $validation->message;
+
+            // Create index if not exists
+            if (!isset($this->messages[$field])) {
+              $this->messages[$field] = array();
+            }
+
+            // We may return an array with more than one message
+            if (is_array($validation->message)) {
+              $this->messages[$field] += $validation->message;
+            } else {
+              $this->messages[$field][] = $validation->message;
+            }
           }
           continue;
         }
@@ -221,7 +246,7 @@ abstract class Validation
     // Se faltou algum campo do post que não
     // levou nenhum tipo de validacao nem filtro
     foreach ($this->post as $key => $value) {
-      if (! isset($this->data[$key])) {
+      if (!isset($this->data[$key])) {
         $this->data[$key]['value'] = $value;
       }
     }
@@ -230,4 +255,5 @@ abstract class Validation
     $this->valid = (bool) $result;
     return $this->valid;
   }
+
 }
