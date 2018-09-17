@@ -60,7 +60,7 @@ class SuitUpStart
   /**
    * Versão atual do sistema
    */
-  const VERSION = '1.2.1';
+  const VERSION = '1.2.2';
 
   /**
    * Caminho, no projeto do usuario, onde se encontram as pastas dos módulos.
@@ -189,7 +189,7 @@ class SuitUpStart
    * @param string $controller Controlador - Classe.
    * @param string $action Acao - Metodo da classe do controlador
    * @param string $path Caminho.
-   *       
+   *
    * @return \stdClass
    * @throws \Exception
    */
