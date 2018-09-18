@@ -9,6 +9,9 @@
 #Email         	: braghim.sistemas@gmail.com
 ###################################################################
 
+version="1.0.0"
+echo "SuitUp Manager - Version: $version"
+
 # Show to the user the help document options
 if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
   cat ./help.md
@@ -38,8 +41,101 @@ function createNewModule() {
   local name="Module""$1"    # Name of the new module
   local src=$3               # Realpath to this script (where we get the models...)
 
-  echo $src
+  # Create folders
+  mkdir -p "$path""/""$name""/Controllers/"
+  mkdir -p "$path""/""$name""/Form/"
+  mkdir -p "$path""/""$name""/Model/Gateway"
+  mkdir -p "$path""/""$name""/views/index/"
 
+  # Write documents
+  
+# IndexController.php
+cat <<EOF > "$path""/""$name""/Controllers/IndexController.php"
+<?php
+namespace $name\Controllers;
+
+class IndexController extends AbstractController
+{
+  public function indexAction() {
+
+  }
+}
+
+EOF
+
+# AbstractController.php
+cat <<EOF > "$path""/""$name""/Controllers/AbstractController.php"
+<?php
+namespace $name\Controllers;
+
+use SuitUp\Mvc\MvcAbstractController;
+
+class AbstractController extends MvcAbstractController
+{
+  public function init() {
+    parent::init(); // Keep this line
+  }
+  
+  public function posDispatch() {
+    parent::posDispatch(); // Keep this line
+  }
+}
+
+EOF
+
+# layout.phtml
+cat <<EOF > "$path""/""$name""/views/layout.phtml"
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <title>Hello, world!</title>
+  </head>
+  <body>
+    <h1>New Module: $name</h1>
+    <h4>Created by SuitUp Manager Version: $version</h4>
+
+    <?php echo \$content; ?>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  </body>
+</html>
+
+EOF
+
+# index/index.phtml
+cat <<EOF > "$path""/""$name""/views/index/index.phtml"
+<!-- The content created automatically -->
+<div class="row">
+  <div class="col-6 mx-auto">
+
+    <div class="card">
+      <img class="card-img-top" src=".../100px180/" alt="Card image cap">
+      <div class="card-body">
+        <h5 class="card-title">Card title</h5>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        <a href="#" class="btn btn-primary">Go somewhere</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+EOF
+
+  printf "# SuitUp Manager \n\nThat's pretty awesome\nThis module was created automatically" > "$path""/""$name""/readme.md"
+
+  echo "Done. Enjoy your new module =)"
 }
 
 ###################################################################
