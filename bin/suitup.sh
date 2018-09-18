@@ -1,8 +1,10 @@
-#!/bin/sh
+#!/bin/bash
 ###################################################################
 #Script Name	: suitup
 #Description	: SuitUp Manager
-#Args           : create module <name>, create controller <name>
+#Args           : create module <name>,
+#                 create controller <module> <name>
+#                 create action <module> <controller> <name>
 #Author       	: Braghim Sistemas
 #Email         	: braghim.sistemas@gmail.com
 ###################################################################
@@ -20,17 +22,54 @@ if [ $user = "root"  ]; then
   exit 0;
 fi
 
-# Current folder
-folder=$(pwd)
+###################################################################
+#                  Functions Declarations                         #
+###################################################################
 
-modulesPath=null
+# Return the Capitalized version of string
+function capitalize() {
+  local word=${1,,}
+  printf "%s" "${word^}"
+}
+
+function createNewModule() {
+
+  local path=$2              # Path to the modules
+  local name="Module""$1"    # Name of the new module
+  local src=$3               # Realpath to this script (where we get the models...)
+
+  echo $src
+
+}
+
+###################################################################
+#                  End Functions Declarations                     #
+###################################################################
+
+# Source = Path to the script file itself
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
+  TARGET="$(readlink "$SOURCE")"
+  if [[ $SOURCE == /* ]]; then
+    SOURCE="$TARGET"
+  else
+    DIR="$( dirname "$SOURCE" )"
+    SOURCE="$DIR/$TARGET" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+  fi
+done
+# RDIR="$( dirname "$SOURCE" )"
+# DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+
+# Current folder where USER is
+folder=$(pwd)
 
 # Here we will discover where is the modules path
 echo "Looking for a modules path..."
+modulesPath=null
 for dir in $(find $folder -mindepth 1 -maxdepth 1 -type d) ; do
   if [ -d $dir/ModuleDefault ]
   then
-    modulesPath=$dir/ModuleDefault
+    modulesPath=$dir
     echo "found!"
   fi
 done
@@ -60,21 +99,45 @@ then
   if [ "$2" = "module" ]
   then
 
+    #####################
+    # CREATE NEW MODULE #
+    #####################
+
+    # Get the third param or request it from user
     name=$3
-
-    echo "Create module $name (y/N)"
-    allow=read
-
-    if [ "$allow" = "n" ] || [ "$allow" = "N" ] || [ "$allow" = "" ]
+    if [ "$name" = "" ]
     then
-      echo "Ok, nothing was changed, bye"
+      echo "Which is the name of the new module?"
+      read name
+    fi
+
+    # Prevent wrong type
+    name=$(capitalize "$name")
+
+    # Ask if is this really what he wanna do
+    echo "Create a new module named 'Module""$name' (y/N)"
+    read allow
+
+    # User is pretty sure to append this new module...
+    if [ "$allow" = "y" ] || [ "$allow" = "Y" ] || [ "$allow" = "yes" ] || [ "$allow" = "Yes" ]
+    then
+      
+      # The function that will create the module
+      createNewModule $name $modulesPath $(dirname $SOURCE)
+      exit 0
+
+    else
+      echo "Answer: '$allow'. Ok, nothing was changed, bye"
       exit 0
     fi
 
+  # create controller <module> <name>
   elif [ "$2" = "controller" ]
   then
   
-    # create controller <module> <name>
+    #########################
+    # CREATE NEW CONTROLLER #
+    #########################
 
     echo "oi"
 
@@ -84,7 +147,7 @@ then
     echo "We can't understand what do you wanna do... (no param 2)"
     exit 0
 
-  fi
+  fi # End what to do with action
 
-fi
+fi # End action
 
