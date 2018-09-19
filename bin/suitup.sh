@@ -13,7 +13,7 @@
 ###################################################################
 
 version="1.0.0"
-printf "SuitUp Manager - Version: $version\n\n"
+printf "\nSuitUp Manager - Version: $version\n\n"
 
 # Source = Path to the script file itself
 SOURCE="${BASH_SOURCE[0]}"
@@ -63,10 +63,29 @@ function trim() {
   echo -n "$var"
 }
 
+# Validate if modules path exists, some actions require it
+function checkModulesPath() {
+  if [ ! -d $1 ]
+  then
+    echo "Unable to find one folder with modules, is this the root of the project?"
+    echo "Can't proceed for while..."
+    exit 1
+  fi
+}
+
+# This function create a new module
 function createNewModule() {
 
   local path=$2              # Path to the modules
   local name="Module""$1"    # Name of the new module
+
+  checkModulesPath "$path"
+
+  # Validate module creation
+  if [ -d "$path""/""$name" ]; then
+    echo "The module named '$name' already exists"
+    exit 1
+  fi
 
   # Create folders
   mkdir -p "$path""/""$name""/Controllers/"
@@ -182,6 +201,8 @@ function createController() {
   local module=$2                   # Name of the module (Namespace)
   local path=$3                     # Path to the modules
 
+  checkModulesPath "$path"
+
   # Create folders if does not exist
   mkdir -p "$path""/""$module""/Controllers/"
   mkdir -p "$path""/""$module""/views/""$viewName""/"
@@ -217,7 +238,7 @@ cat <<EOF > "$path""/""$module""/views/""$viewName""/index.phtml"
     <div class="card">
       <img class="card-img-top" src="holder.js/100px180/" alt="Card image cap">
       <div class="card-body">
-        <h5 class="card-title">Card title</h5>
+        <h5 class="card-title">$name</h5>
         <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
         <a href="#" class="btn btn-primary">Go somewhere</a>
       </div>
@@ -227,7 +248,7 @@ cat <<EOF > "$path""/""$module""/views/""$viewName""/index.phtml"
     <div class="card">
       <img class="card-img-top" src="holder.js/100px180/" alt="Card image cap">
       <div class="card-body">
-        <h5 class="card-title">Card title</h5>
+        <h5 class="card-title">$name</h5>
         <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
         <a href="#" class="btn btn-primary">Go somewhere</a>
       </div>
@@ -247,6 +268,8 @@ function createForm() {
   local name=$1                     # Name of the new form
   local module=$2                   # Name of the module (Namespace)
   local path=$3                     # Path to the modules
+
+  checkModulesPath "$path"
 
   # Split into array
   readarray -d / -t parts <<< "$name"
@@ -285,7 +308,7 @@ class $name extends AbstractFormValidator
   /**
    * @var array 
    */
-  protected $data = array(
+  protected \$data = array(
     // Your validations here
   );
 }
@@ -312,14 +335,6 @@ for dir in $(find $folder -mindepth 1 -maxdepth 1 -type d) ; do
   fi
 done
 
-# Modules path found?
-if [ $modulesPath = null ]
-then
-  echo "Unable to find one folder with modules, is this the root of the project?"
-  echo "Can't proceed for while..."
-  exit 1
-fi
-
 # What do you wanna do?
 action=$1
 
@@ -333,8 +348,13 @@ fi
 if [ "$action" = "create" ]
 then
   
+  if [ "$2" = "project" ]
+  then
+
+    echo "new project"
+
   # create module <name>
-  if [ "$2" = "module" ]
+  elif [ "$2" = "module" ]
   then
 
     #####################
@@ -495,6 +515,11 @@ then
     fi
 
   fi
+
+  elif [ "$2" = "dbtable" ]
+  then
+
+    echo "We will create here a new Business and a new Gateway"
 
   elif [ "$2" = "" ]
   then
