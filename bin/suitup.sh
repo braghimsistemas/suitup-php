@@ -304,13 +304,11 @@ done
 folder=$(pwd)
 
 # Here we will discover where is the modules path
-echo "Looking for a modules path..."
 modulesPath=null
 for dir in $(find $folder -mindepth 1 -maxdepth 1 -type d) ; do
   if [ -d $dir/ModuleDefault ]
   then
     modulesPath=$dir
-    echo "found!"
   fi
 done
 
