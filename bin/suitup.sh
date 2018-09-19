@@ -15,9 +15,23 @@
 version="1.0.0"
 printf "SuitUp Manager - Version: $version\n\n"
 
+# Source = Path to the script file itself
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
+  TARGET="$(readlink "$SOURCE")"
+  if [[ $SOURCE == /* ]]; then
+    SOURCE="$TARGET"
+  else
+    DIR="$( dirname "$SOURCE" )"
+    SOURCE="$DIR/$TARGET" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+  fi
+done
+# RDIR="$( dirname "$SOURCE" )"
+DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+
 # Show to the user the help document options
 if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
-  cat ./help.md
+  cat "$DIR""/help.md"
   exit 0;
 fi
 
@@ -285,20 +299,6 @@ EOF
 ###################################################################
 #                  End Functions Declarations                     #
 ###################################################################
-
-# Source = Path to the script file itself
-SOURCE="${BASH_SOURCE[0]}"
-while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
-  TARGET="$(readlink "$SOURCE")"
-  if [[ $SOURCE == /* ]]; then
-    SOURCE="$TARGET"
-  else
-    DIR="$( dirname "$SOURCE" )"
-    SOURCE="$DIR/$TARGET" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
-  fi
-done
-# RDIR="$( dirname "$SOURCE" )"
-# DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 # Current folder where USER is
 folder=$(pwd)
