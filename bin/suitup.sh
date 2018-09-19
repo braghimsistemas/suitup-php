@@ -21,7 +21,7 @@ p='\e[35m' # Purple
 d='\e[39m' # Default color
 
 version="1.0.0"
-echo -e $y"\nSuitUp Manager - Version: $version$d\n"$d
+echo -e "${y} \nSuitUp Manager - Version: $version\n ${d}"
 
 # Source = Path to the script file itself
 SOURCE="${BASH_SOURCE[0]}"
@@ -45,13 +45,13 @@ fi
 
 # Avoid root user
 user=$(whoami);
-if [ $user = "root" ]; then
+if [ "$user" = "root" ]; then
   
   if [ "$SUDO_USER" != "" ]; then
 
-    echo -e $d"You are calling this program with sudo, it's not necessary."
-    echo -e "Should we set "$b"'$SUDO_USER'"$d" instead? (Y/n)"
-    read notSudo
+    echo -e "You are calling this program with sudo, it's not necessary."
+    echo -e "Should we set ${b}'${SUDO_USER}'${d} instead? (Y/n)"
+    read -r notSudo
 
     # Default is YES
     if [ "$notSudo" = "" ] || [ "${notSudo,,}" = "y" ] || [ "${notSudo,,}" = "yes" ]; then
@@ -59,7 +59,7 @@ if [ $user = "root" ]; then
     fi
   fi
 
-  echo -e $g"Running program under user '$user'"$d
+  echo -e "${b}Running program under user '$user'${d}"
 fi
 
 ###################################################################
@@ -85,9 +85,9 @@ function trim() {
 
 # Validate if modules path exists, some actions require it
 function checkModulesPath() {
-  if [ ! -d $1 ]
+  if [ ! -d "$1" ]
   then
-    echo -e $r"There's no modules folder here. Is this the root of the project?"$d
+    echo -e "${r}There's no modules folder here. Is this the root of the project?${d}"
     exit 1
   fi
 }
@@ -96,26 +96,26 @@ function checkModulesPath() {
 function createNewModule() {
 
   local path=$2              # Path to the modules
-  local name="Module""$1"    # Name of the new module
+  local name="Module${1}"    # Name of the new module
 
   checkModulesPath "$path"
 
   # Validate module creation
-  if [ -d "$path""/""$name" ]; then
-    echo -e "The module named '"$r"$name'"$d" already exists"
+  if [ -d "${path}/${name}" ]; then
+    echo -e "The module named ${r}'$name'${d} already exists"
     exit 1
   fi
 
   # Create folders
-  mkdir -p "$path""/""$name""/Controllers/"
-  mkdir -p "$path""/""$name""/Form/"
-  mkdir -p "$path""/""$name""/Model/Gateway"
-  mkdir -p "$path""/""$name""/views/index/"
+  mkdir -p "${path}/${name}/Controllers/"
+  mkdir -p "${path}/${name}/Form/"
+  mkdir -p "${path}/${name}/Model/Gateway"
+  mkdir -p "${path}/${name}/views/index/"
 
   # Write documents
   
 # IndexController.php
-cat <<EOF > "$path""/""$name""/Controllers/IndexController.php"
+cat <<EOF > "${path}/${name}/Controllers/IndexController.php"
 <?php
 namespace $name\Controllers;
 
@@ -129,7 +129,7 @@ class IndexController extends AbstractController
 EOF
 
 # AbstractController.php
-cat <<EOF > "$path""/""$name""/Controllers/AbstractController.php"
+cat <<EOF > "${path}/${name}/Controllers/AbstractController.php"
 <?php
 namespace $name\Controllers;
 
@@ -149,7 +149,7 @@ class AbstractController extends MvcAbstractController
 EOF
 
 # layout.phtml
-cat <<EOF > "$path""/""$name""/views/layout.phtml"
+cat <<EOF > "${path}/${name}/views/layout.phtml"
 <!doctype html>
 <html lang="en">
   <head>
@@ -182,7 +182,7 @@ cat <<EOF > "$path""/""$name""/views/layout.phtml"
 EOF
 
 # index/index.phtml
-cat <<EOF > "$path""/""$name""/views/index/index.phtml"
+cat <<EOF > "${path}/${name}/views/index/index.phtml"
 <!-- The content created automatically -->
 <div class="row">
   <div class="col-6">
@@ -209,15 +209,15 @@ cat <<EOF > "$path""/""$name""/views/index/index.phtml"
 
 EOF
 
-  chown $user:$user "$path""/""$name" -R
+  chown "${user}:${user}" "${path}/${name}" -R
 
-  echo -e $g"Done. Enjoy your new module =)"$d
+  echo -e "${g}Done. Enjoy your new module =)${d}"
 }
 
 # This function will generate files and folders to a new controller (with view)
 function createController() {
 
-  local name="$1""Controller"       # Name of the new controller
+  local name="${1}Controller"       # Name of the new controller
   local viewName="${1,,}"           # The view name (lowercase)
   local module=$2                   # Name of the module (Namespace)
   local path=$3                     # Path to the modules
@@ -225,26 +225,26 @@ function createController() {
   checkModulesPath "$path"
 
   # Create folders if does not exist
-  mkdir -p "$path""/""$module""/Controllers/"
-  mkdir -p "$path""/""$module""/views/""$viewName""/"
+  mkdir -p "${path}/${module}/Controllers/"
+  mkdir -p "${path}/${module}/views/${viewName}/"
 
   # Check if controller already exists
-  if [ -f "$path""/""$module""/Controllers/$name.php" ]; then
-    echo -e "It's embarrassing but '"$r"$path""/""$module""/Controllers/$name.php"$d"' file already exists."
-    echo -e $r"Aborting..."$d
+  if [ -f "${path}/${module}/Controllers/$name.php" ]; then
+    echo -e "It's embarrassing but ${r}'${path}/${module}/Controllers/${name}.php'${d} file already exists."
+    echo -e "${r}Aborting...${d}"
     exit 1
   fi
 
   # If exists the AbstractController file to this specific module as recommended
   use="\nuse SuitUp\Mvc\MvcAbstractController;"
   extends="MvcAbstractController"
-  if [ -f "$path""/""$module""/Controllers/AbstractController.php" ]; then
+  if [ -f "${path}/${module}/Controllers/AbstractController.php" ]; then
     use=""
     extends="AbstractController"
   fi
 
 # The controller
-cat <<EOF > "$path""/""$module""/Controllers/$name.php"
+cat <<EOF > "${path}/${module}/Controllers/$name.php"
 <?php
 namespace $module\Controllers;
 $(echo -e $use)
@@ -286,10 +286,10 @@ cat <<EOF > "$path""/""$module""/views/""$viewName""/index.phtml"
 EOF
 
   # File owner
-  chown $user:$user "$path""/""$module""/Controllers/$name.php"
-  chown $user:$user "$path""/""$module""/views/""$viewName""/index.phtml"
+  chown "${user}:${user}" "${path}/${module}/Controllers/${name}.php"
+  chown "${user}:${user}" "${path}/${module}/views/${viewName}/index.phtml"
 
-  echo -e $g"Done. We also created the view file for you"$d
+  echo -e "${g}Done. We also created the view file for you${d}"
 
 }
 
@@ -305,19 +305,19 @@ function createForm() {
   # Split into array
   readarray -d / -t parts <<< "$name"
 
-  folder="$path""/""$module""/Form/"
-  namespace="$module""\\Form"
+  folder="${path}/${module}/Form/"
+  namespace="${module}\\Form"
   if [ ${#parts[@]} -eq 2 ]; then
     
     # Redefine variables
     name=$(trim "${parts[1]}")
-    folder="$path""/""$module""/Form/""${parts[0]}"
-    namespace="$module""\\Form\\""${parts[0]}"
+    folder="${path}/${module}/Form/${parts[0]}"
+    namespace="${module}\\Form\\${parts[0]}"
   fi
 
   # Validate file exists
-  if [ -f "$folder""/""$name"".php" ]; then
-    echo -e "The file '"$r"$folder""/""$name"".php"$d"' already exists, nothing changed"
+  if [ -f "${folder}/${name}.php" ]; then
+    echo -e "The file ${r}'${folder}/${name}.php'${d} already exists, nothing changed"
     exit 1
   fi
 
@@ -327,7 +327,7 @@ function createForm() {
   fi
 
 # Create the file itself
-cat <<EOF > "$folder""/""$name"".php"
+cat <<EOF > "${folder}/${name}.php"
 <?php 
 namespace $namespace;
 
@@ -346,9 +346,9 @@ class $name extends AbstractFormValidator
 
 EOF
 
-  chown $user:$user "$folder""/""$name"".php"
+  chown "${user}:${user}" "${folder}/${name}.php"
 
-  echo -e $b"Done. Yeah, it was legen... { wait for it } ...dary!"$d
+  echo -e "${g}Done. Yeah, it was legen... { wait for it } ...dary!${d}"
 
 }
 
@@ -371,8 +371,8 @@ folder=$(pwd)
 
 # Here we will discover where is the modules path
 modulesPath=null
-for dir in $(find $folder -mindepth 1 -maxdepth 1 -type d) ; do
-  if [ -d $dir/ModuleDefault ]
+for dir in $(find "${folder}" -mindepth 1 -maxdepth 1 -type d) ; do
+  if [ -d "${dir}/ModuleDefault" ]
   then
     modulesPath=$dir
   fi
@@ -383,7 +383,7 @@ action=$1
 
 if [ "$action" = "" ]
 then
-  echo -e "We can't understand what do you wanna do... (no param 1)"
+  echo -e "${r}We can't understand what do you wanna do... (no param 1)${d}"
   exit 0
 fi
 
@@ -402,27 +402,27 @@ then
     name=$3
     if [ "$name" = "" ]
     then
-      echo -e "Which is the name of the "$g"folder"$d" to the new project?"
-      read name
+      echo -e "Which is the name of the ${b}'folder'${d} to the new project?"
+      read -r name
     fi
 
     # Prevent wrong type
-    name=${name,,}
+    name="${name,,}"
 
     # Ask if is this really what he wanna do
-    echo -e "Create a new project named '"$g"$name"$d"' (y/N)"
-    read allow
+    echo -e "Create a new project named ${b}'${name}'${d} (y/N)"
+    read -r allow
 
     # User is pretty sure to append this new module...
-    if [ "$allow" = "y" ] || [ "$allow" = "Y" ] || [ "$allow" = "yes" ] || [ "$allow" = "Yes" ]
+    if [ "${allow,,}" = "y" ] || [ "${allow,,}" = "yes" ]
     then
       
       # The function that will create the module
-      createProject $name $folder
+      createProject "${name}" "${folder}"
       exit 0
 
     else
-      echo -e $r"Answer: '$allow'. Ok, nothing was changed, bye"$d
+      echo -e "${r}Answer: '${allow}'. Ok, nothing was changed, bye${d}"
       exit 0
     fi
 
@@ -436,29 +436,29 @@ then
 
     # Get the third param or request it from user
     name=$3
-    if [ "$name" = "" ]
+    if [ "${name}" = "" ]
     then
       echo -e "Which is the name of the new module?"
-      read name
+      read -r name
     fi
 
     # Prevent wrong type
-    name=$(capitalize "$name")
+    name=$(capitalize "${name}")
 
     # Ask if is this really what he wanna do
-    echo -e "Create a new module named '"$g"Module""$name"$d"' (y/N)"
-    read allow
+    echo -e "Create a new module named ${b}'Module${name}'${d} (y/N)"
+    read -r allow
 
     # User is pretty sure to append this new module...
-    if [ "$allow" = "y" ] || [ "$allow" = "Y" ] || [ "$allow" = "yes" ] || [ "$allow" = "Yes" ]
+    if [ "${allow,,}" = "y" ] || [ "${allow,,}" = "yes" ]
     then
       
       # The function that will create the module
-      createNewModule $name $modulesPath
+      createNewModule "${name}" "${modulesPath}"
       exit 0
 
     else
-      echo -e $r"Answer: '$allow'. Ok, nothing was changed, bye"$d
+      echo -e "${r}Answer: '${allow}'. Ok, nothing was changed, bye${d}"
       exit 0
     fi
 
@@ -472,14 +472,14 @@ then
 
     # Get the third param or request it from user
     name=$3
-    if [ "$name" = "" ]
+    if [ "${name}" = "" ]
     then
       echo -e "Which is the name of the new controller?"
-      read name
+      read -r name
     fi
 
     # Prevent wrong type
-    name=$(capitalize "$name")
+    name=$(capitalize "${name}")
 
     # Get the fourth param or request it from user
     module=$4
@@ -487,18 +487,18 @@ then
     while true
     do
 
-      if [ "$module" = "" ]
+      if [ "${module}" = "" ]
       then
         echo -e "Which is the name of the module where you wanna do it?"
-        read module
+        read -r module
       fi
 
       # Prevent wrong type
-      module="Module"$(capitalize "$module")
+      module="Module"$(capitalize "${module}")
 
-      if [ ! -d "$modulesPath""/""$module" ]
+      if [ ! -d "${modulesPath}/${module}" ]
       then
-        echo -e "It's embarrassing, but seems '"$r"$module"$d"' folder does not exists, let's try again..."
+        echo -e "It's embarrassing, but seems $r'${module}'${d} folder does not exists, let's try again..."
         module=""
       else
         break
@@ -507,19 +507,19 @@ then
     done
 
     # Ask if is this really what he wanna do
-    echo -e "Create a new controller named '"$g"$name""Controller'"$d" in the module '"$g"$module"$d"' (y/N)"
-    read allow
+    echo -e "Create a new controller named ${b}'${name}Controller'${d} in the module ${b}'${module}'${d} (y/N)"
+    read -r allow
 
     # User is pretty sure to append this new module...
-    if [ "$allow" = "y" ] || [ "$allow" = "Y" ] || [ "$allow" = "yes" ] || [ "$allow" = "Yes" ]
+    if [ "${allow,,}" = "y" ] || [ "${allow,,}" = "yes" ]
     then
       
       # The function that will create the module
-      createController $name $module $modulesPath
+      createController "${name}" "${module}" "${modulesPath}"
       exit 0
 
     else
-      echo -e $r"Answer: '$allow'. Ok, nothing was changed, bye"$d
+      echo -e "${r}Answer: '${allow}'. Ok, nothing was changed, bye${d}"
       exit 0
     fi
 
@@ -535,14 +535,14 @@ then
     if [ "$name" = "" ]
     then
       echo -e "Which is the name of the new form? We recommend you something like 'folder/filename'"
-      read name
+      read -r name
     fi
     name=$(capitalize "$name")
 
     # It's recommended to create forms with a sub folder like "Auth/Login"
-    readarray -d / -t partsFormName <<< "$name"
+    readarray -d / -t partsFormName <<< "${name}"
     if [ ${#partsFormName[@]} -eq 2 ]; then
-      name=$(capitalize ${partsFormName[0]})"/"$(capitalize ${partsFormName[1]})
+      name=$(capitalize "${partsFormName[0]}")"/"$(capitalize "${partsFormName[1]}")
     fi
 
     # Get the fourth param or request it from user
@@ -551,18 +551,18 @@ then
     while true
     do
 
-      if [ "$module" = "" ]
+      if [ "${module}" = "" ]
       then
         echo -e "Which is the name of the module where you wanna do it?"
-        read module
+        read -r module
       fi
 
       # Prevent wrong type
-      module="Module"$(capitalize "$module")
+      module="Module"$(capitalize "${module}")
 
-      if [ ! -d "$modulesPath""/""$module" ]
+      if [ ! -d "${modulesPath}/${module}" ]
       then
-        echo -e "It's embarrassing, but seems '"$r"$module"$d"' folder does not exists, let's try again..."
+        echo -e "It's embarrassing, but seems ${r}'${module}'${d} folder does not exists, let's try again..."
         module=""
       else
         break
@@ -571,19 +571,19 @@ then
     done
 
     # Ask if is this really what he wanna do
-    echo -e "Create a new form named '"$g"$name"$d"' in the module '"$g"$module"$d"' (y/N)"
-    read allow
+    echo -e "Create a new form named ${b}'${name}'${d} in the module ${b}'${module}'${d} (y/N)"
+    read -r allow
 
     # User is pretty sure to append this new module...
-    if [ "$allow" = "y" ] || [ "$allow" = "Y" ] || [ "$allow" = "yes" ] || [ "$allow" = "Yes" ]
+    if [ "${allow,,}" = "y" ] || [ "${allow,,}" = "yes" ]
     then
       
       # The function that will create the module
-      createForm $name $module $modulesPath
+      createForm "$name" "$module" "$modulesPath"
       exit 0
 
     else
-      echo -e $r"Answer: '$allow'. Ok, nothing was changed, bye"$d
+      echo -e "${r}Answer: '$allow'. Ok, nothing was changed, bye${d}"
       exit 0
     fi
 
@@ -594,13 +594,10 @@ then
 
     echo -e "We will create here a new Business and a new Gateway"
 
-  elif [ "$2" = "" ]
-  then
+  else
     
-    echo -e $r"We can't understand what do you wanna do... (no param 2)"$d
+    echo -e "${r}We can't understand what do you wanna do... (no param 2)${d}"
     exit 0
 
   fi # End what to do with action
-
-fi # End action
 
