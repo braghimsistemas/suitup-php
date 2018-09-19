@@ -12,8 +12,16 @@
 #Email        : braghim.sistemas@gmail.com
 ###################################################################
 
+# Colors
+r='\e[31m' # Red
+g='\e[32m' # Green
+y='\e[33m' # Yellow
+b='\e[34m' # Blue
+p='\e[35m' # Purple
+d='\e[39m' # Default color
+
 version="1.0.0"
-printf "\nSuitUp Manager - Version: $version\n\n"
+echo -e $y"\nSuitUp Manager - Version: $version$d\n"$d
 
 # Source = Path to the script file itself
 SOURCE="${BASH_SOURCE[0]}"
@@ -37,9 +45,21 @@ fi
 
 # Avoid root user
 user=$(whoami);
-if [ $user = "root"  ]; then
-  echo "Do not run this script as root user";
-  exit 0;
+if [ $user = "root" ]; then
+  
+  if [ "$SUDO_USER" != "" ]; then
+
+    echo -e $d"You are calling this program with sudo, it's not necessary."
+    echo -e "Should we set "$b"'$SUDO_USER'"$d" instead? (Y/n)"
+    read notSudo
+
+    # Default is YES
+    if [ "$notSudo" = "" ] || [ "${notSudo,,}" = "y" ] || [ "${notSudo,,}" = "yes" ]; then
+      user=$SUDO_USER
+    fi
+  fi
+
+  echo -e $g"Running program under user '$user'"$d
 fi
 
 ###################################################################
@@ -67,8 +87,7 @@ function trim() {
 function checkModulesPath() {
   if [ ! -d $1 ]
   then
-    echo "Unable to find one folder with modules, is this the root of the project?"
-    echo "Can't proceed for while..."
+    echo -e $r"There's no modules folder here. Is this the root of the project?"$d
     exit 1
   fi
 }
@@ -83,7 +102,7 @@ function createNewModule() {
 
   # Validate module creation
   if [ -d "$path""/""$name" ]; then
-    echo "The module named '$name' already exists"
+    echo -e "The module named '"$r"$name'"$d" already exists"
     exit 1
   fi
 
@@ -190,7 +209,9 @@ cat <<EOF > "$path""/""$name""/views/index/index.phtml"
 
 EOF
 
-  echo "Done. Enjoy your new module =)"
+  chown $user:$user "$path""/""$name" -R
+
+  echo -e $g"Done. Enjoy your new module =)"$d
 }
 
 # This function will generate files and folders to a new controller (with view)
@@ -209,8 +230,8 @@ function createController() {
 
   # Check if controller already exists
   if [ -f "$path""/""$module""/Controllers/$name.php" ]; then
-    echo "It's embarrassing but you already have a '""$path""/""$module""/Controllers/$name.php""' file õ.O"
-    echo "Aborting..."
+    echo -e "It's embarrassing but '"$r"$path""/""$module""/Controllers/$name.php"$d"' file already exists."
+    echo -e $r"Aborting..."$d
     exit 1
   fi
 
@@ -264,7 +285,11 @@ cat <<EOF > "$path""/""$module""/views/""$viewName""/index.phtml"
 
 EOF
 
-  echo "Done. We also created the view file for you"
+  # File owner
+  chown $user:$user "$path""/""$module""/Controllers/$name.php"
+  chown $user:$user "$path""/""$module""/views/""$viewName""/index.phtml"
+
+  echo -e $g"Done. We also created the view file for you"$d
 
 }
 
@@ -292,7 +317,7 @@ function createForm() {
 
   # Validate file exists
   if [ -f "$folder""/""$name"".php" ]; then
-    echo "The file '""$folder""/""$name"".php""' already exists, nothing changed"
+    echo -e "The file '"$r"$folder""/""$name"".php"$d"' already exists, nothing changed"
     exit 1
   fi
 
@@ -321,7 +346,19 @@ class $name extends AbstractFormValidator
 
 EOF
 
-  echo "Done. Yeah, it was legen... { wait for it } ...dary!"
+  chown $user:$user "$folder""/""$name"".php"
+
+  echo -e $b"Done. Yeah, it was legen... { wait for it } ...dary!"$d
+
+}
+
+# Start a new fresh project (skeleton)
+function createProject() {
+
+  local name=$1      # The simple name of the new project
+  local folder=$2
+
+  echo -e "Eita - $name - $folder"
 
 }
 
@@ -346,7 +383,7 @@ action=$1
 
 if [ "$action" = "" ]
 then
-  echo "We can't understand what do you wanna do... (no param 1)"
+  echo -e "We can't understand what do you wanna do... (no param 1)"
   exit 0
 fi
 
@@ -357,7 +394,37 @@ then
   if [ "$2" = "project" ]
   then
 
-    echo "new project"
+    ######################
+    # CREATE NEW PROJECT #
+    ######################
+
+    # Get the third param or request it from user
+    name=$3
+    if [ "$name" = "" ]
+    then
+      echo -e "Which is the name of the "$g"folder"$d" to the new project?"
+      read name
+    fi
+
+    # Prevent wrong type
+    name=${name,,}
+
+    # Ask if is this really what he wanna do
+    echo -e "Create a new project named '"$g"$name"$d"' (y/N)"
+    read allow
+
+    # User is pretty sure to append this new module...
+    if [ "$allow" = "y" ] || [ "$allow" = "Y" ] || [ "$allow" = "yes" ] || [ "$allow" = "Yes" ]
+    then
+      
+      # The function that will create the module
+      createProject $name $folder
+      exit 0
+
+    else
+      echo -e $r"Answer: '$allow'. Ok, nothing was changed, bye"$d
+      exit 0
+    fi
 
   # create module <name>
   elif [ "$2" = "module" ]
@@ -371,7 +438,7 @@ then
     name=$3
     if [ "$name" = "" ]
     then
-      echo "Which is the name of the new module?"
+      echo -e "Which is the name of the new module?"
       read name
     fi
 
@@ -379,7 +446,7 @@ then
     name=$(capitalize "$name")
 
     # Ask if is this really what he wanna do
-    echo "Create a new module named 'Module""$name' (y/N)"
+    echo -e "Create a new module named '"$g"Module""$name"$d"' (y/N)"
     read allow
 
     # User is pretty sure to append this new module...
@@ -391,7 +458,7 @@ then
       exit 0
 
     else
-      echo "Answer: '$allow'. Ok, nothing was changed, bye"
+      echo -e $r"Answer: '$allow'. Ok, nothing was changed, bye"$d
       exit 0
     fi
 
@@ -407,7 +474,7 @@ then
     name=$3
     if [ "$name" = "" ]
     then
-      echo "Which is the name of the new controller?"
+      echo -e "Which is the name of the new controller?"
       read name
     fi
 
@@ -422,7 +489,7 @@ then
 
       if [ "$module" = "" ]
       then
-        echo "Which is the name of the module where you wanna do it?"
+        echo -e "Which is the name of the module where you wanna do it?"
         read module
       fi
 
@@ -431,7 +498,7 @@ then
 
       if [ ! -d "$modulesPath""/""$module" ]
       then
-        echo "It's embarrassing, but seems '$module' folder does not exists, let's try again..."
+        echo -e "It's embarrassing, but seems '"$r"$module"$d"' folder does not exists, let's try again..."
         module=""
       else
         break
@@ -440,7 +507,7 @@ then
     done
 
     # Ask if is this really what he wanna do
-    echo "Create a new controller named '""$name""Controller' in the module '""$module""' (y/N)"
+    echo -e "Create a new controller named '"$g"$name""Controller'"$d" in the module '"$g"$module"$d"' (y/N)"
     read allow
 
     # User is pretty sure to append this new module...
@@ -452,7 +519,7 @@ then
       exit 0
 
     else
-      echo "Answer: '$allow'. Ok, nothing was changed, bye"
+      echo -e $r"Answer: '$allow'. Ok, nothing was changed, bye"$d
       exit 0
     fi
 
@@ -467,7 +534,7 @@ then
     name=$3
     if [ "$name" = "" ]
     then
-      echo "Which is the name of the new form? We recommend you something like 'controller/action'"
+      echo -e "Which is the name of the new form? We recommend you something like 'folder/filename'"
       read name
     fi
     name=$(capitalize "$name")
@@ -486,7 +553,7 @@ then
 
       if [ "$module" = "" ]
       then
-        echo "Which is the name of the module where you wanna do it?"
+        echo -e "Which is the name of the module where you wanna do it?"
         read module
       fi
 
@@ -495,7 +562,7 @@ then
 
       if [ ! -d "$modulesPath""/""$module" ]
       then
-        echo "It's embarrassing, but seems '$module' folder does not exists, let's try again..."
+        echo -e "It's embarrassing, but seems '"$r"$module"$d"' folder does not exists, let's try again..."
         module=""
       else
         break
@@ -504,7 +571,7 @@ then
     done
 
     # Ask if is this really what he wanna do
-    echo "Create a new form named '""$name""' in the module '""$module""' (y/N)"
+    echo -e "Create a new form named '"$g"$name"$d"' in the module '"$g"$module"$d"' (y/N)"
     read allow
 
     # User is pretty sure to append this new module...
@@ -516,7 +583,7 @@ then
       exit 0
 
     else
-      echo "Answer: '$allow'. Ok, nothing was changed, bye"
+      echo -e $r"Answer: '$allow'. Ok, nothing was changed, bye"$d
       exit 0
     fi
 
@@ -525,12 +592,12 @@ then
   elif [ "$2" = "dbtable" ]
   then
 
-    echo "We will create here a new Business and a new Gateway"
+    echo -e "We will create here a new Business and a new Gateway"
 
   elif [ "$2" = "" ]
   then
     
-    echo "We can't understand what do you wanna do... (no param 2)"
+    echo -e $r"We can't understand what do you wanna do... (no param 2)"$d
     exit 0
 
   fi # End what to do with action
