@@ -103,7 +103,7 @@ namespace $name\Controllers;
 class IndexController extends AbstractController
 {
   public function indexAction() {
-
+    // Here is where the legends begins...
   }
 }
 
@@ -214,17 +214,23 @@ function createController() {
     exit 1
   fi
 
+  # If exists the AbstractController file to this specific module as recommended
+  use="\nuse SuitUp\Mvc\MvcAbstractController;"
+  extends="MvcAbstractController"
+  if [ -f "$path""/""$module""/Controllers/AbstractController.php" ]; then
+    use=""
+    extends="AbstractController"
+  fi
+
 # The controller
 cat <<EOF > "$path""/""$module""/Controllers/$name.php"
 <?php
 namespace $module\Controllers;
-
-use SuitUp\Mvc\MvcAbstractController;
-
-class $name extends MvcAbstractController
+$(echo -e $use)
+class $name extends $extends
 {
   public function indexAction() {
-    // Here begins the legends...
+    // Here is where the legends begins...
   }
 }
 
