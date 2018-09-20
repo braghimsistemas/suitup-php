@@ -933,7 +933,93 @@ then
     # CREATE DBTABLE  #
     ###################
 
-    _echo "We will create here a new Business and a new Gateway"
+    # Get the third param or request it from user
+    dbname=$3
+    while true; do
+      if [ "${dbname}" = "" ]; then
+        _echo "Which is the ${bold}database${dbold} name?"
+        read -r dbname
+      else
+        break
+      fi
+    done
+
+    # Prevent wrong type
+    dbname="${dbname,,}"
+
+    # Log action to screen
+    _echo -a "Database: ${p}'${dbname}'${d}"
+
+    _echo "Type one by one the ${bold}primary keys${dbold} on this table"\
+          "${y}type '' or 'done' when finish${d}"
+
+    # Get the fourth param or request it from user
+    declare -a pks=()
+
+    while true; do
+      read -r pk
+      if [ "${pk}" = "" ] || [ "${pk}" = "." ] || [ "${pk}" = "done" ] || [ "${pk}" = "ok" ]; then
+        break
+      else
+        pks+=("${pk,,}")
+      fi
+    done
+
+    # Log pks on the screen
+    _echo -a "pks: ${p}$(echo "${pks[@]}" | tr ' ' ' ')${d}"
+    
+    # Get the fourth param or request it from user
+    module=""
+    moduleNotFound=""
+
+    while true
+    do
+
+      if [ "${module}" = "" ]; then
+        if [ "${moduleNotFound}" != "" ]; then
+          _echo "It's embarrassing, but seems ${r}'${moduleNotFound}'${d} folder does not exists\n"\
+                "Let's try again..."\
+                "Type is the ${bold}name${dbold} of the module where you wanna do it?" "\nOptions:\n${b}$(ls "${modulesPath}")${d}"
+        else
+          _echo "Type is the ${bold}name${dbold} of the module where you wanna do it?" "\nOptions:\n${b}$(ls "${modulesPath}")${d}"
+        fi
+        read -r module
+      fi
+
+      # Prevent wrong type
+      module="${module,,}"
+      module="${module/#"module"}"
+      module="Module""$(capitalize "${module}")"
+
+      if [ ! -d "${modulesPath}/${module}" ]
+      then
+        moduleNotFound="${module}"
+        module=""
+      else
+        break
+      fi
+
+    done
+
+    # Log action to screen
+    _echo -a "Module: ${p}'${module}'${d}"
+
+    # Ask if is this really what he wanna do
+    _echo "Confirm create ${b}'${dbname}'${d} ${bold}Business${dbold} and ${bold}Gateway${dbold} on module ${b}'${module}'${d} (y/N)"
+    read -r allow
+
+    # User is pretty sure to append this new module...
+    if [ "${allow,,}" = "y" ] || [ "${allow,,}" = "yes" ]
+    then
+      
+      # The function that will create the module
+      createDbTable "${dbname}" "${module}" "${modulesPath}"
+      exit 0
+
+    else
+      _echo -t "${r}Answer: '${allow}'. Ok, nothing was changed, bye${d}"
+      exit 0
+    fi
 
   fi # End what to do with action
 fi
