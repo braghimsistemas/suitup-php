@@ -659,7 +659,7 @@ then
   name=$2
   while true; do
     if [ "$name" = "" ]; then
-      _echo "Which is the ${b}name${d} for your new project?"
+      _echo "Which is the ${bold}name${dbold} for your new project?"
       read -r name
     else
       break
@@ -732,7 +732,7 @@ then
       name=$(capitalize "${name}")
 
       if [ "${name}" = "" ]; then
-        _echo "Which is the name of the new module?"
+        _echo "Which is the ${bold}name${dbold} of the new module?"
         read -r name
 
       # Module folder already exists
@@ -776,7 +776,7 @@ then
     name=$3
     while true; do
       if [ "${name}" = "" ]; then
-        _echo "Which is the name of the new controller?"
+        _echo "Which is the ${bold}name${dbold} of the new controller?"
         read -r name
       else
         break
@@ -800,9 +800,9 @@ then
         if [ "${moduleNotFound}" != "" ]; then
           _echo "It's embarrassing, but seems ${r}'${moduleNotFound}'${d} folder does not exists\n"\
                 "Let's try again..."\
-                "Which is the name of the module where you wanna do it?" "\nOptions:\n${b}$(ls "${modulesPath}")${d}"
+                "Which is the ${bold}name${dbold} of the module where you wanna do it?" "\nOptions:\n${b}$(ls "${modulesPath}")${d}"
         else
-          _echo "Which is the name of the module where you wanna do it?" "\nOptions:\n${b}$(ls "${modulesPath}")${d}"
+          _echo "Which is the ${bold}name${dbold} of the module where you wanna do it?" "\nOptions:\n${b}$(ls "${modulesPath}")${d}"
         fi
         read -r module
       fi
@@ -851,11 +851,15 @@ then
 
     # Get the third param or request it from user
     name=$3
-    if [ "$name" = "" ]
-    then
-      _echo "Which is the name of the new form? We recommend you something like 'folder/filename'"
-      read -r name
-    fi
+    while true; do
+      if [ "$name" = "" ]; then
+        _echo "Which is the ${bold}name${dbold} of the new form?"\
+              "What about something like ${b}'folder/filename'${d}?"
+        read -r name
+      else
+        break
+      fi
+    done
     name=$(capitalize "$name")
 
     # It's recommended to create forms with a sub folder like "Auth/Login"
@@ -923,8 +927,11 @@ then
       exit 0
     fi
 
-  elif [ "${createwhat,,}" = "dbtable" ]
-  then
+  elif [ "${createwhat,,}" = "dbtable" ]; then
+
+    ###################
+    # CREATE DBTABLE  #
+    ###################
 
     _echo "We will create here a new Business and a new Gateway"
 
