@@ -439,7 +439,7 @@ function createProject() {
   mkdir -p "${folder}/${name}"
 
   # Move to project folder
-  cd "${folder}/${name}"
+  "cd ${folder}/${name} || exit"
 
   # We will try to download composer
   _echo "We will try to download and install ${p}composer${d} now..."
@@ -774,15 +774,17 @@ then
         if [ "${moduleNotFound}" != "" ]; then
           _echo "It's embarrassing, but seems ${r}'${moduleNotFound}'${d} folder does not exists\n"\
                 "Let's try again..."\
-                "Which is the name of the module where you wanna do it?"
+                "Which is the name of the module where you wanna do it?" "\nOptions:\n${b}$(ls "${modulesPath}")${d}"
         else
-          _echo "Which is the name of the module where you wanna do it?"
+          _echo "Which is the name of the module where you wanna do it?" "\nOptions:\n${b}$(ls "${modulesPath}")${d}"
         fi
         read -r module
       fi
 
       # Prevent wrong type
-      module="Module"$(capitalize "${module}")
+      module="${module,,}"
+      module="${module/#"module"}"
+      module="Module""$(capitalize "${module}")"
 
       if [ ! -d "${modulesPath}/${module}" ]
       then
@@ -845,15 +847,17 @@ then
         if [ "${moduleNotFound}" != "" ]; then
           _echo "It's embarrassing, but seems ${r}'${moduleNotFound}'${d} folder does not exists\n"\
                 "Let's try again..."\
-                "Which is the name of the module where you wanna do it?"
+                "Which is the name of the module where you wanna do it?" "\nOptions:\n${b}$(ls "${modulesPath}")${d}"
         else
-          _echo "Which is the name of the module where you wanna do it?"
+          _echo "Which is the name of the module where you wanna do it?" "\nOptions:\n${b}$(ls "${modulesPath}")${d}"
         fi
         read -r module
       fi
 
       # Prevent wrong type
-      module="Module"$(capitalize "${module}")
+      module="${module,,}"
+      module="${module/#"module"}"
+      module="Module""$(capitalize "${module}")"
 
       if [ ! -d "${modulesPath}/${module}" ]
       then
