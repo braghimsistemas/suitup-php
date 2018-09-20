@@ -18,12 +18,14 @@ version="1.0.0"
 folder=$(pwd)
 
 # Colors
-r='\e[31m' # Red
-g='\e[32m' # Green
-y='\e[33m' # Yellow
-b='\e[34m' # Blue
-p='\e[35m' # Purple
-d='\e[39m' # Default color
+r='\e[31m'     # Red
+g='\e[32m'     # Green
+y='\e[33m'     # Yellow
+b='\e[34m'     # Blue
+p='\e[35m'     # Purple
+d='\e[39m'     # Default color
+bold='\e[1m'   # bold
+dbold='\e[21m' # Default bold
 
 declare -a List=()
 
@@ -59,6 +61,7 @@ function _echo() {
     for s in "$@" 
     do
 
+      # If param is a command
       case "${s}" in
         -t|--no-tip)
           cancelTip=0
@@ -164,7 +167,7 @@ function createNewModule() {
   local force=$3
 
   # Force no check module?
-  if [ "${3,,}" != "-f" ] && [ "${3,,}" != "--force" ]; then
+  if [ "${force,,}" != "-f" ] && [ "${force,,}" != "--force" ]; then
     checkModulesPath "$path"
   fi
 
@@ -627,7 +630,9 @@ action=$1
 
 while true; do
   if [ "${action,,}" != "install" ] && [ "${action,,}" != "create" ]; then
-    _echo "         Welcome! What do you wanna do?" "\n${b}'install'${d} a fresh new project or ${b}'create'${d} something"
+    _echo "         Welcome! What do you wanna do?\n"\
+          "         ${b}'install'${d} - A fresh new project"\
+          "         ${b}'create'${d} - Modules, controllers..."
     
     #user input
     read -r action
@@ -679,11 +684,11 @@ then
   createwhat=$2
   while true; do
     if [ "${createwhat,,}" != "module" ] && [ "${createwhat,,}" != "controller" ] && [ "${createwhat,,}" != "form" ] && [ "${createwhat,,}" != "dbtable" ]; then
-      _echo "What do you wanna create? \n\
-      ${b}'module'${d}      - It will create all module needle structure \n\
-      ${b}'controller'${d}  - An empty controller \n\
-      ${b}'form'${d}        - Helps you to create form validations \n\
-      ${b}'dbtable'${d}     - It mean Business and Gateway files"
+      _echo "         What do you wanna ${bold}create${dbold}? \n"\
+      "         ${b}'module'${d}      - It will create all module needle structure"\
+      "         ${b}'controller'${d}  - An empty controller"\
+      "         ${b}'form'${d}        - Helps you to create form validations"\
+      "         ${b}'dbtable'${d}     - It mean Business and Gateway files"
     else
       break
     fi
@@ -702,14 +707,23 @@ then
 
     # Get the third param or request it from user
     name=$3
-    if [ "${name}" = "" ]
-    then
-      _echo "Which is the name of the new module?"
-      read -r name
-    fi
+    while true; do
+      # Prevent wrong type
+      name=$(capitalize "${name}")
 
-    # Prevent wrong type
-    name=$(capitalize "${name}")
+      if [ "${name}" = "" ]; then
+        _echo "Which is the name of the new module?"
+        read -r name
+
+      # Module folder already exists
+      elif [ -d "${modulesPath}/Module${name}" ]; then
+        _echo "The module ${r}'Module${name}'${d} already exists"\
+              "Which is the ${bold}unique${dbold} name of the new module?"
+        read -r name
+      else
+        break
+      fi
+    done
 
     # Ask if is this really what he wanna do
     _echo "Create a new module named ${b}'Module${name}'${d} (y/N)"
@@ -729,8 +743,7 @@ then
     fi
 
   # create controller <module> <name>
-  elif [ "${createwhat,,}" = "controller" ]
-  then
+  elif [ "${createwhat,,}" = "controller" ]; then
   
     #########################
     # CREATE NEW CONTROLLER #
@@ -871,12 +884,10 @@ then
       exit 0
     fi
 
-  fi
-
   elif [ "${createwhat,,}" = "dbtable" ]
   then
 
     _echo "We will create here a new Business and a new Gateway"
 
   fi # End what to do with action
-
+fi
