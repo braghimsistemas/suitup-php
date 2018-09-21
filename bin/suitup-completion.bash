@@ -1,5 +1,10 @@
 #!/bin/bash
 
+
+# If you want to enable the completion for all users, you can just
+# copy the script under /etc/bash_completion.d/ and it will automatically
+# be loaded by Bash.
+
 function _autocomplete() {
 
   instal="install"
@@ -9,7 +14,7 @@ function _autocomplete() {
   form="form"
   dbtable="dbtable"
 
-  typing="${COMP_WORDS[${COMP_CWORD}]}"
+  typing="${COMP_WORDS[COMP_CWORD]}"
   lastWord="${COMP_WORDS[${COMP_CWORD} -1]}"
 
   # Simple auto completion
@@ -18,10 +23,13 @@ function _autocomplete() {
   # If theres nothing but script name
   if [ "$lastWord" = "$1" ] ; then
     suggestion=($(compgen -W "$instal $create" "$typing"))
-
+    
   # Install suggest folder
   elif [ "$lastWord" = "$instal" ] || [ "$lastWord" = "$module" ] ; then
-    suggestion=($(compgen -d "$typing"))
+    # curdir=$(pwd)
+    # suggestion=($( compgen -W '$((command ls -a "${curdir}/${typing}" | sed "s|$(pwd)/||") || "" )' -- '' ))
+
+    suggestion=($(compgen -f -- "$typing"; compgen -d -S \/ -- "$typing"))
 
   # List of what can be created
   elif [ "$lastWord" = "$create" ]; then
