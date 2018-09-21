@@ -737,8 +737,8 @@ then
 
   # Check if the second param is the folder, so name will be the third
   if [ -d "$2" ]; then
-    folder=$2
-    cd "${folder}" || (echo -e "Error to find folder ${folder}"; exit 1;)
+    cd "$2" || (echo -e "Error to find folder ${folder}"; exit 1;)
+    folder="$(pwd)"
     name=$3
   fi
 
@@ -807,8 +807,28 @@ then
     # CREATE NEW MODULE #
     #####################
 
+    name=""
+
+    # Check if the second param is the folder, so name will be the third
+    if [ -d "$3" ]; then
+
+      # Cd to the new path and redefine folder variable
+      cd "$3" || (echo -e "Error to find folder ${folder}"; exit 1;)
+      folder="$(pwd)"
+
+      # Redefine Modules path
+      for dir in $(find "${folder}" -mindepth 1 -maxdepth 1 -type d) ; do
+        if [ -d "${dir}/ModuleDefault" ]; then
+          modulesPath="$dir"
+          break
+        fi
+      done
+
+      # Name must be the fourth param
+      name="$4"
+    fi
+
     # Get the third param or request it from user
-    name=$3
     while true; do
       # Prevent wrong type
       name=$(capitalize "${name}")
@@ -858,9 +878,7 @@ then
     module=$3
     moduleNotFound=""
 
-    while true
-    do
-
+    while true; do
       if [ "${module}" = "" ]; then
         if [ "${moduleNotFound}" != "" ]; then
           _echo "It's embarrassing, but seems ${r}'${moduleNotFound}'${d} folder does not exists\n"\
@@ -884,7 +902,6 @@ then
       else
         break
       fi
-
     done
 
     # Log action to screen
