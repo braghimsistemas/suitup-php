@@ -71,6 +71,7 @@ function _echo() {
         *)
           if [ $append -eq 1 ]; then
             List+=("${s}")
+            append=0
           fi
 
           # It is just a string
@@ -153,6 +154,16 @@ function checkModulesPath() {
     _echo -t "${r}There's no modules folder here. Is this the root of the project?${d}"
     exit 1
   fi
+}
+
+# Concat a list to string
+function joinBy() {
+    # $1 is return variable name
+    # $2 is sep
+    # $3... are the elements to join
+    local retname=$1 sep=$2 ret=$3
+    shift 3 || shift $(($#))
+    printf -v "$retname" "%s" "$ret${@/#/$sep}"
 }
 
 # This function create a new module
@@ -615,6 +626,72 @@ EOF
 
 }
 
+# Create the database Business and Gateway files
+function createDbTable() {
+
+  local dbname="$(capitalize $1)"   # Name of table from database
+  local module="$3"                 # The module name
+  local path="$4"                   # Module path
+
+  local pks="$2"
+  
+  checkModulesPath "${path}"
+
+  # Create path if doesnt exists
+  if ! [ -d "${path}/${module}/Model/Gateway" ]; then
+    mkdir -p "${path}/${module}/Model/Gateway"
+  fi
+
+  # Business file
+  cat <<EOF > "${path}/${module}/Model/${dbname}Business.php"
+<?php
+namespace ${module}\Model
+
+use \SuitUp\Database\Business\AbstractBusiness;
+
+class ${dbname}Business extends AbstractBusiness
+{
+  /**
+   * Reference to gateway file
+   * @var Gateway\\${dbname}
+   */
+  protected \$gateway;
+}
+
+EOF
+
+  # Gateway file
+  cat <<EOF > "${path}/${module}/Model/Gateway/${dbname}.php"
+<?php
+namespace ${module}\Model\Gateway
+
+use \SuitUp\Database\Gateway\AbstractGateway;
+
+class ${dbname} extends AbstractGateway {
+
+  /**
+   * Required. Table name and pk's list
+   */
+  protected \$name = '${1}';
+  protected \$primary = array(${pks});
+
+  /**
+   * Optional
+   * You can define here a column from your table
+   * that must to be updated with current timestamp
+   * every UPDATE call
+   */
+  // protected \$onUpdate = array('edit' => 'NOW()');
+
+
+}
+
+EOF
+
+  _echo "${g}I bet you will mess around with all this data, baby!${d}"
+
+}
+
 ###################################################################
 #                  End Functions Declarations                     #
 ###################################################################
@@ -966,7 +1043,8 @@ then
     done
 
     # Log pks on the screen
-    _echo -a "pks: ${p}$(echo "${pks[@]}" | tr ' ' ' ')${d}"
+    joinBy pksEcho "', '" "${pks[@]}"
+    _echo -a "pks: ${p}'${pksEcho}'${d}"
     
     # Get the fourth param or request it from user
     module=""
@@ -1012,8 +1090,8 @@ then
     if [ "${allow,,}" = "y" ] || [ "${allow,,}" = "yes" ]
     then
       
-      # The function that will create the module
-      createDbTable "${dbname}" "${module}" "${modulesPath}"
+      # The function that will create files
+      createDbTable "${dbname}" "'${pksEcho}'" "${module}" "${modulesPath}"
       exit 0
 
     else
