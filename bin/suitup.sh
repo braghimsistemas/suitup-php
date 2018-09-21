@@ -849,25 +849,8 @@ then
     # CREATE NEW CONTROLLER #
     #########################
 
-    # Get the third param or request it from user
-    name=$3
-    while true; do
-      if [ "${name}" = "" ]; then
-        _echo "Which is the ${bold}name${dbold} of the new controller?"
-        read -r name
-      else
-        break
-      fi
-    done
-
-    # Prevent wrong type
-    name=$(capitalize "${name}")
-
-    # Log action to screen
-    _echo -a "Name: ${p}'${name}Controller'${d}"
-
     # Get the fourth param or request it from user
-    module=$4
+    module=$3
     moduleNotFound=""
 
     while true
@@ -901,6 +884,23 @@ then
 
     # Log action to screen
     _echo -a "Module: ${p}'${module}'${d}"
+
+    # Get the third param or request it from user
+    name=$4
+    while true; do
+      if [ "${name}" = "" ]; then
+        _echo "Which is the ${bold}name${dbold} of the new controller?"
+        read -r name
+      else
+        break
+      fi
+    done
+
+    # Prevent wrong type
+    name=$(capitalize "${name}")
+
+    # Log action to screen
+    _echo -a "Name: ${p}'${name}Controller'${d}"
 
     # Ask if is this really what he wanna do
     _echo "Create a new controller named ${b}'${name}Controller'${d} in the module ${b}'${module}'${d} (y/N)"
