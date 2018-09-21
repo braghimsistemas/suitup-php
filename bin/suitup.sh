@@ -732,15 +732,20 @@ then
   # CREATE NEW PROJECT #
   ######################
 
-  # Get the third param or request it from user
-  name=$2
-  while true; do
-    if [ "$name" = "" ]; then
-      _echo "Which is the ${bold}name${dbold} for your new project?"
-      read -r name
-    else
-      break
-    fi
+  # Get the second param or request it from user
+  name=""
+
+  # Check if the second param is the folder, so name will be the third
+  if [ -d "$2" ]; then
+    folder=$2
+    cd "${folder}" || (echo -e "Error to find folder ${folder}"; exit 1;)
+    name=$3
+  fi
+
+  # while no name was
+  while [ "$name" = "" ]; do
+    _echo "Which is the ${bold}name${dbold} for your new project?"
+    read -r name
   done
 
   # Prevent wrong type

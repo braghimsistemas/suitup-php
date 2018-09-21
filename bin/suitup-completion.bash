@@ -13,11 +13,15 @@ function _autocomplete() {
   lastWord="${COMP_WORDS[${COMP_CWORD} -1]}"
 
   # Simple auto completion
-  local suggestion=($(compgen -W "$instal $create" "$typing"))
+  local suggestion=()
   
-  # Install have no more params
-  if [ "$lastWord" = "$instal" ] || [ "$lastWord" = "$module" ] ; then
-    suggestion=()
+  # If theres nothing but script name
+  if [ "$lastWord" = "$1" ] ; then
+    suggestion=($(compgen -W "$instal $create" "$typing"))
+
+  # Install suggest folder
+  elif [ "$lastWord" = "$instal" ] || [ "$lastWord" = "$module" ] ; then
+    suggestion=($(compgen -d "$typing"))
 
   # List of what can be created
   elif [ "$lastWord" = "$create" ]; then
@@ -35,6 +39,9 @@ function _autocomplete() {
     done
     suggestion=($(compgen -W "$modules" "$typing"))
 
+  else
+    # No suggestion
+    suggestion=()
   fi
 
   # Append to the result
