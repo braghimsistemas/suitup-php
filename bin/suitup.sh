@@ -926,30 +926,8 @@ then
     # CREATE NEW FORM #
     ###################
 
-    # Get the third param or request it from user
-    name=$3
-    while true; do
-      if [ "$name" = "" ]; then
-        _echo "Which is the ${bold}name${dbold} of the new form?"\
-              "What about something like ${b}'folder/filename'${d}?"
-        read -r name
-      else
-        break
-      fi
-    done
-    name=$(capitalize "$name")
-
-    # It's recommended to create forms with a sub folder like "Auth/Login"
-    readarray -d / -t partsFormName <<< "${name}"
-    if [ ${#partsFormName[@]} -eq 2 ]; then
-      name=$(capitalize "${partsFormName[0]}")"/"$(capitalize "${partsFormName[1]}")
-    fi
-
-    # Log action to screen
-    _echo -a "Name: ${p}'${name}'${d}"
-
     # Get the fourth param or request it from user
-    module=$4
+    module=$3
     moduleNotFound=""
 
     while true
@@ -987,6 +965,28 @@ then
     # Log action to screen
     _echo -a "Module: ${p}'${module}'${d}"
 
+    # Get the third param or request it from user
+    name=$4
+    while true; do
+      if [ "$name" = "" ]; then
+        _echo "Which is the ${bold}name${dbold} of the new form?"\
+              "What about something like ${b}'folder/filename'${d}?"
+        read -r name
+      else
+        break
+      fi
+    done
+    name=$(capitalize "$name")
+
+    # It's recommended to create forms with a sub folder like "Auth/Login"
+    readarray -d / -t partsFormName <<< "${name}"
+    if [ ${#partsFormName[@]} -eq 2 ]; then
+      name=$(capitalize "${partsFormName[0]}")"/"$(capitalize "${partsFormName[1]}")
+    fi
+
+    # Log action to screen
+    _echo -a "Name: ${p}'${name}'${d}"
+
     # Ask if is this really what he wanna do
     _echo "Create a new form named ${b}'${name}'${d} in the module ${b}'${module}'${d} (y/N)"
     read -r allow
@@ -1010,44 +1010,8 @@ then
     # CREATE DBTABLE  #
     ###################
 
-    # Get the third param or request it from user
-    dbname=$3
-    while true; do
-      if [ "${dbname}" = "" ]; then
-        _echo "Which is the ${bold}database${dbold} name?"
-        read -r dbname
-      else
-        break
-      fi
-    done
-
-    # Prevent wrong type
-    dbname="${dbname,,}"
-
-    # Log action to screen
-    _echo -a "Database: ${p}'${dbname}'${d}"
-
-    _echo "Type one by one the ${bold}primary keys${dbold} on this table"\
-          "${y}type '' or 'done' when finish${d}"
-
     # Get the fourth param or request it from user
-    declare -a pks=()
-
-    while true; do
-      read -r pk
-      if [ "${pk}" = "" ] || [ "${pk}" = "." ] || [ "${pk}" = "done" ] || [ "${pk}" = "ok" ]; then
-        break
-      else
-        pks+=("${pk,,}")
-      fi
-    done
-
-    # Log pks on the screen
-    joinBy pksEcho "', '" "${pks[@]}"
-    _echo -a "pks: ${p}'${pksEcho}'${d}"
-    
-    # Get the fourth param or request it from user
-    module=""
+    module=$3
     moduleNotFound=""
 
     while true
@@ -1081,6 +1045,42 @@ then
 
     # Log action to screen
     _echo -a "Module: ${p}'${module}'${d}"
+
+    # Get the third param or request it from user
+    dbname=$4
+    while true; do
+      if [ "${dbname}" = "" ]; then
+        _echo "Which is the ${bold}database${dbold} name?"
+        read -r dbname
+      else
+        break
+      fi
+    done
+
+    # Prevent wrong type
+    dbname="${dbname,,}"
+
+    # Log action to screen
+    _echo -a "Database: ${p}'${dbname}'${d}"
+
+    _echo "Type one by one the ${bold}primary keys${dbold} on this table"\
+          "${y}type '' or 'done' when finish${d}"
+
+    # Get the fourth param or request it from user
+    declare -a pks=()
+
+    while true; do
+      read -r pk
+      if [ "${pk}" = "" ] || [ "${pk}" = "." ] || [ "${pk}" = "done" ] || [ "${pk}" = "ok" ]; then
+        break
+      else
+        pks+=("${pk,,}")
+      fi
+    done
+
+    # Log pks on the screen
+    joinBy pksEcho "', '" "${pks[@]}"
+    _echo -a "pks: ${p}'${pksEcho}'${d}"
 
     # Ask if is this really what he wanna do
     _echo "Confirm create ${b}'${dbname}'${d} ${bold}Business${dbold} and ${bold}Gateway${dbold} on module ${b}'${module}'${d} (y/N)"
