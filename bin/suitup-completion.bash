@@ -29,7 +29,9 @@ function _autocomplete() {
     # curdir=$(pwd)
     # suggestion=($( compgen -W '$((command ls -a "${curdir}/${typing}" | sed "s|$(pwd)/||") || "" )' -- '' ))
 
-    suggestion=($(compgen -f -- "$typing"; compgen -d -S \/ -- "$typing"))
+    # suggestion=($(compgen -f -- "$typing"; compgen -d -S \/ -- "$typing"))
+    # compopt -o nospace
+    compopt -o plusdirs
 
   # List of what can be created
   elif [ "$lastWord" = "$create" ]; then
