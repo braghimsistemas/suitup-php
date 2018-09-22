@@ -88,6 +88,12 @@ function _echo() {
   fi
 }
 
+# Check bash version 
+if [ ${BASH_VERSINFO[0]} -lt 4 ]; then
+  echo -e "SuitUp Manager require bash version >= 4, current is ${BASH_VERSINFO}"
+  exit
+fi
+
 # Avoid root user
 user=$(whoami);
 if [ "$user" = "root" ]; then

@@ -1,5 +1,12 @@
 Package: suitup
 Version: 1.0.0
-Maintainer: Braghim Sistemas
 Architecture: all
-Description: Build Suitup PHP Framework issues with command line
+Source: /usr/local/bin/suitup
+Maintainer: Braghim Sistemas <marco.a.braghim@gmail.com>
+Uploaders: Thizer Apps <thizerdev@gmail.com>
+Sections: php, utils, web
+Priority: optional
+Build-Depends: bash (>=4)
+Build-Conflicts: 
+Description: Build Suitup PHP Framework stuff
+Homepage: https://braghimsistemas.github.io/suitup-php/
