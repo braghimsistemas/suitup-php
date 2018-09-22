@@ -124,7 +124,7 @@ DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 # Show to the user the help document options
 if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
   clear
-  cat "${HOME}/.suitup/help.md"
+  cat "/usr/local/bin/suitup.d/help.md"
   exit 0
 fi
 
