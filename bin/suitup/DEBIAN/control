@@ -1,0 +1,5 @@
+Package: suitup
+Version: 1.0.0
+Maintainer: Braghim Sistemas
+Architecture: all
+Description: Build Suitup PHP Framework issues with command line

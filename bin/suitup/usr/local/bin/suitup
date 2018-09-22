@@ -2,11 +2,11 @@
 ###################################################################
 #Script Name	: suitup
 #Description	: SuitUp Manager
-#Args         : create module <name>,
-#               create controller <name> <module>,
-#               create form <name> <module>,
-#               create project <folder>,
-#               dbtable <dbname> <module> <pk1> <pk2> <pk3>...
+#Args         : install <folder> <name>,
+#               create module <folder> <name>,
+#               create controller <folder> <module> <name>,
+#               create form <folder> <module> <name>,
+#               dbtable <folder> <module> <tablename>
 #               
 #Author       : Braghim Sistemas
 #Email        : braghim.sistemas@gmail.com
@@ -123,8 +123,9 @@ DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 # Show to the user the help document options
 if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
-  cat "${DIR}/help.md"
-  exit 0;
+  clear
+  cat "${HOME}/.suitup/help.md"
+  exit 0
 fi
 
 ###################################################################
