@@ -21,12 +21,12 @@ to the root folder (where you put the index.php file)
 USAGE:
 
 -h, --help | Show this help file
-install <name> - Generate an entire new SuitUp project
+install `name` - Generate an entire new SuitUp project
 create
-  - module <folder> <name> - Generate a brand new module
-  - controller <folder> <module> <name> - New controller with action file
-  - form <folder> <module> <name> - New form validation file
-  - dbtable <folder> <module> <name> - New Business and Gateway files
+  - module `folder` `name` - Generate a brand new module
+  - controller `folder` `module` `name` - New controller with action file
+  - form `folder` `module` `name` - New form validation file
+  - dbtable `folder` `module` `name` - New Business and Gateway files
 
 
 
