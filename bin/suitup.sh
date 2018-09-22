@@ -874,8 +874,30 @@ then
     # CREATE NEW CONTROLLER #
     #########################
 
+    module="$3"
+    name="$4"
+
+    # Check if the third param is the folder, so module will be the third
+    if [ -d "$3" ]; then
+
+      # Cd to the new path and redefine folder variable
+      cd "$3" || (echo -e "Error to find folder ${folder}"; exit 1;)
+      folder="$(pwd)"
+
+      # Redefine Modules path
+      for dir in $(find "${folder}" -mindepth 1 -maxdepth 1 -type d) ; do
+        if [ -d "${dir}/ModuleDefault" ]; then
+          modulesPath="$dir"
+          break
+        fi
+      done
+
+      # Name must be the fourth param
+      module="$4"
+      name="$5"
+    fi
+
     # Get the fourth param or request it from user
-    module=$3
     moduleNotFound=""
 
     while true; do
@@ -908,7 +930,6 @@ then
     _echo -a "Module: ${p}'${module}'${d}"
 
     # Get the third param or request it from user
-    name=$4
     while true; do
       if [ "${name}" = "" ]; then
         _echo "Which is the ${bold}name${dbold} of the new controller?"
@@ -948,8 +969,30 @@ then
     # CREATE NEW FORM #
     ###################
 
+    module="$3"
+    name="$4"
+
+    # Check if the third param is the folder, so module will be the third
+    if [ -d "$3" ]; then
+
+      # Cd to the new path and redefine folder variable
+      cd "$3" || (echo -e "Error to find folder ${folder}"; exit 1;)
+      folder="$(pwd)"
+
+      # Redefine Modules path
+      for dir in $(find "${folder}" -mindepth 1 -maxdepth 1 -type d) ; do
+        if [ -d "${dir}/ModuleDefault" ]; then
+          modulesPath="$dir"
+          break
+        fi
+      done
+
+      # Name must be the fourth param
+      module="$4"
+      name="$5"
+    fi
+
     # Get the fourth param or request it from user
-    module=$3
     moduleNotFound=""
 
     while true
@@ -972,10 +1015,7 @@ then
       module="${module/#"module"}"
       module="Module""$(capitalize "${module}")"
 
-      if [ ! -d "${modulesPath}/${module}" ]
-      then
-        # This message will appear above
-        # _echo "It's embarrassing, but seems ${r}'${module}'${d} folder does not exists, let's try again..."
+      if [ ! -d "${modulesPath}/${module}" ]; then
         moduleNotFound="${module}"
         module=""
       else
@@ -988,7 +1028,6 @@ then
     _echo -a "Module: ${p}'${module}'${d}"
 
     # Get the third param or request it from user
-    name=$4
     while true; do
       if [ "$name" = "" ]; then
         _echo "Which is the ${bold}name${dbold} of the new form?"\
@@ -1032,8 +1071,30 @@ then
     # CREATE DBTABLE  #
     ###################
 
+    module="$3"
+    dbname="$4"
+
+    # Check if the third param is the folder, so module will be the third
+    if [ -d "$3" ]; then
+
+      # Cd to the new path and redefine folder variable
+      cd "$3" || (echo -e "Error to find folder ${folder}"; exit 1;)
+      folder="$(pwd)"
+
+      # Redefine Modules path
+      for dir in $(find "${folder}" -mindepth 1 -maxdepth 1 -type d) ; do
+        if [ -d "${dir}/ModuleDefault" ]; then
+          modulesPath="$dir"
+          break
+        fi
+      done
+
+      # Name must be the fourth param
+      module="$4"
+      dbname="$5"
+    fi
+
     # Get the fourth param or request it from user
-    module=$3
     moduleNotFound=""
 
     while true
@@ -1069,7 +1130,6 @@ then
     _echo -a "Module: ${p}'${module}'${d}"
 
     # Get the third param or request it from user
-    dbname=$4
     while true; do
       if [ "${dbname}" = "" ]; then
         _echo "Which is the ${bold}database${dbold} name?"

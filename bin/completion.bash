@@ -26,11 +26,8 @@ function _autocomplete() {
     
   # Install suggest folder
   elif [ "$lastWord" = "$instal" ] || [ "$lastWord" = "$module" ] ; then
-    # curdir=$(pwd)
-    # suggestion=($( compgen -W '$((command ls -a "${curdir}/${typing}" | sed "s|$(pwd)/||") || "" )' -- '' ))
 
-    # suggestion=($(compgen -f -- "$typing"; compgen -d -S \/ -- "$typing"))
-    # compopt -o nospace
+    #compopt -o dirnames
     compopt -o plusdirs
 
   # List of what can be created
@@ -47,11 +44,34 @@ function _autocomplete() {
         break
       fi
     done
-    suggestion=($(compgen -W "$modules" "$typing"))
 
-  else
-    # No suggestion
-    suggestion=()
+    if [ "$modules" = "" ]; then
+      compopt -o plusdirs
+    else
+      suggestion=($(compgen -W "$modules" "$typing"))
+    fi
+
+  # If last argument is a folder, the next maybe the module name
+  elif [ -d "$lastWord" ]; then
+    
+    modules=""
+    for dir in $(find "$lastWord" -mindepth 1 -maxdepth 1 -type d) ; do
+      if [ -d "${dir}/ModuleDefault" ]; then
+        modules="$(ls ${dir})"
+        break
+      fi
+    done
+
+    if [ "$modules" != "" ]; then
+      suggestion=($(compgen -W "$modules" "$typing"))
+    fi
+
+  fi
+
+  # For special options which starts with --
+  if [[ ${typing} == -* ]] ; then
+    COMPREPLY=($(compgen -W "--help" -- ${typing}))
+    return 0
   fi
 
   # Append to the result
