@@ -71,13 +71,13 @@ abstract class MvcAbstractController
   /**
    * Este metodo é chamado antes da ação do controlador.
    * Se for sobrescrever ele, não esqueça de chama-lo.
-   * 
+   *
    * ex.
    * public function preDispatch() {
    *		// Seu codigo aqui
-   * 
+   *
    *		parent::preDispatch();
-   * 
+   *
    *		// ou aqui
    * }
    */
@@ -196,7 +196,7 @@ abstract class MvcAbstractController
   /**
    * O namespace eh relativo ao modulo, nao queremos
    * misturar as mensagens de um modulo com outro
-   * 
+   *
    * @return string
    */
   public function getMsgNsp() {
@@ -213,7 +213,7 @@ abstract class MvcAbstractController
 
   /**
    * Nome do controlador
-   * 
+   *
    * @return string
    */
   public function getControllerName() {
@@ -222,7 +222,7 @@ abstract class MvcAbstractController
 
   /**
    * Nome da ação.
-   * 
+   *
    * @return string
    */
   public function getActionName() {
@@ -239,7 +239,7 @@ abstract class MvcAbstractController
 
   /**
    * Troca o layout
-   * 
+   *
    * @param string $name Nome do arquivo de layout
    * @param string $path Caminho para o arquivo de layout
    */
@@ -253,7 +253,7 @@ abstract class MvcAbstractController
   /**
    * Pega conteúdo da view
    * Foi feito no arquivo functions.php, para ser usado mesmo pelo terminal.
-   * 
+   *
    * @param string $renderViewName Nome do arquivo para renderizar
    * @param array $vars Variaveis que serao visiveis dentro deste arquivo
    * @param string $renderViewPath Caminho até este arquivo
@@ -269,7 +269,7 @@ abstract class MvcAbstractController
   /**
    * Adiciona uma variavel qualquer ao conjunto de variaveis que
    * aparecerao na view.
-   * 
+   *
    * @param string|array $name
    * @param mixed $value
    * @return MvcAbstractController
@@ -287,7 +287,7 @@ abstract class MvcAbstractController
 
   /**
    * Retorna true se a variavel existe na lista.
-   * 
+   *
    * @param string $name
    * @return bool
    */
@@ -297,7 +297,7 @@ abstract class MvcAbstractController
 
   /**
    * Se a variavel da view com este nome existir retorna seu conteudo.
-   * 
+   *
    * @param string $name
    * @return mixed
    */
@@ -307,7 +307,7 @@ abstract class MvcAbstractController
 
   /**
    * Retorna todos os parametros GET
-   * 
+   *
    * @return array
    */
   public function getParams() {
@@ -317,7 +317,7 @@ abstract class MvcAbstractController
 
   /**
    * Pega parametro do GET
-   * 
+   *
    * @param string $name
    * @param mixed $default
    * @return mixed
@@ -337,7 +337,7 @@ abstract class MvcAbstractController
 
   /**
    * Retorna indice do POST.
-   * 
+   *
    * @param string $name Indice desejado.
    * @param mixed $default Valor que será retornado caso o indice nao exista.
    * @return array
@@ -361,7 +361,7 @@ abstract class MvcAbstractController
 
   /**
    * Set session with data. Can use a non default namespace
-   * 
+   *
    * @param array $data
    * @param string $namespace
    */
@@ -371,10 +371,24 @@ abstract class MvcAbstractController
     }
     $_SESSION[$namespace] = $data;
   }
-  
+
+  /**
+   * Clear the login session. Can use a non default namespace
+   *
+   * @param string $namespace
+   */
+  public static function clearLogin($namespace = null) {
+    if (!$namespace) {
+      $namespace = self::$authNsp;
+    }
+    if (isset($_SESSION[$namespace])) {
+			$_SESSION[$namespace] = null;
+		}
+  }
+
   /**
    * Retorna tudo que está gravado na sessão de login.
-   * 
+   *
    * @param string $key
    * @param mixed $default
    * @return mixed
@@ -395,7 +409,7 @@ abstract class MvcAbstractController
 
   /**
    * Atualiza um indice da sessão de login.
-   * 
+   *
    * @param string $key
    * @param mixed $value
    */
@@ -412,7 +426,7 @@ abstract class MvcAbstractController
 
   /**
    * Mensagens do sistema com ou sem redirecionamento
-   * 
+   *
    * @param string $msg
    * @param string $type
    * @param boolean $withRedirect
@@ -429,7 +443,7 @@ abstract class MvcAbstractController
 
   /**
    * Efetua upload de arquivos.
-   * 
+   *
    * @param array $file Arquivo da variável $_FILES['somefile']
    * @param string $where Caminho absoluto para onde salvar o arquivo, ex.: FILES_PATH . '/somewhere'
    * @param string $exitFilename Nome do arquivo no final do processo de upload
@@ -499,7 +513,7 @@ abstract class MvcAbstractController
   /**
    * Captura uma imagem e transforma seu conteúdo para Base64.
    * - Deixa a imagem em torno de 33% maior segundo a documentação do PHP.
-   * 
+   *
    * @param array $file Item $_FILES['arquivo']
    * @param int $maxFilesize 512kb por padrão.
    * @throws \Exception
@@ -563,7 +577,7 @@ abstract class MvcAbstractController
 
   /**
    * Efetua redirecionamento
-   * 
+   *
    * @param string $to
    * @return string
    */
@@ -575,7 +589,7 @@ abstract class MvcAbstractController
   /**
    * Quando a ação for um ajax basta inserir o conteudo do retorno
    * neste metodo.
-   * 
+   *
    * @param array $data
    * @return string
    */
@@ -604,7 +618,7 @@ abstract class MvcAbstractController
 
   /**
    * Aqui nos controlamos as sessoes de filtros.
-   * 
+   *
    * @param mixed $name
    * @param mixed $value
    * @return array
@@ -628,7 +642,7 @@ abstract class MvcAbstractController
 
   /**
    * Remove um item de sessao de filtro.
-   * 
+   *
    * @param mixed $key
    */
   public function removeSessionFilter($key = null) {
