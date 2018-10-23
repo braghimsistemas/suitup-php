@@ -451,7 +451,7 @@ abstract class MvcAbstractController
    * @return stdClass
    * @throws Exception
    */
-  public function uploadFile($file, $where, $exitFilename = null, array $allowedExt = array('jpeg', 'jpg', 'pdf', 'png', 'gif')) {
+  public function uploadFile($file, $where, $exitFilename = null, array $allowedExt = array('jpeg', 'jpg', 'pdf', 'png', 'gif', 'svg')) {
     $result = new stdClass();
     $result->filename = "";
     $result->pathAndFilename = "";
