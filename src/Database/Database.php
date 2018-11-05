@@ -70,7 +70,9 @@ class Database extends Persistence
     }
 
     // Inclui as configuracoes
-    $this->Connect(self::getConfig()->getHost(), self::getConfig()->getDatabase(), self::getConfig()->getUsername(), self::getConfig()->getPassword());
+    if (self::$config) {
+      $this->Connect(self::getConfig()->getHost(), self::getConfig()->getDatabase(), self::getConfig()->getUsername(), self::getConfig()->getPassword());
+    }
     $this->parameters = array();
   }
 
@@ -132,9 +134,6 @@ class Database extends Persistence
    * @return \SuitUp\Database\Config
    */
   public static function getConfig() {
-    if (null == self::$config) {
-      self::setConfig(new Config());
-    }
     return self::$config;
   }
 
