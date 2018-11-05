@@ -39,7 +39,7 @@ class Config
   /**
    * @var string
    */
-  private $database = '';
+  private $database = 'mysql';
 
   /**
    * @var string
