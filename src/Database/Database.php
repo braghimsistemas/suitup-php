@@ -58,21 +58,21 @@ class Database extends Persistence
     if (null == self::$config) {
       $dbConfigFile = dirname(MvcAbstractController::$params->mainPath) . '/config/database.config.php';
 
-      if (! file_exists($dbConfigFile)) {
+      if (file_exists($dbConfigFile)) {
+        $dbConfigFileContent = include $dbConfigFile;
 
-        // O arquivo não existe, mas é um erro do sistema (provavelmente estrutura) então nao faz nada.
-        if (MvcAbstractController::$params->moduleName == 'ModuleError') {
-          return;
+        if (is_array($dbConfigFileContent)) {
+
+          // Encontrou arquivo, então vamos usa-lo para configurar.
+          self::setConfig(include $dbConfigFile);
         }
-        throw new \Exception("Nenhuma configuração de banco de dados configurada.");
       }
-
-      // Encontrou arquivo, então vamos usa-lo para configurar.
-      self::setConfig(include $dbConfigFile);
     }
 
     // Inclui as configuracoes
-    $this->Connect(self::getConfig()->getHost(), self::getConfig()->getDatabase(), self::getConfig()->getUsername(), self::getConfig()->getPassword());
+    if (self::$config) {
+      $this->Connect(self::getConfig()->getHost(), self::getConfig()->getDatabase(), self::getConfig()->getUsername(), self::getConfig()->getPassword());
+    }
     $this->parameters = array();
   }
 
@@ -103,7 +103,7 @@ class Database extends Persistence
    * Renova a instancia do banco de dados.
    * Pense bem antes de utilizar este método, pois ele remove a conexão antiga
    * e cria uma nova. Isto pode deixar o sistema mais lento.
-   * 
+   *
    * @return Database
    */
   public static function renewInstance() {
@@ -134,15 +134,12 @@ class Database extends Persistence
    * @return \SuitUp\Database\Config
    */
   public static function getConfig() {
-    if (null == self::$config) {
-      self::setConfig(new Config());
-    }
     return self::$config;
   }
 
   /**
    * Retorna o objeto de paginacao.
-   * 
+   *
    * @param mixed $query Instrucao SQL para executar no banco de dados com paginacao.
    * @param \Closure $clousureFunc Adiciona a paginacao uma funcao que sera executada em cada item retornado na query.
    * @return \SuitUp\Paginate\Paginate
@@ -153,7 +150,7 @@ class Database extends Persistence
 
   /**
    * Inicia transacao com o banco de dados
-   * 
+   *
    * @return bool
    */
   public static function beginTransaction() {
@@ -162,7 +159,7 @@ class Database extends Persistence
 
   /**
    * Confirma transacao com banco de dados
-   * 
+   *
    * @return bool
    */
   public static function commit() {
@@ -171,7 +168,7 @@ class Database extends Persistence
 
   /**
    * Desfaz alteracoes no banco de dados sob transacao.
-   * 
+   *
    * @return bool
    */
   public static function rollBack() {
