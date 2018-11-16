@@ -323,7 +323,13 @@ if (!function_exists('formSelect')) {
    * @return string
    */
   function formSelect($name, array $attrs = array(), array $values = array('' => 'Selecione!'), $selected = null) {
-    $html = "<select id=\"$name\" name=\"$name\"";
+
+    // Normalize id attr
+    $id = preg_replace("/[^0-9a-zA-Z-_]/", '-', $name);
+    $id = preg_replace("/\-+/", '-', $id);
+    $id = trim($id, '-');
+
+    $html = "<select id=\"$id\" name=\"$name\"";
 
     foreach ($attrs as $attrName => $attrValue) {
       $html .= " ".$attrName.'="'.$attrValue.'"';
