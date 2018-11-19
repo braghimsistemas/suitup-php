@@ -345,4 +345,35 @@ if (!function_exists('formSelect')) {
     }
     return $html."\n</select>";
   }
+
+  /**
+   * Create the input checkbox
+   *
+   * @param string $name
+   * @param array $attrs
+   * @param array $value
+   * @param bool $checked
+   */
+  function formCheckbox($name, array $attrs = array(), $value = '1', $checked = false) {
+
+    // Normalize id attr
+    $id = preg_replace("/[^0-9a-zA-Z-_]/", '-', $name);
+    $id = preg_replace("/\-+/", '-', $id);
+    $id = trim($id, '-');
+
+    $html = "<input type=\"checkbox\" id=\"$id\" name=\"$name\"";
+
+    $attrs += array('value' => $value);
+
+    if ($checked) {
+      $attrs += array('checked' => 'checked');
+    }
+
+    foreach ($attrs as $attrName => $attrValue) {
+      $html .= " ".$attrName.'="'.$attrValue.'"';
+    }
+    $html .= ">\n";
+
+    return $html;
+  }
 }
