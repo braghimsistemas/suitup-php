@@ -347,12 +347,14 @@ if (!function_exists('formSelect')) {
   }
 
   /**
-   * Create the input checkbox
+   * Create the input checkbox html string
    *
-   * @param string $name
-   * @param array $attrs
-   * @param array $value
-   * @param bool $checked
+   * @param string $name The name and id attributes
+   * @param array $attrs The list of attributes
+   * @param array $value Value attribute
+   * @param bool $checked Is checked?
+   * 
+   * @return string
    */
   function formCheckbox($name, array $attrs = array(), $value = '1', $checked = false) {
 
@@ -361,19 +363,20 @@ if (!function_exists('formSelect')) {
     $id = preg_replace("/\-+/", '-', $id);
     $id = trim($id, '-');
 
+    // Base html
     $html = "<input type=\"checkbox\" id=\"$id\" name=\"$name\"";
 
-    $attrs += array('value' => $value);
-
+    // Value and checked
+    $attrs['value'] = $value;
     if ($checked) {
-      $attrs += array('checked' => 'checked');
+      $attrs['checked'] = 'checked';
     }
 
+    // Attributes
     foreach ($attrs as $attrName => $attrValue) {
       $html .= " ".$attrName.'="'.$attrValue.'"';
     }
     $html .= ">\n";
-
     return $html;
   }
 }
