@@ -50,11 +50,21 @@ class FormResult extends \stdClass
   /**
    * Set error true or false
    *
-   * @param bool $error
+   * @param bool|string $error
    * @return $this
    */
   public function setError($error) {
-    $this->error = (bool) $error;
+
+    if (is_bool($error)) {
+      $this->error = (bool) $error;
+
+    } else if (is_string($error)) {
+      // If theres a message, the object can be filled completely
+      $this->error = true;
+      $this->setMessage($error);
+    } else {
+      throw new Exception('Unknown type of error \''.gettype($error).'\'');
+    }
     return $this;
   }
 
