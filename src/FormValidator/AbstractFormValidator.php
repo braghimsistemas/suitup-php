@@ -33,7 +33,7 @@ abstract class AbstractFormValidator extends Validation
 
   /**
    * Check if the $_POST form field is empty.
-   * 
+   *
    * @param mixed $value Form field value to be compared.
    * @param mixed $options Custom message to error
    * @return \stdClass
@@ -62,7 +62,7 @@ abstract class AbstractFormValidator extends Validation
 
   /**
    * E-mail validation. <b>do not check if the form field is empty</b>
-   * 
+   *
    * @param string $value Form field value to be compared.
    * @param mixed $options Custom message to error
    * @return \stdClass
@@ -91,7 +91,7 @@ abstract class AbstractFormValidator extends Validation
 
   /**
    * CEP number validation. CEP is the Zip-Code for shipping system from Brazil.
-   * 
+   *
    * @param string $value Form field value to be compared. CEP number formated like 99999-999 or 999999999
    * @param mixed $options Custom message to error
    * @return \stdClass
@@ -121,7 +121,7 @@ abstract class AbstractFormValidator extends Validation
 
   /**
    * Verify if this field has the mininum length size indicated by the option.
-   * 
+   *
    * @param mixed $value Form field value to be compared.
    * @param int $options [size, message]
    *		size: The minimun length size to the field;
@@ -151,7 +151,7 @@ abstract class AbstractFormValidator extends Validation
 
   /**
    * Verify if this field has the maximum length size indicated by the option.
-   * 
+   *
    * @param mixed $value Form field value to be compared.
    * @param int $options [size, message]
    *		size: The minimun length size to the field;
@@ -183,7 +183,7 @@ abstract class AbstractFormValidator extends Validation
    * The field which contains this validation have to be
    * greater than the field indicated in the target option.
    * This validation is numeric made, not about the length.
-   * 
+   *
    * @deprecated
    * @see greaterThan
    * @param mixed $value Form field value to be compared.
@@ -200,7 +200,7 @@ abstract class AbstractFormValidator extends Validation
    * The field which contains this validation have to be
    * greater than the field indicated in the target option.
    * This validation is numeric made, not about the length.
-   * 
+   *
    * @param mixed $value Form field value to be compared.
    * @param mixed $options [target, message]
    * 		Target: Another $_POST form to compare to;
@@ -237,7 +237,7 @@ abstract class AbstractFormValidator extends Validation
    * The field which contains this validation have to be
    * less than the field indicated in the target option.
    * This validation is numeric made, not about the length.
-   * 
+   *
    * @deprecated
    * @see lessThan
    * @param mixed $value Value from $_POST form to validate
@@ -254,7 +254,7 @@ abstract class AbstractFormValidator extends Validation
    * The field which contains this validation have to be
    * less than the field indicated in the target option.
    * This validation is numeric made, not about the length.
-   * 
+   *
    * @param mixed $value Value from $_POST form to validate
    * @param mixed $options [target, message]
    * 		Target: Another $_POST form to compare to;
@@ -289,7 +289,7 @@ abstract class AbstractFormValidator extends Validation
 
   /**
    * Compare two $_POST form fields that must to be identical.
-   * 
+   *
    * @deprecated
    * @see identicalTo
    * @param mixed $value Value from $_POST form
@@ -305,7 +305,7 @@ abstract class AbstractFormValidator extends Validation
 
   /**
    * Compare two $_POST form fields that must to be identical.
-   * 
+   *
    * @param mixed $value Value from $_POST form
    * @param mixed $options [target, message]
    * 		Target: Another $_POST form to compare to;
@@ -340,7 +340,7 @@ abstract class AbstractFormValidator extends Validation
 
   /**
    * Check if the field $_POST value exists in the given array by options.
-   * 
+   *
    * @param $value Form field value to be compared.
    * @param array $options You have the option of use default message and give just the array
    * 		list to search for the field $_POST value, but can use $options to give a custom message:
@@ -380,6 +380,41 @@ abstract class AbstractFormValidator extends Validation
     return $result;
   }
 
+  /**
+   * Validate given date format
+   *
+   * @param string $value The value to be validated as date
+   * @param string|array $options The message to be append to the error
+   * @return \SuitUp\FormValidator\FormResult
+   */
+  public function isDate($value, $options = array()) {
+    $result = new \SuitUp\FormValidator\FormResult();
+    if ($value) {
+
+      // Busca mensagem de erro para mostrar
+      $message = 'Data inválida';
+      if ($options) {
+        $message = (string) $options;
+        if (isset($options['message'])) {
+          $message = (string) $options['message'];
+        }
+      }
+
+      try {
+        // Utiliza os objetos do PHP para comparar a data
+        $dateTime = new \DateTime($value);
+        $errors = $dateTime->getLastErrors();
+
+        if ($errors['error_count']) {
+          $result->setError($message);
+        }
+      } catch (\Exception $e) {
+        $result->setError($message);
+      }
+    }
+    return $result;
+  }
+
   // ===============================================================
   //                         FILTERS
   // ===============================================================
@@ -387,7 +422,7 @@ abstract class AbstractFormValidator extends Validation
   /**
    * Remove white spaces from begin and the end of the form field and
    * protect against tags injection.
-   * 
+   *
    * @param $value Form field value to be filtered.
    * @return string
    */
@@ -397,7 +432,7 @@ abstract class AbstractFormValidator extends Validation
 
   /**
    * Remove white spaces from begin and the end of the form field.
-   * 
+   *
    * @param string $value Form field value to be filtered.
    * @return string
    */
@@ -407,7 +442,7 @@ abstract class AbstractFormValidator extends Validation
 
   /**
    * Convertion from brazilian date format (dd/mm/yyyy) to database format (yyyy-mm-dd).
-   * 
+   *
    * @param string $value Form field value to be filtered.
    * @return string
    */
@@ -417,7 +452,7 @@ abstract class AbstractFormValidator extends Validation
 
   /**
    * Remove everything that is not a number from the form field.
-   * 
+   *
    * @param string $value Form field value to be filtered.
    * @return string
    */
@@ -429,9 +464,9 @@ abstract class AbstractFormValidator extends Validation
    * Transform the value from form field to float (double). This method
    * is used by others methods and have to get the string format (9.999,99).
    * <b>If you use the format 9,999.99 so we recomand you to override these methdos</b>.
-   * 
+   *
    * @TODO: i18n Necessário reformular para outros tipos de padrões de dinheiros
-   * 
+   *
    * @param string $value Form field value to be filtered.
    * @param array $options Default value
    * @throws \Exception Obrigatori um indice 'default' nas opcoes
