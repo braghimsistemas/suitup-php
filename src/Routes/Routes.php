@@ -206,6 +206,8 @@ class Routes
         $found = false;
         if (is_array($this->custom)) {
           foreach ($this->custom as $config) {
+
+            // Alguma dessas rotas eh do tipo literal?
             if (isset($config['type']) && $config['type'] === self::TYPE_LITERAL) {
 
               // Se nao tem parametro
@@ -228,7 +230,7 @@ class Routes
 
               // Procura pela lista aquela que eh EXATAMENTE igual a URI
               foreach ($urlList as $item) {
-                if (getenv('REQUEST_URI') === $item) {
+                if (trim($route, '/') === trim($item, '/')) {
 
                   // Sobrescreve os atributos da rota
                   $this->controller = isset($config['controller']) ? $config['controller'] : $this->controller;
