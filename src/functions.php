@@ -139,6 +139,13 @@ if (! function_exists('mctime')) {
   }
 }
 
+if (! function_exists('is_closure')) {
+
+  function is_closure($item) {
+    return (is_object($item) && ($item instanceof \Closure));
+  }
+}
+
 /**
  * Renderiza um html incluindo variaveis
  *
@@ -353,7 +360,7 @@ if (!function_exists('formSelect')) {
    * @param array $attrs The list of attributes
    * @param array $value Value attribute
    * @param bool $checked Is checked?
-   * 
+   *
    * @return string
    */
   function formCheckbox($name, array $attrs = array(), $value = '1', $checked = false) {
