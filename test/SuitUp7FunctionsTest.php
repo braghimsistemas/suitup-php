@@ -26,54 +26,56 @@ namespace SuitUpTest;
 
 use SuitUpStart;
 
-class SuitUp7FunctionsTest extends \PHPUnit_Framework_TestCase
+class SuitUp7FunctionsTest extends \PHPUnit\Framework\TestCase
 {
   protected $suitUp;
-  
+
   public function __construct()
   {
+    parent::__construct();
+
     $this->suitUp = new SuitUpStart(__DIR__.'/modulestest/');
   }
-  
+
   public function testInstance() {
     $this->assertInstanceof('\SuitUpStart', $this->suitUp);
   }
-  
+
   /**
    *  We'll not create all test cases to this function because
    * it's really impossible to get all situations
    */
 //  public function testThrowExceptionFromAnywhere() {
-//    
+//
 //    $eM = '';
 //    try {
 //      throw new \Exception('This is just a test case');
-//    
+//
 //    } catch (\Exception $e) {
 //      $eM = throwNewExceptionFromAnywhere($e, true);
 //      dump($eM);
-//      
+//
 //    }
-//    
+//
 //    $this->assertEquals('This is just a test case', $eM);
 //  }
-  
+
   public function testDebug() {
     $this->assertContains('Just another test', dump('Just another test', false));
   }
-  
+
   public function testMctime()
   {
     $a = mctime();
-    
+
     sleep(1);
-    
+
     $b = mctime() - $a;
-    
+
     $this->assertGreaterThan(1, $b);
     $this->assertLessThan(1.2, $b);
   }
-  
+
   /** The functions bellow it's really hard to test so we'll review it as fast as possible **/
 }
 

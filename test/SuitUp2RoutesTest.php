@@ -31,7 +31,7 @@ use SuitUpStart;
  * Class RoutesTest
  * @package SuitUpTest
  */
-class SuitUp2RoutesTest extends \PHPUnit_Framework_TestCase
+class SuitUp2RoutesTest extends \PHPUnit\Framework\TestCase
 {
 	public function testParams()
 	{
