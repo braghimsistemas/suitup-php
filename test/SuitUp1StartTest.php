@@ -37,7 +37,7 @@ use SuitUpStart;
  * @author Marco A. Braghim <braghim.sistemas@gmail.com>
  * @since 20/09/16
  */
-class SuitUp1StartTest extends \PHPUnit_Framework_TestCase
+class SuitUp1StartTest extends \PHPUnit\Framework\TestCase
 {
 	/**
 	 * Testa configuracao sem indicar pasta de modulos (erro)
@@ -45,12 +45,14 @@ class SuitUp1StartTest extends \PHPUnit_Framework_TestCase
 	public function testExceptionSetup()
 	{
 		try {
-			new SuitUpStart(null);
+			$instance = new SuitUpStart(null);
+
+      $this->assertInstanceOf("\SuitUpStart", $instance);
 
 		} catch (\Exception $e) {
 
 			echo $e->getMessage();
-			
+
 			// Exception instance
 			$this->assertInstanceOf("\Exception", $e);
 		}
@@ -59,12 +61,12 @@ class SuitUp1StartTest extends \PHPUnit_Framework_TestCase
 	public function testExceptionWrongPath()
 	{
 		try {
-			
+
 			SuitUpStart::setup('wrong-path');
 			throw new TesteException("Ops, will never get here if it is all right.");
 
 		} catch (\Exception $e) {
-			
+
 			//dump($e);
 
 			// Exception instance
@@ -98,7 +100,7 @@ class SuitUp1StartTest extends \PHPUnit_Framework_TestCase
 		}
 
 		$mvc = new SuitUpStart(__DIR__.'/modulestest');
-		
+
 		// True
 		$mvc->setSqlMonitor(true);
 		$this->assertEquals(true, Database::getInstance()->getMonitoring());

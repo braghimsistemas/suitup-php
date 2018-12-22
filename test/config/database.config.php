@@ -1,8 +1,8 @@
 <?php
 return array(
   'host' => 'localhost',
-  'database' => 'test',
+  'database' => 'ws.thizer',
   'username' => 'root',
-  'password' => ''
+  'password' => '142536'
 );
 

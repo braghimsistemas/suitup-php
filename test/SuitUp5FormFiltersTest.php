@@ -26,7 +26,7 @@ namespace SuitUpTest;
 
 use SuitUpTest\Forms\TestValidations;
 
-class SuitUp5FormFiltersTest extends \PHPUnit_Framework_TestCase
+class SuitUp5FormFiltersTest extends \PHPUnit\Framework\TestCase
 {
   /**
    * @var TestValidations
@@ -34,6 +34,8 @@ class SuitUp5FormFiltersTest extends \PHPUnit_Framework_TestCase
   protected $val;
 
   public function __construct() {
+    parent::__construct();
+    
     $this->val = new TestValidations();
   }
 

@@ -33,7 +33,7 @@ use SuitUpStart;
  * @author jackie
  * @since 26/09/16
  */
-class SuitUp3MvcTest extends \PHPUnit_Framework_TestCase
+class SuitUp3MvcTest extends \PHPUnit\Framework\TestCase
 {
 	/**
 	 * @var MvcAbstractController;
@@ -43,10 +43,10 @@ class SuitUp3MvcTest extends \PHPUnit_Framework_TestCase
 	public function __construct($name = null, array $data = array(), $dataName = '')
 	{
 		parent::__construct($name, $data, $dataName);
-		
+
 		// Instance of SuitUp
 		$suitUp = new SuitUpStart(__DIR__.'/modulestest');
-		
+
 		// Get controller Object from instance
 		$this->app = $suitUp->mvc->controller;
 	}
