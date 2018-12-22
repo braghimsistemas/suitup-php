@@ -33,33 +33,33 @@ class Routes
 
   /**
    * O nome da rota fica no final da URL, os parametros antes.
-   * 
+   *
    * Ex.: Rota = minha-rota.html = /param1/param2/param3/minha-rota.html
-   * 
+   *
    * 'minha-rota.html' => array(
    *		'controller' => 'index',
    *		'action' => 'index',
    *		'type' => SuitUp\Routes::TYPE_REVERSE
    * )
-   * 
+   *
    */
   const TYPE_REVERSE = 'reverse';
 
   /**
    * O nome da rota fica no início da URL e os parametros vem a seguir.
-   * 
+   *
    * <b>Rotas lineares não aceitam URL, apenas nomes:</b>
-   * 
+   *
    * CERTO
    * Rota: 'colaboradores.html'
    * URL : /modulo/colaboradores.html/perfis/param1/param2
    * Resultado: params = ['perfis', 'param1', 'param2']
-   * 
+   *
    * ERRADO
    * Rota: 'colaboradores/perfis'
    * URL : /modulo/colaboradores/perfis/param1/param2
    * Resultado: Não funciona!
-   * 
+   *
    * <b>Exemplos de rotas lineares</b>
    * return array(
    *		'dashboard' => array(
@@ -80,21 +80,26 @@ class Routes
   const TYPE_LINEAR = 'linear';
 
   /**
+   * The route will match exact what getenv('REQUEST_URI') returns
+   */
+  const TYPE_LITERAL = 'literal';
+
+  /**
    * Pasta com os modulos do sistema.
    *
-   * @var string 
+   * @var string
    */
   public static $modulesPath;
 
   /**
    *	Singleton
-   *	@var Routes 
+   *	@var Routes
    */
   private static $instance;
 
   /**
    * Retorna a instancia da classe.
-   * 
+   *
    * @return Routes
    */
   public static function getInstance() {
@@ -163,20 +168,20 @@ class Routes
           break;
         default:
           if (is_dir(self::$modulesPath . "/Module" . ucfirst(strtolower($routeParts[0])))) {
-            
+
             /**
              * Here we got 3 or more params from URL
              *
              * If the first one is the name of some module folder
              * we have no choise but point the system to that.
              */
-            
+
             $this->moduleName = strtolower($routeParts[0]);
             $this->module = "Module" . ucfirst($this->moduleName);
             $this->controller = $routeParts[1];
             $this->action = $routeParts[2];
           } else {
-            
+
             /**
              * Absolutely normal behavior.
              * Module keeps being defaulf.
@@ -185,7 +190,7 @@ class Routes
              *
              * Ps.: Everything else will be ignored
              */
-            
+
             $this->controller = $routeParts[0];
             $this->action = $routeParts[1];
           }
@@ -198,27 +203,74 @@ class Routes
       if (file_exists("config/{$this->moduleName}.routes.php")) {
         $this->custom = include "config/{$this->moduleName}.routes.php";
 
-        // Remove o item que é o nome do modulo
-        $itemModuleName = array_search($this->moduleName, $routeParts);
-        if (false !== $itemModuleName) {
-          unset($routeParts[$itemModuleName]);
-          $routeParts = array_values($routeParts);
+        $found = false;
+        if (is_array($this->custom)) {
+          foreach ($this->custom as $config) {
+
+            // Alguma dessas rotas eh do tipo literal?
+            if (isset($config['type']) && $config['type'] === self::TYPE_LITERAL) {
+
+              // Se nao tem parametro
+              if (!isset($config['url_list'])) {
+                throw new \Exception('Every literal route must to implement the list of valid URL. It can be a closure function or an array list');
+              }
+
+              // Recupera lista dependendo do tipo que foi implementada
+              $urlList = array();
+              if (is_closure($config['url_list'])) {
+                $funcName = $config['url_list'];
+                $urlList = (array) $funcName();
+
+              } else if (is_array($config['url_list'])) {
+                $urlList = $config['url_list'];
+
+              } else {
+                $urlList = (array) $config['url_list'];
+              }
+
+              // Procura pela lista aquela que eh EXATAMENTE igual a URI
+              foreach ($urlList as $item) {
+                if (trim($route, '/') === trim($item, '/')) {
+
+                  // Sobrescreve os atributos da rota
+                  $this->controller = isset($config['controller']) ? $config['controller'] : $this->controller;
+                  $this->action = isset($config['action']) ? $config['action'] : $this->action;
+
+                  // Metodo para separar corretamente os parametros
+                  $this->resolveParams(isset($config['params']) ? $config['params'] : array(), $routeParts);
+
+                  $found = true;
+                  break;
+                }
+              }
+            } // End 'is literal'
+          }
         }
 
-        // Procura por rotas do tipo linear
-        if ($routeParts) {
-          $this->resolveLinearRoutes($routeParts);
-        }
+        if (!$found) {
+          // Remove o item que é o nome do modulo
+          $itemModuleName = array_search($this->moduleName, $routeParts);
+          if (false !== $itemModuleName) {
+            unset($routeParts[$itemModuleName]);
+            $routeParts = array_values($routeParts);
+          }
 
-        // Procura por rotas do tipo reverso
-        $this->resolveReverseRoutes($route);
-      }
+          // Procura por rotas do tipo linear
+          if ($routeParts) {
+            $this->resolveLinearRoutes($routeParts);
+          }
+
+          // Procura por rotas do tipo reverso
+          $this->resolveReverseRoutes($route);
+        }
+      } // End file routes
+
     }
   }
 
   /**
    * Procura por rotas que sejam lineares, ou seja, o nome fica no inicio da rota e os parametros no final.
-   * 
+   *
    * @param array $routeParts
    * @return \SuitUp\Routes\Routes
    */
@@ -271,7 +323,7 @@ class Routes
 
   /**
    * Procura por rotas definidas pelo usuario que sao do tipo reverso.
-   * 
+   *
    * @param string $routeString
    * @return Routes
    */
@@ -334,7 +386,7 @@ class Routes
 
   /**
    * Traduz os parametros da URL com os parametros esperados pela rota customizada do usuario.
-   * 
+   *
    * @param array $routeParams
    * @param array $urlParams
    * @return Routes
@@ -404,7 +456,7 @@ class Routes
 
   /**
    * Retorna os parametros.
-   * 
+   *
    * @return array
    */
   public function getParams() {
@@ -413,7 +465,7 @@ class Routes
 
   /**
    * Retorna nome do modulo atual.
-   * 
+   *
    * @return string
    */
   public function getModuleName() {
@@ -422,7 +474,7 @@ class Routes
 
   /**
    * Retorna o nome do controlador atual.
-   * 
+   *
    * @return string
    */
   public function getControllerName() {
@@ -431,7 +483,7 @@ class Routes
 
   /**
    * Retorna o nome da acao atual.
-   * 
+   *
    * @return string
    */
   public function getActionName() {

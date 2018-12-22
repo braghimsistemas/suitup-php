@@ -56,7 +56,7 @@ abstract class AbstractGateway
    * Eh possivel configurar uma coluna do banco para ser atualizada
    * em cada update automaticamente.
    *
-   * @var array 
+   * @var array
    */
   protected $onUpdate;
 
@@ -69,7 +69,7 @@ abstract class AbstractGateway
    * O construtor recebe este parâmetro estático
    * para evitar que um Gateway seja instanciado
    * por acidente.
-   * 
+   *
    * @param bool|string $valid
    * @throws \Exception
    */
@@ -83,13 +83,13 @@ abstract class AbstractGateway
 
     $this->db = Database::getInstance();
 
-    // Validação 
+    // Validação
     $this->checkGateway();
   }
 
   /**
    * Encontra e faz a leitura do arquivo .sql baseado no nome da tabela.
-   * 
+   *
    * @param string $filename
    * @return \SuitUp\Database\SqlFileManager
    * @throws \Exception
@@ -114,7 +114,7 @@ abstract class AbstractGateway
 
   /**
    * Cria uma nova query a partir de uma string no lugar de usar arquivo.
-   * 
+   *
    * @param string $query
    * @return \SuitUp\Database\SqlFileManager
    */
@@ -127,7 +127,7 @@ abstract class AbstractGateway
 
   /**
    * Retorna um unico registro por PKs.
-   * 
+   *
    * @return array
    * @throws \Exception
    */
@@ -161,7 +161,7 @@ abstract class AbstractGateway
    * Seleciona automaticamente INSERT ou UPDATE. Este método so irá funcionar corretamente
    * se todas as chaves primárias da tabela forem AUTO INCREMENT, se não é melhor selecionar
    * o metodo na mão mesmo.
-   * 
+   *
    * @param array $data
    * @return bool|string
    * @throws \Exception
@@ -194,7 +194,7 @@ abstract class AbstractGateway
 
   /**
    * Monta automaticamente a query para inserir um registro no banco.
-   * 
+   *
    * @param array $data
    * @return string
    */
@@ -231,7 +231,7 @@ abstract class AbstractGateway
 
   /**
    * Monta automaticamente a query para atualizar um registro no banco.
-   * 
+   *
    * @param array $data Campos para serem modificados e seus valores.
    * @param array $where Campo com valor necessário para o banco identificar quais registros vao ser atualizados.
    * @param boolean $noWhereForSure com o $where vazio este parametro permite apagar todos os registros do banco.
@@ -294,7 +294,7 @@ abstract class AbstractGateway
 
   /**
    * Remove um registro do banco de dados.
-   * 
+   *
    * @return bool
    */
   public function delete(array $where) {
@@ -318,7 +318,7 @@ abstract class AbstractGateway
 
   /**
    * Verifica se este gateway está configurado corretamente.
-   * 
+   *
    * @return boolean
    * @throws \Exception
    */

@@ -7,7 +7,7 @@
 #               create controller <folder> <module> <name>,
 #               create form <folder> <module> <name>,
 #               dbtable <folder> <module> <tablename>
-#               
+#
 #Author       : Braghim Sistemas
 #Email        : braghim.sistemas@gmail.com
 ###################################################################
@@ -41,7 +41,7 @@ function _echo() {
     echo -e "  Current User: ${p}${user}${d}"
   fi
   echo -e "  Current Path: ${p}${folder}${d}"
-  
+
   # Appended messages
   if ! [ ${#List[@]} -eq 0 ]; then
     for item in "${List[@]}"; do
@@ -55,7 +55,7 @@ function _echo() {
   append=0
 
   if [ "$1" != "" ]; then
-    for s in "$@" 
+    for s in "$@"
     do
 
       # If param is a command
@@ -88,7 +88,7 @@ function _echo() {
   fi
 }
 
-# Check bash version 
+# Check bash version
 if [ ${BASH_VERSINFO[0]} -lt 4 ]; then
   echo -e "SuitUp Manager require bash version >= 4, current is ${BASH_VERSINFO}"
   exit
@@ -97,7 +97,7 @@ fi
 # Avoid root user
 user=$(whoami);
 if [ "$user" = "root" ]; then
-  
+
   if [ "$SUDO_USER" != "" ]; then
 
     _echo "You are calling this program with sudo, it's not necessary."\
@@ -151,7 +151,7 @@ function trim() {
   # remove leading whitespace characters
   var="${var#"${var%%[![:space:]]*}"}"
   # remove trailing whitespace characters
-  var="${var%"${var##*[![:space:]]}"}"   
+  var="${var%"${var##*[![:space:]]}"}"
   echo -n "$var"
 }
 
@@ -198,7 +198,7 @@ function createNewModule() {
   mkdir -p "${path}/${name}/views/index/"
 
   # Write documents
-  
+
   # IndexController.php
   cat <<EOF > "${path}/${name}/Controllers/IndexController.php"
 <?php
@@ -225,7 +225,7 @@ class AbstractController extends MvcAbstractController
   public function init() {
     parent::init(); // Keep this line
   }
-  
+
   public function posDispatch() {
     parent::posDispatch(); // Keep this line
   }
@@ -393,7 +393,7 @@ function createForm() {
   folder="${path}/${module}/Form/"
   namespace="${module}\\Form"
   if [ ${#parts[@]} -eq 2 ]; then
-    
+
     # Redefine variables
     name=$(trim "${parts[1]}")
     folder="${path}/${module}/Form/${parts[0]}"
@@ -413,7 +413,7 @@ function createForm() {
 
   # Create the file itself
   cat <<EOF > "${folder}/${name}.php"
-<?php 
+<?php
 namespace $namespace;
 
 use SuitUp\FormValidator\AbstractFormValidator;
@@ -422,7 +422,7 @@ class $name extends AbstractFormValidator
 {
 
   /**
-   * @var array 
+   * @var array
    */
   protected \$data = array(
     // Your validations here
@@ -466,7 +466,7 @@ function createProject() {
   # Check if composer.phar file was downloaded
   if [ -f "${folder}/${name}/composer.phar" ]; then
     php "composer.phar" "self-update" # It may be an old version
-    
+
     # Gerenerate composer.json with composer?
     _echo "Do you wanna to be guied with composer to create composer.json file? (y/N)"
     read -r mustInit
@@ -495,7 +495,7 @@ function createProject() {
 }
 
 EOF
-      
+
       # Update dependencies
       _echo "We will update your dependencies now..."
       php "composer.phar" "update"
@@ -532,11 +532,11 @@ RewriteCond %{REQUEST_FILENAME} -s [OR]
 RewriteCond %{REQUEST_FILENAME} -l [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^.*$ - [NC,L]
-# The following rewrites all other queries to index.php. The 
+# The following rewrites all other queries to index.php. The
 # condition ensures that if you are using Apache aliases to do
-# mass virtual hosting, the base path will be prepended to 
+# mass virtual hosting, the base path will be prepended to
 # allow proper resolution of the index.php file; it will work
-# in non-aliased environments as well, providing a safe, one-size 
+# in non-aliased environments as well, providing a safe, one-size
 # fits all solution.
 RewriteCond %{REQUEST_URI}::$1 ^(/.+)(.+)::\2$
 RewriteRule ^(.*) - [E=BASE:%1]
@@ -574,7 +574,7 @@ chdir(__DIR__);
 // Setup autoloading composer
 if (file_exists('vendor/autoload.php')) {
   \$loader = include 'vendor/autoload.php';
-  
+
   // You may want to implement your own libraries
   // \$loader->add('System', 'library/.');
 } else {
@@ -641,7 +641,7 @@ function createDbTable() {
   local path="$4"                   # Module path
 
   local pks="$2"
-  
+
   checkModulesPath "${path}"
 
   # Create path if doesnt exists
@@ -652,9 +652,9 @@ function createDbTable() {
   # Business file
   cat <<EOF > "${path}/${module}/Model/${dbname}Business.php"
 <?php
-namespace ${module}\Model
+namespace ${module}\Model;
 
-use \SuitUp\Database\Business\AbstractBusiness;
+use SuitUp\Database\Business\AbstractBusiness;
 
 class ${dbname}Business extends AbstractBusiness
 {
@@ -670,9 +670,9 @@ EOF
   # Gateway file
   cat <<EOF > "${path}/${module}/Model/Gateway/${dbname}.php"
 <?php
-namespace ${module}\Model\Gateway
+namespace ${module}\Model\Gateway;
 
-use \SuitUp\Database\Gateway\AbstractGateway;
+use SuitUp\Database\Gateway\AbstractGateway;
 
 class ${dbname} extends AbstractGateway {
 
@@ -688,7 +688,7 @@ class ${dbname} extends AbstractGateway {
    * that must to be updated with current timestamp
    * every UPDATE call
    */
-  // protected \$onUpdate = array('edit' => 'NOW()');
+  // protected \$onUpdate = array('edited' => 'NOW()');
 
 
 }
@@ -721,7 +721,7 @@ while true; do
     _echo "         Welcome! What do you wanna do?\n"\
           "         ${b}'install'${d} - A fresh new project"\
           "         ${b}'create'${d} - Modules, controllers..."
-    
+
     #user input
     read -r action
   else
@@ -768,7 +768,7 @@ then
   # User is pretty sure to append this new module...
   if [ "${allow,,}" = "y" ] || [ "${allow,,}" = "yes" ]
   then
-    
+
     # The function that will create the module
     createProject "${name}" "${folder}"
     exit 0
@@ -782,7 +782,7 @@ fi
 # Ok, let's create something...
 if [ "${action,,}" = "create" ]
 then
-  
+
   # Log action to screen
   _echo -a "Action: ${p}'${action,,}'${d}"
 
@@ -864,7 +864,7 @@ then
     # User is pretty sure to append this new module...
     if [ "${allow,,}" = "y" ] || [ "${allow,,}" = "yes" ]
     then
-      
+
       # The function that will create the module
       createNewModule "${name}" "${modulesPath}"
       exit 0
@@ -876,7 +876,7 @@ then
 
   # create controller <module> <name>
   elif [ "${createwhat,,}" = "controller" ]; then
-  
+
     #########################
     # CREATE NEW CONTROLLER #
     #########################
@@ -959,7 +959,7 @@ then
     # User is pretty sure to append this new module...
     if [ "${allow,,}" = "y" ] || [ "${allow,,}" = "yes" ]
     then
-      
+
       # The function that will create the module
       createController "${name}" "${module}" "${modulesPath}"
       exit 0
@@ -971,7 +971,7 @@ then
 
   elif [ "${createwhat,,}" = "form" ]
   then
-    
+
     ###################
     # CREATE NEW FORM #
     ###################
@@ -1062,7 +1062,7 @@ then
     # User is pretty sure to append this new module...
     if [ "${allow,,}" = "y" ] || [ "${allow,,}" = "yes" ]
     then
-      
+
       # The function that will create the module
       createForm "$name" "$module" "$modulesPath"
       exit 0
@@ -1178,7 +1178,7 @@ then
     # User is pretty sure to append this new module...
     if [ "${allow,,}" = "y" ] || [ "${allow,,}" = "yes" ]
     then
-      
+
       # The function that will create files
       createDbTable "${dbname}" "'${pksEcho}'" "${module}" "${modulesPath}"
       exit 0

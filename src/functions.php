@@ -139,6 +139,13 @@ if (! function_exists('mctime')) {
   }
 }
 
+if (! function_exists('is_closure')) {
+
+  function is_closure($item) {
+    return (is_object($item) && ($item instanceof \Closure));
+  }
+}
+
 /**
  * Renderiza um html incluindo variaveis
  *
@@ -308,4 +315,75 @@ function getTraceArgsAsString($args, $root = true) {
       $argString .= gettype($args);
   }
   return $argString;
+}
+
+if (!function_exists('formSelect')) {
+
+  /**
+   * With this method you can append a <select></select> input tag type
+   * as easy peasy and just one code line.
+   *
+   * @param string $name ID and NAME tag attr's
+   * @param array $attrs All other attr's you would like to append to the tag, you probably should like to add class="something" here.
+   * @param array $values The options values list with value => text
+   * @param type $selected Option selected item
+   * @return string
+   */
+  function formSelect($name, array $attrs = array(), array $values = array('' => 'Selecione!'), $selected = null) {
+
+    // Normalize id attr
+    $id = preg_replace("/[^0-9a-zA-Z-_]/", '-', $name);
+    $id = preg_replace("/\-+/", '-', $id);
+    $id = trim($id, '-');
+
+    $html = "<select id=\"$id\" name=\"$name\"";
+
+    foreach ($attrs as $attrName => $attrValue) {
+      $html .= " ".$attrName.'="'.$attrValue.'"';
+    }
+    $html .= ">\n";
+
+    foreach($values as $value => $text) {
+      if ($selected == $value) {
+        $html .= "\t".'<option value="'.$value.'" selected="selected">'.$text.'</option>'."\n";
+      } else {
+        $html .= "\t".'<option value="'.$value.'">'.$text.'</option>'."\n";
+      }
+    }
+    return $html."\n</select>";
+  }
+
+  /**
+   * Create the input checkbox html string
+   *
+   * @param string $name The name and id attributes
+   * @param array $attrs The list of attributes
+   * @param array $value Value attribute
+   * @param bool $checked Is checked?
+   *
+   * @return string
+   */
+  function formCheckbox($name, array $attrs = array(), $value = '1', $checked = false) {
+
+    // Normalize id attr
+    $id = preg_replace("/[^0-9a-zA-Z-_]/", '-', $name);
+    $id = preg_replace("/\-+/", '-', $id);
+    $id = trim($id, '-');
+
+    // Base html
+    $html = "<input type=\"checkbox\" id=\"$id\" name=\"$name\"";
+
+    // Value and checked
+    $attrs['value'] = $value;
+    if ($checked) {
+      $attrs['checked'] = 'checked';
+    }
+
+    // Attributes
+    foreach ($attrs as $attrName => $attrValue) {
+      $html .= " ".$attrName.'="'.$attrValue.'"';
+    }
+    $html .= ">\n";
+    return $html;
+  }
 }

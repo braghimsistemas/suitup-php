@@ -54,7 +54,7 @@ abstract class Validation {
 
   /**
    * Validation constructor.
-   * 
+   *
    * @param int $method It could be INPUT_GET
    */
   public function __construct($method = INPUT_POST) {
@@ -65,7 +65,7 @@ abstract class Validation {
    * Verifica de acordo com as regras definidas para cada campo
    * se todos os campos do formulario sao validos. Soh retorna
    * true caso TODOS eles sejam validos.
-   * 
+   *
    * @return boolean
    */
   public function isValid() {
@@ -78,10 +78,10 @@ abstract class Validation {
   /**
    * Chame este metodo para capturar os dados do post "limpos", ou seja, filtrados pelas
    * regras definidas para cada campo.
-   * 
+   *
    * Se o formulário ainda não estiver validado a validação é feita, ou seja, depois de chamar este método
    * ou o isValid não é mais possível adicionar campos para validação.
-   * 
+   *
    * @return array
    */
   public function getData() {
@@ -101,7 +101,7 @@ abstract class Validation {
 
   /**
    * Adiciona um item ao array de retorno dos dados.
-   * 
+   *
    * @param string $index
    * @param mixed $data
    */
@@ -111,7 +111,7 @@ abstract class Validation {
 
   /**
    * Retorna lista de mensagens de validacao.
-   * 
+   *
    * @return array
    */
   public function getMessages() {
@@ -120,7 +120,7 @@ abstract class Validation {
 
   /**
    * Efetua as validacoes necessarias.
-   * 
+   *
    * @throws \Exception
    * @return bool
    */
@@ -130,9 +130,7 @@ abstract class Validation {
 
       // Tipos de campos que nem chegaram no post
       if (!isset($this->post[$field])) {
-        $this->messages[$field][] = "Este campo é obrigatório";
-        $result = false;
-        continue;
+        $this->post[$field] = '';
       }
 
       // Validacoes
