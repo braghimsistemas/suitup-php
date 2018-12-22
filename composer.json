@@ -16,7 +16,7 @@
 		"matthiasmullie/minify": "^1"
 	},
 	"require-dev": {
-		"phpunit/phpunit": "^4.8",
+		"phpunit/phpunit": "^7",
 		"satooshi/php-coveralls": "^v2.0.0"
 	},
 	"suggest": {
