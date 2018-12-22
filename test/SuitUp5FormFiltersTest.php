@@ -44,6 +44,7 @@ class SuitUp5FormFiltersTest extends \PHPUnit_Framework_TestCase
   {
     $this->assertEquals('something', $this->val->string('something'));
     $this->assertEquals('<span>something</span>', $this->val->string('  <span>something</span>  '));
+    $this->assertEquals('<span>something</span>', $this->val->string('  <script>while(true) { alert("error"); }</script><span>something</span>  '));
     $this->assertEquals(100, $this->val->string('100'));
     $this->assertEquals(100.96, $this->val->string('100.96'));
     $this->assertEquals(true, $this->val->string('1'));

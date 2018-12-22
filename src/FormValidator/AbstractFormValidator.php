@@ -427,7 +427,18 @@ abstract class AbstractFormValidator extends Validation
    * @return string
    */
   public function string($value) {
-    return preg_replace("/\<script\>|\<\/script\>/", '', trim($value));
+    return trim(preg_replace("#<\s*script[^>]*>((.*?)<\s*/\s*script>)?#i", '', $value));
+  }
+
+  /**
+   * Remove white spaces from begin and the end of the form field and
+   * remove ALL tags
+   *
+   * @param $value Form field value to be filtered.
+   * @return string
+   */
+  public function stringNoTags($value) {
+    return trim(strip_tags($value));
   }
 
   /**
