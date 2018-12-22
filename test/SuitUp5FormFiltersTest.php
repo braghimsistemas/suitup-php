@@ -59,6 +59,27 @@ class SuitUp5FormFiltersTest extends \PHPUnit_Framework_TestCase
   }
 
   /**
+   * Test string method
+   */
+  public function testStringNoTags()
+  {
+    $this->assertEquals('something', $this->val->stringNoTags('something'));
+    $this->assertEquals('something', $this->val->stringNoTags('  <span>something</span>  '));
+    $this->assertEquals('while(true) { alert("error"); }something', $this->val->stringNoTags('  <script>while(true) { alert("error"); }</script><span>something</span>  '));
+    $this->assertEquals(100, $this->val->stringNoTags('100'));
+    $this->assertEquals(100.96, $this->val->stringNoTags('100.96'));
+    $this->assertEquals(true, $this->val->stringNoTags('1'));
+    $this->assertEquals(false, $this->val->stringNoTags(''));
+
+    $this->assertNotEquals(true, $this->val->stringNoTags('true'));
+    $this->assertNotEquals(false, $this->val->stringNoTags('false'));
+    $this->assertNotEquals(true, $this->val->stringNoTags('0'));
+    $this->assertNotEquals(false, $this->val->stringNoTags('0'));
+    $this->assertNotEquals(true, $this->val->stringNoTags('something else'));
+    $this->assertNotEquals(true, $this->val->stringNoTags('2'));
+  }
+
+  /**
    * Test trim method
    */
   public function testTrim()
