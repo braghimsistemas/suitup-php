@@ -427,7 +427,7 @@ abstract class AbstractFormValidator extends Validation
    * @return string
    */
   public function string($value) {
-    return strip_tags(trim($value));
+    return preg_replace("/\<script\>|\<\/script\>/", '', trim($value));
   }
 
   /**
