@@ -5,7 +5,7 @@
 -------------------------------------------------------
 
 ## SuitUp PHP Framework partner
-### Version 1.0.0
+### Version 1.0.1
 
 This script was created to provide quickly
 actions to your SuitUp PHP Framework project.
