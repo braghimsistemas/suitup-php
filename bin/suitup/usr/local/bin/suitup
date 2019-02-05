@@ -1,18 +1,20 @@
 #!/bin/bash
 ###################################################################
-#Script Name	: suitup
-#Description	: SuitUp Manager
-#Args         : install <folder> <name>,
+# Script Name	: suitup
+# Description	: SuitUp Manager
+# Args         : install <folder> <name>,
 #               create module <folder> <name>,
 #               create controller <folder> <module> <name>,
 #               create form <folder> <module> <name>,
 #               dbtable <folder> <module> <tablename>
 #
-#Author       : Braghim Sistemas
-#Email        : braghim.sistemas@gmail.com
+# Author       : Braghim Sistemas
+# Email        : braghim.sistemas@gmail.com
 ###################################################################
 
-version="1.0.1"
+# Build with: $ sudo dpkg-deb --build suitup
+
+version="1.0.2"
 
 # Current folder where USER is
 folder=$(pwd)
@@ -456,7 +458,7 @@ function createProject() {
   cd "${folder}/${name}" || ( clear; echo -e "Error - cd command doesn't work"; exit 1; )
 
   # We will try to download composer
-  _echo "We will try to download and install ${p}composer${d} now..."
+  _echo "We will try to download and install ${p}composer${d} now... Wait for it..."
 
   EXPECTED_SIGNATURE="$(wget -q -O - https://composer.github.io/installer.sig)"
 
