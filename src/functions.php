@@ -344,7 +344,11 @@ if (!function_exists('formSelect')) {
     $html .= ">\n";
 
     foreach($values as $value => $text) {
-      if ($selected == $value) {
+
+      /**
+       * To assert 'selected' $value must to be identical to $selected
+       */
+      if ($selected === $value) {
         $html .= "\t".'<option value="'.$value.'" selected="selected">'.$text.'</option>'."\n";
       } else {
         $html .= "\t".'<option value="'.$value.'">'.$text.'</option>'."\n";
