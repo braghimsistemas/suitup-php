@@ -1,8 +1,8 @@
 {
 	"name": "braghim-sistemas/suitup-php",
-	"description": "Framework PHP web simples para aplicativos incríveis",
+	"description": "Legendary web applications with empowered productivity",
 	"license": "MIT",
-	"keywords": ["Suit up", "app", "webapp", "framework", "braghim", "braghim-sistemas", "simple-web-system", "aplicativo-web-simples"],
+	"keywords": ["Suit up", "app", "webapp", "framework", "braghim", "braghim-sistemas", "simple-web-system", "aplicativo-web-simples", "thizer"],
 	"homepage": "https://braghimsistemas.github.io/suitup-php/",
 	"authors": [{
 		"name": "Braghim Sistemas",
@@ -10,17 +10,17 @@
 	}],
 	"support": { "email":"marco.a.braghim@gmail.com" },
 	"require": {
-		"php": ">=5.5",
+		"php": ">=7.2",
 		"zendframework/zend-validator" : "^2",
 		"zendframework/zend-uri": "^2",
 		"matthiasmullie/minify": "^1"
 	},
 	"require-dev": {
-		"phpunit/phpunit": "^4.8",
-		"satooshi/php-coveralls": "^v2.0.0"
+		"phpunit/phpunit": "^8.0",
+		"php-coveralls/php-coveralls": "^v2"
 	},
 	"suggest": {
-    "verot/class.upload.php": "If you need to manage files uploads",
+    "verot/class.upload.php": "If you need to manage files upload",
 		"phpmailer/phpmailer": "Not implemented in framework itself, but helps a lot and it's very simple."
 	},
 	"autoload": {
