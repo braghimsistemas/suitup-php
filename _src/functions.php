@@ -2,7 +2,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2019 Braghim Sistemas
+ * Copyright (c) 2016 Braghim Sistemas
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,10 +23,79 @@
  * SOFTWARE.
  */
 
-define('KB', 1024);          // Em bytes
-define('MB', 1048576);       // Em bytes
-define('GB', 1073741824);    // Em bytes
-define('TB', 1099511627776); // Em bytes
+/**
+ * Funções uteis para serem usadas em qualquer lugar
+ */
+use SuitUp\Mvc\MvcAbstractController;
+
+/**
+ * Valores fixos de tamanhos diversos em Bytes
+ */
+define('KB', 1024); // Em bytes
+define('MB', 1048576); // Em bytes
+define('GB', 1073741824); // Em bytes
+define('TB', 1099511627776);
+
+// Em bytes
+
+/**
+ * Get all non treated exceptions on the system.
+ *
+ * @param Exception $e The exception
+ * @param bool $isTest In test environment will no cause exception outputs
+ */
+function throwNewExceptionFromAnywhere($e, $isTest = false) {
+  $setup = new SuitUpStart();
+
+  // Module ErrorController
+  try {
+    $setup->mvc = $setup->resolve($setup->mvc->moduleName, 'error', 'error');
+  } catch (\Exception $ex) {
+
+    // SuitUp default module error.
+    try {
+      $setup->mvc = $setup->resolve('ModuleError', 'error', 'error', __DIR__ . DIRECTORY_SEPARATOR);
+    } catch (\Exception $ex2) {
+
+      // It's possible to create this function in your project to
+      // generate your own logs controll.
+      if (function_exists('createSystemLog')) {
+        createSystemLog($e);
+      }
+
+      if (! $isTest) {
+        echo "Non treated exception thrown";
+
+        (DEVELOPMENT) ? dump($e) : exit();
+      } else {
+        return $e->getMessage();
+      }
+    }
+  }
+
+  // Store exception to be used on the controller or view from ErrorController
+  $setup->mvc->exception = $e;
+
+  // Last try
+  try {
+    $setup->run();
+  } catch (\Exception $ex3) {
+
+    // It's possible to create this function in your project to
+    // generate your own logs controll.
+    if (function_exists('createSystemLog')) {
+      createSystemLog($e);
+    }
+
+    if (! $isTest) {
+      echo "Non treated exception thrown";
+
+      (DEVELOPMENT) ? dump($ex3) : exit();
+    } else {
+      return $ex3->getMessage();
+    }
+  }
+}
 
 if (! function_exists('dump')) {
 
@@ -60,11 +129,11 @@ if (! function_exists('dump')) {
 if (! function_exists('mctime')) {
 
   /**
-   * Return microtime as float.
+   * Retorna o microtime em float.
    *
    * @return float
    */
-  function mctime(): float {
+  function mctime() {
     list ($usec, $sec) = explode(" ", microtime());
     return ((float) $usec + (float) $sec);
   }
@@ -72,18 +141,13 @@ if (! function_exists('mctime')) {
 
 if (! function_exists('is_closure')) {
 
-  /**
-   * Return true when a given item is a closure function
-   * 
-   * @return bool
-   */
-  function is_closure($item): bool {
+  function is_closure($item) {
     return (is_object($item) && ($item instanceof \Closure));
   }
 }
 
 /**
- * Render a (p)html view with injected variables
+ * Renderiza um html incluindo variaveis
  *
  * @param string $renderViewName Nome do arquivo .phtml que será renderizado.
  * @param array|mixed $vars Variaveis que estarão disponíveis na views
@@ -92,7 +156,7 @@ if (! function_exists('is_closure')) {
  */
 function renderView($renderViewName, $vars = array(), $renderViewPath = null) {
   if (! $renderViewPath) {
-    $renderViewPath = \SuitUp\Mvc\MvcAbstractController::$params->layoutPath;
+    $renderViewPath = MvcAbstractController::$params->layoutPath;
   }
 
   // Injeta variaveis na view
@@ -205,8 +269,8 @@ function paginateControl(\SuitUp\Paginate\Paginate $object, $renderViewName = 'p
 }
 
 /**
- * Translate a given Exception trace to string.
- * !!! CAUTION !!! recursive function....
+ * Traduz um trace de exception para string.
+ * !!! CUIDADO !!! funcao recursiva....
  *
  * @param mixed $args
  * @param bool $root

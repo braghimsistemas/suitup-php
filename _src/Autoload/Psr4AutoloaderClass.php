@@ -3,7 +3,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2019 Braghim Sistemas
+ * Copyright (c) 2016 Braghim Sistemas
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -129,16 +129,16 @@ class Psr4AutoloaderClass
 
     foreach ($this->prefixes as $prefix => $paths) {
 
-      // Find the prefix which matches with this class
+      // Encontra o prefixo que casa com esta classe
       if (strpos($class, $prefix) === 0) {
 
         foreach ($paths as $path) {
 
-          // Maybe the class is in the root of the namespace
+          // Pode ser que tenha apontado a classe na raiz do namespace
           $rootClass = str_replace($prefix, '', $class);
           $rootFilename = implode(DIRECTORY_SEPARATOR, explode('\\', $path . $rootClass . '.php'));
 
-          // Or setting the class inside the folder to the namespace
+          // Ou apontado a classe no diretório interior ao namespace
           $filename = implode(DIRECTORY_SEPARATOR, explode('\\', $path . $class . '.php'));
 
           if (file_exists($rootFilename) && is_readable($rootFilename)) {
@@ -154,6 +154,7 @@ class Psr4AutoloaderClass
       }
     }
 
+    // Valendo um include que vale mais que dinheiro!
     if ($fileFound) {
       include_once $fileFound;
       return true;
