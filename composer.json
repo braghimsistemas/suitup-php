@@ -25,10 +25,5 @@
 	},
 	"autoload": {
 		"classmap": ["./src/SuitUpStart.php"]
-	},
-	"autoload-dev": {
-		"psr-4": {
-			"SuitUpTest\\": "./test/"
-		}
 	}
 }

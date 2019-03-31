@@ -2,7 +2,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2016 Braghim Sistemas
+ * Copyright (c) 2019 Braghim Sistemas
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,10 +23,10 @@
  * SOFTWARE.
  */
 
-error_reporting(E_ALL | E_STRICT);
-ini_set('display_errors', true);
+declare(strict_types=1);
 
-include_once __DIR__ . "/../src/SuitUpStart.php";
+error_reporting(E_ALL | E_STRICT);
+ini_set('display_errors', '1');
 
 // Para quando estamos mexendo diretamente no código
 if (file_exists(__DIR__.'/../vendor/autoload.php')) {
@@ -38,8 +38,25 @@ if (file_exists(__DIR__.'/../vendor/autoload.php')) {
 	$autoload = include __DIR__.'/../../../autoload.php';
 	$autoload->addPsr4('SuitUpTest\\', __DIR__.DIRECTORY_SEPARATOR.'.');
 	
-// Para os testes dentro do Travis.ci
-} else {
-	echo "\n\nNão encontramos a pasta vendor, o sistema não presseguirá com os testes.\n\n";
 }
 
+/**
+ * Define a Constante DEVELOPMENT caso ainda não tenha sido.
+ */
+defined('DEVELOPMENT') || define('DEVELOPMENT', (bool) getenv('DEVELOPMENT'));
+
+/**
+ * Define a Constante SHOW_ERRORS caso ainda não tenha sido.
+ */
+defined('SHOW_ERRORS') || define('SHOW_ERRORS', (bool) getenv('DEVELOPMENT'));
+
+final class SuitUpStartTest extends PHPUnit\Framework\TestCase
+{
+  public function testRun(): void {
+    // $this->assertEquals(1, 1);
+  }
+
+  public function testSetSqlMonitor(): void {
+    // $this->assertEquals(2, 2);
+  }
+}

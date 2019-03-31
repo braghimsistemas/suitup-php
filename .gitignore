@@ -1,5 +1,6 @@
 /nbproject
 .idea/
+*.cache
 suitup-php.iml
 composer.lock
 composer.phar
