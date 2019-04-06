@@ -28,6 +28,8 @@ declare(strict_types=1);
 namespace Suitup\Storage;
 
 
+use Router\Routes;
+
 class Config
 {
   private static $instance;
@@ -66,6 +68,16 @@ class Config
    * @var string
    */
   private $modulePath;
+
+  /**
+   * @var string
+   */
+  private $modulePrefix = 'Module';
+
+  /**
+   * @var string
+   */
+  private $moduleDefault = 'Default';
 
   /**
    * @var string
@@ -162,7 +174,7 @@ class Config
    * @return Config
    */
   public function setModulesPath(string $modulesPath): Config {
-    $this->modulesPath = $modulesPath;
+    $this->modulesPath = rtrim($modulesPath, '/');
     return $this;
   }
 
@@ -275,6 +287,38 @@ class Config
    */
   public function setModulePath(string $modulePath): Config {
     $this->modulePath = $modulePath;
+    return $this;
+  }
+
+  /**
+   * @return string
+   */
+  public function getModulePrefix(): string {
+    return $this->modulePrefix;
+  }
+
+  /**
+   * @param string $modulePrefix
+   * @return Config
+   */
+  public function setModulePrefix(string $modulePrefix): Config {
+    $this->modulePrefix = $modulePrefix;
+    return $this;
+  }
+
+  /**
+   * @return string
+   */
+  public function getModuleDefault(): string {
+    return $this->getModulePrefix().$this->moduleDefault;
+  }
+
+  /**
+   * @param string $moduleDefault
+   * @return Config
+   */
+  public function setModuleDefault(string $moduleDefault): Config {
+    $this->moduleDefault = $moduleDefault;
     return $this;
   }
 
@@ -442,8 +486,20 @@ class Config
    * end GETTERS AND SETTERS
    */
 
-  public function setRoutes() {
+  public function setupRoutes() {
 
+    // From URI remove slash from start and end. So remove everything after ?
+    $uri = trim(preg_replace('/\?.+/', '', getenv('REQUEST_URI')), '/');
+
+    // From basePath remove slash from start and end. So prepare it as a regex string
+    $basePathRegExp = '/^('.preg_quote(trim($this->getBasePath(), '/'), '/').')/';
+
+    // Remove from URI the BasePath
+    $route = trim(preg_replace($basePathRegExp, '', $uri), '/');
+
+    $routes = new \Suitup\Router\Routes($route);
+
+//    dump([$routes, $this]);
   }
 
   /**

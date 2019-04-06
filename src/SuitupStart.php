@@ -82,7 +82,7 @@ class SuitupStart
     $config = \Suitup\Storage\Config::getInstance();
     $config->setModulesPath($modulesPathDir);
     $config->setBasePath();
-    $config->setRoutes();
+    $config->setupRoutes();
   }
 
   /**
