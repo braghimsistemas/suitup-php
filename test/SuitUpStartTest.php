@@ -24,7 +24,6 @@
  */
 
 declare(strict_types=1);
-
 error_reporting(E_ALL | E_STRICT);
 ini_set('display_errors', '1');
 
@@ -52,11 +51,17 @@ defined('SHOW_ERRORS') || define('SHOW_ERRORS', (bool) getenv('DEVELOPMENT'));
 
 final class SuitUpStartTest extends PHPUnit\Framework\TestCase
 {
+
+
+  public function testConstruct(): void {
+
+  }
+
   public function testRun(): void {
-    // $this->assertEquals(1, 1);
+     $this->assertEquals(1, 1);
   }
 
   public function testSetSqlMonitor(): void {
-    // $this->assertEquals(2, 2);
+     $this->assertEquals(2, 2);
   }
 }
