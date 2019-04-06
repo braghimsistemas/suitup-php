@@ -497,9 +497,16 @@ class Config
     // Remove from URI the BasePath
     $route = trim(preg_replace($basePathRegExp, '', $uri), '/');
 
-    $routes = new \Suitup\Router\Routes($route);
+    // Define by the URI which base route will be used
+    $routes = new \Suitup\Router\Routes();
 
-//    dump([$routes, $this]);
+    // @TODO: Check if there's route config to the module by file
+
+    $routes->setByURI($route);
+
+
+
+    dump([$routes, $this]);
   }
 
   /**

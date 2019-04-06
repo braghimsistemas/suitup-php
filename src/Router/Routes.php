@@ -109,13 +109,19 @@ class Routes
    */
   private $params = array();
 
-  public function __construct(string $routePath, string $modulesPath = null) {
+  /**
+   * @param string $routePath
+   * @param string|null $modulesPath
+   * @return $this
+   */
+  public function setByURI(string $routePath, string $modulesPath = null) {
 
     $config = \Suitup\Storage\Config::getInstance();
 
     if ($routePath) {
 
       if (!$modulesPath) {
+        // Get modules path defined on Configs
         $modulesPath = $config->getModulesPath();
       }
 
@@ -186,10 +192,10 @@ class Routes
               $last = $item;
             }
           }
-
           break;
-      }
-    }
+      } // End switch
 
+    }
+    return $this;
   }
 }
