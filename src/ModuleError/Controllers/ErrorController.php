@@ -24,7 +24,7 @@
  */
 namespace ModuleError\Controllers;
 
-use SuitUp\Mvc\MvcAbstractController;
+use Suitup\Mvc\MvcAbstractController;
 
 /**
  * Class ErrorController

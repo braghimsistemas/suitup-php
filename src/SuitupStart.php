@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
@@ -51,25 +51,48 @@ class SuitupStart
    */
   const VERSION = '2.0.0';
 
-  private $modulesPath;
-
-  private $loader;
-
+  /**
+   * SuitupStart constructor.
+   *
+   * @param string $modulesPath
+   * @throws Exception
+   */
   public function __construct(string $modulesPath) {
 
-    $this->modulesPath = (realpath($modulesPath) === false) ? $modulesPath : realpath($modulesPath).DIRECTORY_SEPARATOR;
+    $modulesPathDir = (realpath($modulesPath) === false) ? $modulesPath : realpath($modulesPath).'/';
 
-    // Validate modules dir path
-    if (!$this->modulesPath || !is_dir($this->modulesPath)) {
-      throw new \Exception("The directory '" . $this->modulesPath . "' could not be loaded");
+    if (!is_dir($modulesPathDir)) {
+      throw new \Exception('The $modulesPath parameter is not a directory');
     }
 
-    $this->loader = new Psr4AutoloaderClass();
-    $this->loader->register();
-    $this->loader->addNamespace('SuitUp\\', __DIR__);
-    $this->loader->addNamespace('ModuleError\\', __DIR__ . '/ModuleError');
+    // Start the loader to setup auto include for the framework files.
+    $loader = new Psr4AutoloaderClass();
+    $loader->register();
+    $loader->addNamespace('Suitup', __DIR__);
+    $loader->addNamespace('ModuleError', __DIR__ . '/ModuleError');
 
-    dump($this);
+    // Add to the loader all directories from modules path dir.
+    foreach (scandir($modulesPathDir) as $module) {
+      if (!in_array($module, array('.', '..')) && is_dir($modulesPath.'/'.$module)) {
+        $loader->addNamespace($module, $modulesPathDir);
+      }
+    }
+
+    // Store on the configs the modules path
+    $config = \Suitup\Storage\Config::getInstance();
+    $config->setModulesPath($modulesPathDir);
+    $config->setBasePath();
+    $config->setRoutes();
+  }
+
+  /**
+   * If is wanted to change some config before to run the application, as change default path to the controllers for
+   * example...
+   *
+   * @return \Suitup\Storage\Config
+   */
+  public function getConfig(): \Suitup\Storage\Config {
+    return \Suitup\Storage\Config::getInstance();
   }
 
   /**
@@ -77,7 +100,7 @@ class SuitupStart
    */
   public function run(): void {
 
-    exit('Rodou!');
+    dump(\Suitup\Storage\Config::getInstance()->toArray());
 
     // Gatilho para fila de processos.
     // Se der alguma exception aqui vai
@@ -89,13 +112,11 @@ class SuitupStart
   }
 
   /**
-   * Habilita ou desabilita monitoramento de SQL de banco de dados.
-   *
-   * @param boolean $status
-   * @return SuitUpStart
+   * @param bool $status
+   * @return SuitupStart
    */
-  public function setSqlMonitor($status = false): self {
-    // @todo: Set this method
+  public function setSqlMonitor(bool $status): SuitupStart {
+    \Suitup\Storage\Config::getInstance()->setSqlMonitor($status);
     return $this;
   }
 }

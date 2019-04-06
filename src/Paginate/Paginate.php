@@ -22,14 +22,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-namespace SuitUp\Paginate;
+namespace Suitup\Paginate;
 
 include_once 'PaginateI.php';
 
 use Countable;
-use SuitUp\Database\Database;
-use SuitUp\Database\SqlFileManager;
-use SuitUp\Routes\Routes;
+use Suitup\Database\Database;
+use Suitup\Database\SqlFileManager;
+use Suitup\Routes\Routes;
 
 /**
  * Class Paginate

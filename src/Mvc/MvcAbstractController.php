@@ -22,11 +22,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-namespace SuitUp\Mvc;
+namespace Suitup\Mvc;
 
-use SuitUp\Enum\MsgType;
-use SuitUp\Database\Database;
-use SuitUp\Routes\Routes;
+use Suitup\Enum\MsgType;
+use Suitup\Database\Database;
+use Suitup\Routes\Routes;
 use Exception;
 use stdClass;
 use upload;

@@ -22,10 +22,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-namespace SuitUp\Paginate;
+namespace Suitup\Paginate;
 
-use SuitUp\Database\Database;
-use SuitUp\Database\SqlFileManager;
+use Suitup\Database\Database;
+use Suitup\Database\SqlFileManager;
 use Iterator;
 
 /**
