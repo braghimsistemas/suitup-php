@@ -97,17 +97,23 @@ class Routes
   /**
    * @var string
    */
-  private $controller;
+  private $controller = 'index';
 
   /**
    * @var string
    */
-  private $action;
+  private $action = 'index';
 
   /**
    * @var array
    */
   private $params = array();
+
+  public function __construct() {
+
+    // Default module name
+    $this->module = Config::getInstance()->getModuleDefault();
+  }
 
   /**
    * @param string $routePath
@@ -196,6 +202,101 @@ class Routes
       } // End switch
 
     }
+
+    // Merge GET params from URL
+    $this->params = array_merge($this->params, (array) filter_input_array(INPUT_GET));
+
     return $this;
   }
+
+  /** GETTERS and SETTERS */
+
+  /**
+   * @return string
+   */
+  public function getModule(): string {
+    return ucfirst(strtolower($this->module));
+  }
+
+  /**
+   * @return string
+   */
+  public function getModuleName(): string {
+    return Config::getInstance()->getModulePrefix().$this->getModule();
+  }
+
+  /**
+   * @param string $module
+   * @return Routes
+   */
+  public function setModule(string $module): Routes {
+    $this->module = $module;
+    return $this;
+  }
+
+  /**
+   * @return string
+   */
+  public function getController(): string {
+    return $this->controller;
+  }
+
+  /**
+   * @return string
+   */
+  public function getControllerName(): string {
+    $controller = lcfirst(ucwords(preg_replace("/\-/", " ", strtolower(urldecode($this->getController())))));
+    return ucfirst(preg_replace("/\s+/", "", $controller)).'Controller';
+  }
+
+  /**
+   * @param string $controller
+   * @return Routes
+   */
+  public function setController(string $controller): Routes {
+    $this->controller = $controller;
+    return $this;
+  }
+
+  /**
+   * @return string
+   */
+  public function getAction(): string {
+    return $this->action;
+  }
+
+  /**
+   * @return string
+   */
+  public function getActionName(): string {
+    $action = lcfirst(ucwords(preg_replace("/\-/", " ", strtolower(urldecode($this->getAction())))));
+    return preg_replace("/\s+/", "", $action).'Action';
+  }
+
+  /**
+   * @param string $action
+   * @return Routes
+   */
+  public function setAction(string $action): Routes {
+    $this->action = $action;
+    return $this;
+  }
+
+  /**
+   * @return array
+   */
+  public function getParams(): array {
+    return $this->params;
+  }
+
+  /**
+   * @param array $params
+   * @return Routes
+   */
+  public function setParams(array $params): Routes {
+    $this->params = $params;
+    return $this;
+  }
+
+  /** GETTERS and SETTERS */
 }

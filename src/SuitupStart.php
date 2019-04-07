@@ -57,19 +57,25 @@ class SuitupStart
    * @param string $modulesPath
    * @throws Exception
    */
-  public function __construct(string $modulesPath) {
-
-    $modulesPathDir = (realpath($modulesPath) === false) ? $modulesPath : realpath($modulesPath).'/';
-
-    if (!is_dir($modulesPathDir)) {
-      throw new \Exception('The $modulesPath parameter is not a directory');
-    }
+  public function __construct(string $modulesPath = null) {
 
     // Start the loader to setup auto include for the framework files.
     $loader = new Psr4AutoloaderClass();
     $loader->register();
     $loader->addNamespace('Suitup', __DIR__);
     $loader->addNamespace('ModuleError', __DIR__ . '/ModuleError');
+
+    if ($modulesPath) {
+      $this->getConfig()->setModulesPath((realpath($modulesPath) === false) ? $modulesPath : realpath($modulesPath).'/');
+    }
+
+    // Get from config, there's a default value if empty
+    $modulesPathDir = $this->getConfig()->getModulesPath();
+
+    // Make sure modules path is a dir
+    if (!is_dir($modulesPathDir)) {
+      throw new \Exception('The $modulesPath parameter is not a directory');
+    }
 
     // Add to the loader all directories from modules path dir.
     foreach (scandir($modulesPathDir) as $module) {
@@ -79,10 +85,25 @@ class SuitupStart
     }
 
     // Store on the configs the modules path
-    $config = \Suitup\Storage\Config::getInstance();
-    $config->setModulesPath($modulesPathDir);
-    $config->setBasePath();
-    $config->setupRoutes();
+    $this->getConfig()->setModulesPath($modulesPathDir);
+    $this->getConfig()->setBasePath();
+    $this->getConfig()->setupRoutes();
+  }
+
+  /**
+   * Effectively runs the entire application
+   */
+  public function run(): void {
+
+    dump($this->getConfig());
+
+    // Gatilho para fila de processos.
+    // Se der alguma exception aqui vai
+    // cair na funcao descrita acima.
+    // $this->mvc->controller->preDispatch();
+    // $this->mvc->controller->init();
+    // $this->mvc->controller->{$this->mvc->actionName}();
+    // $this->mvc->controller->posDispatch();
   }
 
   /**
@@ -93,22 +114,6 @@ class SuitupStart
    */
   public function getConfig(): \Suitup\Storage\Config {
     return \Suitup\Storage\Config::getInstance();
-  }
-
-  /**
-   * Effectively runs the entire application
-   */
-  public function run(): void {
-
-    dump(\Suitup\Storage\Config::getInstance()->toArray());
-
-    // Gatilho para fila de processos.
-    // Se der alguma exception aqui vai
-    // cair na funcao descrita acima.
-    // $this->mvc->controller->preDispatch();
-    // $this->mvc->controller->init();
-    // $this->mvc->controller->{$this->mvc->actionName}();
-    // $this->mvc->controller->posDispatch();
   }
 
   /**

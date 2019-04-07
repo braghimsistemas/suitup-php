@@ -77,7 +77,7 @@ class Config
   /**
    * @var string
    */
-  private $moduleDefault = 'Default';
+  private $moduleDefault = 'default';
 
   /**
    * @var string
@@ -125,7 +125,17 @@ class Config
    *
    * @var string
    */
-  private $routeFileSuffix = '.routes.php';
+  private $routesFileSuffix = '.routes.php';
+
+  /**
+   * @var string
+   */
+  private $routesFile;
+
+  /**
+   * @var \Suitup\Router\Routes
+   */
+  private $routes;
 
   /**
    * @var string
@@ -137,7 +147,13 @@ class Config
    *
    * Doesn't allow new instances
    */
-  private function __construct() {}
+  private function __construct() {
+
+    // Setup default value to the modules path.
+    // It will relate modules path to the 'chdir' function
+    // which must to be called in the index.php file
+    $this->modulesPath = realpath('.');
+  }
 
   /**
    * Doesn't allow clones
@@ -310,7 +326,7 @@ class Config
    * @return string
    */
   public function getModuleDefault(): string {
-    return $this->getModulePrefix().$this->moduleDefault;
+    return $this->moduleDefault;
   }
 
   /**
@@ -350,7 +366,7 @@ class Config
    * @return Config
    */
   public function setControllersPath(string $controllersPath): Config {
-    $this->controllersPath = $controllersPath;
+    $this->controllersPath = '/'.trim($controllersPath, '/');
     return $this;
   }
 
@@ -447,22 +463,57 @@ class Config
    */
   public function setRoutesPath(string $routesPath): Config {
     $this->routesPath = $routesPath;
+    $this->setupRoutes();
     return $this;
   }
 
   /**
    * @return string
    */
-  public function getRouteFileSuffix(): string {
-    return $this->routeFileSuffix;
+  public function getRoutesFileSuffix(): string {
+    return $this->routesFileSuffix;
   }
 
   /**
-   * @param string $routeFileSuffix
+   * @param string $routesFileSuffix
    * @return Config
    */
-  public function setRouteFileSuffix(string $routeFileSuffix): Config {
-    $this->routeFileSuffix = $routeFileSuffix;
+  public function setRoutesFileSuffix(string $routesFileSuffix): Config {
+    $this->routesFileSuffix = $routesFileSuffix;
+    $this->setupRoutes();
+    return $this;
+  }
+
+  /**
+   * @return string|null
+   */
+  public function getRoutesFile(): ?string {
+    return $this->routesFile;
+  }
+
+  /**
+   * @param string $routesFile
+   * @return Config
+   */
+  public function setRoutesFile(string $routesFile): Config {
+    $this->routesFile = $routesFile;
+    $this->setupRoutes();
+    return $this;
+  }
+
+  /**
+   * @return \Suitup\Router\Routes
+   */
+  public function getRoutes(): \Suitup\Router\Routes {
+    return $this->routes;
+  }
+
+  /**
+   * @param \Suitup\Router\Routes $routes
+   * @return Config
+   */
+  public function setRoutes(\Suitup\Router\Routes $routes): Config {
+    $this->routes = $routes;
     return $this;
   }
 
@@ -500,13 +551,28 @@ class Config
     // Define by the URI which base route will be used
     $routes = new \Suitup\Router\Routes();
 
-    // @TODO: Check if there's route config to the module by file
+    if ($this->getRoutesFile()) {
 
-    $routes->setByURI($route);
+      // @TODO: Check it out
+      dump($this->getRoutesFile());
 
+    } else {
+      $routes->setByURI($route);
+    }
 
+    // Module
+    $this->setModuleName($routes->getModule());
+    $this->setModulePath($this->getModulesPath().'/'.$routes->getModuleName());
 
-    dump([$routes, $this]);
+    // Controller
+    $this->setControllerName($routes->getControllerName());
+    $this->setControllersPath($this->getModulePath().$this->getControllersPath());
+
+    // Action
+    $this->setActionName($routes->getActionName());
+
+    // Store the object to the future usage
+    $this->setRoutes($routes);
   }
 
   /**
