@@ -150,9 +150,52 @@ class Routes
 
     if ($this->getRoutesFile()) {
 
-      // @TODO: Check it out
-//      dump($this->getRoutesFile());
+      // Get from file the routes config
+      $routesFile = (array) include_once($this->getRoutesFile());
 
+      // Loop under defined routes
+      $found = false;
+      foreach ($routesFile as $routeName => $routeItem) {
+
+        if ($found) { break; }
+
+        // Define the route type
+        $type = $routeItem['type'] ?? Routes::TYPE_LINEAR;
+        switch ($type) {
+          case Routes::TYPE_LITERAL:
+
+            // If there's no parameter
+            if (!isset($routeItem['url_list'])) {
+              throw new \Exception('Every literal route must to implement the list of valid URL. It can be a closure function or an array list');
+            }
+
+
+
+            break;
+          case Routes::TYPE_REVERSE:
+
+            break;
+          default: // TYPE LINEAR
+            if ($routeName == $this->getController()) {
+              $found = $routeItem;
+            }
+        }
+      }
+
+      if ($found) {
+        $this->setController($found['controller'] ?? $this->getController());
+        $this->setAction($found['action'] ?? $this->getAction());
+
+        $this->resolveParams($found['params'], explode('/', $route));
+
+        dump([
+          $route,
+          $this->getParams(),
+          $found['params']
+        ]);
+
+        $this->params = array_merge($this->getParams(), $found['params']);
+      }
     }
 
     // Module
@@ -168,10 +211,61 @@ class Routes
   }
 
   /**
+   * @param array $routeParams
+   * @param array $urlParams
+   * @return $this
+   */
+  private function resolveParams(array $routeParams, array $urlParams): Routes {
+    if ($routeParams) {
+
+      // Store route params organized
+      $params = array();
+      foreach ($routeParams as $rKey => $rParam) {
+        $params[] = array('key' => $rKey, 'value' => $rParam);
+      }
+
+      // If there's param to translate
+      foreach ($urlParams as $key => $param) {
+
+        if (!isset($params[$key])) {
+          $this->params[] = $param;
+          continue;
+        }
+
+        // Regular expression?
+        if (preg_match("/^\/.+\/$/", (string) $params[$key]['value'])) {
+          $this->params[$params[$key]['key']] = preg_replace($params[$key]['value'], "", $param);
+        } else {
+          $this->params[$params[$key]['key']] = $param;
+        }
+      }
+
+      // Check that ones which exists, but was not feed
+      foreach ($params as $param) {
+        if (isset($this->params[$param['key']])) {
+          continue;
+        }
+
+        // Isn't a Regex param
+        if (! preg_match("/^\/.+\/$/", $param['value'])) {
+          $this->params[$param['key']] = $param['value'];
+        } else {
+          $this->params[$param['key']] = null;
+        }
+      }
+    } else {
+      // Route doesn't expect any param, but exists
+      $this->params = $urlParams;
+    }
+
+    return $this;
+  }
+
+  /**
    * @param string $routePath
    * @return $this
    */
-  public function setByURI(string $routePath) {
+  public function setByURI(string $routePath): Routes {
 
     $config = Config::getInstance();
 
