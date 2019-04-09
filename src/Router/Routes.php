@@ -27,7 +27,6 @@ declare(strict_types=1);
 
 namespace Suitup\Router;
 
-
 use Suitup\Storage\Config;
 
 /**
@@ -89,6 +88,26 @@ class Routes
    */
   const TYPE_LITERAL = 'literal';
 
+  // @TODO: Check if there's need to watch the state of routes to setup after changes.
+
+  /**
+   * @var string
+   */
+  private $routesPath = './config';
+
+  /**
+   * Every file with the list of routes must to end with this
+   * name.
+   *
+   * @var string
+   */
+  private $routesFileSuffix = '.routes.php';
+
+  /**
+   * @var string
+   */
+  private $routesFile;
+
   /**
    * @var string
    */
@@ -109,27 +128,54 @@ class Routes
    */
   private $params = array();
 
-  public function __construct() {
+  /**
+   * end GETTERS AND SETTERS
+   */
 
-    // Default module name
-    $this->module = Config::getInstance()->getModuleDefault();
+  public function setupRoutes() {
+
+    $config = Config::getInstance();
+
+    // From URI remove slash from start and end. So remove everything after ?
+    $uri = trim(preg_replace('/\?.+/', '', getenv('REQUEST_URI')), '/');
+
+    // From basePath remove slash from start and end. So prepare it as a regex string
+    $basePathRegExp = '/^('.preg_quote(trim($config->getBasePath(), '/'), '/').')/';
+
+    // Remove from URI blank spaces and the BasePath
+    $route = trim(preg_replace($basePathRegExp, '', preg_replace("/\s+/", '-', urldecode($uri))), '/');
+
+    // First of all we set by URI that is useful always =)
+    $this->setByURI($route);
+
+    if ($this->getRoutesFile()) {
+
+      // @TODO: Check it out
+//      dump($this->getRoutesFile());
+
+    }
+
+    // Module
+    $config->setModuleName($this->getModule());
+    $config->setModulePath($config->getModulesPath().'/'.$this->getModuleName());
+
+    // Controller
+    $config->setControllerName($this->getControllerName());
+    $config->setControllersPath($config->getModulePath().$config->getControllersPath());
+
+    // Action
+    $config->setActionName($this->getActionName());
   }
 
   /**
    * @param string $routePath
-   * @param string|null $modulesPath
    * @return $this
    */
-  public function setByURI(string $routePath, string $modulesPath = null) {
+  public function setByURI(string $routePath) {
 
-    $config = \Suitup\Storage\Config::getInstance();
+    $config = Config::getInstance();
 
     if ($routePath) {
-
-      if (!$modulesPath) {
-        // Get modules path defined on Configs
-        $modulesPath = $config->getModulesPath();
-      }
 
       // controller OR
       // module OR
@@ -139,7 +185,7 @@ class Routes
       $routeParts = explode('/', $routePath);
 
       // Prefix to the module names
-      $modulesPathPrefix = $modulesPath . "/" . $config->getModulePrefix();
+      $modulesPathPrefix = $config->getModulesPath() . "/" . $config->getModulePrefix();
 
       // By the quantity we know where controller is
       switch (count($routeParts)) {
@@ -167,7 +213,7 @@ class Routes
              * If the first one is the name of some module folder
              * we have no choice but point the system to that.
              */
-            $this->module = strtolower($routeParts[0]);
+            $this->module = $routeParts[0];
             $this->controller = $routeParts[1];
             $this->action = $routeParts[2];
 
@@ -214,15 +260,72 @@ class Routes
   /**
    * @return string
    */
+  public function getRoutesPath(): string {
+    return $this->routesPath;
+  }
+
+  /**
+   * @param string $routesPath
+   * @return Routes
+   */
+  public function setRoutesPath(string $routesPath): Routes {
+    $this->routesPath = $routesPath;
+    return $this;
+  }
+
+  /**
+   * @return string
+   */
+  public function getRoutesFileSuffix(): string {
+    return $this->routesFileSuffix;
+  }
+
+  /**
+   * @param string $routesFileSuffix
+   * @return Routes
+   */
+  public function setRoutesFileSuffix(string $routesFileSuffix): Routes {
+    $this->routesFileSuffix = $routesFileSuffix;
+    return $this;
+  }
+
+  /**
+   * @return string|null
+   */
+  public function getRoutesFile(): ?string {
+
+    if (!$this->routesFile) {
+
+      $filename = $this->getRoutesPath().'/'.$this->getModule().$this->getRoutesFileSuffix();
+      if (file_exists($filename) && is_readable($filename)) {
+
+        $this->routesFile = $filename;
+      }
+    }
+    return $this->routesFile;
+  }
+
+  /**
+   * @param string $routesFile
+   * @return Routes
+   */
+  public function setRoutesFile(string $routesFile): Routes {
+    $this->routesFile = $routesFile;
+    return $this;
+  }
+
+  /**
+   * @return string
+   */
   public function getModule(): string {
-    return ucfirst(strtolower($this->module));
+    return $this->module;
   }
 
   /**
    * @return string
    */
   public function getModuleName(): string {
-    return Config::getInstance()->getModulePrefix().$this->getModule();
+    return Config::getInstance()->getModulePrefix().ucfirst($this->getModule());
   }
 
   /**
@@ -230,7 +333,7 @@ class Routes
    * @return Routes
    */
   public function setModule(string $module): Routes {
-    $this->module = $module;
+    $this->module = strtolower($module);
     return $this;
   }
 
@@ -245,8 +348,8 @@ class Routes
    * @return string
    */
   public function getControllerName(): string {
-    $controller = lcfirst(ucwords(preg_replace("/\-/", " ", strtolower(urldecode($this->getController())))));
-    return ucfirst(preg_replace("/\s+/", "", $controller)).'Controller';
+    $controller = ucwords(preg_replace("/\-/", " ", $this->getController()));
+    return preg_replace("/\s+/", "", $controller).'Controller';
   }
 
   /**
@@ -254,7 +357,7 @@ class Routes
    * @return Routes
    */
   public function setController(string $controller): Routes {
-    $this->controller = $controller;
+    $this->controller = strtolower($controller);
     return $this;
   }
 
@@ -269,7 +372,7 @@ class Routes
    * @return string
    */
   public function getActionName(): string {
-    $action = lcfirst(ucwords(preg_replace("/\-/", " ", strtolower(urldecode($this->getAction())))));
+    $action = lcfirst(ucwords(preg_replace("/\-/", " ", $this->getAction())));
     return preg_replace("/\s+/", "", $action).'Action';
   }
 
@@ -278,7 +381,7 @@ class Routes
    * @return Routes
    */
   public function setAction(string $action): Routes {
-    $this->action = $action;
+    $this->action = strtolower($action);
     return $this;
   }
 

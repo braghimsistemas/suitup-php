@@ -87,7 +87,7 @@ class SuitupStart
     // Store on the configs the modules path
     $this->getConfig()->setModulesPath($modulesPathDir);
     $this->getConfig()->setBasePath();
-    $this->getConfig()->setupRoutes();
+    $this->getConfig()->getRoutes()->setupRoutes();
   }
 
   /**

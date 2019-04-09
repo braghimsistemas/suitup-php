@@ -115,24 +115,6 @@ class Config
   private $gatewayPath = '/Model/Gateway';
 
   /**
-   * @var string
-   */
-  private $routesPath = '/config';
-
-  /**
-   * Every file with the list of routes must to end with this
-   * name.
-   *
-   * @var string
-   */
-  private $routesFileSuffix = '.routes.php';
-
-  /**
-   * @var string
-   */
-  private $routesFile;
-
-  /**
    * @var \Suitup\Router\Routes
    */
   private $routes;
@@ -153,6 +135,10 @@ class Config
     // It will relate modules path to the 'chdir' function
     // which must to be called in the index.php file
     $this->modulesPath = realpath('.');
+
+    // Set initialized the routes manager
+    $this->routes = new \Suitup\Router\Routes();
+    $this->routes->setModule($this->getModuleDefault());
   }
 
   /**
@@ -451,57 +437,6 @@ class Config
   }
 
   /**
-   * @return string
-   */
-  public function getRoutesPath(): string {
-    return $this->routesPath;
-  }
-
-  /**
-   * @param string $routesPath
-   * @return Config
-   */
-  public function setRoutesPath(string $routesPath): Config {
-    $this->routesPath = $routesPath;
-    $this->setupRoutes();
-    return $this;
-  }
-
-  /**
-   * @return string
-   */
-  public function getRoutesFileSuffix(): string {
-    return $this->routesFileSuffix;
-  }
-
-  /**
-   * @param string $routesFileSuffix
-   * @return Config
-   */
-  public function setRoutesFileSuffix(string $routesFileSuffix): Config {
-    $this->routesFileSuffix = $routesFileSuffix;
-    $this->setupRoutes();
-    return $this;
-  }
-
-  /**
-   * @return string|null
-   */
-  public function getRoutesFile(): ?string {
-    return $this->routesFile;
-  }
-
-  /**
-   * @param string $routesFile
-   * @return Config
-   */
-  public function setRoutesFile(string $routesFile): Config {
-    $this->routesFile = $routesFile;
-    $this->setupRoutes();
-    return $this;
-  }
-
-  /**
    * @return \Suitup\Router\Routes
    */
   public function getRoutes(): \Suitup\Router\Routes {
@@ -531,48 +466,6 @@ class Config
   public function setLogsPath(string $logsPath): Config {
     $this->logsPath = $logsPath;
     return $this;
-  }
-
-  /**
-   * end GETTERS AND SETTERS
-   */
-
-  public function setupRoutes() {
-
-    // From URI remove slash from start and end. So remove everything after ?
-    $uri = trim(preg_replace('/\?.+/', '', getenv('REQUEST_URI')), '/');
-
-    // From basePath remove slash from start and end. So prepare it as a regex string
-    $basePathRegExp = '/^('.preg_quote(trim($this->getBasePath(), '/'), '/').')/';
-
-    // Remove from URI the BasePath
-    $route = trim(preg_replace($basePathRegExp, '', $uri), '/');
-
-    // Define by the URI which base route will be used
-    $routes = new \Suitup\Router\Routes();
-
-    if ($this->getRoutesFile()) {
-
-      // @TODO: Check it out
-      dump($this->getRoutesFile());
-
-    } else {
-      $routes->setByURI($route);
-    }
-
-    // Module
-    $this->setModuleName($routes->getModule());
-    $this->setModulePath($this->getModulesPath().'/'.$routes->getModuleName());
-
-    // Controller
-    $this->setControllerName($routes->getControllerName());
-    $this->setControllersPath($this->getModulePath().$this->getControllersPath());
-
-    // Action
-    $this->setActionName($routes->getActionName());
-
-    // Store the object to the future usage
-    $this->setRoutes($routes);
   }
 
   /**
