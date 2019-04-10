@@ -87,7 +87,7 @@ class Config
   /**
    * @var string
    */
-  private $controllersPath = '/Controllers';
+  private $controllersPath = 'Controllers';
 
   /**
    * @var string
@@ -352,7 +352,7 @@ class Config
    * @return Config
    */
   public function setControllersPath(string $controllersPath): Config {
-    $this->controllersPath = '/'.trim($controllersPath, '/');
+    $this->controllersPath = trim($controllersPath, '/');
     return $this;
   }
 

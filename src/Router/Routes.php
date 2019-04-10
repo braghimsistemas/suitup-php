@@ -247,7 +247,7 @@ class Routes
 
     // Controller
     $config->setControllerName($this->getControllerName());
-    $config->setControllersPath($config->getModulePath().$config->getControllersPath());
+    $config->setControllersPath($config->getControllersPath());
 
     // Action
     $config->setActionName($this->getActionName());

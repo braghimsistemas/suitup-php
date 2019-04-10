@@ -28,6 +28,18 @@ declare(strict_types=1);
 include_once __DIR__ . "/Autoload/Psr4AutoloaderClass.php";
 include_once __DIR__ . "/functions.php";
 
+use Suitup\Storage\Config;
+use Suitup\Mvc\MvcAbstractController;
+
+/**
+ * Token para o sistema nao "confundir" as mensagens de sessao
+ * atual com mensagens que ja existiam em outra pagina.
+ * Utilizado dentro da classe \SuitUp\Mvc\MvcAbstractController
+ *
+ * ¯\_(-.-)_/¯
+ */
+define('MSG_NSP_TOKEN', mctime());
+
 /**
  * Define DEVELOPMENT constant
  */
@@ -95,7 +107,17 @@ class SuitupStart
    */
   public function run(): void {
 
-    dump($this->getConfig());
+    $mvc = null;
+
+    try {
+
+      $mvc = $this->launcher($this->getConfig());
+
+    } catch (\Exception $e) {
+
+      dump($e);
+
+    }
 
     // Gatilho para fila de processos.
     // Se der alguma exception aqui vai
@@ -106,14 +128,79 @@ class SuitupStart
     // $this->mvc->controller->posDispatch();
   }
 
+  public function launcher(Config $configs): ?MvcAbstractController {
+
+    // Define modulo
+    if (! is_dir($configs->getModulePath()) || ! is_readable($configs->getModulePath())) {
+      throw new \Exception("Module folder '{$configs->getModulePath()}' does not exists");
+    }
+
+    // Verifica se controlador existe
+    $controllerFile = "{$configs->getModulePath()}/{$configs->getControllersPath()}/{$configs->getControllerName()}.php";
+    if (! file_exists($controllerFile)) {
+      throw new \Exception("Controller file could not be found: $controllerFile");
+    }
+
+    dump($configs);
+
+//    // Tentando acessar o controlador encontrado.
+//    $controllerNsp = $module . "\\Controllers\\$controllerName";
+//    if (! class_exists($controllerNsp)) {
+//      throw new \Exception("O sistema não conseguiu encontrar a classe deste controlador '$controllerNsp'");
+//    }
+//
+//    // Cria uma instancia do controlador
+//    $result->controller = new $controllerNsp();
+//    if (! $result->controller instanceof MvcAbstractController) {
+//      throw new \Exception("Todo controlador deve ser uma instância de 'MvcAbstractController'");
+//    }
+//
+//    // Define nome da acao
+//    $actionName = preg_replace("/\s+/", "", lcfirst(ucwords(preg_replace("/\-/", " ", $action)))) . "Action";
+//
+//    // Verifica se ação existe no controlador
+//    if (! method_exists($result->controller, $actionName)) {
+//      throw new \Exception("Ação '$actionName' não existe no controlador '$controllerNsp'");
+//    }
+//    $result->actionName = $actionName;
+//
+//    // Diretorio de views do modulo
+//    if (! is_dir("$path/$module/views/")) {
+//      throw new \Exception("Diretório de views não existe para o módulo '$module'");
+//    }
+//    $result->layoutPath = "$path/$module/views/";
+//
+//    /**
+//     * !! ATT !!
+//     * Aqui não é necessário validar a existência do arquivo da view,
+//     * pois quando a acao devolve um ajax não renderiza html
+//     */
+//    $result->viewName = $action . ".phtml";
+//    $result->viewPath = "$path/$module/views/$controller";
+//
+//    /**
+//     * Cada módulo pode ter um
+//     *
+//     * @var \SuitUp\Mvc\MvcAbstractController
+//     */
+//    $abstractController = "$module\\Controllers\\AbstractController";
+//    if (! class_exists($abstractController)) {
+//      $abstractController = "\\SuitUp\\Mvc\\MvcAbstractController";
+//    }
+//    $abstractController::$params = $result;
+//
+//    return $result;
+    return null;
+  }
+
   /**
    * If is wanted to change some config before to run the application, as change default path to the controllers for
    * example...
    *
    * @return \Suitup\Storage\Config
    */
-  public function getConfig(): \Suitup\Storage\Config {
-    return \Suitup\Storage\Config::getInstance();
+  public function getConfig(): Config {
+    return Config::getInstance();
   }
 
   /**
@@ -121,7 +208,7 @@ class SuitupStart
    * @return SuitupStart
    */
   public function setSqlMonitor(bool $status): SuitupStart {
-    \Suitup\Storage\Config::getInstance()->setSqlMonitor($status);
+    Config::getInstance()->setSqlMonitor($status);
     return $this;
   }
 }
