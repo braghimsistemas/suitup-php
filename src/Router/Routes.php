@@ -145,8 +145,8 @@ class Routes
     // Remove from URI blank spaces and the BasePath
     $route = trim(preg_replace($basePathRegExp, '', preg_replace("/\s+/", '-', urldecode($uri))), '/');
 
-    // First of all we set by URI that is useful always =)
-    $this->setByURI($route);
+    // First of all we set by URI that is useful always
+    $routeResidue = $this->setByURI($route);
 
     if ($this->getRoutesFile()) {
 
@@ -159,6 +159,9 @@ class Routes
 
         if ($found) { break; }
 
+        // Store the route name
+        $routeItem['name'] = $routeName;
+
         // Define the route type
         $type = $routeItem['type'] ?? Routes::TYPE_LINEAR;
         switch ($type) {
@@ -169,13 +172,18 @@ class Routes
               throw new \Exception('Every literal route must to implement the list of valid URL. It can be a closure function or an array list');
             }
 
-
+            
 
             break;
           case Routes::TYPE_REVERSE:
-
+            // Check true if $routeName is equal to the last item from $route
+            if ($routeName == preg_replace("/^.+\//", '', $route)) {
+              $found = $routeItem;
+            }
             break;
-          default: // TYPE LINEAR
+          default:
+            // TYPE LINEAR
+            // Check true if the $routeName is equal to the first item after module name
             if ($routeName == $this->getController()) {
               $found = $routeItem;
             }
@@ -183,20 +191,27 @@ class Routes
       }
 
       if ($found) {
+
+        // Set controller and action
         $this->setController($found['controller'] ?? $this->getController());
         $this->setAction($found['action'] ?? $this->getAction());
 
-        $this->resolveParams($found['params'], explode('/', $route));
+        // Remove from route string it's name
+        $route = trim(str_replace($found['name'], '', $route), '/');
 
-        dump([
-          $route,
-          $this->getParams(),
-          $found['params']
-        ]);
-
-        $this->params = array_merge($this->getParams(), $found['params']);
+        // Resolve params
+        $this->params = $this->resolveParams($found['params'], explode('/', $route));
       }
     }
+
+    // If was not set params from pre defined routes we will do it
+    // with residues of route
+    if (!$this->params) {
+      $this->params = $this->arrayToParams(explode('/', $routeResidue));
+    }
+
+    // Merge GET params from URL
+    $this->params = array_merge($this->params, (array) filter_input_array(INPUT_GET));
 
     // Module
     $config->setModuleName($this->getModule());
@@ -213,61 +228,97 @@ class Routes
   /**
    * @param array $routeParams
    * @param array $urlParams
-   * @return $this
+   * @return array
    */
-  private function resolveParams(array $routeParams, array $urlParams): Routes {
+  private function resolveParams(array $routeParams, array $urlParams): array {
+    $result = array();
+
+    // At the end we will use residues
+    // to set extra parameters
+    $residues = array();
+
     if ($routeParams) {
 
       // Store route params organized
       $params = array();
       foreach ($routeParams as $rKey => $rParam) {
-        $params[] = array('key' => $rKey, 'value' => $rParam);
+        if (is_string($rKey)) {
+          $params[] = array('key' => $rKey, 'value' => $rParam);
+        } else {
+          $params[] = array('key' => $rParam, 'value' => '');
+        }
       }
 
       // If there's param to translate
       foreach ($urlParams as $key => $param) {
 
         if (!isset($params[$key])) {
-          $this->params[] = $param;
+          $residues[] = $param;
           continue;
         }
 
         // Regular expression?
         if (preg_match("/^\/.+\/$/", (string) $params[$key]['value'])) {
-          $this->params[$params[$key]['key']] = preg_replace($params[$key]['value'], "", $param);
+          $result[$params[$key]['key']] = preg_replace($params[$key]['value'], "", $param);
         } else {
-          $this->params[$params[$key]['key']] = $param;
+          $result[$params[$key]['key']] = $param;
         }
       }
 
       // Check that ones which exists, but was not feed
       foreach ($params as $param) {
-        if (isset($this->params[$param['key']])) {
+
+        // If it's already set, skip it
+        if (isset($result[$param['key']])) {
           continue;
         }
 
         // Isn't a Regex param
         if (! preg_match("/^\/.+\/$/", $param['value'])) {
-          $this->params[$param['key']] = $param['value'];
+          $result[$param['key']] = $param['value'];
         } else {
-          $this->params[$param['key']] = null;
+          $result[$param['key']] = '';
         }
       }
     } else {
       // Route doesn't expect any param, but exists
-      $this->params = $urlParams;
+      $residues = $urlParams;
     }
 
-    return $this;
+    // Merge with residues params
+    $result = array_merge($result, $this->arrayToParams($residues));
+
+    return $result;
+  }
+
+  /**
+   * Get a list of values and store them to associative array list.
+   *
+   * @param $arrayOfValues
+   * @return array
+   */
+  public function arrayToParams($arrayOfValues): array {
+    $result = array();
+    $last = '';
+    foreach ($arrayOfValues as $i => $item) {
+      if ($i%2==0) {
+        $result[$item] = '';
+      } else {
+        $result[$last] = $item;
+      }
+      $last = $item;
+    }
+    return $result;
   }
 
   /**
    * @param string $routePath
-   * @return $this
+   * @return string
    */
-  public function setByURI(string $routePath): Routes {
+  public function setByURI(string $routePath): string {
 
     $config = Config::getInstance();
+    $routeParts = explode('/', $routePath);
 
     if ($routePath) {
 
@@ -276,7 +327,6 @@ class Routes
       // controller/action OR
       // module/controller OR
       // module/controller/action
-      $routeParts = explode('/', $routePath);
 
       // Prefix to the module names
       $modulesPathPrefix = $config->getModulesPath() . "/" . $config->getModulePrefix();
@@ -323,30 +373,10 @@ class Routes
             unset($routeParts[0]);
             unset($routeParts[1]);
           }
-
-          if ($routeParts) {
-
-            // Loop under remain values with reset number keys
-            // It will last as params
-            $last = '';
-            foreach (array_values($routeParts) as $i => $item) {
-              if ($i%2==0) {
-                $this->params[$item] = null;
-              } else {
-                $this->params[$last] = $item;
-              }
-              $last = $item;
-            }
-          }
-          break;
       } // End switch
 
     }
-
-    // Merge GET params from URL
-    $this->params = array_merge($this->params, (array) filter_input_array(INPUT_GET));
-
-    return $this;
+    return implode('/', $routeParts);
   }
 
   /** GETTERS and SETTERS */
