@@ -24,6 +24,8 @@
  * SOFTWARE.
  */
 
+declare(strict_types=1);
+
 /**
  * An example of a general-purpose implementation that includes the optional
  * functionality of allowing multiple base directories for a single namespace
@@ -87,10 +89,7 @@ class Psr4AutoloaderClass
    * @return void
    */
   public function register() {
-    spl_autoload_register(array(
-      $this,
-      'loadClass'
-    ));
+    spl_autoload_register(array($this, 'loadClass'));
   }
 
   /**

@@ -47,10 +47,14 @@ abstract class MvcAbstractController
    */
   public static $params;
 
-  // Variaveis que serao passadas para view
+  /**
+   * @var array
+   */
   private $view = array();
 
-  // Mensagens do sistema
+  /**
+   * @var array
+   */
   private $msgs = array();
 
   /**
@@ -73,13 +77,15 @@ abstract class MvcAbstractController
    * Se for sobrescrever ele, não esqueça de chama-lo.
    *
    * ex.
+   * <pre>
    * public function preDispatch() {
-   *		// Seu codigo aqui
+   *		// your code
    *
    *		parent::preDispatch();
    *
-   *		// ou aqui
+   *		// your code
    * }
+   * </pre>
    */
   public function preDispatch() {
     // Mensagens que vieram por sessao, ou seja, com redirecionamento
@@ -102,7 +108,7 @@ abstract class MvcAbstractController
   }
 
   /**
-   * Metodos padrão
+   * Default accessible methods
    */
 
   /**
@@ -115,17 +121,15 @@ abstract class MvcAbstractController
    */
   public function indexAction() {}
 
-  // Error Controller
-
   /**
-   *
+   * Default error type
    */
   public function errorAction() {
     header(getenv('SERVER_PROTOCOL') . ' 500 Internal Server Error', true, 500);
   }
 
   /**
-   *
+   * Error type to page not found
    */
   public function notFoundAction() {
     header(getenv('SERVER_PROTOCOL') . ' 404 Not Found', true, 404);
@@ -175,9 +179,9 @@ abstract class MvcAbstractController
     $content = ob_get_clean();
 
     // Lista de instruções SQL rodadas nesta pagina
-    if (Database::getInstance()) {
-      $queryLog = Database::getInstance()->getQueryLog();
-    }
+//    if (Database::getInstance()) {
+//      $queryLog = Database::getInstance()->getQueryLog();
+//    }
 
     // mostra conteúdo do layout já com a view injetada
     include $layoutfile;

@@ -106,26 +106,29 @@ class SuitupStart
    * Effectively runs the entire application
    */
   public function run(): void {
-
-    $mvc = null;
-
     try {
 
-      $mvc = $this->launcher($this->getConfig());
+      // If is everything ok this will be the one launch.
+      $this->launcher($this->getConfig());
 
-    } catch (\Exception $e) {
+    } catch (\Throwable $originalError) {
+      try {
 
-      dump($e);
+        dump($originalError);
 
+        // We got an error so let's try to run
+        // ErrorController inside the own module
+
+      } catch (\Throwable $e) {
+        try {
+          // Well now we have to try to launch ErrorController
+          // from framework itself
+
+        } catch (\Throwable $ex) {
+          dump($originalError);
+        }
+      }
     }
-
-    // Gatilho para fila de processos.
-    // Se der alguma exception aqui vai
-    // cair na funcao descrita acima.
-    // $this->mvc->controller->preDispatch();
-    // $this->mvc->controller->init();
-    // $this->mvc->controller->{$this->mvc->actionName}();
-    // $this->mvc->controller->posDispatch();
   }
 
   public function launcher(Config $configs): ?MvcAbstractController {
@@ -135,62 +138,48 @@ class SuitupStart
       throw new \Exception("Module folder '{$configs->getModulePath()}' does not exists");
     }
 
-    // Verifica se controlador existe
+    // Check if controller file exists
     $controllerFile = "{$configs->getModulePath()}/{$configs->getControllersPath()}/{$configs->getControllerName()}.php";
     if (! file_exists($controllerFile)) {
       throw new \Exception("Controller file could not be found: $controllerFile");
     }
 
-    dump($configs);
+    // Try to discover the namespace for the controller
+    $controllerBaseNsp = $configs->getModulePrefix().ucfirst($configs->getModuleName());
+    $controllerBaseNsp .= '\\'.str_replace('/', '\\', $configs->getControllersPath());
+    $controllerNsp = $controllerBaseNsp.'\\'.$configs->getControllerName();
 
-//    // Tentando acessar o controlador encontrado.
-//    $controllerNsp = $module . "\\Controllers\\$controllerName";
-//    if (! class_exists($controllerNsp)) {
-//      throw new \Exception("O sistema não conseguiu encontrar a classe deste controlador '$controllerNsp'");
-//    }
-//
-//    // Cria uma instancia do controlador
-//    $result->controller = new $controllerNsp();
-//    if (! $result->controller instanceof MvcAbstractController) {
-//      throw new \Exception("Todo controlador deve ser uma instância de 'MvcAbstractController'");
-//    }
-//
-//    // Define nome da acao
-//    $actionName = preg_replace("/\s+/", "", lcfirst(ucwords(preg_replace("/\-/", " ", $action)))) . "Action";
-//
-//    // Verifica se ação existe no controlador
-//    if (! method_exists($result->controller, $actionName)) {
-//      throw new \Exception("Ação '$actionName' não existe no controlador '$controllerNsp'");
-//    }
-//    $result->actionName = $actionName;
-//
-//    // Diretorio de views do modulo
-//    if (! is_dir("$path/$module/views/")) {
-//      throw new \Exception("Diretório de views não existe para o módulo '$module'");
-//    }
-//    $result->layoutPath = "$path/$module/views/";
-//
-//    /**
-//     * !! ATT !!
-//     * Aqui não é necessário validar a existência do arquivo da view,
-//     * pois quando a acao devolve um ajax não renderiza html
-//     */
-//    $result->viewName = $action . ".phtml";
-//    $result->viewPath = "$path/$module/views/$controller";
-//
-//    /**
-//     * Cada módulo pode ter um
-//     *
-//     * @var \SuitUp\Mvc\MvcAbstractController
-//     */
-//    $abstractController = "$module\\Controllers\\AbstractController";
-//    if (! class_exists($abstractController)) {
-//      $abstractController = "\\SuitUp\\Mvc\\MvcAbstractController";
-//    }
-//    $abstractController::$params = $result;
-//
-//    return $result;
-    return null;
+    // Validate controller class namespace
+    if (! class_exists($controllerNsp)) {
+      throw new \Exception("Unable to find controller class with namespace '$controllerNsp'");
+    }
+
+    // Create a controller instance
+    $controller = new $controllerNsp();
+
+    // Check if it is a MvcAbstractController
+    if (! $controller instanceof MvcAbstractController) {
+      throw new \Exception("Every controller must to be an instance of 'MvcAbstractController'");
+    }
+
+    // Check if action exists on controller
+    if (! method_exists($controller, $configs->getActionName())) {
+      throw new \Exception("Action '{$configs->getActionName()}' does not exists on controller '$controllerNsp'");
+    }
+
+    // Check up for views folder
+    if (! is_dir($configs->getModulePath().'/'.$configs->getViewsPath())) {
+      throw new \Exception("Views directory was not found to module '{$configs->getModuleName()}'");
+    }
+
+    // Launch methods for the win!
+    $controller->preDispatch();
+    $controller->init();
+    $controller->{$configs->getActionName()}();
+    $controller->posDispatch();
+
+    // Return it's instance
+    return $controller;
   }
 
   /**

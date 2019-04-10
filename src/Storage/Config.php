@@ -95,6 +95,16 @@ class Config
   private $actionName = 'index';
 
   /**
+   * @var string
+   */
+  private $actionFilename = 'index';
+
+  /**
+   * @var string
+   */
+  private $actionSuffix = '.phtml';
+
+  /**
    * @var bool
    */
   private $sqlMonitor = false;
@@ -369,6 +379,38 @@ class Config
    */
   public function setActionName(string $actionName): Config {
     $this->actionName = $actionName;
+    return $this;
+  }
+
+  /**
+   * @return string
+   */
+  public function getActionFilename(): string {
+    return $this->actionFilename;
+  }
+
+  /**
+   * @param string $actionFilename
+   * @return Config
+   */
+  public function setActionFilename(string $actionFilename): Config {
+    $this->actionFilename = $actionFilename;
+    return $this;
+  }
+
+  /**
+   * @return string
+   */
+  public function getActionSuffix(): string {
+    return $this->actionSuffix;
+  }
+
+  /**
+   * @param string $actionSuffix
+   * @return Config
+   */
+  public function setActionSuffix(string $actionSuffix): Config {
+    $this->actionSuffix = $actionSuffix;
     return $this;
   }
 

@@ -251,6 +251,7 @@ class Routes
 
     // Action
     $config->setActionName($this->getActionName());
+    $config->setActionFilename($this->getAction());
   }
 
   /**
@@ -476,13 +477,6 @@ class Routes
   }
 
   /**
-   * @return string
-   */
-  public function getModuleName(): string {
-    return Config::getInstance()->getModulePrefix().ucfirst($this->getModule());
-  }
-
-  /**
    * @param string $module
    * @return Routes
    */
@@ -494,16 +488,15 @@ class Routes
   /**
    * @return string
    */
-  public function getController(): string {
-    return $this->controller;
+  public function getModuleName(): string {
+    return Config::getInstance()->getModulePrefix().ucfirst($this->getModule());
   }
 
   /**
    * @return string
    */
-  public function getControllerName(): string {
-    $controller = ucwords(preg_replace("/\-/", " ", $this->getController()));
-    return preg_replace("/\s+/", "", $controller).'Controller';
+  public function getController(): string {
+    return $this->controller;
   }
 
   /**
@@ -518,16 +511,16 @@ class Routes
   /**
    * @return string
    */
-  public function getAction(): string {
-    return $this->action;
+  public function getControllerName(): string {
+    $controller = ucwords(preg_replace("/\-/", " ", $this->getController()));
+    return preg_replace("/\s+/", "", $controller).'Controller';
   }
 
   /**
    * @return string
    */
-  public function getActionName(): string {
-    $action = lcfirst(ucwords(preg_replace("/\-/", " ", $this->getAction())));
-    return preg_replace("/\s+/", "", $action).'Action';
+  public function getAction(): string {
+    return $this->action;
   }
 
   /**
@@ -537,6 +530,14 @@ class Routes
   public function setAction(string $action): Routes {
     $this->action = strtolower($action);
     return $this;
+  }
+
+  /**
+   * @return string
+   */
+  public function getActionName(): string {
+    $action = lcfirst(ucwords(preg_replace("/\-/", " ", $this->getAction())));
+    return preg_replace("/\s+/", "", $action).'Action';
   }
 
   /**
