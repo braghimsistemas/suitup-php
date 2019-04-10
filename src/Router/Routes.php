@@ -163,8 +163,10 @@ class Routes
         $routeItem['name'] = $routeName;
 
         // Define the route type
-        $type = $routeItem['type'] ?? Routes::TYPE_LINEAR;
-        switch ($type) {
+        $routeItem['type'] = $routeItem['type'] ?? Routes::TYPE_LINEAR;
+
+        // We will search for routes by type
+        switch ($routeItem['type']) {
           case Routes::TYPE_LITERAL:
 
             // If there's no parameter
@@ -172,7 +174,33 @@ class Routes
               throw new \Exception('Every literal route must to implement the list of valid URL. It can be a closure function or an array list');
             }
 
-            
+            // We will check for the list if route match to that
+            if (is_closure($routeItem['url_list'])) {
+              $funcName = $routeItem['url_list'];
+              $urlList = (array) $funcName();
+
+            } else if (is_array($routeItem['url_list'])) {
+              $urlList = $routeItem['url_list'];
+
+            } else {
+              // Here we try to force
+              $urlList = (array) $routeItem['url_list'];
+            }
+
+            // Check if route is exactly equal to some item of the list
+            foreach ($urlList as $item) {
+              if (trim($route, '/') === trim($item, '/')) {
+
+                // Some details...
+                $routeItem['name'] = $item;
+                $routeResidue = str_replace($item, '', $routeResidue);
+
+                // Set as found one!
+                $found = $routeItem;
+
+                break;
+              }
+            }
 
             break;
           case Routes::TYPE_REVERSE:
@@ -199,14 +227,14 @@ class Routes
         // Remove from route string it's name
         $route = trim(str_replace($found['name'], '', $route), '/');
 
-        // Resolve params
+        // Resolve it's params
         $this->params = $this->resolveParams($found['params'], explode('/', $route));
       }
     }
 
     // If was not set params from pre defined routes we will do it
     // with residues of route
-    if (!$this->params) {
+    if (!$this->params && $routeResidue) {
       $this->params = $this->arrayToParams(explode('/', $routeResidue));
     }
 
@@ -301,12 +329,14 @@ class Routes
     $result = array();
     $last = '';
     foreach ($arrayOfValues as $i => $item) {
-      if ($i%2==0) {
-        $result[$item] = '';
-      } else {
-        $result[$last] = $item;
+      if (is_string($item) && $item) {
+        if ($i%2==0) {
+          $result[$item] = '';
+        } else {
+          $result[$last] = $item;
+        }
+        $last = $item;
       }
-      $last = $item;
     }
     return $result;
   }
