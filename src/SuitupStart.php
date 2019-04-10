@@ -131,7 +131,15 @@ class SuitupStart
     }
   }
 
-  public function launcher(Config $configs): ?MvcAbstractController {
+  /**
+   * This method will try to launch the application with given configuration.
+   *
+   * @param Config $configs
+   * @param Throwable|null $exception
+   * @return MvcAbstractController|null
+   * @throws Exception
+   */
+  public function launcher(Config $configs, \Throwable $exception = null): ?MvcAbstractController {
 
     // Define modulo
     if (! is_dir($configs->getModulePath()) || ! is_readable($configs->getModulePath())) {
@@ -171,6 +179,9 @@ class SuitupStart
     if (! is_dir($configs->getModulePath().'/'.$configs->getViewsPath())) {
       throw new \Exception("Views directory was not found to module '{$configs->getModuleName()}'");
     }
+
+    // Set given configs
+    $controller->setConfig($configs);
 
     // Launch methods for the win!
     $controller->preDispatch();

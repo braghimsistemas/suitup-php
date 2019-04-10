@@ -29,6 +29,7 @@ use Suitup\Database\Database;
 use Suitup\Routes\Routes;
 use Exception;
 use stdClass;
+use Suitup\Storage\Config;
 use upload;
 
 /**
@@ -37,15 +38,22 @@ use upload;
  */
 abstract class MvcAbstractController
 {
-
   const MSG_NSP = 'MSGRedir';
 
+  /**
+   * @var string
+   */
   public static $authNsp = 'LogINAuth';
 
   /**
    * @var array
    */
   public static $params;
+
+  /**
+   * @var Config
+   */
+  private $config;
 
   /**
    * @var array
@@ -114,7 +122,11 @@ abstract class MvcAbstractController
   /**
    *
    */
-  public function init() {}
+  public function init() {
+
+    dump($this);
+
+  }
 
   /**
    *
@@ -198,81 +210,90 @@ abstract class MvcAbstractController
   }
 
   /**
-   * O namespace eh relativo ao modulo, nao queremos
-   * misturar as mensagens de um modulo com outro
+   * @param Config $config
+   * @return MvcAbstractController
+   */
+  public function setConfig(Config $config): MvcAbstractController {
+    $this->config = $config;
+    return $this;
+  }
+
+  /**
+   * @return Config
+   */
+  public function getConfig(): Config {
+    return $this->config;
+  }
+
+  /**
+   * Namespace is unique per module, so it will not mix messages from different modules.
    *
    * @return string
    */
   public function getMsgNsp() {
-    return $this->getModuleName() . '_' . self::MSG_NSP;
+    return $this->getConfig()->getModuleName() . '_' . self::MSG_NSP;
   }
 
-  /**
-   * Retorna o nome do módulo.
-   * @return string
-   */
-  public function getModuleName() {
-    return lcfirst(str_replace('Module', '', self::$params->moduleName));
-  }
+//  /**
+//   * @return string
+//   */
+//  public function getModuleName() {
+//    return lcfirst(str_replace('Module', '', self::$params->moduleName));
+//  }
+//
+//  /**
+//   * @return string
+//   */
+//  public function getControllerName() {
+//    return lcfirst(preg_replace("/Controller$/", '', self::$params->controllerName));
+//  }
+//
+//  /**
+//   * @return string
+//   */
+//  public function getActionName() {
+//    return lcfirst(preg_replace("/Action$/", '', self::$params->actionName));
+//  }
+//
+//  /**
+//   * Nome do arquivo de layout.
+//   * @return string
+//   */
+//  public function getLayoutName() {
+//    return self::$params->layoutName;
+//  }
+//
+//  /**
+//   * Troca o layout
+//   *
+//   * @param string $name Nome do arquivo de layout
+//   * @param string $path Caminho para o arquivo de layout
+//   */
+//  public function setLayout($name, $path = null) {
+//    self::$params->layoutName = $name;
+//    if ($path) {
+//      self::$params->layoutPath = $path;
+//    }
+//  }
 
   /**
-   * Nome do controlador
+   * Render whatever view file. Done in the functions.php file to be used
+   * everywhere.
    *
-   * @return string
-   */
-  public function getControllerName() {
-    return lcfirst(preg_replace("/Controller$/", '', self::$params->controllerName));
-  }
-
-  /**
-   * Nome da ação.
-   *
-   * @return string
-   */
-  public function getActionName() {
-    return lcfirst(preg_replace("/Action$/", '', self::$params->actionName));
-  }
-
-  /**
-   * Nome do arquivo de layout.
-   * @return string
-   */
-  public function getLayoutName() {
-    return self::$params->layoutName;
-  }
-
-  /**
-   * Troca o layout
-   *
-   * @param string $name Nome do arquivo de layout
-   * @param string $path Caminho para o arquivo de layout
-   */
-  public function setLayout($name, $path = null) {
-    self::$params->layoutName = $name;
-    if ($path) {
-      self::$params->layoutPath = $path;
-    }
-  }
-
-  /**
-   * Pega conteúdo da view
-   * Foi feito no arquivo functions.php, para ser usado mesmo pelo terminal.
-   *
-   * @param string $renderViewName Nome do arquivo para renderizar
-   * @param array $vars Variaveis que serao visiveis dentro deste arquivo
-   * @param string $renderViewPath Caminho até este arquivo
+   * @param string $renderViewName Filename to be rendered
+   * @param array $vars Variables accessible on the view
+   * @param string $renderViewPath Path to the view file
    * @return string
    */
   public function renderView($renderViewName, $vars = array(), $renderViewPath = null) {
     if (! $renderViewPath) {
-      $renderViewPath = self::$params->mainPath . DIRECTORY_SEPARATOR . self::$params->moduleName . '/views';
+      $renderViewPath = $this->getConfig()->getViewsPath();
     }
     return renderView($renderViewName, $vars, $renderViewPath);
   }
 
   /**
-   * Adiciona uma variavel qualquer ao conjunto de variaveis que
-   * aparecerao na view.
+   * Add a variable to be used inside the view
    *
    * @param string|array $name
    * @param mixed $value
@@ -290,7 +311,7 @@ abstract class MvcAbstractController
   }
 
   /**
-   * Retorna true se a variavel existe na lista.
+   * Check if a view var already exists.
    *
    * @param string $name
    * @return bool
@@ -300,7 +321,7 @@ abstract class MvcAbstractController
   }
 
   /**
-   * Se a variavel da view com este nome existir retorna seu conteudo.
+   * Return the content to the given view var name if exists.
    *
    * @param string $name
    * @return mixed
@@ -310,17 +331,16 @@ abstract class MvcAbstractController
   }
 
   /**
-   * Retorna todos os parametros GET
+   * Return all route params.
    *
    * @return array
    */
   public function getParams() {
-    $routeParams = Routes::getInstance()->getParams();
-    return array_merge((array) filter_input_array(INPUT_GET), $routeParams);
+    return $this->getConfig()->getRoutes()->getParams();
   }
 
   /**
-   * Pega parametro do GET
+   * Return a given param or it's pre defined default value;
    *
    * @param string $name
    * @param mixed $default
@@ -332,7 +352,7 @@ abstract class MvcAbstractController
   }
 
   /**
-   * True caso houve um post.
+   * True if the request method is POST.
    * @return bool
    */
   public function isPost() {
@@ -340,10 +360,10 @@ abstract class MvcAbstractController
   }
 
   /**
-   * Retorna indice do POST.
+   * Return a given index from $_POST.
    *
-   * @param string $name Indice desejado.
-   * @param mixed $default Valor que será retornado caso o indice nao exista.
+   * @param string $name
+   * @param mixed $default
    * @return array
    */
   public function getPost($name = null, $default = null) {
@@ -356,7 +376,7 @@ abstract class MvcAbstractController
   }
 
   /**
-   * True caso o usuário tenha sessão de login.
+   * True if user is logged on with current self::$authNsp.
    * @return bool
    */
   public static function isLogged() {
@@ -610,9 +630,9 @@ abstract class MvcAbstractController
    */
   public function getSessionFilter() {
     $namespace = implode('.', array(
-      $this->getModuleName(),
-      $this->getControllerName(),
-      $this->getActionName()
+      $this->getConfig()->getModuleName(),
+      $this->getConfig()->getControllerName(),
+      $this->getConfig()->getActionName()
     ));
     if (! isset($_SESSION[$namespace])) {
       $_SESSION[$namespace] = array();
@@ -629,9 +649,9 @@ abstract class MvcAbstractController
    */
   public function addSessionFilter($name, $value = null) {
     $namespace = implode('.', array(
-      $this->getModuleName(),
-      $this->getControllerName(),
-      $this->getActionName()
+      $this->getConfig()->getModuleName(),
+      $this->getConfig()->getControllerName(),
+      $this->getConfig()->getActionName()
     ));
 
     if (is_array($name)) {
@@ -651,9 +671,9 @@ abstract class MvcAbstractController
    */
   public function removeSessionFilter($key = null) {
     $namespace = implode('.', array(
-      $this->getModuleName(),
-      $this->getControllerName(),
-      $this->getActionName()
+      $this->getConfig()->getModuleName(),
+      $this->getConfig()->getControllerName(),
+      $this->getConfig()->getActionName()
     ));
 
     if ($key && $_SESSION[$namespace][$key]) {
@@ -666,7 +686,11 @@ abstract class MvcAbstractController
    */
   public function clearSessionFilter() {
     $namespace = implode('.', array(
-      $this->getModuleName(), $this->getControllerName(), $this->getActionName()));
+      $this->getConfig()->getModuleName(),
+      $this->getConfig()->getControllerName(),
+      $this->getConfig()->getActionName()
+    ));
+
 		unset($_SESSION[$namespace]);
 	}
 }
