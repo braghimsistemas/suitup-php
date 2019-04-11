@@ -82,6 +82,41 @@ if (! function_exists('is_closure')) {
   }
 }
 
+if (! function_exists('toCamelCase')) {
+
+  /**
+   * @param string $var
+   * @param bool $upperFirst
+   * @return string
+   */
+  function toCamelCase(string $var, bool $upperFirst = false): string {
+    $var = strtolower($var);
+    $var = preg_replace("/[^a-zA-Z0-9]+/", " ", $var);
+    $var = ucwords($var);
+    $var = preg_replace("/\s+/", "", $var);
+
+    if (!$upperFirst) {
+      $var = lcfirst($var);
+    }
+
+    return $var;
+  }
+}
+
+
+if (! function_exists('toDashCase')) {
+
+  /**
+   * @param string $var
+   * @return string
+   */
+  function toDashCase(string $var): string {
+    $var = strtolower($var);
+    $var = preg_replace("/[^a-zA-Z0-9]+/", "-", $var);
+    return $var;
+  }
+}
+
 /**
  * Render a (p)html view with injected variables
  *

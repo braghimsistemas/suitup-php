@@ -113,12 +113,12 @@ class SuitupStart
     $routes->setupRoutes();
 
     // Update FrontController params
-    $this->getConfig()->updateTo(
-      $routes->getModule(),
-      $routes->getController(),
-      $routes->getAction(),
-      $routes->getParams()
-    );
+//    $this->getConfig()->updateTo(
+//      $routes->getModule(),
+//      $routes->getController(),
+//      $routes->getAction(),
+//      $routes->getParams()
+//    );
   }
 
   /**

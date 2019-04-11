@@ -76,7 +76,7 @@ class FrontController
   /**
    * @var string
    */
-  private $moduleDefault = 'default';
+  private $module = 'default';
 
   /**
    * @var string
@@ -96,6 +96,11 @@ class FrontController
   /**
    * @var string
    */
+  private $controller = 'index';
+
+  /**
+   * @var string
+   */
   private $actionFilename = 'index';
 
   /**
@@ -107,6 +112,11 @@ class FrontController
    * @var string
    */
   private $actionName = 'indexAction';
+
+  /**
+   * @var string
+   */
+  private $action = 'index';
 
   /**
    * @var bool
@@ -318,7 +328,11 @@ class FrontController
    * @return FrontController
    */
   public function setModuleName(string $moduleName): FrontController {
-    $this->moduleName = $this->getModulePrefix().ucfirst(strtolower($moduleName));
+
+    // Does not make sense change the module name without change the module itself
+    $this->setModule(toDashCase($moduleName));
+
+    $this->moduleName = $this->getModulePrefix().toCamelCase($moduleName, true);
     return $this;
   }
 
@@ -357,16 +371,16 @@ class FrontController
   /**
    * @return string
    */
-  public function getModuleDefault(): string {
-    return $this->moduleDefault;
+  public function getModule(): string {
+    return $this->module;
   }
 
   /**
-   * @param string $moduleDefault
+   * @param string $module
    * @return FrontController
    */
-  public function setModuleDefault(string $moduleDefault): FrontController {
-    $this->moduleDefault = $moduleDefault;
+  public function setModule(string $module): FrontController {
+    $this->module = $module;
     return $this;
   }
 
@@ -382,8 +396,27 @@ class FrontController
    * @return FrontController
    */
   public function setControllerName(string $controllerName): FrontController {
-    $controller = ucwords(preg_replace("/\-/", " ", strtolower($controllerName)));
-    $this->controllerName = preg_replace("/\s+/", "", $controller).'Controller';
+
+    // Does not make sense to change the controller name without change the controller itself
+    $this->setController(toDashCase($controllerName));
+
+    $this->controllerName = toCamelCase($controllerName, true).'Controller';
+    return $this;
+  }
+
+  /**
+   * @return string
+   */
+  public function getController(): string {
+    return $this->controller;
+  }
+
+  /**
+   * @param string $controller
+   * @return FrontController
+   */
+  public function setController(string $controller): FrontController {
+    $this->controller = $controller;
     return $this;
   }
 
@@ -400,23 +433,6 @@ class FrontController
    */
   public function setControllersPath(string $controllersPath): FrontController {
     $this->controllersPath = trim($controllersPath, '/');
-    return $this;
-  }
-
-  /**
-   * @return string
-   */
-  public function getActionName(): string {
-    return $this->actionName;
-  }
-
-  /**
-   * @param string $actionName
-   * @return FrontController
-   */
-  public function setActionName(string $actionName): FrontController {
-    $action = lcfirst(ucwords(preg_replace("/\-/", " ", strtolower($actionName))));
-    $this->actionName = preg_replace("/\s+/", "", $action).'Action';
     return $this;
   }
 
@@ -449,6 +465,42 @@ class FrontController
    */
   public function setActionSuffix(string $actionSuffix): FrontController {
     $this->actionSuffix = $actionSuffix;
+    return $this;
+  }
+
+  /**
+   * @return string
+   */
+  public function getActionName(): string {
+    return $this->actionName;
+  }
+
+  /**
+   * @param string $actionName
+   * @return FrontController
+   */
+  public function setActionName(string $actionName): FrontController {
+
+    // Does not make sense to change the action name without change the action itself
+    $this->setAction(toDashCase($actionName));
+
+    $this->actionName = toCamelCase($actionName).'Action';
+    return $this;
+  }
+
+  /**
+   * @return string
+   */
+  public function getAction(): string {
+    return $this->action;
+  }
+
+  /**
+   * @param string $action
+   * @return FrontController
+   */
+  public function setAction(string $action): FrontController {
+    $this->action = $action;
     return $this;
   }
 
@@ -555,7 +607,7 @@ class FrontController
 
     if (!$this->routesFile) {
 
-      $filename = $this->getRoutesPath().'/'.$this->getModuleDefault().$this->getRoutesFileSuffix();
+      $filename = $this->getRoutesPath().'/'.$this->getModule().$this->getRoutesFileSuffix();
       if (file_exists($filename) && is_readable($filename)) {
 
         $this->routesFile = $filename;

@@ -232,6 +232,15 @@ class Routes
     // Merge GET params from URL
     $this->params = array_merge($this->params, (array) filter_input_array(INPUT_GET));
 
+    // Setup FrontController with found parameters
+    $this->frontController->setModuleName($this->getModule());
+    $this->frontController->setControllerName($this->getController());
+    $this->frontController->setActionName($this->getAction());
+    $this->frontController->setParams($this->getParams());
+
+    // Now we can set the module path
+    $this->frontController->setModulePath($this->frontController->getModulesPath().'/'.$this->frontController->getModuleName());
+
     return $this;
   }
 
@@ -302,6 +311,89 @@ class Routes
   }
 
   /**
+   * @param string $routePath
+   * @return string
+   */
+  public function setByURI(string $routePath): string {
+
+    // Pieces of route with dashes instead of special chars
+    $routeParts = array_map('toDashCase', explode('/', $routePath));
+
+    // Pieces of route as original
+    $residues = explode('/', $routePath);
+
+    if ($routePath) {
+
+      // controller OR
+      // module OR
+      // controller/action OR
+      // module/controller OR
+      // module/controller/action
+
+      // Prefix to the module names
+      $modulesPathPrefix = $this->frontController->getModulesPath() . "/" . $this->frontController->getModulePrefix();
+
+      // By the quantity we know where controller is
+      switch (count($routeParts)) {
+        case 1:
+          if (is_dir($modulesPathPrefix . toCamelCase($routeParts[0], true))) {
+            $this->module = $routeParts[0];
+          } else {
+            $this->controller = $routeParts[0];
+          }
+
+          // Remove from residue
+          unset($residues[0]);
+
+          break;
+        case 2:
+          if (is_dir($modulesPathPrefix . toCamelCase($routeParts[0], true))) {
+            $this->module = $routeParts[0];
+            $this->controller = $routeParts[1];
+          } else {
+            $this->controller = $routeParts[0];
+            $this->action = $routeParts[1];
+          }
+
+          // Remove found from residues
+          unset($residues[0]);
+          unset($residues[1]);
+
+          break;
+        default:
+          if (is_dir($modulesPathPrefix . toCamelCase($routeParts[0], true))) {
+            /**
+             * Here we got 3 or more params from URL
+             *
+             * If the first one is the name of some module folder
+             * we have no choice but point the system to that.
+             */
+            $this->module = $routeParts[0];
+            $this->controller = $routeParts[1];
+            $this->action = $routeParts[2];
+
+            // Remove found from residues
+            unset($residues[0]);
+            unset($residues[1]);
+            unset($residues[2]);
+
+          } else {
+            /** Module keeps being default */
+            $this->controller = $routeParts[0];
+            $this->action = $routeParts[1];
+
+            // Remove found from residues
+            unset($residues[0]);
+            unset($residues[1]);
+          }
+      } // End switch
+
+    }
+
+    return implode('/', $residues);
+  }
+
+  /**
    * Get a list of values and store them to associative array list.
    *
    * @param $arrayOfValues
@@ -321,73 +413,6 @@ class Routes
       }
     }
     return $result;
-  }
-
-  /**
-   * @param string $routePath
-   * @return string
-   */
-  public function setByURI(string $routePath): string {
-
-    $routeParts = explode('/', $routePath);
-
-    if ($routePath) {
-
-      // controller OR
-      // module OR
-      // controller/action OR
-      // module/controller OR
-      // module/controller/action
-
-      // Prefix to the module names
-      $modulesPathPrefix = $this->frontController->getModulesPath() . "/" . $this->frontController->getModulePrefix();
-
-      // By the quantity we know where controller is
-      switch (count($routeParts)) {
-        case 1:
-          if (is_dir($modulesPathPrefix . ucfirst(strtolower($routeParts[0])))) {
-            $this->module = $routeParts[0];
-          } else {
-            $this->controller = $routeParts[0];
-          }
-          break;
-        case 2:
-          if (is_dir($modulesPathPrefix . ucfirst(strtolower($routeParts[0])))) {
-            $this->module = $routeParts[0];
-            $this->controller = $routeParts[1];
-          } else {
-            $this->controller = $routeParts[0];
-            $this->action = $routeParts[1];
-          }
-          break;
-        default:
-          if (is_dir($modulesPathPrefix . ucfirst(strtolower($routeParts[0])))) {
-            /**
-             * Here we got 3 or more params from URL
-             *
-             * If the first one is the name of some module folder
-             * we have no choice but point the system to that.
-             */
-            $this->module = $routeParts[0];
-            $this->controller = $routeParts[1];
-            $this->action = $routeParts[2];
-
-            unset($routeParts[0]);
-            unset($routeParts[1]);
-            unset($routeParts[2]);
-
-          } else {
-            /** Module keeps being default */
-            $this->controller = $routeParts[0];
-            $this->action = $routeParts[1];
-
-            unset($routeParts[0]);
-            unset($routeParts[1]);
-          }
-      } // End switch
-
-    }
-    return implode('/', $routeParts);
   }
 
   /** GETTERS and SETTERS */
