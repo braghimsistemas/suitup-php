@@ -28,6 +28,7 @@ declare(strict_types=1);
 include_once __DIR__ . "/Autoload/Psr4AutoloaderClass.php";
 include_once __DIR__ . "/functions.php";
 
+use Suitup\Router\Routes;
 use Suitup\Storage\Config;
 use Suitup\Mvc\MvcAbstractController;
 
@@ -64,6 +65,16 @@ class SuitupStart
   const VERSION = '2.0.0';
 
   /**
+   * @var Config
+   */
+  private $config;
+
+  /**
+   * @var Routes
+   */
+  private $routes;
+
+  /**
    * SuitupStart constructor.
    *
    * @param string $modulesPath
@@ -76,6 +87,10 @@ class SuitupStart
     $loader->register();
     $loader->addNamespace('Suitup', __DIR__);
     $loader->addNamespace('ModuleError', __DIR__ . '/ModuleError');
+
+    // Start a config instance
+    $this->config = new Config();
+    $this->routes = new Routes($this->config);
 
     if ($modulesPath) {
       $this->getConfig()->setModulesPath((realpath($modulesPath) === false) ? $modulesPath : realpath($modulesPath).'/');
@@ -99,7 +114,7 @@ class SuitupStart
     // Store on the configs the modules path
     $this->getConfig()->setModulesPath($modulesPathDir);
     $this->getConfig()->setBasePath();
-    $this->getConfig()->getRoutes()->setupRoutes();
+    $this->getRoutes()->setupRoutes();
   }
 
   /**
@@ -182,6 +197,7 @@ class SuitupStart
 
     // Set given configs
     $controller->setConfig($configs);
+    $controller->setRoutes($this->getRoutes());
 
     // Launch methods for the win!
     $controller->preDispatch();
@@ -197,10 +213,14 @@ class SuitupStart
    * If is wanted to change some config before to run the application, as change default path to the controllers for
    * example...
    *
-   * @return \Suitup\Storage\Config
+   * @return Config
    */
   public function getConfig(): Config {
-    return Config::getInstance();
+    return $this->config;
+  }
+
+  public function getRoutes(): Routes {
+    return $this->routes;
   }
 
   /**
@@ -208,7 +228,7 @@ class SuitupStart
    * @return SuitupStart
    */
   public function setSqlMonitor(bool $status): SuitupStart {
-    Config::getInstance()->setSqlMonitor($status);
+    $this->getConfig()->setSqlMonitor($status);
     return $this;
   }
 }

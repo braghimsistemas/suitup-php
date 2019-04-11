@@ -129,12 +129,30 @@ class Routes
   private $params = array();
 
   /**
+   * @var Config
+   */
+  private $config;
+
+  /**
+   * Routes constructor.
+   * @param Config $config
+   */
+  public function __construct(Config $config) {
+
+    // Set config
+    $this->config = $config;
+
+    // Set module default
+    $this->setModule($this->config->getModuleDefault());
+  }
+
+  /**
    * end GETTERS AND SETTERS
    */
 
   public function setupRoutes() {
 
-    $config = Config::getInstance();
+    $config = $this->getConfig();
 
     // From URI remove slash from start and end. So remove everything after ?
     $uri = trim(preg_replace('/\?.+/', '', getenv('REQUEST_URI')), '/');
@@ -348,7 +366,6 @@ class Routes
    */
   public function setByURI(string $routePath): string {
 
-    $config = Config::getInstance();
     $routeParts = explode('/', $routePath);
 
     if ($routePath) {
@@ -360,7 +377,7 @@ class Routes
       // module/controller/action
 
       // Prefix to the module names
-      $modulesPathPrefix = $config->getModulesPath() . "/" . $config->getModulePrefix();
+      $modulesPathPrefix = $this->getConfig()->getModulesPath() . "/" . $this->getConfig()->getModulePrefix();
 
       // By the quantity we know where controller is
       switch (count($routeParts)) {
@@ -489,7 +506,7 @@ class Routes
    * @return string
    */
   public function getModuleName(): string {
-    return Config::getInstance()->getModulePrefix().ucfirst($this->getModule());
+    return $this->getConfig()->getModulePrefix().ucfirst($this->getModule());
   }
 
   /**
@@ -557,4 +574,8 @@ class Routes
   }
 
   /** GETTERS and SETTERS */
+
+  public function getConfig() {
+    return $this->config;
+  }
 }

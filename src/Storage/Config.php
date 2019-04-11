@@ -27,13 +27,8 @@ declare(strict_types=1);
 
 namespace Suitup\Storage;
 
-
-use Router\Routes;
-
 class Config
 {
-  private static $instance;
-
   /**
    * @var string
    */
@@ -125,48 +120,19 @@ class Config
   private $gatewayPath = '/Model/Gateway';
 
   /**
-   * @var \Suitup\Router\Routes
-   */
-  private $routes;
-
-  /**
    * @var string
    */
   private $logsPath;
 
   /**
    * Config constructor.
-   *
-   * Doesn't allow new instances
    */
-  private function __construct() {
+  public function __construct() {
 
     // Setup default value to the modules path.
     // It will relate modules path to the 'chdir' function
     // which must to be called in the index.php file
     $this->modulesPath = realpath('.');
-
-    // Set initialized the routes manager
-    $this->routes = new \Suitup\Router\Routes();
-    $this->routes->setModule($this->getModuleDefault());
-  }
-
-  /**
-   * Doesn't allow clones
-   */
-  private function __clone() {}
-
-  /**
-   * Return the instance for the class but always the same instance.
-   * It's singleton baby.
-   *
-   * @return Config
-   */
-  public static function getInstance(): self {
-    if (null == self::$instance) {
-      self::$instance = new self();
-    }
-    return self::$instance;
   }
 
   /**
@@ -475,22 +441,6 @@ class Config
    */
   public function setGatewayPath(string $gatewayPath): Config {
     $this->gatewayPath = $gatewayPath;
-    return $this;
-  }
-
-  /**
-   * @return \Suitup\Router\Routes
-   */
-  public function getRoutes(): \Suitup\Router\Routes {
-    return $this->routes;
-  }
-
-  /**
-   * @param \Suitup\Router\Routes $routes
-   * @return Config
-   */
-  public function setRoutes(\Suitup\Router\Routes $routes): Config {
-    $this->routes = $routes;
     return $this;
   }
 
