@@ -24,13 +24,9 @@
  */
 namespace Suitup\Mvc;
 
-use Suitup\Enum\MsgType;
-use Suitup\Database\Database;
-use Suitup\Router\Routes;
+use Suitup\Storage\Config;
 use Exception;
 use stdClass;
-use Suitup\Storage\Config;
-use upload;
 
 /**
  * Class MvcAbstractController
@@ -54,11 +50,6 @@ abstract class MvcAbstractController
    * @var Config
    */
   private $config;
-
-  /**
-   * @var Routes
-   */
-  private $routes;
 
   /**
    * @var array
@@ -228,22 +219,6 @@ abstract class MvcAbstractController
    */
   public function getConfig(): Config {
     return $this->config;
-  }
-
-  /**
-   * @param Routes $routes
-   * @return MvcAbstractController
-   */
-  public function setRoutes(Routes $routes): MvcAbstractController {
-    $this->routes = $routes;
-    return $this;
-  }
-
-  /**
-   * @return Routes
-   */
-  public function getRoutes(): Routes {
-    return $this->routes;
   }
 
   /**

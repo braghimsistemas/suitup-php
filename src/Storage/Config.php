@@ -27,7 +27,7 @@ declare(strict_types=1);
 
 namespace Suitup\Storage;
 
-class Config
+class Config extends Routes
 {
   /**
    * @var string
@@ -57,11 +57,6 @@ class Config
   /**
    * @var string
    */
-  private $moduleName;
-
-  /**
-   * @var string
-   */
   private $modulePath;
 
   /**
@@ -77,17 +72,7 @@ class Config
   /**
    * @var string
    */
-  private $controllerName = 'index';
-
-  /**
-   * @var string
-   */
   private $controllersPath = 'Controllers';
-
-  /**
-   * @var string
-   */
-  private $actionName = 'index';
 
   /**
    * @var string
@@ -133,6 +118,8 @@ class Config
     // It will relate modules path to the 'chdir' function
     // which must to be called in the index.php file
     $this->modulesPath = realpath('.');
+
+    $this->setBasePath();
   }
 
   /**
@@ -236,21 +223,21 @@ class Config
     return $this;
   }
 
-  /**
-   * @return string
-   */
-  public function getModuleName(): string {
-    return $this->moduleName;
-  }
-
-  /**
-   * @param string $moduleName
-   * @return Config
-   */
-  public function setModuleName(string $moduleName): Config {
-    $this->moduleName = $moduleName;
-    return $this;
-  }
+//  /**
+//   * @return string
+//   */
+//  public function getModuleName(): string {
+//    return $this->moduleName;
+//  }
+//
+//  /**
+//   * @param string $moduleName
+//   * @return Config
+//   */
+//  public function setModuleName(string $moduleName): Config {
+//    $this->moduleName = $moduleName;
+//    return $this;
+//  }
 
   /**
    * @return string
@@ -300,21 +287,21 @@ class Config
     return $this;
   }
 
-  /**
-   * @return string
-   */
-  public function getControllerName(): string {
-    return $this->controllerName;
-  }
-
-  /**
-   * @param string $controllerName
-   * @return Config
-   */
-  public function setControllerName(string $controllerName): Config {
-    $this->controllerName = $controllerName;
-    return $this;
-  }
+//  /**
+//   * @return string
+//   */
+//  public function getControllerName(): string {
+//    return $this->controllerName;
+//  }
+//
+//  /**
+//   * @param string $controllerName
+//   * @return Config
+//   */
+//  public function setControllerName(string $controllerName): Config {
+//    $this->controllerName = $controllerName;
+//    return $this;
+//  }
 
   /**
    * @return string
@@ -332,21 +319,21 @@ class Config
     return $this;
   }
 
-  /**
-   * @return string
-   */
-  public function getActionName(): string {
-    return $this->actionName;
-  }
-
-  /**
-   * @param string $actionName
-   * @return Config
-   */
-  public function setActionName(string $actionName): Config {
-    $this->actionName = $actionName;
-    return $this;
-  }
+//  /**
+//   * @return string
+//   */
+//  public function getActionName(): string {
+//    return $this->actionName;
+//  }
+//
+//  /**
+//   * @param string $actionName
+//   * @return Config
+//   */
+//  public function setActionName(string $actionName): Config {
+//    $this->actionName = $actionName;
+//    return $this;
+//  }
 
   /**
    * @return string

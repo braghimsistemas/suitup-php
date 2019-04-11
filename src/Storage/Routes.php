@@ -25,16 +25,14 @@
 
 declare(strict_types=1);
 
-namespace Suitup\Router;
-
-use Suitup\Storage\Config;
+namespace Suitup\Storage;
 
 /**
  * Class Routes
  *
  * @package Router
  */
-class Routes
+abstract class Routes
 {
   /**
    * In the reverse routes the key name that determines the route came in the END of URL.
@@ -129,36 +127,16 @@ class Routes
   private $params = array();
 
   /**
-   * @var Config
-   */
-  private $config;
-
-  /**
-   * Routes constructor.
-   * @param Config $config
-   */
-  public function __construct(Config $config) {
-
-    // Set config
-    $this->config = $config;
-
-    // Set module default
-    $this->setModule($this->config->getModuleDefault());
-  }
-
-  /**
    * end GETTERS AND SETTERS
    */
 
   public function setupRoutes() {
 
-    $config = $this->getConfig();
-
     // From URI remove slash from start and end. So remove everything after ?
     $uri = trim(preg_replace('/\?.+/', '', getenv('REQUEST_URI')), '/');
 
     // From basePath remove slash from start and end. So prepare it as a regex string
-    $basePathRegExp = '/^('.preg_quote(trim($config->getBasePath(), '/'), '/').')/';
+    $basePathRegExp = '/^('.preg_quote(trim($this->getBasePath(), '/'), '/').')/';
 
     // Remove from URI blank spaces and the BasePath
     $route = trim(preg_replace($basePathRegExp, '', preg_replace("/\s+/", '-', urldecode($uri))), '/');
@@ -260,16 +238,16 @@ class Routes
     $this->params = array_merge($this->params, (array) filter_input_array(INPUT_GET));
 
     // Module
-    $config->setModuleName($this->getModule());
-    $config->setModulePath($config->getModulesPath().'/'.$this->getModuleName());
+//    $this->setModuleName($this->getModule());
+    $this->setModulePath($this->getModulesPath().'/'.$this->getModuleName());
 
     // Controller
-    $config->setControllerName($this->getControllerName());
-    $config->setControllersPath($config->getControllersPath());
+//    $this->setControllerName($this->getControllerName());
+    $this->setControllersPath($this->getControllersPath());
 
     // Action
-    $config->setActionName($this->getActionName());
-    $config->setActionFilename($this->getAction());
+//    $this->setActionName($this->getActionName());
+    $this->setActionFilename($this->getAction());
   }
 
   /**
@@ -377,7 +355,7 @@ class Routes
       // module/controller/action
 
       // Prefix to the module names
-      $modulesPathPrefix = $this->getConfig()->getModulesPath() . "/" . $this->getConfig()->getModulePrefix();
+      $modulesPathPrefix = $this->getModulesPath() . "/" . $this->getModulePrefix();
 
       // By the quantity we know where controller is
       switch (count($routeParts)) {
@@ -490,7 +468,7 @@ class Routes
    * @return string
    */
   public function getModule(): string {
-    return $this->module;
+    return $this->module ?? $this->getModuleDefault();
   }
 
   /**
@@ -506,7 +484,7 @@ class Routes
    * @return string
    */
   public function getModuleName(): string {
-    return $this->getConfig()->getModulePrefix().ucfirst($this->getModule());
+    return $this->getModulePrefix().ucfirst($this->getModule());
   }
 
   /**
@@ -574,8 +552,4 @@ class Routes
   }
 
   /** GETTERS and SETTERS */
-
-  public function getConfig() {
-    return $this->config;
-  }
 }

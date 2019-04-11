@@ -28,7 +28,7 @@ declare(strict_types=1);
 include_once __DIR__ . "/Autoload/Psr4AutoloaderClass.php";
 include_once __DIR__ . "/functions.php";
 
-use Suitup\Router\Routes;
+use Suitup\Storage\Routes;
 use Suitup\Storage\Config;
 use Suitup\Mvc\MvcAbstractController;
 
@@ -70,11 +70,6 @@ class SuitupStart
   private $config;
 
   /**
-   * @var Routes
-   */
-  private $routes;
-
-  /**
    * SuitupStart constructor.
    *
    * @param string $modulesPath
@@ -90,7 +85,6 @@ class SuitupStart
 
     // Start a config instance
     $this->config = new Config();
-    $this->routes = new Routes($this->config);
 
     if ($modulesPath) {
       $this->getConfig()->setModulesPath((realpath($modulesPath) === false) ? $modulesPath : realpath($modulesPath).'/');
@@ -113,8 +107,7 @@ class SuitupStart
 
     // Store on the configs the modules path
     $this->getConfig()->setModulesPath($modulesPathDir);
-    $this->getConfig()->setBasePath();
-    $this->getRoutes()->setupRoutes();
+    $this->getConfig()->setupRoutes();
   }
 
   /**
@@ -168,7 +161,7 @@ class SuitupStart
     }
 
     // Try to discover the namespace for the controller
-    $controllerBaseNsp = $configs->getModulePrefix().ucfirst($configs->getModuleName());
+    $controllerBaseNsp = $configs->getModuleName();
     $controllerBaseNsp .= '\\'.str_replace('/', '\\', $configs->getControllersPath());
     $controllerNsp = $controllerBaseNsp.'\\'.$configs->getControllerName();
 
@@ -197,7 +190,6 @@ class SuitupStart
 
     // Set given configs
     $controller->setConfig($configs);
-    $controller->setRoutes($this->getRoutes());
 
     // Launch methods for the win!
     $controller->preDispatch();
@@ -217,10 +209,6 @@ class SuitupStart
    */
   public function getConfig(): Config {
     return $this->config;
-  }
-
-  public function getRoutes(): Routes {
-    return $this->routes;
   }
 
   /**
