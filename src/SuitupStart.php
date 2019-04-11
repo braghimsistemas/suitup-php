@@ -28,6 +28,7 @@ declare(strict_types=1);
 include_once __DIR__ . "/Autoload/Psr4AutoloaderClass.php";
 include_once __DIR__ . "/functions.php";
 
+use Suitup\Mvc\Routes;
 use Suitup\Mvc\FrontController;
 use Suitup\Mvc\MvcAbstractController;
 
@@ -106,7 +107,18 @@ class SuitupStart
 
     // Store on the configs the modules path
     $this->getConfig()->setModulesPath($modulesPathDir);
-    $this->getConfig()->setupRoutes();
+
+    // Resolve routes
+    $routes = new Routes($this->getConfig());
+    $routes->setupRoutes();
+
+    // Update FrontController params
+    $this->getConfig()->updateTo(
+      $routes->getModule(),
+      $routes->getController(),
+      $routes->getAction(),
+      $routes->getParams()
+    );
   }
 
   /**

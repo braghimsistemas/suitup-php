@@ -32,7 +32,7 @@ namespace Suitup\Mvc;
  *
  * @package Router
  */
-abstract class Routes
+class Routes
 {
   /**
    * In the reverse routes the key name that determines the route came in the END of URL.
@@ -86,30 +86,15 @@ abstract class Routes
    */
   const TYPE_LITERAL = 'literal';
 
-  // @TODO: Check if there's need to watch the state of routes to setup after changes.
+  /**
+   * @var FrontController
+   */
+  private $frontController;
 
   /**
    * @var string
    */
-  private $routesPath = './config';
-
-  /**
-   * Every file with the list of routes must to end with this
-   * name.
-   *
-   * @var string
-   */
-  private $routesFileSuffix = '.routes.php';
-
-  /**
-   * @var string
-   */
-  private $routesFile;
-
-  /**
-   * @var string
-   */
-  private $module;
+  private $module = 'default';
 
   /**
    * @var string
@@ -127,16 +112,26 @@ abstract class Routes
   private $params = array();
 
   /**
-   * end GETTERS AND SETTERS
+   * Routes constructor.
+   * @param FrontController $frontController
    */
+  public function __construct(FrontController $frontController) {
 
-  public function setupRoutes() {
+    // Dependency injection Design Pattern
+    $this->frontController = $frontController;
+  }
+
+  /**
+   * @return Routes
+   * @throws \Exception
+   */
+  public function setupRoutes(): Routes {
 
     // From URI remove slash from start and end. So remove everything after ?
     $uri = trim(preg_replace('/\?.+/', '', getenv('REQUEST_URI')), '/');
 
     // From basePath remove slash from start and end. So prepare it as a regex string
-    $basePathRegExp = '/^('.preg_quote(trim($this->getBasePath(), '/'), '/').')/';
+    $basePathRegExp = '/^('.preg_quote(trim($this->frontController->getBasePath(), '/'), '/').')/';
 
     // Remove from URI blank spaces and the BasePath
     $route = trim(preg_replace($basePathRegExp, '', preg_replace("/\s+/", '-', urldecode($uri))), '/');
@@ -144,10 +139,10 @@ abstract class Routes
     // First of all we set by URI that is useful always
     $routeResidue = $this->setByURI($route);
 
-    if ($this->getRoutesFile()) {
+    if ($this->frontController->getRoutesFile()) {
 
       // Get from file the routes config
-      $routesFile = (array) include_once($this->getRoutesFile());
+      $routesFile = (array) include_once($this->frontController->getRoutesFile());
 
       // Loop under defined routes
       $found = false;
@@ -237,17 +232,7 @@ abstract class Routes
     // Merge GET params from URL
     $this->params = array_merge($this->params, (array) filter_input_array(INPUT_GET));
 
-    // Module
-//    $this->setModuleName($this->getModule());
-    $this->setModulePath($this->getModulesPath().'/'.$this->getModuleName());
-
-    // Controller
-//    $this->setControllerName($this->getControllerName());
-    $this->setControllersPath($this->getControllersPath());
-
-    // Action
-//    $this->setActionName($this->getActionName());
-    $this->setActionFilename($this->getAction());
+    return $this;
   }
 
   /**
@@ -355,7 +340,7 @@ abstract class Routes
       // module/controller/action
 
       // Prefix to the module names
-      $modulesPathPrefix = $this->getModulesPath() . "/" . $this->getModulePrefix();
+      $modulesPathPrefix = $this->frontController->getModulesPath() . "/" . $this->frontController->getModulePrefix();
 
       // By the quantity we know where controller is
       switch (count($routeParts)) {
@@ -410,65 +395,8 @@ abstract class Routes
   /**
    * @return string
    */
-  public function getRoutesPath(): string {
-    return $this->routesPath;
-  }
-
-  /**
-   * @param string $routesPath
-   * @return Routes
-   */
-  public function setRoutesPath(string $routesPath): Routes {
-    $this->routesPath = $routesPath;
-    return $this;
-  }
-
-  /**
-   * @return string
-   */
-  public function getRoutesFileSuffix(): string {
-    return $this->routesFileSuffix;
-  }
-
-  /**
-   * @param string $routesFileSuffix
-   * @return Routes
-   */
-  public function setRoutesFileSuffix(string $routesFileSuffix): Routes {
-    $this->routesFileSuffix = $routesFileSuffix;
-    return $this;
-  }
-
-  /**
-   * @return string|null
-   */
-  public function getRoutesFile(): ?string {
-
-    if (!$this->routesFile) {
-
-      $filename = $this->getRoutesPath().'/'.$this->getModule().$this->getRoutesFileSuffix();
-      if (file_exists($filename) && is_readable($filename)) {
-
-        $this->routesFile = $filename;
-      }
-    }
-    return $this->routesFile;
-  }
-
-  /**
-   * @param string $routesFile
-   * @return Routes
-   */
-  public function setRoutesFile(string $routesFile): Routes {
-    $this->routesFile = $routesFile;
-    return $this;
-  }
-
-  /**
-   * @return string
-   */
-  public function getModule(): string {
-    return $this->module ?? $this->getModuleDefault();
+  public function getModule(): ?string {
+    return $this->module;
   }
 
   /**
@@ -478,13 +406,6 @@ abstract class Routes
   public function setModule(string $module): Routes {
     $this->module = strtolower($module);
     return $this;
-  }
-
-  /**
-   * @return string
-   */
-  public function getModuleName(): string {
-    return $this->getModulePrefix().ucfirst($this->getModule());
   }
 
   /**
@@ -506,14 +427,6 @@ abstract class Routes
   /**
    * @return string
    */
-  public function getControllerName(): string {
-    $controller = ucwords(preg_replace("/\-/", " ", $this->getController()));
-    return preg_replace("/\s+/", "", $controller).'Controller';
-  }
-
-  /**
-   * @return string
-   */
   public function getAction(): string {
     return $this->action;
   }
@@ -525,14 +438,6 @@ abstract class Routes
   public function setAction(string $action): Routes {
     $this->action = strtolower($action);
     return $this;
-  }
-
-  /**
-   * @return string
-   */
-  public function getActionName(): string {
-    $action = lcfirst(ucwords(preg_replace("/\-/", " ", $this->getAction())));
-    return preg_replace("/\s+/", "", $action).'Action';
   }
 
   /**

@@ -27,9 +27,11 @@ declare(strict_types=1);
 
 namespace Suitup\Mvc;
 
-class FrontController extends Routes
+class FrontController
 {
   /**
+   * Path to <b>all</b> modules
+   *
    * @var string
    */
   private $modulesPath;
@@ -38,6 +40,11 @@ class FrontController extends Routes
    * @var string
    */
   private $layoutName = 'layout.phtml';
+
+  /**
+   * @var string
+   */
+  private $layoutSuffix = '.phtml';
 
   /**
    * @var string
@@ -55,6 +62,8 @@ class FrontController extends Routes
   private $basePath;
 
   /**
+   * Path to the <b>current</b> module
+   *
    * @var string
    */
   private $modulePath;
@@ -72,7 +81,17 @@ class FrontController extends Routes
   /**
    * @var string
    */
+  private $moduleName = 'ModuleDefault';
+
+  /**
+   * @var string
+   */
   private $controllersPath = 'Controllers';
+
+  /**
+   * @var string
+   */
+  private $controllerName = 'IndexController';
 
   /**
    * @var string
@@ -83,6 +102,11 @@ class FrontController extends Routes
    * @var string
    */
   private $actionSuffix = '.phtml';
+
+  /**
+   * @var string
+   */
+  private $actionName = 'indexAction';
 
   /**
    * @var bool
@@ -107,6 +131,29 @@ class FrontController extends Routes
   /**
    * @var string
    */
+  private $routesPath = './config';
+
+  /**
+   * Every file with the list of routes must to end with this
+   * name.
+   *
+   * @var string
+   */
+  private $routesFileSuffix = '.routes.php';
+
+  /**
+   * @var string
+   */
+  private $routesFile;
+
+  /**
+   * @var array
+   */
+  private $params = array();
+
+  /**
+   * @var string
+   */
   private $logsPath;
 
   /**
@@ -123,8 +170,28 @@ class FrontController extends Routes
   }
 
   /**
-   * GETTERS AND SETTERS
+   * Update FrontController config with given data.
+   *
+   * @param string $module
+   * @param string $controller
+   * @param string $action
+   * @param array $params
+   * @return FrontController
    */
+  public function updateTo(string $module, string $controller, string $action, array $params = array()): FrontController {
+
+    // Setting up new configs
+    $this->setModuleName($module);
+    $this->setControllerName($controller);
+    $this->setActionName($action);
+    $this->setParams($params);
+
+    // Now we can set the module path
+    $this->setModulePath($this->getModulesPath().'/'.$this->getModuleName());
+
+    return $this;
+  }
+
   /**
    * @return string
    */
@@ -157,7 +224,23 @@ class FrontController extends Routes
    * @return FrontController
    */
   public function setLayoutName(string $layoutName): FrontController {
-    $this->layoutName = (preg_match('/\./', $layoutName) === 0) ? $layoutName.'.phtml' : $layoutName;
+    $this->layoutName = (preg_match('/\./', $layoutName) === 0) ? $layoutName.$this->getLayoutSuffix() : $layoutName;
+    return $this;
+  }
+
+  /**
+   * @return string
+   */
+  public function getLayoutSuffix(): string {
+    return $this->layoutSuffix;
+  }
+
+  /**
+   * @param string $layoutSuffix
+   * @return FrontController
+   */
+  public function setLayoutSuffix(string $layoutSuffix): FrontController {
+    $this->layoutSuffix = $layoutSuffix;
     return $this;
   }
 
@@ -223,27 +306,27 @@ class FrontController extends Routes
     return $this;
   }
 
-//  /**
-//   * @return string
-//   */
-//  public function getModuleName(): string {
-//    return $this->moduleName;
-//  }
-//
-//  /**
-//   * @param string $moduleName
-//   * @return FrontController
-//   */
-//  public function setModuleName(string $moduleName): FrontController {
-//    $this->moduleName = $moduleName;
-//    return $this;
-//  }
+  /**
+   * @return string
+   */
+  public function getModuleName(): string {
+    return $this->moduleName;
+  }
+
+  /**
+   * @param string $moduleName
+   * @return FrontController
+   */
+  public function setModuleName(string $moduleName): FrontController {
+    $this->moduleName = $this->getModulePrefix().ucfirst(strtolower($moduleName));
+    return $this;
+  }
 
   /**
    * @return string
    */
   public function getModulePath(): string {
-    return $this->modulePath;
+    return $this->modulePath ?? $this->getModulesPath().'/'.$this->getModuleName();
   }
 
   /**
@@ -287,21 +370,22 @@ class FrontController extends Routes
     return $this;
   }
 
-//  /**
-//   * @return string
-//   */
-//  public function getControllerName(): string {
-//    return $this->controllerName;
-//  }
-//
-//  /**
-//   * @param string $controllerName
-//   * @return FrontController
-//   */
-//  public function setControllerName(string $controllerName): FrontController {
-//    $this->controllerName = $controllerName;
-//    return $this;
-//  }
+  /**
+   * @return string
+   */
+  public function getControllerName(): string {
+    return $this->controllerName;
+  }
+
+  /**
+   * @param string $controllerName
+   * @return FrontController
+   */
+  public function setControllerName(string $controllerName): FrontController {
+    $controller = ucwords(preg_replace("/\-/", " ", strtolower($controllerName)));
+    $this->controllerName = preg_replace("/\s+/", "", $controller).'Controller';
+    return $this;
+  }
 
   /**
    * @return string
@@ -319,21 +403,22 @@ class FrontController extends Routes
     return $this;
   }
 
-//  /**
-//   * @return string
-//   */
-//  public function getActionName(): string {
-//    return $this->actionName;
-//  }
-//
-//  /**
-//   * @param string $actionName
-//   * @return FrontController
-//   */
-//  public function setActionName(string $actionName): FrontController {
-//    $this->actionName = $actionName;
-//    return $this;
-//  }
+  /**
+   * @return string
+   */
+  public function getActionName(): string {
+    return $this->actionName;
+  }
+
+  /**
+   * @param string $actionName
+   * @return FrontController
+   */
+  public function setActionName(string $actionName): FrontController {
+    $action = lcfirst(ucwords(preg_replace("/\-/", " ", strtolower($actionName))));
+    $this->actionName = preg_replace("/\s+/", "", $action).'Action';
+    return $this;
+  }
 
   /**
    * @return string
@@ -428,6 +513,79 @@ class FrontController extends Routes
    */
   public function setGatewayPath(string $gatewayPath): FrontController {
     $this->gatewayPath = $gatewayPath;
+    return $this;
+  }
+
+  /**
+   * @return string
+   */
+  public function getRoutesPath(): string {
+    return $this->routesPath;
+  }
+
+  /**
+   * @param string $routesPath
+   * @return FrontController
+   */
+  public function setRoutesPath(string $routesPath): FrontController {
+    $this->routesPath = $routesPath;
+    return $this;
+  }
+
+  /**
+   * @return string
+   */
+  public function getRoutesFileSuffix(): string {
+    return $this->routesFileSuffix;
+  }
+
+  /**
+   * @param string $routesFileSuffix
+   * @return FrontController
+   */
+  public function setRoutesFileSuffix(string $routesFileSuffix): FrontController {
+    $this->routesFileSuffix = $routesFileSuffix;
+    return $this;
+  }
+
+  /**
+   * @return string
+   */
+  public function getRoutesFile(): ?string {
+
+    if (!$this->routesFile) {
+
+      $filename = $this->getRoutesPath().'/'.$this->getModuleDefault().$this->getRoutesFileSuffix();
+      if (file_exists($filename) && is_readable($filename)) {
+
+        $this->routesFile = $filename;
+      }
+    }
+    return $this->routesFile;
+  }
+
+  /**
+   * @param string $routesFile
+   * @return FrontController
+   */
+  public function setRoutesFile(string $routesFile): FrontController {
+    $this->routesFile = $routesFile;
+    return $this;
+  }
+
+  /**
+   * @return array
+   */
+  public function getParams(): array {
+    return $this->params;
+  }
+
+  /**
+   * @param array $params
+   * @return FrontController
+   */
+  public function setParams(array $params): FrontController {
+    $this->params = $params;
     return $this;
   }
 
