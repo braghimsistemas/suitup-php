@@ -28,8 +28,7 @@ declare(strict_types=1);
 include_once __DIR__ . "/Autoload/Psr4AutoloaderClass.php";
 include_once __DIR__ . "/functions.php";
 
-use Suitup\Storage\Routes;
-use Suitup\Storage\Config;
+use Suitup\Mvc\FrontController;
 use Suitup\Mvc\MvcAbstractController;
 
 /**
@@ -65,7 +64,7 @@ class SuitupStart
   const VERSION = '2.0.0';
 
   /**
-   * @var Config
+   * @var FrontController
    */
   private $config;
 
@@ -84,7 +83,7 @@ class SuitupStart
     $loader->addNamespace('ModuleError', __DIR__ . '/ModuleError');
 
     // Start a config instance
-    $this->config = new Config();
+    $this->config = new FrontController();
 
     if ($modulesPath) {
       $this->getConfig()->setModulesPath((realpath($modulesPath) === false) ? $modulesPath : realpath($modulesPath).'/');
@@ -142,28 +141,28 @@ class SuitupStart
   /**
    * This method will try to launch the application with given configuration.
    *
-   * @param Config $configs
+   * @param FrontController $frontController
    * @param Throwable|null $exception
    * @return MvcAbstractController|null
    * @throws Exception
    */
-  public function launcher(Config $configs, \Throwable $exception = null): ?MvcAbstractController {
+  public function launcher(FrontController $frontController, \Throwable $exception = null): ?MvcAbstractController {
 
     // Define modulo
-    if (! is_dir($configs->getModulePath()) || ! is_readable($configs->getModulePath())) {
-      throw new \Exception("Module folder '{$configs->getModulePath()}' does not exists");
+    if (! is_dir($frontController->getModulePath()) || ! is_readable($frontController->getModulePath())) {
+      throw new \Exception("Module folder '{$frontController->getModulePath()}' does not exists");
     }
 
     // Check if controller file exists
-    $controllerFile = "{$configs->getModulePath()}/{$configs->getControllersPath()}/{$configs->getControllerName()}.php";
+    $controllerFile = "{$frontController->getModulePath()}/{$frontController->getControllersPath()}/{$frontController->getControllerName()}.php";
     if (! file_exists($controllerFile)) {
       throw new \Exception("Controller file could not be found: $controllerFile");
     }
 
     // Try to discover the namespace for the controller
-    $controllerBaseNsp = $configs->getModuleName();
-    $controllerBaseNsp .= '\\'.str_replace('/', '\\', $configs->getControllersPath());
-    $controllerNsp = $controllerBaseNsp.'\\'.$configs->getControllerName();
+    $controllerBaseNsp = $frontController->getModuleName();
+    $controllerBaseNsp .= '\\'.str_replace('/', '\\', $frontController->getControllersPath());
+    $controllerNsp = $controllerBaseNsp.'\\'.$frontController->getControllerName();
 
     // Validate controller class namespace
     if (! class_exists($controllerNsp)) {
@@ -179,22 +178,22 @@ class SuitupStart
     }
 
     // Check if action exists on controller
-    if (! method_exists($controller, $configs->getActionName())) {
-      throw new \Exception("Action '{$configs->getActionName()}' does not exists on controller '$controllerNsp'");
+    if (! method_exists($controller, $frontController->getActionName())) {
+      throw new \Exception("Action '{$frontController->getActionName()}' does not exists on controller '$controllerNsp'");
     }
 
     // Check up for views folder
-    if (! is_dir($configs->getModulePath().'/'.$configs->getViewsPath())) {
-      throw new \Exception("Views directory was not found to module '{$configs->getModuleName()}'");
+    if (! is_dir($frontController->getModulePath().'/'.$frontController->getViewsPath())) {
+      throw new \Exception("Views directory was not found to module '{$frontController->getModuleName()}'");
     }
 
     // Set given configs
-    $controller->setConfig($configs);
+    $controller->setFrontController($frontController);
 
     // Launch methods for the win!
     $controller->preDispatch();
     $controller->init();
-    $controller->{$configs->getActionName()}();
+    $controller->{$frontController->getActionName()}();
     $controller->posDispatch();
 
     // Return it's instance
@@ -202,12 +201,14 @@ class SuitupStart
   }
 
   /**
-   * If is wanted to change some config before to run the application, as change default path to the controllers for
-   * example...
+   * If is wanted to change some config before to run the application,
+   * as change default path to the controllers for example...
    *
-   * @return Config
+   * Ps.: We keep this name 'config' to seems more instinctive for user.
+   *
+   * @return FrontController
    */
-  public function getConfig(): Config {
+  public function getConfig(): FrontController {
     return $this->config;
   }
 

@@ -24,7 +24,6 @@
  */
 namespace Suitup\Mvc;
 
-use Suitup\Storage\Config;
 use Exception;
 use stdClass;
 
@@ -47,9 +46,9 @@ abstract class MvcAbstractController
   public static $params;
 
   /**
-   * @var Config
+   * @var FrontController
    */
-  private $config;
+  private $frontController;
 
   /**
    * @var array
@@ -206,19 +205,19 @@ abstract class MvcAbstractController
   }
 
   /**
-   * @param Config $config
+   * @param FrontController $frontController
    * @return MvcAbstractController
    */
-  public function setConfig(Config $config): MvcAbstractController {
-    $this->config = $config;
+  public function setFrontController(FrontController $frontController): MvcAbstractController {
+    $this->frontController = $frontController;
     return $this;
   }
 
   /**
-   * @return Config
+   * @return FrontController
    */
-  public function getConfig(): Config {
-    return $this->config;
+  public function getFrontController(): FrontController {
+    return $this->frontController;
   }
 
   /**
@@ -227,7 +226,7 @@ abstract class MvcAbstractController
    * @return string
    */
   public function getMsgNsp() {
-    return $this->getConfig()->getModuleName() . '_' . self::MSG_NSP;
+    return $this->getFrontController()->getModuleName() . '_' . self::MSG_NSP;
   }
 
 //  /**
@@ -283,7 +282,7 @@ abstract class MvcAbstractController
    */
   public function renderView($renderViewName, $vars = array(), $renderViewPath = null) {
     if (! $renderViewPath) {
-      $renderViewPath = $this->getConfig()->getViewsPath();
+      $renderViewPath = $this->getFrontController()->getViewsPath();
     }
     return renderView($renderViewName, $vars, $renderViewPath);
   }
@@ -332,7 +331,7 @@ abstract class MvcAbstractController
    * @return array
    */
   public function getParams() {
-    return $this->getConfig()->getRoutes()->getParams();
+    return $this->getFrontController()->getRoutes()->getParams();
   }
 
   /**
@@ -626,9 +625,9 @@ abstract class MvcAbstractController
    */
   public function getSessionFilter() {
     $namespace = implode('.', array(
-      $this->getConfig()->getModuleName(),
-      $this->getConfig()->getControllerName(),
-      $this->getConfig()->getActionName()
+      $this->getFrontController()->getModuleName(),
+      $this->getFrontController()->getControllerName(),
+      $this->getFrontController()->getActionName()
     ));
     if (! isset($_SESSION[$namespace])) {
       $_SESSION[$namespace] = array();
@@ -645,9 +644,9 @@ abstract class MvcAbstractController
    */
   public function addSessionFilter($name, $value = null) {
     $namespace = implode('.', array(
-      $this->getConfig()->getModuleName(),
-      $this->getConfig()->getControllerName(),
-      $this->getConfig()->getActionName()
+      $this->getFrontController()->getModuleName(),
+      $this->getFrontController()->getControllerName(),
+      $this->getFrontController()->getActionName()
     ));
 
     if (is_array($name)) {
@@ -667,9 +666,9 @@ abstract class MvcAbstractController
    */
   public function removeSessionFilter($key = null) {
     $namespace = implode('.', array(
-      $this->getConfig()->getModuleName(),
-      $this->getConfig()->getControllerName(),
-      $this->getConfig()->getActionName()
+      $this->getFrontController()->getModuleName(),
+      $this->getFrontController()->getControllerName(),
+      $this->getFrontController()->getActionName()
     ));
 
     if ($key && $_SESSION[$namespace][$key]) {
@@ -682,9 +681,9 @@ abstract class MvcAbstractController
    */
   public function clearSessionFilter() {
     $namespace = implode('.', array(
-      $this->getConfig()->getModuleName(),
-      $this->getConfig()->getControllerName(),
-      $this->getConfig()->getActionName()
+      $this->getFrontController()->getModuleName(),
+      $this->getFrontController()->getControllerName(),
+      $this->getFrontController()->getActionName()
     ));
 
 		unset($_SESSION[$namespace]);

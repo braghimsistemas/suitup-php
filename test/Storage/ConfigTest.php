@@ -2,7 +2,7 @@
 
 namespace SuitUpTest\Storage;
 
-use Suitup\Storage\Config;
+use Suitup\Storage\FrontController;
 
 class ConfigTest extends \PHPUnit\Framework\TestCase
 {

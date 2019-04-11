@@ -25,9 +25,9 @@
 
 declare(strict_types=1);
 
-namespace Suitup\Storage;
+namespace Suitup\Mvc;
 
-class Config extends Routes
+class FrontController extends Routes
 {
   /**
    * @var string
@@ -110,7 +110,7 @@ class Config extends Routes
   private $logsPath;
 
   /**
-   * Config constructor.
+   * FrontController constructor.
    */
   public function __construct() {
 
@@ -136,9 +136,9 @@ class Config extends Routes
    * Point to the framework where is the root folder to the modules.
    *
    * @param string $modulesPath
-   * @return Config
+   * @return FrontController
    */
-  public function setModulesPath(string $modulesPath): Config {
+  public function setModulesPath(string $modulesPath): FrontController {
     $this->modulesPath = rtrim($modulesPath, '/');
     return $this;
   }
@@ -154,9 +154,9 @@ class Config extends Routes
    * Name for the <b>file</b> to be rendered as layout.
    *
    * @param string $layoutName
-   * @return Config
+   * @return FrontController
    */
-  public function setLayoutName(string $layoutName): Config {
+  public function setLayoutName(string $layoutName): FrontController {
     $this->layoutName = (preg_match('/\./', $layoutName) === 0) ? $layoutName.'.phtml' : $layoutName;
     return $this;
   }
@@ -170,9 +170,9 @@ class Config extends Routes
 
   /**
    * @param string $layoutPath
-   * @return Config
+   * @return FrontController
    */
-  public function setLayoutPath(string $layoutPath): Config {
+  public function setLayoutPath(string $layoutPath): FrontController {
     $this->layoutPath = $layoutPath;
     return $this;
   }
@@ -186,9 +186,9 @@ class Config extends Routes
 
   /**
    * @param string $viewsPath
-   * @return Config
+   * @return FrontController
    */
-  public function setViewsPath(string $viewsPath): Config {
+  public function setViewsPath(string $viewsPath): FrontController {
     $this->viewsPath = $viewsPath;
     return $this;
   }
@@ -206,9 +206,9 @@ class Config extends Routes
 
   /**
    * @param string $basePath
-   * @return Config
+   * @return FrontController
    */
-  public function setBasePath(string $basePath = null): Config {
+  public function setBasePath(string $basePath = null): FrontController {
 
     if ($basePath) {
       $this->basePath = $basePath ? "/$basePath" : '';
@@ -232,9 +232,9 @@ class Config extends Routes
 //
 //  /**
 //   * @param string $moduleName
-//   * @return Config
+//   * @return FrontController
 //   */
-//  public function setModuleName(string $moduleName): Config {
+//  public function setModuleName(string $moduleName): FrontController {
 //    $this->moduleName = $moduleName;
 //    return $this;
 //  }
@@ -248,9 +248,9 @@ class Config extends Routes
 
   /**
    * @param string $modulePath
-   * @return Config
+   * @return FrontController
    */
-  public function setModulePath(string $modulePath): Config {
+  public function setModulePath(string $modulePath): FrontController {
     $this->modulePath = $modulePath;
     return $this;
   }
@@ -264,9 +264,9 @@ class Config extends Routes
 
   /**
    * @param string $modulePrefix
-   * @return Config
+   * @return FrontController
    */
-  public function setModulePrefix(string $modulePrefix): Config {
+  public function setModulePrefix(string $modulePrefix): FrontController {
     $this->modulePrefix = $modulePrefix;
     return $this;
   }
@@ -280,9 +280,9 @@ class Config extends Routes
 
   /**
    * @param string $moduleDefault
-   * @return Config
+   * @return FrontController
    */
-  public function setModuleDefault(string $moduleDefault): Config {
+  public function setModuleDefault(string $moduleDefault): FrontController {
     $this->moduleDefault = $moduleDefault;
     return $this;
   }
@@ -296,9 +296,9 @@ class Config extends Routes
 //
 //  /**
 //   * @param string $controllerName
-//   * @return Config
+//   * @return FrontController
 //   */
-//  public function setControllerName(string $controllerName): Config {
+//  public function setControllerName(string $controllerName): FrontController {
 //    $this->controllerName = $controllerName;
 //    return $this;
 //  }
@@ -312,9 +312,9 @@ class Config extends Routes
 
   /**
    * @param string $controllersPath
-   * @return Config
+   * @return FrontController
    */
-  public function setControllersPath(string $controllersPath): Config {
+  public function setControllersPath(string $controllersPath): FrontController {
     $this->controllersPath = trim($controllersPath, '/');
     return $this;
   }
@@ -328,9 +328,9 @@ class Config extends Routes
 //
 //  /**
 //   * @param string $actionName
-//   * @return Config
+//   * @return FrontController
 //   */
-//  public function setActionName(string $actionName): Config {
+//  public function setActionName(string $actionName): FrontController {
 //    $this->actionName = $actionName;
 //    return $this;
 //  }
@@ -344,9 +344,9 @@ class Config extends Routes
 
   /**
    * @param string $actionFilename
-   * @return Config
+   * @return FrontController
    */
-  public function setActionFilename(string $actionFilename): Config {
+  public function setActionFilename(string $actionFilename): FrontController {
     $this->actionFilename = $actionFilename;
     return $this;
   }
@@ -360,9 +360,9 @@ class Config extends Routes
 
   /**
    * @param string $actionSuffix
-   * @return Config
+   * @return FrontController
    */
-  public function setActionSuffix(string $actionSuffix): Config {
+  public function setActionSuffix(string $actionSuffix): FrontController {
     $this->actionSuffix = $actionSuffix;
     return $this;
   }
@@ -376,9 +376,9 @@ class Config extends Routes
 
   /**
    * @param bool $sqlMonitor
-   * @return Config
+   * @return FrontController
    */
-  public function setSqlMonitor(bool $sqlMonitor): Config {
+  public function setSqlMonitor(bool $sqlMonitor): FrontController {
     $this->sqlMonitor = $sqlMonitor;
     return $this;
   }
@@ -392,9 +392,9 @@ class Config extends Routes
 
   /**
    * @param string $formPath
-   * @return Config
+   * @return FrontController
    */
-  public function setFormPath(string $formPath): Config {
+  public function setFormPath(string $formPath): FrontController {
     $this->formPath = $formPath;
     return $this;
   }
@@ -408,9 +408,9 @@ class Config extends Routes
 
   /**
    * @param string $businessPath
-   * @return Config
+   * @return FrontController
    */
-  public function setBusinessPath(string $businessPath): Config {
+  public function setBusinessPath(string $businessPath): FrontController {
     $this->businessPath = $businessPath;
     return $this;
   }
@@ -424,9 +424,9 @@ class Config extends Routes
 
   /**
    * @param string $gatewayPath
-   * @return Config
+   * @return FrontController
    */
-  public function setGatewayPath(string $gatewayPath): Config {
+  public function setGatewayPath(string $gatewayPath): FrontController {
     $this->gatewayPath = $gatewayPath;
     return $this;
   }
@@ -440,9 +440,9 @@ class Config extends Routes
 
   /**
    * @param string $logsPath
-   * @return Config
+   * @return FrontController
    */
-  public function setLogsPath(string $logsPath): Config {
+  public function setLogsPath(string $logsPath): FrontController {
     $this->logsPath = $logsPath;
     return $this;
   }

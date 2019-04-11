@@ -25,7 +25,7 @@
 
 declare(strict_types=1);
 
-namespace Suitup\Storage;
+namespace Suitup\Mvc;
 
 /**
  * Class Routes
