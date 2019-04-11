@@ -41,11 +41,6 @@ abstract class MvcAbstractController
   public static $authNsp = 'LogINAuth';
 
   /**
-   * @var array
-   */
-  public static $params;
-
-  /**
    * @var FrontController
    */
   private $frontController;
@@ -59,6 +54,11 @@ abstract class MvcAbstractController
    * @var array
    */
   private $msgs = array();
+
+  /**
+   * @var \Throwable
+   */
+  private $exception;
 
   /**
    * Tipos de erro de upload de arquivos.
@@ -75,6 +75,26 @@ abstract class MvcAbstractController
     UPLOAD_ERR_EXTENSION => 'UPLOAD_ERR_EXTENSION'
   );
 
+  public function __construct(FrontController $frontController) {
+
+    // Dependency injection
+    $this->frontController = $frontController;
+
+    // Messages from previous page
+    if (isset($_SESSION[$this->getMsgNsp()])) {
+      foreach ($_SESSION[$this->getMsgNsp()] as $index => $msgNsp) {
+        foreach ($msgNsp as $type => $msgs) {
+          foreach ($msgs as $msg) {
+            $this->addMsg($msg, $type);
+          }
+        }
+
+        // Already stored so lets delete it
+        unset($_SESSION[$this->getMsgNsp()][$index]);
+      }
+    }
+  }
+
   /**
    * Este metodo é chamado antes da ação do controlador.
    * Se for sobrescrever ele, não esqueça de chama-lo.
@@ -90,25 +110,7 @@ abstract class MvcAbstractController
    * }
    * </pre>
    */
-  public function preDispatch() {
-    // Mensagens que vieram por sessao, ou seja, com redirecionamento
-    if (isset($_SESSION[$this->getMsgNsp()])) {
-      foreach ($_SESSION[$this->getMsgNsp()] as $token => $msgNsp) {
-
-        // Adiciona ao layout somente mensagens com token diferente
-        // do token atual, ou seja, somente mensagem que já existia antes
-        // de chegar aqui, de outra página.
-        // Loco neh!? ¯\_(-.-)_/¯
-        if ($token != MSG_NSP_TOKEN) {
-          foreach ($msgNsp as $type => $msgs) {
-            foreach ($msgs as $msg) {
-              $this->addMsg($msg, $type);
-            }
-          }
-        }
-      }
-    }
-  }
+  public function preDispatch() { }
 
   /**
    * Default accessible methods
@@ -118,8 +120,6 @@ abstract class MvcAbstractController
    *
    */
   public function init() {
-
-    dump($this);
 
   }
 
@@ -161,8 +161,8 @@ abstract class MvcAbstractController
     $layoutMessages = $this->msgs;
 
     // Caso tenha excessao
-    if (isset(self::$params->exception)) {
-      $exception = self::$params->exception;
+    if (isset($this->exception)) {
+      $exception = $this->exception;
     }
 
     // Expressao regular para remover barras repetidas.
@@ -192,25 +192,6 @@ abstract class MvcAbstractController
 
     // mostra conteúdo do layout já com a view injetada
     include $layoutfile;
-
-    // Remove possiveis mensagens de sessão
-    // mas somente com o token antigo
-    if (isset($_SESSION[$this->getMsgNsp()])) {
-      foreach (array_keys($_SESSION[$this->getMsgNsp()]) as $token) {
-        if ($token != MSG_NSP_TOKEN) {
-          unset($_SESSION[$this->getMsgNsp()][$token]);
-        }
-      }
-    }
-  }
-
-  /**
-   * @param FrontController $frontController
-   * @return MvcAbstractController
-   */
-  public function setFrontController(FrontController $frontController): MvcAbstractController {
-    $this->frontController = $frontController;
-    return $this;
   }
 
   /**
@@ -227,6 +208,22 @@ abstract class MvcAbstractController
    */
   public function getMsgNsp() {
     return $this->getFrontController()->getModuleName() . '_' . self::MSG_NSP;
+  }
+
+  /**
+   * @return \Throwable
+   */
+  public function getException(): \Throwable {
+    return $this->exception;
+  }
+
+  /**
+   * @param \Throwable $exception
+   * @return MvcAbstractController
+   */
+  public function setException(\Throwable $exception): MvcAbstractController {
+    $this->exception = $exception;
+    return $this;
   }
 
 //  /**

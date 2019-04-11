@@ -32,14 +32,14 @@ use Suitup\Mvc\Routes;
 use Suitup\Mvc\FrontController;
 use Suitup\Mvc\MvcAbstractController;
 
-/**
- * Token para o sistema nao "confundir" as mensagens de sessao
- * atual com mensagens que ja existiam em outra pagina.
- * Utilizado dentro da classe \SuitUp\Mvc\MvcAbstractController
- *
- * ¯\_(-.-)_/¯
- */
-define('MSG_NSP_TOKEN', mctime());
+///**
+// * Token para o sistema nao "confundir" as mensagens de sessao
+// * atual com mensagens que ja existiam em outra pagina.
+// * Utilizado dentro da classe \SuitUp\Mvc\MvcAbstractController
+// *
+// * ¯\_(-.-)_/¯
+// */
+//define('MSG_NSP_TOKEN', mctime());
 
 /**
  * Define DEVELOPMENT constant
@@ -111,14 +111,6 @@ class SuitupStart
     // Resolve routes
     $routes = new Routes($this->getConfig());
     $routes->setupRoutes();
-
-    // Update FrontController params
-//    $this->getConfig()->updateTo(
-//      $routes->getModule(),
-//      $routes->getController(),
-//      $routes->getAction(),
-//      $routes->getParams()
-//    );
   }
 
   /**
@@ -182,7 +174,7 @@ class SuitupStart
     }
 
     // Create a controller instance
-    $controller = new $controllerNsp();
+    $controller = new $controllerNsp($frontController);
 
     // Check if it is a MvcAbstractController
     if (! $controller instanceof MvcAbstractController) {
@@ -199,8 +191,10 @@ class SuitupStart
       throw new \Exception("Views directory was not found to module '{$frontController->getModuleName()}'");
     }
 
-    // Set given configs
-    $controller->setFrontController($frontController);
+    // Set exception if exists
+    if ($exception) {
+      $controller->setException($exception);
+    }
 
     // Launch methods for the win!
     $controller->preDispatch();
