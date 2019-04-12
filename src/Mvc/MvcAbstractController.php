@@ -335,9 +335,20 @@ abstract class MvcAbstractController
     }
 
     // Append reference
-    $baseUrl .= ltrim(($ref ?? ''), '/');
+    $append = ltrim(($ref ?? ''), '/');
+    $baseUrl .= $append ? '/'.$append : '';
 
     return $baseUrl;
+  }
+
+  /**
+   * Alias for @see baseUrl()
+   *
+   * @param string|null $ref
+   * @return string
+   */
+  public function basePath(string $ref = null): string {
+    return $this->baseUrl($ref);
   }
 
   /**
