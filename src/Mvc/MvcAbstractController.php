@@ -22,10 +22,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+declare(strict_types=1);
+
 namespace Suitup\Mvc;
 
 use Exception;
 use stdClass;
+use Suitup\Enum\MsgType;
 
 /**
  * Class MvcAbstractController
@@ -119,9 +122,7 @@ abstract class MvcAbstractController
   /**
    *
    */
-  public function init() {
-
-  }
+  public function init() { }
 
   /**
    *
@@ -143,55 +144,50 @@ abstract class MvcAbstractController
   }
 
   /**
-   * Chamado depois da ação
+   *
+   * @throws Exception
    */
   public function posDispatch() {
-    // Adiciona login para ser visivel no layout
+
+    // If exists some exception
+    $this->view['exception'] = $this->exception;
+
+    // Show messages in the view
+    $this->view['messages'] = $this->msgs;
+
+    // Add login variable to be rendered with view
     $this->view['login'] = self::getLogin();
 
-    // Injeta as variaveis que foram colocadas dentro de view
+    // Inject variables to be used inside view or layout
     foreach ((array) $this->view as $key => $var) {
       $$key = $var;
     }
+    unset($key); // Remove residue
+    unset($var); // Remove residue
 
-    /**
-     * Mensagens que vao para o layout
-     * @var mixed
-     */
-    $layoutMessages = $this->msgs;
+    // Get the view file name
+    $viewFilename = $this->getFrontController()->resolveViewFilename();
 
-    // Caso tenha excessao
-    if (isset($this->exception)) {
-      $exception = $this->exception;
+    // Validate
+    if (! file_exists($viewFilename)) {
+      throw new Exception("View file '$viewFilename' does not exists. If it is a json response use method jsonResponse()");
     }
 
-    // Expressao regular para remover barras repetidas.
-    $er = "/\\" . DIRECTORY_SEPARATOR . "\\" . DIRECTORY_SEPARATOR . "+/";
+    // Collect pieces to discover layout filename
+    $layoutFilename = $this->getFrontController()->resolveLayoutFilename();
 
-    // Verifica se o arquivo da View existe
-    $viewFile = preg_replace($er, DIRECTORY_SEPARATOR, self::$params->viewPath . DIRECTORY_SEPARATOR . self::$params->viewName);
-    if (! file_exists($viewFile)) {
-      throw new Exception("View '$viewFile' não existe, se este for um AJAX então utilize o método \$this->ajax()");
-    }
-
-    // Inclui o arquivo de layout
-    $layoutfile = preg_replace($er, DIRECTORY_SEPARATOR, self::$params->layoutPath . DIRECTORY_SEPARATOR . self::$params->layoutName);
-    if (! file_exists($layoutfile)) {
-      throw new Exception("Arquivo de layout '$layoutfile' não existe, se este for um AJAX então utilize o método \$this->ajax()");
-    }
-
-    // Pega conteúdo da view
+    // Store view content
     ob_start();
-    include $viewFile;
+    include $viewFilename;
     $content = ob_get_clean();
 
-    // Lista de instruções SQL rodadas nesta pagina
-//    if (Database::getInstance()) {
-//      $queryLog = Database::getInstance()->getQueryLog();
-//    }
+    // If there is no layout file we simple render view file directly
+    if (! file_exists($layoutFilename)) {
+      exit($content);
+    }
 
-    // mostra conteúdo do layout já com a view injetada
-    include $layoutfile;
+    // Render layout content
+    include $layoutFilename;
   }
 
   /**
@@ -226,47 +222,49 @@ abstract class MvcAbstractController
     return $this;
   }
 
-//  /**
-//   * @return string
-//   */
-//  public function getModuleName() {
-//    return lcfirst(str_replace('Module', '', self::$params->moduleName));
-//  }
-//
-//  /**
-//   * @return string
-//   */
-//  public function getControllerName() {
-//    return lcfirst(preg_replace("/Controller$/", '', self::$params->controllerName));
-//  }
-//
-//  /**
-//   * @return string
-//   */
-//  public function getActionName() {
-//    return lcfirst(preg_replace("/Action$/", '', self::$params->actionName));
-//  }
-//
-//  /**
-//   * Nome do arquivo de layout.
-//   * @return string
-//   */
-//  public function getLayoutName() {
-//    return self::$params->layoutName;
-//  }
-//
-//  /**
-//   * Troca o layout
-//   *
-//   * @param string $name Nome do arquivo de layout
-//   * @param string $path Caminho para o arquivo de layout
-//   */
-//  public function setLayout($name, $path = null) {
-//    self::$params->layoutName = $name;
-//    if ($path) {
-//      self::$params->layoutPath = $path;
-//    }
-//  }
+  /**
+   * @return string
+   */
+  public function getModuleName() {
+    return $this->getFrontController()->getModuleName();
+  }
+
+  /**
+   * @return string
+   */
+  public function getControllerName(): string {
+    return $this->getFrontController()->getControllerName();
+  }
+
+  /**
+   * @return string
+   */
+  public function getActionName(): string {
+    return $this->getFrontController()->getActionName();
+  }
+
+  /**
+   * Nome do arquivo de layout.
+   * @return string
+   */
+  public function getLayoutName(): string {
+    return $this->getFrontController()->getLayoutName();
+  }
+
+  /**
+   * Change layout
+   *
+   * @param string $name
+   * @param string $path
+   * @return MvcAbstractController
+   */
+  public function setLayout(string $name, string $path = null): MvcAbstractController {
+    $this->getFrontController()->setLayoutName($name);
+    if ($path) {
+      $this->getFrontController()->setLayoutPath($path);
+    }
+    return $this;
+  }
 
   /**
    * Render whatever view file. Done in the functions.php file to be used
@@ -277,7 +275,7 @@ abstract class MvcAbstractController
    * @param string $renderViewPath Path to the view file
    * @return string
    */
-  public function renderView($renderViewName, $vars = array(), $renderViewPath = null) {
+  public function renderView($renderViewName, $vars = array(), $renderViewPath = null): string {
     if (! $renderViewPath) {
       $renderViewPath = $this->getFrontController()->getViewsPath();
     }
@@ -323,12 +321,32 @@ abstract class MvcAbstractController
   }
 
   /**
+   * Resolve base url to links consistent.
+   *
+   * @param string|null $ref
+   * @return string
+   */
+  public function baseUrl(string $ref = null): string {
+    $baseUrl = '/'.ltrim($this->getFrontController()->getBasePath(), '/');
+
+    // If is not from default module
+    if ($this->getFrontController()->getModule() != 'default') {
+      $baseUrl .= '/'.$this->getFrontController()->getModule();
+    }
+
+    // Append reference
+    $baseUrl .= ltrim(($ref ?? ''), '/');
+
+    return $baseUrl;
+  }
+
+  /**
    * Return all route params.
    *
    * @return array
    */
   public function getParams() {
-    return $this->getFrontController()->getRoutes()->getParams();
+    return $this->getFrontController()->getParams();
   }
 
   /**
@@ -450,6 +468,7 @@ abstract class MvcAbstractController
    */
   public function addMsg($msg, $type = MsgType::INFO, $withRedirect = false) {
     if ($withRedirect) {
+      // @todo: Check it out
       $_SESSION[$this->getMsgNsp()][MSG_NSP_TOKEN][$type][] = $msg;
     } else {
       $this->msgs[$type][] = $msg;
@@ -473,7 +492,7 @@ abstract class MvcAbstractController
     $result->pathAndFilename = "";
     $result->fileExt = "";
 
-    $upload = new upload($file);
+    $upload = new Upload($file);
     if ($upload->uploaded) {
       // Formatos Aceitos (Extensoes)
       if (in_array($upload->file_src_name_ext, $allowedExt)) {
@@ -580,11 +599,12 @@ abstract class MvcAbstractController
    * @return bool|string
    */
   public function getReferer() {
-    // Dados do servidor
+
+    // Data from server
     $referer = getenv('HTTP_REFERER');
     $page = getenv('REQUEST_SCHEME') . '://' . getenv('HTTP_HOST') . getenv('REQUEST_URI');
 
-    // Se o referer (que nao é la muito confiavel) for diferente da URL atual
+    // if referer is different from current page
     if ($referer != $page) {
       return $referer;
     }
@@ -603,16 +623,20 @@ abstract class MvcAbstractController
   }
 
   /**
-   * Quando a ação for um ajax basta inserir o conteudo do retorno
-   * neste metodo.
+   * Alias to @see jsonResponse
    *
    * @param array $data
-   * @return string
    */
-  public function ajax(array $data) {
+  public function ajax(array $data): void {
+    $this->jsonResponse($data);
+  }
+
+  /**
+   * @param array $data
+   */
+  public function jsonResponse(array $data): void {
     header("Content-Type: application/json; Charset=UTF-8");
-    echo json_encode($data);
-    return exit();
+    exit(json_encode($data));
   }
 
   /**

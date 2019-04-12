@@ -14,14 +14,14 @@
     "ext-json": "*",
 		"zendframework/zend-validator" : "^2",
 		"zendframework/zend-uri": "^2",
-		"matthiasmullie/minify": "^1"
-	},
+		"matthiasmullie/minify": "^1",
+    "verot/class.upload.php": "dev-master"
+  },
 	"require-dev": {
 		"phpunit/phpunit": "^8.0",
 		"php-coveralls/php-coveralls": "^v2"
 	},
 	"suggest": {
-    "verot/class.upload.php": "If you need to manage files upload",
 		"phpmailer/phpmailer": "Not implemented in framework itself, but helps a lot and it's very simple."
 	},
 	"autoload": {

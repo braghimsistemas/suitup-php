@@ -49,12 +49,12 @@ class FrontController
   /**
    * @var string
    */
-  private $layoutPath = '/views';
+  private $layoutPath = 'views';
 
   /**
    * @var string
    */
-  private $viewsPath = '/views';
+  private $viewsPath = 'views';
 
   /**
    * @var string
@@ -101,12 +101,7 @@ class FrontController
   /**
    * @var string
    */
-  private $actionFilename = 'index';
-
-  /**
-   * @var string
-   */
-  private $actionSuffix = '.phtml';
+  private $viewSuffix = '.phtml';
 
   /**
    * @var string
@@ -180,26 +175,33 @@ class FrontController
   }
 
   /**
-   * Update FrontController config with given data.
+   * Collect all information from here to resolve the name of view file.
    *
-   * @param string $module
-   * @param string $controller
-   * @param string $action
-   * @param array $params
-   * @return FrontController
+   * @return string
    */
-  public function updateTo(string $module, string $controller, string $action, array $params = array()): FrontController {
+  public function resolveViewFilename(): string {
 
-    // Setting up new configs
-    $this->setModuleName($module);
-    $this->setControllerName($controller);
-    $this->setActionName($action);
-    $this->setParams($params);
+    $viewFile = $this->getModulePath();
+    $viewFile .= '/'.$this->getViewsPath();
+    $viewFile .= '/'.$this->getController();
+    $viewFile .= '/'.$this->getAction();
+    $viewFile .= $this->getViewSuffix();
 
-    // Now we can set the module path
-    $this->setModulePath($this->getModulesPath().'/'.$this->getModuleName());
+    return $viewFile;
+  }
 
-    return $this;
+  /**
+   * Collect all information from here to resolve the name of layout file.
+   *
+   * @return string
+   */
+  public function resolveLayoutFilename(): string {
+
+    $layoutFilename = $this->getModulePath();
+    $layoutFilename .= '/'.$this->getLayoutPath();
+    $layoutFilename .= '/'.$this->getLayoutName();
+
+    return $layoutFilename;
   }
 
   /**
@@ -266,7 +268,7 @@ class FrontController
    * @return FrontController
    */
   public function setLayoutPath(string $layoutPath): FrontController {
-    $this->layoutPath = $layoutPath;
+    $this->layoutPath = ltrim($layoutPath, '/');
     return $this;
   }
 
@@ -282,7 +284,7 @@ class FrontController
    * @return FrontController
    */
   public function setViewsPath(string $viewsPath): FrontController {
-    $this->viewsPath = $viewsPath;
+    $this->viewsPath = ltrim($viewsPath, '/');
     return $this;
   }
 
@@ -439,32 +441,16 @@ class FrontController
   /**
    * @return string
    */
-  public function getActionFilename(): string {
-    return $this->actionFilename;
+  public function getViewSuffix(): string {
+    return $this->viewSuffix;
   }
 
   /**
-   * @param string $actionFilename
+   * @param string $viewSuffix
    * @return FrontController
    */
-  public function setActionFilename(string $actionFilename): FrontController {
-    $this->actionFilename = $actionFilename;
-    return $this;
-  }
-
-  /**
-   * @return string
-   */
-  public function getActionSuffix(): string {
-    return $this->actionSuffix;
-  }
-
-  /**
-   * @param string $actionSuffix
-   * @return FrontController
-   */
-  public function setActionSuffix(string $actionSuffix): FrontController {
-    $this->actionSuffix = $actionSuffix;
+  public function setViewSuffix(string $viewSuffix): FrontController {
+    $this->viewSuffix = $viewSuffix;
     return $this;
   }
 

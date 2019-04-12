@@ -120,23 +120,27 @@ if (! function_exists('toDashCase')) {
 /**
  * Render a (p)html view with injected variables
  *
- * @param string $renderViewName Nome do arquivo .phtml que será renderizado.
- * @param array|mixed $vars Variaveis que estarão disponíveis na views
- * @param string $renderViewPath Caminho para o arquivo .phtml que será renderizado
+ * @param string $renderViewName Filename to be rendered with .phtml extension
+ * @param array|mixed $vars Variables to be used inside view file
+ * @param string $renderViewPath Path to the file, it's possible to set full file
+ *                               path direct in the first param here
  * @return string
  */
-function renderView($renderViewName, $vars = array(), $renderViewPath = null) {
-  if (! $renderViewPath) {
-    $renderViewPath = \SuitUp\Mvc\MvcAbstractController::$params->layoutPath;
-  }
+function renderView($renderViewName, $vars = array(), $renderViewPath = null): string {
 
   // Injeta variaveis na view
   foreach ($vars as $n => $v) {
     $$n = $v;
   }
+  unset($n);
+  unset($v);
 
   ob_start();
-  include $renderViewPath . DIRECTORY_SEPARATOR . $renderViewName;
+  if ($renderViewPath) {
+    include $renderViewPath . DIRECTORY_SEPARATOR . $renderViewName;
+  } else {
+    include $renderViewName;
+  }
   return ob_get_clean();
 }
 
