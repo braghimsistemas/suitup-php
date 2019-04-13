@@ -139,6 +139,14 @@ class Routes
     // First of all we set by URI that is useful always
     $routeResidue = $this->setByURI($route);
 
+    // Setup FrontController with natural parameters
+    $this->frontController->setModuleName($this->getModule());
+    $this->frontController->setControllerName($this->getController());
+    $this->frontController->setActionName($this->getAction());
+
+    // Now we can set the module path
+    $this->frontController->setModulePath($this->frontController->getModulesPath().'/'.$this->frontController->getModuleName());
+
     if ($this->frontController->getRoutesFile()) {
 
       // Get from file the routes config
@@ -221,6 +229,14 @@ class Routes
         // Resolve it's params
         $this->params = $this->resolveParams($found['params'], explode('/', $route));
       }
+
+      // Setup FrontController with found parameters
+      $this->frontController->setModuleName($this->getModule());
+      $this->frontController->setControllerName($this->getController());
+      $this->frontController->setActionName($this->getAction());
+
+      // Now we can set the module path
+      $this->frontController->setModulePath($this->frontController->getModulesPath().'/'.$this->frontController->getModuleName());
     }
 
     // If was not set params from pre defined routes we will do it
@@ -231,15 +247,7 @@ class Routes
 
     // Merge GET params from URL
     $this->params = array_merge($this->params, (array) filter_input_array(INPUT_GET));
-
-    // Setup FrontController with found parameters
-    $this->frontController->setModuleName($this->getModule());
-    $this->frontController->setControllerName($this->getController());
-    $this->frontController->setActionName($this->getAction());
     $this->frontController->setParams($this->getParams());
-
-    // Now we can set the module path
-    $this->frontController->setModulePath($this->frontController->getModulesPath().'/'.$this->frontController->getModuleName());
 
     return $this;
   }
