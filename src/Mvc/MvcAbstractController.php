@@ -61,9 +61,7 @@ abstract class MvcAbstractController
   private $exception;
 
   /**
-   * This object will be populated only when view be rendered.
-   * Keep it here is like to reserve this object name, avoiding
-   * override.
+   * Store all system messages.
    *
    * @var array
    */
@@ -101,20 +99,11 @@ abstract class MvcAbstractController
   private $basePath = '';
 
   /**
-   * Tipos de erro de upload de arquivos.
-   * @var array
+   * MvcAbstractController constructor.
+   *
+   * @param FrontController $frontController
+   * @throws \ReflectionException
    */
-  public static $uploadErrors = array(
-    UPLOAD_ERR_OK => 'UPLOAD_ERR_OK',
-    UPLOAD_ERR_INI_SIZE => 'UPLOAD_ERR_INI_SIZE',
-    UPLOAD_ERR_FORM_SIZE => 'UPLOAD_ERR_FORM_SIZE',
-    UPLOAD_ERR_PARTIAL => 'UPLOAD_ERR_PARTIAL',
-    UPLOAD_ERR_NO_FILE => 'UPLOAD_ERR_NO_FILE',
-    UPLOAD_ERR_NO_TMP_DIR => 'UPLOAD_ERR_NO_TMP_DIR',
-    UPLOAD_ERR_CANT_WRITE => 'UPLOAD_ERR_CANT_WRITE',
-    UPLOAD_ERR_EXTENSION => 'UPLOAD_ERR_EXTENSION'
-  );
-
   public function __construct(FrontController $frontController) {
 
     // Add a respective item to each injected value in the view
@@ -122,7 +111,7 @@ abstract class MvcAbstractController
 
     // Loop under all class items
     foreach ($reflectionClass->getProperties() as $property) {
-      if (!$property->isStatic() && !in_array($property->getName(), array('frontController'))) {
+      if (!$property->isStatic() && !in_array($property->getName(), array('view', 'frontController'))) {
         $this->view[$property->getName()] = '';
       }
     }
@@ -238,6 +227,8 @@ abstract class MvcAbstractController
   }
 
   /**
+   * This class store all parameters to build application.
+   *
    * @return FrontController
    */
   public function getFrontController(): FrontController {
