@@ -56,7 +56,7 @@ abstract class MvcAbstractController
   /**
    * @var array
    */
-  private $msgs = array();
+  private $messages = array();
 
   /**
    * @var \Throwable
@@ -83,80 +83,63 @@ abstract class MvcAbstractController
     // Dependency injection
     $this->frontController = $frontController;
 
+
     // Messages from previous page
     if (isset($_SESSION[$this->getMsgNsp()])) {
-      foreach ($_SESSION[$this->getMsgNsp()] as $index => $msgNsp) {
-        foreach ($msgNsp as $type => $msgs) {
-          foreach ($msgs as $msg) {
-            $this->addMsg($msg, $type);
-          }
-        }
 
-        // Already stored so lets delete it
-        unset($_SESSION[$this->getMsgNsp()][$index]);
+      // Loop over all messages from previous page.
+      foreach ($_SESSION[$this->getMsgNsp()] as $type => $messages) {
+        foreach ($messages as $message) {
+          $this->addMsg($message, $type);
+        }
       }
+
+      // Already stored so lets delete it
+      unset($_SESSION[$this->getMsgNsp()]);
     }
   }
 
   /**
-   * Este metodo é chamado antes da ação do controlador.
-   * Se for sobrescrever ele, não esqueça de chama-lo.
    *
-   * ex.
-   * <pre>
-   * public function preDispatch() {
-   *		// your code
-   *
-   *		parent::preDispatch();
-   *
-   *		// your code
-   * }
-   * </pre>
    */
   public function preDispatch() { }
 
   /**
-   * Default accessible methods
-   */
-
-  /**
-   *
+   * An action to run before current action
    */
   public function init() { }
 
   /**
+   * Default action
+   */
+  public function indexAction() { }
+
+  /**
+   * Actions to be done after current action method
+   */
+  public function posDispatch() { }
+
+  /**
+   * This method is dispatched after everything and will only
+   * render everything defined till here.
    *
-   */
-  public function indexAction() {}
-
-  /**
-   * Default error type
-   */
-  public function errorAction() {
-    header(getenv('SERVER_PROTOCOL') . ' 500 Internal Server Error', true, 500);
-  }
-
-  /**
-   * Error type to page not found
-   */
-  public function notFoundAction() {
-    header(getenv('SERVER_PROTOCOL') . ' 404 Not Found', true, 404);
-  }
-
-  /**
+   * <b>Please, avoid to override this method</b>
    *
    * @throws Exception
    */
-  public function posDispatch() {
+  public function render() {
 
     // If exists some exception
     $this->view['exception'] = $this->exception;
 
     // Show messages in the view
-    $this->view['messages'] = $this->msgs;
+    $this->view['messages'] = $this->messages;
 
     // Add login variable to be rendered with view
     $this->view['login'] = self::getLogin();
+
+    // Append the base URL to the views
+    $this->view['baseUrl'] = $this->baseUrl();
 
     // Inject variables to be used inside view or layout
     foreach ((array) $this->view as $key => $var) {
@@ -191,6 +174,20 @@ abstract class MvcAbstractController
   }
 
   /**
+   * Default error type
+   */
+  public function errorAction() {
+    header(getenv('SERVER_PROTOCOL') . ' 500 Internal Server Error', true, 500);
+  }
+
+  /**
+   * Error type to page not found
+   */
+  public function notFoundAction() {
+    header(getenv('SERVER_PROTOCOL') . ' 404 Not Found', true, 404);
+  }
+
+  /**
    * @return FrontController
    */
   public function getFrontController(): FrontController {
@@ -204,6 +201,31 @@ abstract class MvcAbstractController
    */
   public function getMsgNsp() {
     return $this->getFrontController()->getModuleName() . '_' . self::MSG_NSP;
+  }
+
+  /**
+   * Mensagens do sistema com ou sem redirecionamento
+   *
+   * @param string $msg
+   * @param string $type
+   * @param boolean $withRedirect
+   * @return MvcAbstractController
+   */
+  public function addMsg($msg, $type = MsgType::INFO, $withRedirect = false) {
+    if ($withRedirect) {
+      $_SESSION[$this->getMsgNsp()][$type][] = $msg;
+    } else {
+      $this->messages[$type][] = $msg;
+    }
+    return $this;
+  }
+
+  /**
+   * Return the current list of messages
+   * @return array
+   */
+  public function getMessages(): array {
+    return $this->messages ?? array();
   }
 
   /**
@@ -467,24 +489,6 @@ abstract class MvcAbstractController
         $_SESSION[self::$authNsp][$key] = $value;
       }
     }
-  }
-
-  /**
-   * Mensagens do sistema com ou sem redirecionamento
-   *
-   * @param string $msg
-   * @param string $type
-   * @param boolean $withRedirect
-   * @return MvcAbstractController
-   */
-  public function addMsg($msg, $type = MsgType::INFO, $withRedirect = false) {
-    if ($withRedirect) {
-      // @todo: Check it out
-      $_SESSION[$this->getMsgNsp()][MSG_NSP_TOKEN][$type][] = $msg;
-    } else {
-      $this->msgs[$type][] = $msg;
-    }
-    return $this;
   }
 
   /**

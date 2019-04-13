@@ -12,9 +12,8 @@
 	"require": {
 		"php": ">=7.2",
     "ext-json": "*",
+    "ext-gd": "*",
 		"zendframework/zend-validator" : "^2",
-		"zendframework/zend-uri": "^2",
-		"matthiasmullie/minify": "^1",
     "verot/class.upload.php": "dev-master"
   },
 	"require-dev": {

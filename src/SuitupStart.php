@@ -201,6 +201,7 @@ class SuitupStart
     $controller->init();
     $controller->{$frontController->getActionName()}();
     $controller->posDispatch();
+    $controller->render();
 
     // Return it's instance
     return $controller;
