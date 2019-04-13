@@ -668,16 +668,34 @@ class FrontController
    * Override values from original config to mock up a new
    * list of configs without interfering with.
    *
-   * @param array $override
-   * @return array
-   * @throws \ReflectionException
+   * @param string $action
+   * @param string|null $controller
+   * @param string|null $module
+   * @param string|null $modulePath
+   * @return FrontController
    */
-  public function mockUpTo(array $override = array()): array {
+  public function mockUpTo(string $action, string $controller = null, string $module = null, string $modulePath = null): FrontController {
 
-    $result = $this->toArray();
-    foreach ($override as $key => $value) {
-      $result[$key] = $value;
+    $result = clone $this;
+
+    // Setup FrontController with natural parameters
+    $result->setActionName($action);
+
+    // Optional controller param
+    if ($controller) {
+      $result->setControllerName($controller);
     }
+
+    // Optional module param
+    if ($module) {
+      $result->setModuleName($module);
+    }
+
+    // Optional module path
+    if ($modulePath) {
+      $result->setModulePath($modulePath);
+    }
+
     return $result;
   }
 }

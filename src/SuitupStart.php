@@ -28,18 +28,11 @@ declare(strict_types=1);
 include_once __DIR__ . "/Autoload/Psr4AutoloaderClass.php";
 include_once __DIR__ . "/functions.php";
 
-use Suitup\Mvc\Routes;
+use Suitup\Exception\StructureException;
+use Suitup\Exception\NotFoundException;
 use Suitup\Mvc\FrontController;
 use Suitup\Mvc\MvcAbstractController;
-
-///**
-// * Token para o sistema nao "confundir" as mensagens de sessao
-// * atual com mensagens que ja existiam em outra pagina.
-// * Utilizado dentro da classe \SuitUp\Mvc\MvcAbstractController
-// *
-// * ¯\_(-.-)_/¯
-// */
-//define('MSG_NSP_TOKEN', mctime());
+use Suitup\Mvc\Routes;
 
 /**
  * Define DEVELOPMENT constant
@@ -95,7 +88,7 @@ class SuitupStart
 
     // Make sure modules path is a dir
     if (!is_dir($modulesPathDir)) {
-      throw new \Exception('The $modulesPath parameter is not a directory');
+      throw new Exception('The $modulesPath parameter is not a directory');
     }
 
     // Add to the loader all directories from modules path dir.
@@ -122,22 +115,27 @@ class SuitupStart
       // If is everything ok this will be the one launch.
       $this->launcher($this->getConfig());
 
-    } catch (\Throwable $originalError) {
+    } catch (Throwable $originalError) {
       try {
-
-        dump($originalError);
 
         // We got an error so let's try to run
         // ErrorController inside the own module
 
-      } catch (\Throwable $e) {
-        try {
-          // Well now we have to try to launch ErrorController
-          // from framework itself
-
-        } catch (\Throwable $ex) {
-          dump($originalError);
+        $errorAction = 'error';
+        if ($originalError instanceof NotFoundException) {
+          $errorAction = 'not-found';
         }
+
+        $config = $this->getConfig()->mockUpTo($errorAction, 'error');
+        $this->launcher($config, $originalError);
+
+      } catch (Throwable $e) {
+        // Well now we have to try to launch ErrorController
+        // from framework itself
+        $this->launcher(
+          $this->getConfig()->mockUpTo($errorAction, 'error', 'error', __DIR__.'/ModuleError'),
+          $originalError
+        );
       }
     }
   }
@@ -150,17 +148,17 @@ class SuitupStart
    * @return MvcAbstractController|null
    * @throws Exception
    */
-  public function launcher(FrontController $frontController, \Throwable $exception = null): ?MvcAbstractController {
+  public function launcher(FrontController $frontController, Throwable $exception = null): ?MvcAbstractController {
 
     // Define modulo
     if (! is_dir($frontController->getModulePath()) || ! is_readable($frontController->getModulePath())) {
-      throw new \Exception("Module folder '{$frontController->getModulePath()}' does not exists");
+      throw new StructureException("Module folder '{$frontController->getModulePath()}' does not exists");
     }
 
     // Check if controller file exists
     $controllerFile = "{$frontController->getModulePath()}/{$frontController->getControllersPath()}/{$frontController->getControllerName()}.php";
     if (! file_exists($controllerFile)) {
-      throw new \Exception("Controller file could not be found: $controllerFile");
+      throw new NotFoundException("Controller file could not be found: $controllerFile");
     }
 
     // Try to discover the namespace for the controller
@@ -170,7 +168,7 @@ class SuitupStart
 
     // Validate controller class namespace
     if (! class_exists($controllerNsp)) {
-      throw new \Exception("Unable to find controller class with namespace '$controllerNsp'");
+      throw new NotFoundException("Unable to find controller class with namespace '$controllerNsp'");
     }
 
     // Create a controller instance
@@ -178,17 +176,17 @@ class SuitupStart
 
     // Check if it is a MvcAbstractController
     if (! $controller instanceof MvcAbstractController) {
-      throw new \Exception("Every controller must to be an instance of 'MvcAbstractController'");
+      throw new StructureException("Every controller must to be an instance of 'MvcAbstractController'");
     }
 
     // Check if action exists on controller
     if (! method_exists($controller, $frontController->getActionName())) {
-      throw new \Exception("Action '{$frontController->getActionName()}' does not exists on controller '$controllerNsp'");
+      throw new NotFoundException("Action '{$frontController->getActionName()}' does not exists on controller '$controllerNsp'");
     }
 
     // Check up for views folder
     if (! is_dir($frontController->getModulePath().'/'.$frontController->getViewsPath())) {
-      throw new \Exception("Views directory was not found to module '{$frontController->getModuleName()}'");
+      throw new StructureException("Views directory was not found to module '{$frontController->getModuleName()}'");
     }
 
     // Set exception if exists

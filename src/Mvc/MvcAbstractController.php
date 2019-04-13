@@ -213,16 +213,20 @@ abstract class MvcAbstractController
   }
 
   /**
-   * Default error type
+   * Default error type.
+   *
+   * <b>Avoid override it</b>
    */
-  public function errorAction() {
+  public function errorAction(): void {
     header(getenv('SERVER_PROTOCOL') . ' 500 Internal Server Error', true, 500);
   }
 
   /**
-   * Error type to page not found
+   * Error type to page not found.
+   *
+   * <b>Avoid override it</b>
    */
-  public function notFoundAction() {
+  public function notFoundAction(): void {
     header(getenv('SERVER_PROTOCOL') . ' 404 Not Found', true, 404);
   }
 
