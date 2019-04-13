@@ -27,7 +27,9 @@ declare(strict_types=1);
 namespace Suitup\Mvc;
 
 use Exception;
+use Throwable;
 use stdClass;
+use ReflectionClass;
 use Suitup\Enum\MsgType;
 
 /**
@@ -54,14 +56,49 @@ abstract class MvcAbstractController
   private $view = array();
 
   /**
+   * @var Throwable
+   */
+  private $exception;
+
+  /**
+   * This object will be populated only when view be rendered.
+   * Keep it here is like to reserve this object name, avoiding
+   * override.
+   *
    * @var array
    */
   private $messages = array();
 
   /**
-   * @var \Throwable
+   * This object will be populated only when view be rendered.
+   * Keep it here is like to reserve this object name, avoiding
+   * override.
+   *
+   * @var array
    */
-  private $exception;
+  private $login = array();
+
+  /**
+   * This object will be populated only when view be rendered.
+   * Keep it here is like to reserve this object name, avoiding
+   * override.
+   *
+   * It is the base URL to build links.
+   *
+   * @var string
+   */
+  private $baseUrl = '';
+
+  /**
+   * This object will be populated only when view be rendered.
+   * Keep it here is like to reserve this object name, avoiding
+   * override.
+   *
+   * It is the base PATH to render resources (files).
+   *
+   * @var string
+   */
+  private $basePath = '';
 
   /**
    * Tipos de erro de upload de arquivos.
@@ -80,9 +117,18 @@ abstract class MvcAbstractController
 
   public function __construct(FrontController $frontController) {
 
+    // Add a respective item to each injected value in the view
+    $reflectionClass = new ReflectionClass(get_class());
+
+    // Loop under all class items
+    foreach ($reflectionClass->getProperties() as $property) {
+      if (!$property->isStatic() && !in_array($property->getName(), array('frontController'))) {
+        $this->view[$property->getName()] = '';
+      }
+    }
+
     // Dependency injection
     $this->frontController = $frontController;
-
 
     // Messages from previous page
     if (isset($_SESSION[$this->getMsgNsp()])) {
@@ -130,10 +176,10 @@ abstract class MvcAbstractController
   public function render() {
 
     // If exists some exception
-    $this->view['exception'] = $this->exception;
+    $this->view['exception'] = $this->getException();
 
     // Show messages in the view
-    $this->view['messages'] = $this->messages;
+    $this->view['messages'] = $this->getMessages();
 
     // Add login variable to be rendered with view
     $this->view['login'] = self::getLogin();
@@ -141,9 +187,13 @@ abstract class MvcAbstractController
     // Append the base URL to the views
     $this->view['baseUrl'] = $this->baseUrl();
 
+    // Append the path to the root of site
+    $this->view['basePath'] = $this->basePath();
+
     // Inject variables to be used inside view or layout
     foreach ((array) $this->view as $key => $var) {
       $$key = $var;
+      $this->$key = $var;
     }
     unset($key); // Remove residue
     unset($var); // Remove residue
@@ -204,7 +254,7 @@ abstract class MvcAbstractController
   }
 
   /**
-   * Mensagens do sistema com ou sem redirecionamento
+   * System messages added by user
    *
    * @param string $msg
    * @param string $type
@@ -229,22 +279,24 @@ abstract class MvcAbstractController
   }
 
   /**
-   * @return \Throwable
+   * @return Throwable
    */
-  public function getException(): \Throwable {
+  public function getException(): ?Throwable {
     return $this->exception;
   }
 
   /**
-   * @param \Throwable $exception
+   * @param Throwable $exception
    * @return MvcAbstractController
    */
-  public function setException(\Throwable $exception): MvcAbstractController {
+  public function setException(Throwable $exception): MvcAbstractController {
     $this->exception = $exception;
     return $this;
   }
 
   /**
+   * The name of the current module.
+   *
    * @return string
    */
   public function getModuleName() {
@@ -252,6 +304,8 @@ abstract class MvcAbstractController
   }
 
   /**
+   * The name of the current controller.
+   *
    * @return string
    */
   public function getControllerName(): string {
@@ -259,6 +313,8 @@ abstract class MvcAbstractController
   }
 
   /**
+   * Name of the current name.
+   *
    * @return string
    */
   public function getActionName(): string {
@@ -266,7 +322,8 @@ abstract class MvcAbstractController
   }
 
   /**
-   * Nome do arquivo de layout.
+   * Name of the current layout.
+   *
    * @return string
    */
   public function getLayoutName(): string {
@@ -309,14 +366,27 @@ abstract class MvcAbstractController
    *
    * @param string|array $name
    * @param mixed $value
+   * @throws Exception
    * @return MvcAbstractController
    */
-  protected function addViewVar($name, $value = null) {
+  public function addViewVar($name, $value = null) {
     if (is_array($name)) {
       foreach ($name as $key => $val) {
+
+        // Check if variable is already defined
+        if (isset($this->view[$key])) {
+          throw new Exception("The view item named '$key' is already defined and can't be override");
+        }
+
         $this->view[$key] = $val;
       }
     } else {
+
+      // Check if variable is already defined
+      if (isset($this->view[$name])) {
+        throw new Exception("The view item named '$name' is already defined and can't be override");
+      }
+
       $this->view[$name] = $value;
     }
     return $this;
@@ -328,7 +398,7 @@ abstract class MvcAbstractController
    * @param string $name
    * @return bool
    */
-  protected function isViewVar($name) {
+  public function isViewVar($name) {
     return isset($this->view[$name]);
   }
 
@@ -338,7 +408,7 @@ abstract class MvcAbstractController
    * @param string $name
    * @return mixed
    */
-  protected function getViewVar($name) {
+  public function getViewVar($name) {
     return $this->isViewVar($name) ? $this->view[$name] : false;
   }
 
@@ -364,13 +434,19 @@ abstract class MvcAbstractController
   }
 
   /**
-   * Alias for @see baseUrl()
+   * Return base DIRECTORY to the current document root. It will
+   * help to render files in the view.
    *
    * @param string|null $ref
    * @return string
    */
   public function basePath(string $ref = null): string {
-    return $this->baseUrl($ref);
+    $basePath = '/'.ltrim($this->getFrontController()->getBasePath(), '/');
+
+    // Append reference
+    $append = ltrim(($ref ?? ''), '/');
+
+    return $basePath.($append ? '/'.$append : '');
   }
 
   /**
@@ -396,6 +472,7 @@ abstract class MvcAbstractController
 
   /**
    * True if the request method is POST.
+   *
    * @return bool
    */
   public function isPost() {
@@ -420,6 +497,7 @@ abstract class MvcAbstractController
 
   /**
    * True if user is logged on with current self::$authNsp.
+   *
    * @return bool
    */
   public static function isLogged() {
@@ -454,13 +532,13 @@ abstract class MvcAbstractController
   }
 
   /**
-   * Retorna tudo que está gravado na sessão de login.
+   * Return the current login session data.
    *
    * @param string $key
    * @param mixed $default
    * @return mixed
    */
-  public static function getLogin($key = null, $default = null) {
+  public static function getLogin(string $key = null, $default = null) {
     $login = isset($_SESSION[self::$authNsp]) ? $_SESSION[self::$authNsp] : false;
 
     if ($key) {
@@ -475,15 +553,15 @@ abstract class MvcAbstractController
   }
 
   /**
-   * Atualiza um indice da sessão de login.
+   * Update some key of the current login session data.
    *
    * @param string $key
    * @param mixed $value
    */
-  public static function updateLoginKey($key, $value) {
+  public static function updateLoginKey(string $key, $value): void {
     $login = (array) self::getLogin();
 
-    // Isset não funciona aqui, maior loucura... =/
+    // @TODO: check why isset does not work here
     foreach (array_keys($login) as $i) {
       if ($key == $i) {
         $_SESSION[self::$authNsp][$key] = $value;
@@ -561,23 +639,24 @@ abstract class MvcAbstractController
   }
 
   /**
-   * Captura uma imagem e transforma seu conteúdo para Base64.
-   * - Deixa a imagem em torno de 33% maior segundo a documentação do PHP.
+   * Transform an image data to Base64.
+   *
+   * <b>It will make the file round to 33% bigger according to PHP Documentation</b>
    *
    * @param array $file Item $_FILES['arquivo']
-   * @param int $maxFilesize 512kb por padrão.
-   * @throws \Exception
+   * @param int $maxFilesize Default to 512kb
+   * @throws Exception
    * @return string
    */
-  public function uploadFileImageBase64($file, $maxFilesize = 524288) {
-    // Valida erros
+  public function uploadFileImageBase64(array $file, int $maxFilesize = 524288) {
+    // Check errors
     if ($file['error'] != UPLOAD_ERR_OK) {
-      throw new Exception("Erro ao fazer o upload da imagem, tente novamente");
+      throw new Exception("Unexpected error, file was not sent, try again");
     }
 
-    // Valida tamanho
+    // Check size
     if ($file['size'] > $maxFilesize) {
-      throw new Exception("Arquivo muito grande, por favor envie um arquivo até " . ($maxFilesize / MB) . "Mb");
+      throw new Exception("Too big file, send one with till " . ($maxFilesize / MB) . "Mb");
     }
 
     // Define exts e mimetypes
@@ -590,27 +669,28 @@ abstract class MvcAbstractController
       'bmp' => 'image/bmp'
     );
 
-    // Valida EXT
+    // Validate EXT
     $fileExt = preg_replace("/^.+\./", '', $file['name']);
     if (! array_key_exists($fileExt, $mimeTypes)) {
-      throw new Exception("Extensão do arquivo é inválida, por favor envie arquivos desta lista (" . implode(", ", array_keys($mimeTypes)) . ")");
+      throw new Exception("Invalid extension, please send one of these: (" . implode(", ", array_keys($mimeTypes)) . ")");
     }
 
-    // Valida MimeType
+    // Validate MimeType
     if (! isset($mimeTypes[$fileExt]) || ($file['type'] != $mimeTypes[$fileExt])) {
-      throw new Exception("Arquivo inválido, por favor envie arquivos desta lista (" . implode(", ", array_keys($mimeTypes)) . ")");
+      throw new Exception("Invalid file mime type, please send one of these: (" . implode(", ", array_keys($mimeTypes)) . ")");
     }
 
-    // Valida se o arquivo existe.
+    // Validate if file exists
     if (! file_exists($file['tmp_name']) || ! is_readable($file['tmp_name'])) {
-      throw new Exception("Erro inesperado ao fazer upload do arquivo, tente novamente");
+      throw new Exception("Something went wrong to upload image, try again");
     }
-    // Não deu erro até aqui, então codifica o cara para base64
+    // No errors, try to code to base64
     return 'data:' . $mimeTypes[$fileExt] . ';base64,' . base64_encode(file_get_contents($file['tmp_name']));
   }
 
   /**
-   * Pega a pagina anterior se houver e for diferente da atual.
+   * Return the previous page if it is different from current.
+   *
    * @return bool|string
    */
   public function getReferer() {
@@ -627,7 +707,7 @@ abstract class MvcAbstractController
   }
 
   /**
-   * Efetua redirecionamento
+   * Redirect page to...
    *
    * @param string $to
    * @return string
@@ -655,7 +735,8 @@ abstract class MvcAbstractController
   }
 
   /**
-   * Retorna o que tem gravado na sessao de filtros.
+   * Return or create a session specific to create filters.
+   * <b>Reserved only one by each action.</b>
    *
    * @return mixed
    */
@@ -672,13 +753,13 @@ abstract class MvcAbstractController
   }
 
   /**
-   * Aqui nos controlamos as sessoes de filtros.
+   * Add value by key to the reserved filter session.
    *
-   * @param mixed $name
+   * @param string $name
    * @param mixed $value
    * @return array
    */
-  public function addSessionFilter($name, $value = null) {
+  public function addSessionFilter(string $name, $value = null) {
     $namespace = implode('.', array(
       $this->getFrontController()->getModuleName(),
       $this->getFrontController()->getControllerName(),
@@ -696,26 +777,28 @@ abstract class MvcAbstractController
   }
 
   /**
-   * Remove um item de sessao de filtro.
+   * Remove item from reserved filter session.
    *
-   * @param mixed $key
+   * @param string|null $name
    */
-  public function removeSessionFilter($key = null) {
+  public function removeSessionFilter(string $name = null) {
     $namespace = implode('.', array(
       $this->getFrontController()->getModuleName(),
       $this->getFrontController()->getControllerName(),
       $this->getFrontController()->getActionName()
     ));
 
-    if ($key && $_SESSION[$namespace][$key]) {
-      unset($_SESSION[$namespace][$key]);
+    if ($name && $_SESSION[$namespace][$name]) {
+      unset($_SESSION[$namespace][$name]);
     }
   }
 
   /**
-   * Limpa todos os filtros deste namespace
+   * Clear all reserved filter session.
+   *
+   * Note that it will clear ONLY the current action filter session.
    */
-  public function clearSessionFilter() {
+  public function clearSessionFilter(): void {
     $namespace = implode('.', array(
       $this->getFrontController()->getModuleName(),
       $this->getFrontController()->getControllerName(),
