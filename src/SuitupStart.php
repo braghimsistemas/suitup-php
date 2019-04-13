@@ -118,18 +118,21 @@ class SuitupStart
     } catch (Throwable $originalError) {
       try {
 
-        // We got an error so let's try to run
-        // ErrorController inside the own module
-
+        // Define what kind of view will be displayed
         $errorAction = 'error';
         if ($originalError instanceof NotFoundException) {
           $errorAction = 'not-found';
         }
 
-        $config = $this->getConfig()->mockUpTo($errorAction, 'error');
-        $this->launcher($config, $originalError);
+        // We got an error so let's try to run
+        // ErrorController inside the own module
+        $this->launcher(
+          $this->getConfig()->mockUpTo($errorAction, 'error', 'error'),
+          $originalError
+        );
 
       } catch (Throwable $e) {
+
         // Well now we have to try to launch ErrorController
         // from framework itself
         $this->launcher(
@@ -149,7 +152,7 @@ class SuitupStart
    * @throws Exception
    */
   public function launcher(FrontController $frontController, Throwable $exception = null): ?MvcAbstractController {
-
+    
     // Define modulo
     if (! is_dir($frontController->getModulePath()) || ! is_readable($frontController->getModulePath())) {
       throw new StructureException("Module folder '{$frontController->getModulePath()}' does not exists");

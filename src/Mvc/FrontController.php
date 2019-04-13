@@ -689,11 +689,15 @@ class FrontController
     // Optional module param
     if ($module) {
       $result->setModuleName($module);
-    }
 
-    // Optional module path
-    if ($modulePath) {
-      $result->setModulePath($modulePath);
+      // Optional module path
+      if ($modulePath) {
+        $result->setModulePath($modulePath);
+      } else {
+
+        // Set the module path to the current modules path directory
+        $result->setModulePath($result->getModulesPath().'/'.$result->getModuleName());
+      }
     }
 
     return $result;
