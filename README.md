@@ -45,7 +45,7 @@ Everyone is welcome to contribute with _SuitUp PHP Framework_. Just fork it, mak
 ### Thanks to
 [JetBrains](https://www.jetbrains.com/?from=SuitUp+PHP+Framework+2) that gave us a free license of PHPStorm to maintain this project and develop with maximum productivity.
 
-[[Logo will be appended here]]
+![PHPStorm](https://i.ibb.co/xXB4Fzc/phpstorm-64.png) 
 
 ---
 
