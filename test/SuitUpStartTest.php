@@ -50,4 +50,52 @@ if (file_exists(__DIR__.'/../vendor/autoload.php')) {
 final class SuitUpStartTest extends PHPUnit\Framework\TestCase
 {
 
+  public function testCreateInstance() {
+
+    $suitup = new SuitUpStart('.');
+
+    $this->assertInstanceOf('SuitUpStart', $suitup);
+
+    return $suitup;
+  }
+
+  /**
+   * Certify that getConfig method will return a instance of FrontController
+   *
+   * @depends testCreateInstance
+   * @param SuitUpStart $suitup
+   */
+  public function testGetConfig(SuitUpStart $suitup) {
+
+    $this->assertInstanceOf('SuitUp\Mvc\FrontController', $suitup->getConfig());
+  }
+
+  /**
+   * @depends testCreateInstance
+   * @param SuitUpStart $suitup
+   */
+  public function testSetSqlMonitor(SuitUpStart $suitup) {
+
+    // Must to be false by default
+    $this->assertFalse($suitup->getConfig()->isSqlMonitor());
+
+    // True case
+    $suitup->setSqlMonitor(true);
+    $this->assertTrue($suitup->getConfig()->isSqlMonitor());
+
+    // False case
+    $suitup->setSqlMonitor(false);
+    $this->assertFalse($suitup->getConfig()->isSqlMonitor());
+  }
+
+  /**
+   * @throws Exception
+   */
+  public function testSetSqlMonitorTrueByDefault() {
+
+    $suitup = new SuitUpStart('.');
+    $suitup->setSqlMonitor(true);
+
+    $this->assertTrue($suitup->getConfig()->isSqlMonitor());
+  }
 }
