@@ -8,7 +8,7 @@
     Maybe it was moved without warning and it shouldn't happen to handsome people like you, of course.
   </p>
 </div>
-<?php if (DEVELOPMENT && isset($exception)): ?>
+<?php if (SHOW_ERRORS && isset($exception)): ?>
   <div class="row">
     <div class="col-sm-12">
       <table class="table table-striped table-bordered table-responsive">
@@ -19,28 +19,32 @@
           </tr>
         </thead>
         <tbody>
-        <tr>
-          <td scope="row">File:</td>
-          <td><?php echo $exception->getFile(); ?> :: (( <b><?php echo $exception->getLine(); ?></b> ))</td>
-        </tr>
-        <?php if ($exception->getTrace()): ?>
           <tr>
-            <td scope="row">Stack Trace:</td>
-            <td>
-              <?php foreach ($exception->getTrace() as $key => $trace): ?>
-                <div class="well well-sm">
-                  #<?php echo $key + 1; ?> - File: <?php echo $trace['file']; ?>::(<?php echo $trace['line']; ?>)
-                  <br />
-                  <?php if ($trace['args']): ?>
-                    <?php echo $trace['function']; ?>(<?php echo getTraceArgsAsString($trace['args']); ?>);
-                  <?php else: ?>
-                    <?php echo $trace['function']; ?>();
-                  <?php endif; ?>
-                </div>
-              <?php endforeach; ?>
-            </td>
+            <td scope="row">File:</td>
+            <td><?php echo $exception->getFile(); ?> :: (( <b><?php echo $exception->getLine(); ?></b> ))</td>
           </tr>
-        <?php endif; ?>
+          <tr>
+            <td scope="row">Type:</td>
+            <td><?php echo get_class($exception); ?></td>
+          </tr>
+          <?php if ($exception->getTrace()): ?>
+            <tr>
+              <td scope="row">Stack Trace:</td>
+              <td>
+                <?php foreach ($exception->getTrace() as $key => $trace): ?>
+                  <div class="well well-sm">
+                    #<?php echo $key + 1; ?> - File: <?php echo $trace['file']; ?>::(<?php echo $trace['line']; ?>)
+                    <br />
+                    <?php if ($trace['args']): ?>
+                      <?php echo $trace['function']; ?>(<?php echo getTraceArgsAsString($trace['args']); ?>);
+                    <?php else: ?>
+                      <?php echo $trace['function']; ?>();
+                    <?php endif; ?>
+                  </div>
+                <?php endforeach; ?>
+              </td>
+            </tr>
+          <?php endif; ?>
         </tbody>
         <tfoot>
           <tr>
@@ -59,7 +63,7 @@
         <i class="fa fa-arrow-left"></i>
         Go Back
       </a>
-      <a class="btn btn-primary btn-lg" href="<?php echo $this->baseUrl(); ?>" role="button">Home Page</a>
+      <a class="btn btn-primary btn-lg" href="<?php echo $basePath; ?>" role="button">Home Page</a>
     </div>
   </div>
 <?php endif; ?>

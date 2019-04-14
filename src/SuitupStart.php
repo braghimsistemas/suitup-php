@@ -28,8 +28,9 @@ declare(strict_types=1);
 include_once __DIR__ . "/Autoload/Psr4AutoloaderClass.php";
 include_once __DIR__ . "/functions.php";
 
-use Suitup\Exception\StructureException;
+use Suitup\Exception\SuitupException;
 use Suitup\Exception\NotFoundException;
+use Suitup\Exception\StructureException;
 use Suitup\Mvc\FrontController;
 use Suitup\Mvc\MvcAbstractController;
 use Suitup\Mvc\Routes;
@@ -124,7 +125,7 @@ class SuitupStart
           $errorAction = 'not-found';
         }
 
-        // We got an error so let's try to run
+        // We got an default-error so let's try to run
         // ErrorController inside the own module
         $this->launcher(
           $this->getConfig()->mockUpTo($errorAction, 'error', 'error'),
@@ -132,13 +133,22 @@ class SuitupStart
         );
 
       } catch (Throwable $e) {
+        try {
 
-        // Well now we have to try to launch ErrorController
-        // from framework itself
-        $this->launcher(
-          $this->getConfig()->mockUpTo($errorAction, 'error', 'error', __DIR__.'/ModuleError'),
-          $originalError
-        );
+          // Well now we have to try to launch ErrorController
+          // from framework itself
+          $this->launcher(
+            $this->getConfig()->mockUpTo($errorAction, 'default-error', 'error', __DIR__.'/ModuleError'),
+            DEVELOPMENT ? $e : $originalError
+          );
+
+        } catch (Throwable $ex) {
+
+          // Sadly it came till here, it's such a shame and we
+          // made everything that was possible. Now it's your
+          // job champs! Good luck ='(
+          throw (DEVELOPMENT ? $ex : $originalError);
+        }
       }
     }
   }

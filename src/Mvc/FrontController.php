@@ -27,6 +27,8 @@ declare(strict_types=1);
 
 namespace Suitup\Mvc;
 
+use ReflectionClass;
+
 class FrontController
 {
   /**
@@ -653,7 +655,7 @@ class FrontController
 
     $result = array();
 
-    $reflectionClass = new \ReflectionClass(get_class($this));
+    $reflectionClass = new ReflectionClass(get_class($this));
     foreach ($reflectionClass->getProperties() as $property) {
       if ($property->isStatic()) {
         continue;

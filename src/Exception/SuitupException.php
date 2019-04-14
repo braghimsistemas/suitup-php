@@ -26,7 +26,8 @@ declare(strict_types=1);
 
 namespace Suitup\Exception;
 
-class NotFoundException extends SuitupException
+
+class SuitupException extends \Exception
 {
 
 }

@@ -26,7 +26,7 @@ declare(strict_types=1);
 
 namespace Suitup\Exception;
 
-class StructureException extends \Exception
+class StructureException extends SuitupException
 {
 
 }

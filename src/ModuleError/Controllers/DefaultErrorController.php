@@ -30,6 +30,6 @@ use Suitup\Mvc\MvcAbstractController;
  * Class ErrorController
  * @package ModuleError\Controllers
  */
-class ErrorController extends MvcAbstractController
+class DefaultErrorController extends MvcAbstractController
 {
 }

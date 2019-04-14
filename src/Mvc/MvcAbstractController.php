@@ -213,7 +213,7 @@ abstract class MvcAbstractController
   }
 
   /**
-   * Default error type.
+   * Default default-error type.
    *
    * <b>Avoid override it</b>
    */
@@ -646,7 +646,7 @@ abstract class MvcAbstractController
   public function uploadFileImageBase64(array $file, int $maxFilesize = 524288) {
     // Check errors
     if ($file['error'] != UPLOAD_ERR_OK) {
-      throw new Exception("Unexpected error, file was not sent, try again");
+      throw new Exception("Unexpected default-error, file was not sent, try again");
     }
 
     // Check size
