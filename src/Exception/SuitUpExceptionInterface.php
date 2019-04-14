@@ -26,11 +26,8 @@ declare(strict_types=1);
 
 namespace SuitUp\Exception;
 
-class NotFoundException extends \Exception implements SuitUpExceptionInterface
-{
 
-  public function getDescription(): string
-  {
-    // TODO: Implement getDescription() method.
-  }
+interface SuitUpExceptionInterface
+{
+  public function getDescription(): string;
 }

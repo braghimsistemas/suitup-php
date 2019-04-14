@@ -24,13 +24,15 @@
  */
 declare(strict_types=1);
 
-namespace SuitUp\Exception;
+namespace SuitUp\Database;
 
-class NotFoundException extends \Exception implements SuitUpExceptionInterface
+use SuitUp\Database\DbAdapter\AdapterInterface;
+
+interface DbAdapterInterface
 {
+  public function __construct(AdapterInterface $adapter);
 
-  public function getDescription(): string
-  {
-    // TODO: Implement getDescription() method.
-  }
+  public function setConnection(\PDO $connection): DbAdapterInterface;
+
+  public function getConnection(): \PDO;
 }

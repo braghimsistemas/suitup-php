@@ -26,7 +26,11 @@ declare(strict_types=1);
 
 namespace SuitUp\Exception;
 
-class StructureException extends SuitUpException
+class StructureException extends \Exception implements SuitUpExceptionInterface
 {
 
+  public function getDescription(): string
+  {
+    // TODO: Implement getDescription() method.
+  }
 }

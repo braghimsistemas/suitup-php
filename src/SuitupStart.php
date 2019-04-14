@@ -113,7 +113,7 @@ class SuitUpStart
     try {
 
       // If is everything ok this will be the one launch.
-      $this->launcher($this->getConfig());
+      $this->builder($this->getConfig());
 
     } catch (Throwable $originalError) {
       try {
@@ -126,7 +126,7 @@ class SuitUpStart
 
         // We got an default-error so let's try to run
         // ErrorController inside the own module
-        $this->launcher(
+        $this->builder(
           $this->getConfig()->mockUpTo($errorAction, 'error', 'error'),
           $originalError
         );
@@ -136,7 +136,7 @@ class SuitUpStart
 
           // Well now we have to try to launch ErrorController
           // from framework itself
-          $this->launcher(
+          $this->builder(
             $this->getConfig()->mockUpTo($errorAction, 'default-error', 'error', __DIR__.'/ModuleError'),
             DEVELOPMENT ? $e : $originalError
           );
@@ -160,7 +160,7 @@ class SuitUpStart
    * @return MvcAbstractController|null
    * @throws Exception
    */
-  public function launcher(FrontController $frontController, Throwable $exception = null): ?MvcAbstractController {
+  public function builder(FrontController $frontController, Throwable $exception = null): ?MvcAbstractController {
     
     // Define modulo
     if (! is_dir($frontController->getModulePath()) || ! is_readable($frontController->getModulePath())) {

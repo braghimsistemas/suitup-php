@@ -24,13 +24,28 @@
  */
 declare(strict_types=1);
 
-namespace SuitUp\Exception;
 
-class NotFoundException extends \Exception implements SuitUpExceptionInterface
+namespace SuitUp\Database\DbAdapter;
+
+
+class Postgres implements AdapterInterface
 {
-
-  public function getDescription(): string
+  /**
+   * Postgres constructor.
+   * @param $host
+   * @param $port
+   * @param $dbname
+   * @param $username
+   * @param string $password
+   * @param array $options
+   */
+  public function __construct($host, $port, $dbname, $username, $password = '', array $options = array())
   {
-    // TODO: Implement getDescription() method.
+    // Setup dsn string
+    $this->setDsn("pgsql:host=$host;port=$port;dbname=$dbname");
+
+    $this->setUsername($username);
+    $this->setPassword($password);
+    $this->setOptions($options);
   }
 }

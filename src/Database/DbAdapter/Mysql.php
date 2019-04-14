@@ -24,13 +24,30 @@
  */
 declare(strict_types=1);
 
-namespace SuitUp\Exception;
 
-class NotFoundException extends \Exception implements SuitUpExceptionInterface
+namespace SuitUp\Database\DbAdapter;
+
+
+class Mysql extends AdapterAbstract
 {
 
-  public function getDescription(): string
-  {
-    // TODO: Implement getDescription() method.
+  /**
+   * Mysql constructor.
+   *
+   * @param $host
+   * @param $port
+   * @param $dbname
+   * @param $username
+   * @param string $password
+   * @param array $options
+   */
+  public function __construct($host, $port, $dbname, $username, $password = '', array $options = array()) {
+
+    // Setup dsn string
+    $this->setDsn("mysql:host=$host;port=$port;dbname=$dbname");
+
+    $this->setUsername($username);
+    $this->setPassword($password);
+    $this->setOptions($options);
   }
 }

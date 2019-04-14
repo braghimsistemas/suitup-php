@@ -24,9 +24,11 @@
  */
 declare(strict_types=1);
 
+
 namespace SuitUp\Exception;
 
-class NotFoundException extends \Exception implements SuitUpExceptionInterface
+
+class DbAdapterException extends \Exception implements SuitUpExceptionInterface
 {
 
   public function getDescription(): string
