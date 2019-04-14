@@ -24,6 +24,6 @@
 		"phpmailer/phpmailer": "Not implemented in framework itself, but helps a lot and it's very simple."
 	},
 	"autoload": {
-		"classmap": ["./src/SuitupStart.php"]
+		"classmap": ["./src/SuitUpStart.php"]
 	}
 }
