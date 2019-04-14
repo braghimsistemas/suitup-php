@@ -6,5 +6,6 @@ composer.lock
 composer.phar
 
 vendor
+site
 build
 var
