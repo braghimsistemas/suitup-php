@@ -23,45 +23,31 @@
  * SOFTWARE.
  */
 
+// Initial configs
 declare(strict_types=1);
 error_reporting(E_ALL | E_STRICT);
 ini_set('display_errors', '1');
 
-// Para quando estamos mexendo diretamente no código
+// Environment variables
+define('DEVELOPMENT', true);
+define('SHOW_ERRORS', true);
+
 if (file_exists(__DIR__.'/../vendor/autoload.php')) {
+
+  // We are developing SuitUp itself.
+
 	$autoload = include __DIR__.'/../vendor/autoload.php';
 	$autoload->addPsr4('SuitUpTest\\', __DIR__.DIRECTORY_SEPARATOR.'.');
-	
-// Para quando estamos alterando dentro do projeto que usa o SuitUp
+
 } else if (file_exists(__DIR__.'/../../../autoload.php')) {
+
+  // We are testing directly from production (developing a project)
+
 	$autoload = include __DIR__.'/../../../autoload.php';
 	$autoload->addPsr4('SuitUpTest\\', __DIR__.DIRECTORY_SEPARATOR.'.');
-	
 }
-
-/**
- * Define a Constante DEVELOPMENT caso ainda não tenha sido.
- */
-defined('DEVELOPMENT') || define('DEVELOPMENT', (bool) getenv('DEVELOPMENT'));
-
-/**
- * Define a Constante SHOW_ERRORS caso ainda não tenha sido.
- */
-defined('SHOW_ERRORS') || define('SHOW_ERRORS', (bool) getenv('DEVELOPMENT'));
 
 final class SuitUpStartTest extends PHPUnit\Framework\TestCase
 {
 
-
-  public function testConstruct(): void {
-
-  }
-
-  public function testRun(): void {
-     $this->assertEquals(1, 1);
-  }
-
-  public function testSetSqlMonitor(): void {
-     $this->assertEquals(2, 2);
-  }
 }

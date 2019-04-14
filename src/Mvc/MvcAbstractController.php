@@ -24,13 +24,13 @@
  */
 declare(strict_types=1);
 
-namespace Suitup\Mvc;
+namespace SuitUp\Mvc;
 
 use Exception;
 use Throwable;
 use stdClass;
 use ReflectionClass;
-use Suitup\Enum\MsgType;
+use SuitUp\Enum\MsgType;
 
 /**
  * Class MvcAbstractController

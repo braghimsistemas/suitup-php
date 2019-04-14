@@ -24,10 +24,10 @@
  */
 declare(strict_types=1);
 
-namespace Suitup\Exception;
+namespace SuitUp\Exception;
 
 
-class SuitupException extends \Exception
+class SuitUpException extends \Exception
 {
 
 }

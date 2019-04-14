@@ -25,7 +25,7 @@
 
 declare(strict_types=1);
 
-namespace Suitup\Mvc;
+namespace SuitUp\Mvc;
 
 use ReflectionClass;
 

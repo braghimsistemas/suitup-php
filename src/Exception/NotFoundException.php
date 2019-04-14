@@ -24,9 +24,9 @@
  */
 declare(strict_types=1);
 
-namespace Suitup\Exception;
+namespace SuitUp\Exception;
 
-class NotFoundException extends SuitupException
+class NotFoundException extends SuitUpException
 {
 
 }

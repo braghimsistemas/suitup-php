@@ -28,12 +28,11 @@ declare(strict_types=1);
 include_once __DIR__ . "/Autoload/Psr4AutoloaderClass.php";
 include_once __DIR__ . "/functions.php";
 
-use Suitup\Exception\SuitupException;
-use Suitup\Exception\NotFoundException;
-use Suitup\Exception\StructureException;
-use Suitup\Mvc\FrontController;
-use Suitup\Mvc\MvcAbstractController;
-use Suitup\Mvc\Routes;
+use SuitUp\Exception\NotFoundException;
+use SuitUp\Exception\StructureException;
+use SuitUp\Mvc\FrontController;
+use SuitUp\Mvc\MvcAbstractController;
+use SuitUp\Mvc\Routes;
 
 /**
  * Define DEVELOPMENT constant
@@ -46,11 +45,11 @@ defined('DEVELOPMENT') || define('DEVELOPMENT', (bool) getenv('DEVELOPMENT'));
 defined('SHOW_ERRORS') || define('SHOW_ERRORS', (bool) getenv('SHOW_ERRORS'));
 
 /**
- * Class SuitupStart
+ * Class SuitUpStart
  *
- * Everything in Suitup Framework PHP begins from here.
+ * Everything in SuitUp Framework PHP begins from here.
  */
-class SuitupStart
+class SuitUpStart
 {
 
   /**
@@ -64,7 +63,7 @@ class SuitupStart
   private $config;
 
   /**
-   * SuitupStart constructor.
+   * SuitUpStart constructor.
    *
    * @param string $modulesPath
    * @throws Exception
@@ -74,7 +73,7 @@ class SuitupStart
     // Start the loader to setup auto include for the framework files.
     $loader = new Psr4AutoloaderClass();
     $loader->register();
-    $loader->addNamespace('Suitup', __DIR__);
+    $loader->addNamespace('SuitUp', __DIR__);
     $loader->addNamespace('ModuleError', __DIR__ . '/ModuleError');
 
     // Start a config instance
@@ -232,9 +231,9 @@ class SuitupStart
 
   /**
    * @param bool $status
-   * @return SuitupStart
+   * @return SuitUpStart
    */
-  public function setSqlMonitor(bool $status): SuitupStart {
+  public function setSqlMonitor(bool $status): SuitUpStart {
     $this->getConfig()->setSqlMonitor($status);
     return $this;
   }

@@ -24,11 +24,11 @@
  */
 declare(strict_types=1);
 
-namespace Suitup\Enum;
+namespace SuitUp\Enum;
 
 /**
  * Class MsgType
- * @package Suitup\Enum
+ * @package SuitUp\Enum
  */
 class MsgType
 {
