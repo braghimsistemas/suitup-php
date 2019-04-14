@@ -28,26 +28,34 @@ declare(strict_types=1);
 namespace SuitUp\Database\DbAdapter;
 
 
+use SuitUp\Exception\DbAdapterException;
+
 class Mysql extends AdapterAbstract
 {
 
   /**
    * Mysql constructor.
    *
-   * @param $host
-   * @param $port
-   * @param $dbname
-   * @param $username
-   * @param string $password
-   * @param array $options
+   * @param array $parameters
+   * @throws DbAdapterException
    */
-  public function __construct($host, $port, $dbname, $username, $password = '', array $options = array()) {
+  public function __construct(array $parameters) {
+
+    // Check if user setup parameters as right
+    $this->validateParams($parameters);
+
+    // The heart of matter
+    $params = new \stdClass();
+    $params->host = $parameters['host'] ?? 'localhost';
+    $params->port = $parameters['port'] ?? '3306';
+    $params->dbname = $parameters['dbname'] ?? null;
 
     // Setup dsn string
-    $this->setDsn("mysql:host=$host;port=$port;dbname=$dbname");
+    $this->setDsn("mysql:host={$params->host};port={$params->port};dbname={$params->dbname}");
 
-    $this->setUsername($username);
-    $this->setPassword($password);
-    $this->setOptions($options);
+    // User and options config
+    $this->setUsername($parameters['username'] ?? 'root');
+    $this->setPassword($parameters['password'] ?? '');
+    $this->setOptions($parameters['options'] ?? array());
   }
 }

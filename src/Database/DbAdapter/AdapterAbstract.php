@@ -27,6 +27,8 @@ declare(strict_types=1);
 namespace SuitUp\Database\DbAdapter;
 
 
+use SuitUp\Exception\DbAdapterException;
+
 abstract class AdapterAbstract implements AdapterInterface
 {
   /**
@@ -48,6 +50,35 @@ abstract class AdapterAbstract implements AdapterInterface
    * @var string
    */
   private $options = array();
+
+  /**
+   * @param array $parameters
+   * @throws DbAdapterException
+   */
+  public function validateParams(array $parameters) {
+    foreach ($parameters as $name => $value) {
+
+      // Suggest to password
+      if (in_array($name, array('pwd', 'senha', 'passwd'))) {
+        throw new DbAdapterException("Parameter '$name' is not valid. You would say: password?");
+      }
+
+      // Suggest to username
+      if (in_array($name, array('user', 'usuario'))) {
+        throw new DbAdapterException("Parameter '$name' is not valid. You would say: username?");
+      }
+
+      // Suggest to dbname
+      if (in_array($name, array('database', 'db'))) {
+        throw new DbAdapterException("Parameter '$name' is not valid. You would say: dbname?");
+      }
+
+      // Check all parameters
+      if (!in_array($name, array('host', 'port', 'dbname', 'username', 'password', 'options'))) {
+        throw new DbAdapterException("$name is not a valid parameter to create connection");
+      }
+    }
+  }
 
   /**
    * @return mixed

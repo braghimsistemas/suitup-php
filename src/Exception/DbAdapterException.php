@@ -31,8 +31,10 @@ namespace SuitUp\Exception;
 class DbAdapterException extends \Exception implements SuitUpExceptionInterface
 {
 
-  public function getDescription(): string
-  {
-    // TODO: Implement getDescription() method.
+  /**
+   * @return string
+   */
+  public function getDescription(): string {
+    return "It represents an error occurred in the database configurations";
   }
 }

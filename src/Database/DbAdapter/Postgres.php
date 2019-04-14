@@ -28,24 +28,34 @@ declare(strict_types=1);
 namespace SuitUp\Database\DbAdapter;
 
 
-class Postgres implements AdapterInterface
+use SuitUp\Exception\DbAdapterException;
+
+class Postgres extends AdapterAbstract
 {
+
   /**
    * Postgres constructor.
-   * @param $host
-   * @param $port
-   * @param $dbname
-   * @param $username
-   * @param string $password
-   * @param array $options
+   *
+   * @param array $parameters
+   * @throws DbAdapterException
    */
-  public function __construct($host, $port, $dbname, $username, $password = '', array $options = array())
-  {
-    // Setup dsn string
-    $this->setDsn("pgsql:host=$host;port=$port;dbname=$dbname");
+  public function __construct(array $parameters) {
 
-    $this->setUsername($username);
-    $this->setPassword($password);
-    $this->setOptions($options);
+    // Check if user setup parameters as right
+    $this->validateParams($parameters);
+
+    // The heart of matter
+    $params = new \stdClass();
+    $params->host = $parameters['host'] ?? 'localhost';
+    $params->port = $parameters['port'] ?? '5432';
+    $params->dbname = $parameters['dbname'] ?? null;
+
+    // Setup dsn string
+    $this->setDsn("pgsql:host={$params->host};port={$params->port};dbname={$params->dbname}");
+
+    // User and options config
+    $this->setUsername($parameters['username'] ?? 'root');
+    $this->setPassword($parameters['password'] ?? '');
+    $this->setOptions($parameters['options'] ?? array());
   }
 }

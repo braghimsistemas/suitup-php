@@ -27,6 +27,7 @@ declare(strict_types=1);
 namespace SuitUp\Database;
 
 use SuitUp\Database\DbAdapter\AdapterInterface;
+use SuitUp\Exception\DbAdapterException;
 
 /**
  * This class is the connection itself.
@@ -43,8 +44,19 @@ class DbAdapter implements DbAdapterInterface
   public function __construct(AdapterInterface $adapter) {
     $this->adapter = $adapter;
 
-    dump($adapter);
+    try {
 
+      // Try to create a PDO connection object
+      $this->connection = new \PDO(
+        $adapter->getDsn(),
+        $adapter->getUsername(),
+        $adapter->getPassword(),
+        $adapter->getOptions()
+      );
+
+    } catch (\PDOException $e) {
+      throw new DbAdapterException("Database connection cannot be done. Check out your connection parameters and network configuration.", $e->getCode(), $e);
+    }
   }
 
   public function setConnection(\PDO $connection): DbAdapterInterface {

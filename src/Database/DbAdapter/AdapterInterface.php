@@ -30,5 +30,21 @@ namespace SuitUp\Database\DbAdapter;
 
 interface AdapterInterface
 {
-  public function __construct($host, $port, $dbname, $username, $password = '', array $options = array());
+  public function __construct(array $parameters);
+
+  public function getDsn(): string;
+
+  public function setDsn($dsn): AdapterAbstract;
+
+  public function getUsername(): string;
+
+  public function setUsername($username): AdapterAbstract;
+
+  public function getPassword(): string;
+
+  public function setPassword($password): AdapterAbstract;
+
+  public function getOptions(): array;
+
+  public function setOptions(array $options): AdapterAbstract;
 }
