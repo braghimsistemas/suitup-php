@@ -1,9 +1,8 @@
-# SuitUp PHP Framework  
+# SuitUp PHP Framework
 > Legendary web applications
 
 [![Build Status](https://travis-ci.org/braghimsistemas/suitup-php.svg?branch=master)](https://travis-ci.org/braghimsistemas/suitup-php)
 [![Coverage Status](https://coveralls.io/repos/github/braghimsistemas/suitup-php/badge.svg?branch=master)](https://coveralls.io/github/braghimsistemas/suitup-php?branch=master)
-[![Awesome](https://awesome.re/badge-flat.svg)](https://awesome.re)
 
 [![Latest Stable Version](https://poser.pugx.org/braghim-sistemas/suitup-php/v/stable)](https://packagist.org/packages/braghim-sistemas/suitup-php)
 [![Latest Unstable Version](https://poser.pugx.org/braghim-sistemas/suitup-php/v/unstable)](https://packagist.org/packages/braghim-sistemas/suitup-php)
@@ -12,26 +11,26 @@
 ### Composer
 `composer require braghim-sistemas/suitup-php`
 
-### How to do?
-Check out our [wiki](https://github.com/braghimsistemas/suitup-php/wiki), there you will be able to install the project quickly and start a web application with productivity focus.
-
 #### PHP Documentation
-You can find all code documentation [here](https://codedoc.pub/braghimsistemas/suitup-php/master/index.html), but remember that the wiki is really complete and give you really explanations about how to do.
+You can find all documentation in the [Read The Docs](https://suitup-php.readthedocs.io/en/latest/). We are trying to keep that as up to date as code itself, but hope you understand that it may not be always the reality...
 
 **Legendary Web Applications**  
-While you write the code for an application there is a lot of code you probably will use again and again and will have to copy for another application in future. Because of this, someone too smarty for whon we have to congrats a lot, created a project which works as a structure (just like a wireframe) with a lot of features you just have to use, not create. With this project is possible to create whatever kind of application quickly and it's just awesome!
+While you write the code for an application there is a lot of code you probably will use again and again and will have to copy for another application in future. Because of this, someone too smarty for whon we have to congrats a lot, created a project which works as a structure (just like a wireframe) with a lot of features you only have to use. With this project is possible to create whatever kind of web application **quickly** and it's just awesome!
 
 _SuitUp_ is a PHP\* OOP\*\* framework which helps you to do what you have to do quickly, it's focused on productivity without forget about security and good practices.
 
 \* Works on [PHP](//php.net) applications based  
 \*\* OOP - [Object-oriented programming](//en.wikipedia.org/wiki/Object-oriented_programming) where programming projects works with _objects_ concepts.  
 
-### SuitUp works with modules
-What it means? You can write others different and separate applications in the same project which will be accessed just changing the base URL.
+### Modules
+You can write different and separate applications in the same project which will be accessed just changing the base URL.
+
+### MVC
+It means, roughly, that you will write PHP and HTML separate and all logic is organized to make a more readable and easy maintainer project
 
 ---
 ### Why we keep this project?
-At the start, we created this project just for personal use, because the usual frameworks wasn't giving us the speed and facility we expected from a framework PHP. We just want to create a web project as quick as the client can pay for it before change his mind. Anyway, we don't wanna to make a fucking crap project missmashed up where seem that the Santa Claus just sited down on it. Where we can't found a thing and everything is just mixed without no order or pattern. So we created SuitUp, a framework which you can create your web project truly fast and everything is really patterned. We are really happy and satisfied with the results we got with SuitUp yet here.
+At the start, we created this project just for personal use, because the usual frameworks wasn't giving us the speed and facility we expected from a framework PHP. We just want to create a web project as quick as possible. So we created SuitUp, a framework which you can create your web project truly fast and everything is really patterned. We are really happy and satisfied with the results we got with SuitUp yet here. 
 
 Try it you too, awesome web projects with SuitUp PHP Framework!
 
@@ -40,5 +39,11 @@ Everyone is welcome to contribute with _SuitUp PHP Framework_. Just fork it, mak
 
 ---
 
-Made with love by Braghim Sistemas.  
-Thank you very much!
+### Thanks to
+[JetBrains](https://www.jetbrains.com/?from=SuitUp+PHP+Framework) that gave us a free license of PHPStorm to maintain this project and develop with maximum productivity.
+
+![PHPStorm](https://i.ibb.co/xXB4Fzc/phpstorm-64.png) 
+
+---
+
+Made with <3 by Braghim Sistemas. 
