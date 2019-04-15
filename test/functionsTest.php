@@ -32,11 +32,11 @@ use PHPUnit\Framework\TestCase;
 
 class functionsTest extends TestCase
 {
-  public function testDump() {
-
-    $this->assertIsString(dump('test', false));
-    $this->assertEquals("<pre>string(4) \"test\"\n</pre>", dump('test', false));
-  }
+//  public function testDump() {
+//
+//    $this->assertIsString(dump('test', false));
+//    $this->assertEquals("<pre>string(4) \"test\"\n</pre>", dump('test', false));
+//  }
 
   public function testMctime() {
     $this->assertIsFloat(mctime());
