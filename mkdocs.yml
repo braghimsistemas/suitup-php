@@ -2,7 +2,7 @@ site_name: SuitUp PHP Framework
 theme: readthedocs
 nav:
     - Home.md 
-    - 1. Install.md 
+    - 1. Install/ 
         - 1.1 Default Constants.md 
     - 2. Controllers and Views.md 
     - 2.1 MvcAbstractController (en).md 
