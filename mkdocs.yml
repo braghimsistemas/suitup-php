@@ -1,41 +1,41 @@
 site_name: SuitUp PHP Framework
 theme: readthedocs
     nav:
-      - Home.md 
-      - 1. Install.md 
-          - 1.1 Default Constants.md 
-      - 2. Controllers and Views.md 
-          - 2.1 MvcAbstractController (en).md 
-          - 2.2 ErrorController (en).md 
-          - 2.3 Pagination.md 
-          - 2.4 Debug (en).md 
-      - 3. Layouts (en).md 
-      - 4. Forms.md 
-          - 4.1 Validations and Filters.md 
-          - 4.2 Filters.md 
-          - 4.3 Personal Validation.md 
-          - 4.4 Personal Filter.md 
-      - 5. Database.md 
-          - 5.1 database.config.php (en).md 
-          - 5.2 SQL Monitoring.md 
-      - 6. Routes.md 
-      - 7. Functions.md 
-      - Home.md 
-      - 1. Instalação.md 
-          - 1.1 Constantes padrão.md 
-      - 2. Controllers e Views.md 
-          - 2.1 MvcAbstractController.md 
-          - 2.2 ErrorController.md 
-          - 2.3 Paginação.md 
-          - 2.4 Debug.md 
-      - 3. Layouts.md 
-      - 4. Formulários.md 
-          - 4.1 Validações.md 
-          - 4.2 Filtros.md 
-          - 4.3 Validação Personalizada.md 
-          - 4.4 Filtro Personalizado.md 
-      - 5. Banco de dados.md 
-          - 5.1 database.config.php.md 
-          - 5.2 Monitoramento de SQL.md 
-      - 6. Rotas.md 
-      - 7. Funções.md 
+        - Home.md 
+        - 1. Install.md 
+        - 1.1 Default Constants.md 
+        - 2. Controllers and Views.md 
+        - 2.1 MvcAbstractController (en).md 
+        - 2.2 ErrorController (en).md 
+        - 2.3 Pagination.md 
+        - 2.4 Debug (en).md 
+        - 3. Layouts (en).md 
+        - 4. Forms.md 
+        - 4.1 Validations and Filters.md 
+        - 4.2 Filters.md 
+        - 4.3 Personal Validation.md 
+        - 4.4 Personal Filter.md 
+        - 5. Database.md 
+        - 5.1 database.config.php (en).md 
+        - 5.2 SQL Monitoring.md 
+        - 6. Routes.md 
+        - 7. Functions.md 
+        - Home.md 
+        - 1. Instalação.md 
+        - 1.1 Constantes padrão.md 
+        - 2. Controllers e Views.md 
+        - 2.1 MvcAbstractController.md 
+        - 2.2 ErrorController.md 
+        - 2.3 Paginação.md 
+        - 2.4 Debug.md 
+        - 3. Layouts.md 
+        - 4. Formulários.md 
+        - 4.1 Validações.md 
+        - 4.2 Filtros.md 
+        - 4.3 Validação Personalizada.md 
+        - 4.4 Filtro Personalizado.md 
+        - 5. Banco de dados.md 
+        - 5.1 database.config.php.md 
+        - 5.2 Monitoramento de SQL.md 
+        - 6. Rotas.md 
+        - 7. Funções.md 
