@@ -2,7 +2,7 @@
 > Legendary web applications
 
 [![Build Status](https://travis-ci.org/braghimsistemas/suitup-php.svg?branch=version2.0)](https://travis-ci.org/braghimsistemas/suitup-php)
-[![Coverage Status](https://coveralls.io/repos/github/braghimsistemas/suitup-php/badge.svg?branch=version2.0)](https://coveralls.io/github/braghimsistemas/suitup-php?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/braghimsistemas/suitup-php/badge.svg?branch=version2.0)](https://coveralls.io/github/braghimsistemas/suitup-php?branch=version2.0)
 
 [![Latest Stable Version](https://poser.pugx.org/braghim-sistemas/suitup-php/v/stable)](https://packagist.org/packages/braghim-sistemas/suitup-php)
 [![Latest Unstable Version](https://poser.pugx.org/braghim-sistemas/suitup-php/v/unstable)](https://packagist.org/packages/braghim-sistemas/suitup-php)
