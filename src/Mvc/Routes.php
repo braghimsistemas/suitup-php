@@ -174,7 +174,7 @@ class Routes
             }
 
             // We will check for the list if route match to that
-            if (is_closure($routeItem['url_list'])) {
+            if (isClosure($routeItem['url_list'])) {
               $funcName = $routeItem['url_list'];
               $urlList = (array) $funcName();
 

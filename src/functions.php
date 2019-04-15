@@ -70,14 +70,14 @@ if (! function_exists('mctime')) {
   }
 }
 
-if (! function_exists('is_closure')) {
+if (! function_exists('isClosure')) {
 
   /**
    * Return true when a given item is a closure function
    * 
    * @return bool
    */
-  function is_closure($item): bool {
+  function isClosure($item): bool {
     return (is_object($item) && ($item instanceof \Closure));
   }
 }
@@ -128,7 +128,7 @@ if (! function_exists('toDashCase')) {
  */
 function renderView($renderViewName, $vars = array(), $renderViewPath = null): string {
 
-  // Injeta variaveis na view
+  // Inject variables to the view
   foreach ($vars as $n => $v) {
     $$n = $v;
   }
@@ -304,7 +304,7 @@ if (!function_exists('formSelect')) {
    * @param type $selected Option selected item
    * @return string
    */
-  function formSelect($name, array $attrs = array(), array $values = array('' => 'Selecione!'), $selected = null) {
+  function formSelect(string $name, array $attrs = array(), array $values = array('' => 'Selecione!'), string $selected = null) {
 
     // Normalize id attr
     $id = preg_replace("/[^0-9a-zA-Z-_]/", '-', $name);
@@ -316,7 +316,7 @@ if (!function_exists('formSelect')) {
     foreach ($attrs as $attrName => $attrValue) {
       $html .= " ".$attrName.'="'.$attrValue.'"';
     }
-    $html .= ">\n";
+    $html .= ">\r\n";
 
     foreach($values as $value => $text) {
 
@@ -324,12 +324,12 @@ if (!function_exists('formSelect')) {
        * To assert 'selected' $value must to be identical to $selected
        */
       if ((string) $selected === (string) $value) {
-        $html .= "\t".'<option value="'.$value.'" selected="selected">'.$text.'</option>'."\n";
+        $html .= "  ".'<option value="'.$value.'" selected="selected">'.$text.'</option>'."\r\n";
       } else {
-        $html .= "\t".'<option value="'.$value.'">'.$text.'</option>'."\n";
+        $html .= "  ".'<option value="'.$value.'">'.$text.'</option>'."\r\n";
       }
     }
-    return $html."\n</select>";
+    return $html."</select>\r\n";
   }
 
   /**
