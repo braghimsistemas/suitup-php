@@ -22,9 +22,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+declare(strict_types=1);
 
 // Initial configs
-declare(strict_types=1);
 error_reporting(E_ALL | E_STRICT);
 ini_set('display_errors', '1');
 
