@@ -1,2 +1,5 @@
-site_name: Suitup 2 -- PHP Framework
+site_name: Suitup Framework
 theme: readthedocs
+nav:
+  - Introduction: index.md
+  - Getting Started: Getting Started/index.md

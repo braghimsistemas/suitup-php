@@ -1,17 +1,52 @@
-# Suitup 2
+# SuitUp 2
+> Legendary web applications
 
-For full documentation visit [mkdocs.org](http://mkdocs.org).
+[![Build Status](https://travis-ci.org/braghimsistemas/suitup-php.svg?branch=version2.0)](https://travis-ci.org/braghimsistemas/suitup-php)
+[![Coverage Status](https://coveralls.io/repos/github/braghimsistemas/suitup-php/badge.svg?branch=version2.0)](https://coveralls.io/github/braghimsistemas/suitup-php?branch=master)
 
-## Commands
+[![Latest Stable Version](https://poser.pugx.org/braghim-sistemas/suitup-php/v/stable)](https://packagist.org/packages/braghim-sistemas/suitup-php)
+[![Latest Unstable Version](https://poser.pugx.org/braghim-sistemas/suitup-php/v/unstable)](https://packagist.org/packages/braghim-sistemas/suitup-php)
+[![License](https://poser.pugx.org/braghim-sistemas/suitup-php/license)](https://packagist.org/packages/braghim-sistemas/suitup-php)
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs help` - Print this help message.
+# Composer
+`composer require braghim-sistemas/suitup-php dev-version2.0`
 
-## Project layout
+# What is it?
+While you write the code for an application there is a lot of code you probably will use again and again and will have to copy for another application in future. Because of this, someone too smarty for whon we have to congrats a lot, created a project which works as a structure (just like a wireframe) with a lot of features you only have to use. With this project is possible to create whatever kind of web application **quickly** and it's just awesome!
 
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+_SuitUp_ is a PHP\* OOP\*\* framework which helps you to do what you have to do quickly, it's focused on productivity without forget about security and good practices.
+
+\* Works on [PHP](//php.net) applications based  
+\*\* OOP - [Object-oriented programming](//en.wikipedia.org/wiki/Object-oriented_programming) where programming projects works with _objects_ concepts.  
+
+### Modules
+You can write different and separate applications in the same project which will be accessed just changing the base URL.
+
+### MVC
+It means, roughly, that you will write PHP and HTML separate and all logic is organized to make a more readable and easy maintainer project
+
+---
+
+# [Getting Started](Getting Started/index.md)
+Let us walk you through our [Tutorial](Getting Started/index.md) project and show you how Suitup can help you
+
+---
+# Why we keep this project?
+At the start, we created this project just for personal use, because the usual frameworks wasn't giving us the speed and facility we expected from a framework PHP. We just want to create a web project as quick as possible. So we created SuitUp, a framework which you can create your web project truly fast and everything is really patterned. We are really happy and satisfied with the results we got with SuitUp yet here. 
+
+Try it you too, awesome web projects with SuitUp PHP Framework! **Now in version 2!!** 
+
+### Contributors
+Everyone is welcome to contribute with _SuitUp PHP Framework_. Just fork it, make your changes as minimal as possible and create a _pull request_. We ask to create minimal changes because by this way it's easier to merge your request to the project in approve case.
+
+---
+
+### Thanks to
+[JetBrains](https://www.jetbrains.com/?from=SuitUp+PHP+Framework+2) that gave us a free license of PHPStorm to maintain this project and develop with maximum productivity.
+
+![PHPStorm](https://i.ibb.co/xXB4Fzc/phpstorm-64.png) 
+
+---
+
+Made with love by Braghim Sistemas.  
+Thank you very much!
