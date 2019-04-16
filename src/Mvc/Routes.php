@@ -27,6 +27,7 @@ declare(strict_types=1);
 
 namespace SuitUp\Mvc;
 
+use Exception;
 /**
  * Class Routes
  *
@@ -122,13 +123,21 @@ class Routes
   }
 
   /**
+   * After receive the $requestURI this method will calculate which must
+   * to be the current route called by URL.
+   *
+   * @param string|null $requestURI If not given it will be the value from getenv('REQUEST_URI')
    * @return Routes
    * @throws \Exception
    */
-  public function setupRoutes(): Routes {
+  public function setupRoutes(string $requestURI = null): Routes {
+
+    if (!$requestURI) {
+      $requestURI = getenv('REQUEST_URI');
+    }
 
     // From URI remove slash from start and end. So remove everything after ?
-    $uri = trim(preg_replace('/\?.+/', '', getenv('REQUEST_URI')), '/');
+    $uri = trim(preg_replace('/\?.+/', '', $requestURI), '/');
 
     // From basePath remove slash from start and end. So prepare it as a regex string
     $basePathRegExp = '/^('.preg_quote(trim($this->frontController->getBasePath(), '/'), '/').')/';
@@ -149,71 +158,81 @@ class Routes
 
     if ($this->frontController->getRoutesFile()) {
 
-      // Get from file the routes config
-      $routesFile = (array) include_once($this->frontController->getRoutesFile());
-
       // Loop under defined routes
       $found = false;
-      foreach ($routesFile as $routeName => $routeItem) {
 
-        if ($found) { break; }
+      // Get from file the routes config
+      $routesFile = include_once($this->frontController->getRoutesFile());
 
-        // Store the route name
-        $routeItem['name'] = $routeName;
+      // If the return of the file is an array
+      if (is_array($routesFile)) {
+        foreach ($routesFile as $routeName => $routeItem) {
 
-        // Define the route type
-        $routeItem['type'] = $routeItem['type'] ?? Routes::TYPE_LINEAR;
+          if ($found) {
+            break;
+          }
 
-        // We will search for routes by type
-        switch ($routeItem['type']) {
-          case Routes::TYPE_LITERAL:
+          if (!is_array($routeItem)) {
+            continue;
+          }
 
-            // If there's no parameter
-            if (!isset($routeItem['url_list'])) {
-              throw new \Exception('Every literal route must to implement the list of valid URL. It can be a closure function or an array list');
-            }
+          // Store the route name
+          $routeItem['name'] = $routeName;
 
-            // We will check for the list if route match to that
-            if (isClosure($routeItem['url_list'])) {
-              $funcName = $routeItem['url_list'];
-              $urlList = (array) $funcName();
+          // Define the route type
+          $routeItem['type'] = $routeItem['type'] ?? Routes::TYPE_LINEAR;
 
-            } else if (is_array($routeItem['url_list'])) {
-              $urlList = $routeItem['url_list'];
+          // We will search for routes by type
+          switch ($routeItem['type']) {
+            case Routes::TYPE_LITERAL:
 
-            } else {
-              // Here we try to force
-              $urlList = (array) $routeItem['url_list'];
-            }
-
-            // Check if route is exactly equal to some item of the list
-            foreach ($urlList as $item) {
-              if (trim($route, '/') === trim($item, '/')) {
-
-                // Some details...
-                $routeItem['name'] = $item;
-                $routeResidue = str_replace($item, '', $routeResidue);
-
-                // Set as found one!
-                $found = $routeItem;
-
-                break;
+              // If there's no parameter
+              if (!isset($routeItem['url_list'])) {
+                throw new Exception('Every literal route must to implement the list of valid URL. It can be a closure function or an array list');
               }
-            }
 
-            break;
-          case Routes::TYPE_REVERSE:
-            // Check true if $routeName is equal to the last item from $route
-            if ($routeName == preg_replace("/^.+\//", '', $route)) {
-              $found = $routeItem;
-            }
-            break;
-          default:
-            // TYPE LINEAR
-            // Check true if the $routeName is equal to the first item after module name
-            if ($routeName == $this->getController()) {
-              $found = $routeItem;
-            }
+              // We will check for the list if route match to that
+              if (isClosure($routeItem['url_list'])) {
+                $funcName = $routeItem['url_list'];
+                $urlList = (array)$funcName();
+
+              } else if (is_array($routeItem['url_list'])) {
+                $urlList = $routeItem['url_list'];
+
+              } else {
+                // Here we try to force
+                $urlList = (array)$routeItem['url_list'];
+              }
+
+              // Check if route is exactly equal to some item of the list
+              foreach ($urlList as $item) {
+                if (trim($route, '/') === trim($item, '/')) {
+
+                  // Some details...
+                  $routeItem['name'] = $item;
+                  $routeResidue = str_replace($item, '', $routeResidue);
+
+                  // Set as found one!
+                  $found = $routeItem;
+
+                  break;
+                }
+              }
+
+              break;
+            case Routes::TYPE_REVERSE:
+              // Check true if $routeName is equal to the last item from $route
+              if ($routeName == preg_replace("/^.+\//", '', $route)) {
+                $found = $routeItem;
+              }
+              break;
+            default:
+              // TYPE LINEAR
+              // Check true if the $routeName is equal to the first item after module name
+              if ($routeName == $this->getController()) {
+                $found = $routeItem;
+              }
+          }
         }
       }
 

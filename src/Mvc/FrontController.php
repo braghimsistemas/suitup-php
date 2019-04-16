@@ -138,7 +138,7 @@ class FrontController
   /**
    * @var string
    */
-  private $routesPath = './config';
+  private $configsPath = '/config';
 
   /**
    * Every file with the list of routes must to end with this
@@ -559,16 +559,16 @@ class FrontController
   /**
    * @return string
    */
-  public function getRoutesPath(): string {
-    return $this->routesPath;
+  public function getConfigsPath(): string {
+    return $this->configsPath;
   }
 
   /**
-   * @param string $routesPath
+   * @param string $configsPath
    * @return FrontController
    */
-  public function setRoutesPath(string $routesPath): FrontController {
-    $this->routesPath = $routesPath;
+  public function setConfigsPath(string $configsPath): FrontController {
+    $this->configsPath = '/'.ltrim($configsPath, '/');
     return $this;
   }
 
@@ -595,9 +595,8 @@ class FrontController
 
     if (!$this->routesFile) {
 
-      $filename = $this->getRoutesPath().'/'.$this->getModule().$this->getRoutesFileSuffix();
+      $filename = $this->getModulesPath().'/..'.$this->getConfigsPath().'/'.$this->getModule().$this->getRoutesFileSuffix();
       if (file_exists($filename) && is_readable($filename)) {
-
         $this->routesFile = $filename;
       }
     }

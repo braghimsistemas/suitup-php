@@ -37,7 +37,7 @@ final class functionsTest extends TestCase
   public function __construct($name = null, array $data = [], $dataName = '') {
     parent::__construct($name, $data, $dataName);
 
-    $this->filesDir = __DIR__ . '/resources/functions';
+    $this->filesDir = __DIR__ . '/resources/files/functions';
   }
 
 //  public function testDump() {
@@ -94,7 +94,7 @@ final class functionsTest extends TestCase
 
     // Without specify path
     $view1 = renderView($this->filesDir.'/render-view.phtml', array('test' => 'Expected result'));
-    $this->assertStringEqualsFile(__DIR__ . '/resources/functions/render-view-result.phtml', $view1);
+    $this->assertStringEqualsFile($this->filesDir.'/render-view-result.phtml', $view1);
 
     // Specifying path
     $view2 = renderView('render-view.phtml', array('test' => 'Expected result'), $this->filesDir);

@@ -36,12 +36,16 @@ final class RoutesTest extends TestCase
 {
   private $routes;
 
+  private $frontController;
+
   public function __construct($name = null, array $data = [], $dataName = '') {
     parent::__construct($name, $data, $dataName);
 
     // Create an instance of routes.
     $suitup = new SuitUpStart(__DIR__.'/../resources/modules/');
-    $this->routes = new \SuitUp\Mvc\Routes($suitup->getConfig());
+
+    $this->frontController = $suitup->getConfig();
+    $this->routes = new \SuitUp\Mvc\Routes($this->frontController);
   }
 
   public function testArrayToParams() {
@@ -76,12 +80,7 @@ final class RoutesTest extends TestCase
   public function testSetupRoutes() {
 
     // After this method the Routes class will update
-    // its configs based on the $_SERVER['REQUEST_URI'];
-    // Here in the tests this REQUEST_URI env is set on
-    // phpunit.xml.dist file, section <php>
-    $this->routes->setupRoutes();
-
-    // REQUEST_URI = /test/routes/index1/value1/index2/value2 <-- phpunit.xml.dist file, section <php>
+    $this->routes->setupRoutes('/test/routes/index1/value1/index2/value2?index3=value3&index4=value4');
 
     $this->assertEquals('default', $this->routes->getModule());
     $this->assertEquals('test', $this->routes->getController());
@@ -89,10 +88,43 @@ final class RoutesTest extends TestCase
     $this->assertIsArray($this->routes->getParams());
     $this->assertNotEmpty($this->routes->getParams());
 
+    // URI param must to exists
     $this->assertArrayHasKey('index1', $this->routes->getParams());
     $this->assertContains('value1', $this->routes->getParams());
 
+    // URI param must to exists
     $this->assertArrayHasKey('index2', $this->routes->getParams());
     $this->assertContains('value2', $this->routes->getParams());
+
+    // GET param must not to exists
+    $this->assertArrayNotHasKey('index3', $this->routes->getParams());
+    $this->assertNotContains('value3', $this->routes->getParams());
+
+    // GET param must not to exists
+    $this->assertArrayNotHasKey('index4', $this->routes->getParams());
+    $this->assertNotContains('value4', $this->routes->getParams());
   }
+
+  /**
+   *
+   * @depends testSetupRoutes
+   */
+//  public function testSetupRoutesTypeLinear() {
+//
+//    $this->routes->setupRoutes('/album-detail/1234/album-detail-test.html');
+//
+//    $this->assertEquals('default', $this->routes->getModule());
+//    $this->assertEquals('album', $this->routes->getController());
+//    $this->assertEquals('index', $this->routes->getAction());
+//    $this->assertIsArray($this->routes->getParams());
+//    $this->assertNotEmpty($this->routes->getParams());
+//
+//    // URI param must to exists
+//    $this->assertArrayHasKey('id', $this->routes->getParams());
+//    $this->assertContains('1234', $this->routes->getParams());
+//
+//    // URI param must to exists
+//    $this->assertArrayHasKey('name', $this->routes->getParams());
+//    $this->assertContains('album-detail-test', $this->routes->getParams());
+//  }
 }

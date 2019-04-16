@@ -16,6 +16,7 @@
 		<whitelist addUncoveredFilesFromWhitelist="true">
 			<directory suffix=".php">.</directory>
 			<exclude>
+        <directory>./_src</directory>
 				<directory>./build</directory>
 				<directory>./test</directory>
 				<directory>./vendor</directory>
@@ -25,7 +26,6 @@
 
 	<php>
 		<ini name="date.timezone" value="America/Sao_Paulo" />
-    <env name="REQUEST_URI" value="/test/routes/index1/value1/index2/value2" force="true"/>
 	</php>
 
 	<logging>
