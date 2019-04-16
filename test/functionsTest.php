@@ -30,8 +30,16 @@ ini_set('display_errors', '1');
 
 use PHPUnit\Framework\TestCase;
 
-class functionsTest extends TestCase
+final class functionsTest extends TestCase
 {
+  private $filesDir;
+
+  public function __construct($name = null, array $data = [], $dataName = '') {
+    parent::__construct($name, $data, $dataName);
+
+    $this->filesDir = __DIR__ . '/resources/functions';
+  }
+
 //  public function testDump() {
 //
 //    $this->assertIsString(dump('test', false));
@@ -85,12 +93,12 @@ class functionsTest extends TestCase
   public function testRenderView() {
 
     // Without specify path
-    $view1 = renderView(__DIR__.'/assets/functions/render-view.phtml', array('test' => 'Expected result'));
-    $this->assertStringEqualsFile(__DIR__.'/assets/functions/render-view-result.phtml', $view1);
+    $view1 = renderView($this->filesDir.'/render-view.phtml', array('test' => 'Expected result'));
+    $this->assertStringEqualsFile(__DIR__ . '/resources/functions/render-view-result.phtml', $view1);
 
     // Specifying path
-    $view2 = renderView('render-view.phtml', array('test' => 'Expected result'), __DIR__.'/assets/functions/');
-    $this->assertStringEqualsFile(__DIR__.'/assets/functions/render-view-result.phtml', $view2);
+    $view2 = renderView('render-view.phtml', array('test' => 'Expected result'), $this->filesDir);
+    $this->assertStringEqualsFile($this->filesDir.'/render-view-result.phtml', $view2);
   }
 
 //  public function testPaginateControl() {
@@ -104,12 +112,24 @@ class functionsTest extends TestCase
   public function testFormSelect() {
 
     $select1 = formSelect('test');
-    $this->assertStringEqualsFile(__DIR__.'/assets/functions/form-select-1.phtml', $select1);
+    $this->assertStringEqualsFile($this->filesDir.'/form-select-1.phtml', $select1);
 
     $select2 = formSelect('test', array('class' => 'form-control'), array('1' => 'Active', '2' => 'Blocked'), '1');
-    $this->assertStringEqualsFile(__DIR__.'/assets/functions/form-select-2.phtml', $select2);
+    $this->assertStringEqualsFile($this->filesDir.'/form-select-2.phtml', $select2);
 
     $select3 = formSelect('test[0][status]', array('class' => 'form-control'), array('' => 'Select one!', '1' => 'Active'), '');
-    $this->assertStringEqualsFile(__DIR__.'/assets/functions/form-select-3.phtml', $select3);
+    $this->assertStringEqualsFile($this->filesDir.'/form-select-3.phtml', $select3);
+  }
+
+  public function testFormCheckbox() {
+
+    $checkbox1 = formCheckbox('test');
+    $this->assertStringEqualsFile($this->filesDir.'/form-checkbox-1.phtml', $checkbox1);
+
+    $checkbox2 = formCheckbox('test', array('class' => 'form-control'), 'yes', false);
+    $this->assertStringEqualsFile($this->filesDir.'/form-checkbox-2.phtml', $checkbox2);
+
+    $checkbox3 = formCheckbox('test[other][464]', array('class' => 'form-control'), 'no', true);
+    $this->assertStringEqualsFile($this->filesDir.'/form-checkbox-3.phtml', $checkbox3);
   }
 }

@@ -50,8 +50,7 @@ if (! function_exists('dump')) {
       $output = "<pre>" . preg_replace("/\]\=\>\n(\s+)/m", "] => ", ob_get_clean()) . "</pre>";
     }
     if ($echo) {
-      echo $output;
-      exit();
+      exit($output);
     }
     return $output;
   }
@@ -362,7 +361,7 @@ if (!function_exists('formSelect')) {
     foreach ($attrs as $attrName => $attrValue) {
       $html .= " ".$attrName.'="'.$attrValue.'"';
     }
-    $html .= ">\n";
+    $html .= ">\r\n";
     return $html;
   }
 }

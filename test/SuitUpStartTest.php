@@ -29,8 +29,8 @@ error_reporting(E_ALL | E_STRICT);
 ini_set('display_errors', '1');
 
 // Environment variables
-define('DEVELOPMENT', true);
-define('SHOW_ERRORS', true);
+defined('DEVELOPMENT') || define('DEVELOPMENT', true);
+defined('SHOW_ERRORS') || define('SHOW_ERRORS', true);
 
 if (file_exists(__DIR__.'/../vendor/autoload.php')) {
 
@@ -52,7 +52,7 @@ final class SuitUpStartTest extends PHPUnit\Framework\TestCase
 
   public function testCreateInstance() {
 
-    $suitup = new SuitUpStart('.');
+    $suitup = new SuitUpStart(__DIR__.'/resources/modules/');
 
     $this->assertInstanceOf('SuitUpStart', $suitup);
 
