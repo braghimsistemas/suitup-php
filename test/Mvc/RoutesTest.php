@@ -28,8 +28,6 @@ declare(strict_types=1);
 error_reporting(E_ALL | E_STRICT);
 ini_set('display_errors', '1');
 
-//$_SERVER['REQUEST_URI'] = '/test/index/index1/value1/index2/value2';
-
 use PHPUnit\Framework\TestCase;
 
 final class RoutesTest extends TestCase

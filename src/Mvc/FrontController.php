@@ -28,6 +28,7 @@ declare(strict_types=1);
 namespace SuitUp\Mvc;
 
 use ReflectionClass;
+use SuitUp\Exception\StructureException;
 
 class FrontController
 {
@@ -165,13 +166,14 @@ class FrontController
 
   /**
    * FrontController constructor.
+   * @param string $modulesPath
    */
-  public function __construct() {
+  public function __construct(string $modulesPath = '.') {
 
     // Setup default value to the modules path.
     // It will relate modules path to the 'chdir' function
     // which must to be called in the index.php file
-    $this->modulesPath = realpath('.');
+    $this->modulesPath = realpath($modulesPath);
 
     $this->setBasePath();
   }
@@ -544,7 +546,7 @@ class FrontController
    * @return string
    */
   public function getGatewayPath(): string {
-    return $this->gatewayPath;
+    return $this->getModulePath().$this->gatewayPath;
   }
 
   /**
@@ -552,7 +554,7 @@ class FrontController
    * @return FrontController
    */
   public function setGatewayPath(string $gatewayPath): FrontController {
-    $this->gatewayPath = $gatewayPath;
+    $this->gatewayPath = '/'.trim(str_replace($this->getModulePath(), '', $gatewayPath), '/');
     return $this;
   }
 
@@ -595,7 +597,7 @@ class FrontController
 
     if (!$this->routesFile) {
 
-      $filename = $this->getModulesPath().'/..'.$this->getConfigsPath().'/'.$this->getModule().$this->getRoutesFileSuffix();
+      $filename = realpath($this->getModulesPath().'/..'.$this->getConfigsPath()).'/'.$this->getModule().$this->getRoutesFileSuffix();
       if (file_exists($filename) && is_readable($filename)) {
         $this->routesFile = $filename;
       }
@@ -605,10 +607,20 @@ class FrontController
 
   /**
    * @param string $routesFile
+   * @throws StructureException
    * @return FrontController
    */
   public function setRoutesFile(string $routesFile): FrontController {
-    $this->routesFile = $routesFile;
+
+    // Validate file
+    if (!file_exists($routesFile)) {
+      throw new StructureException("File to feed the route not found: '$routesFile'");
+    }
+
+    // Return the realpath to the file
+    $info = pathinfo($routesFile);
+    $this->routesFile = $info['dirname'].'/'.$info['basename'];
+
     return $this;
   }
 
