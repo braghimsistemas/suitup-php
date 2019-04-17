@@ -109,22 +109,22 @@ final class RoutesTest extends TestCase
    *
    * @depends testSetupRoutes
    */
-//  public function testSetupRoutesTypeLinear() {
-//
-//    $this->routes->setupRoutes('/album-detail/1234/album-detail-test.html');
-//
-//    $this->assertEquals('default', $this->routes->getModule());
-//    $this->assertEquals('album', $this->routes->getController());
-//    $this->assertEquals('index', $this->routes->getAction());
-//    $this->assertIsArray($this->routes->getParams());
-//    $this->assertNotEmpty($this->routes->getParams());
-//
-//    // URI param must to exists
-//    $this->assertArrayHasKey('id', $this->routes->getParams());
-//    $this->assertContains('1234', $this->routes->getParams());
-//
-//    // URI param must to exists
-//    $this->assertArrayHasKey('name', $this->routes->getParams());
-//    $this->assertContains('album-detail-test', $this->routes->getParams());
-//  }
+  public function testSetupRoutesTypeLinear() {
+
+    $this->routes->setupRoutes('/album-detail/1234/album-detail-test.html');
+
+    $this->assertEquals('default', $this->routes->getModule());
+    $this->assertEquals('album', $this->routes->getController());
+    $this->assertEquals('index', $this->routes->getAction());
+    $this->assertIsArray($this->routes->getParams());
+    $this->assertNotEmpty($this->routes->getParams());
+
+    // URI param must to exists
+    $this->assertArrayHasKey('id', $this->routes->getParams());
+    $this->assertContains('1234', $this->routes->getParams());
+
+    // URI param must to exists
+    $this->assertArrayHasKey('name', $this->routes->getParams());
+    $this->assertContains('album-detail-test', $this->routes->getParams());
+  }
 }

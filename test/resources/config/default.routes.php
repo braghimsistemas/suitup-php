@@ -1,12 +1,12 @@
 <?php
 return array(
-  '/album-detail' => array(
+  'album-detail' => array(
     'type' => \SuitUp\Mvc\Routes::TYPE_LINEAR,
     'controller' => 'album',
     'action' => 'index',
     'params' => array(
       'id' => '/\D+/',
-      'name' => '/(\.html)$/'
+      'name' => '/\.(html)$/'
     )
   ),
   array(

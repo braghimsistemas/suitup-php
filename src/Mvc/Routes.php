@@ -156,13 +156,15 @@ class Routes
     // Now we can set the module path
     $this->frontController->setModulePath($this->frontController->getModulesPath().'/'.$this->frontController->getModuleName());
 
-    if ($this->frontController->getRoutesFile()) {
+    $routesFilename = $this->frontController->getRoutesFile();
+
+    if ($routesFilename && file_exists($routesFilename)) {
 
       // Loop under defined routes
       $found = false;
 
       // Get from file the routes config
-      $routesFile = include_once($this->frontController->getRoutesFile());
+      $routesFile = include($routesFilename);
 
       // If the return of the file is an array
       if (is_array($routesFile)) {
@@ -177,7 +179,7 @@ class Routes
           }
 
           // Store the route name
-          $routeItem['name'] = $routeName;
+          $routeItem['name'] = is_string($routeName) ? trim($routeName, '/') : $routeName;
 
           // Define the route type
           $routeItem['type'] = $routeItem['type'] ?? Routes::TYPE_LINEAR;
@@ -243,7 +245,7 @@ class Routes
         $this->setAction($found['action'] ?? $this->getAction());
 
         // Remove from route string it's name
-        $route = trim(str_replace($found['name'], '', $route), '/');
+        $route = trim(preg_replace('/^('.preg_quote($found['name']).')/', '', $route), '/');
 
         // Resolve it's params
         $this->params = $this->resolveParams($found['params'], explode('/', $route));
@@ -498,6 +500,22 @@ class Routes
    */
   public function getParams(): array {
     return $this->params;
+  }
+
+  /**
+   * Get a specific param from route
+   *
+   * @param string $name
+   * @param bool $default
+   * @return bool|mixed
+   */
+  public function getParam(string $name, $default = false) {
+
+    $result = $default;
+    if (isset($this->params[$name])) {
+      $result = $this->params[$name];
+    }
+    return $result;
   }
 
   /**
