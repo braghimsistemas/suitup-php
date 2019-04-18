@@ -22,6 +22,9 @@
 				<directory>./test</directory>
         <directory>./test/resources</directory>
 				<directory>./vendor</directory>
+        <directory>./src/ModuleError</directory>
+        <directory>./src/Exception</directory>
+        <directory>./src/Enum</directory>
 			</exclude>
 		</whitelist>
 	</filter>
