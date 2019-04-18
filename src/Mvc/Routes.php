@@ -374,8 +374,12 @@ class Routes
         case 1:
           if (is_dir($modulesPathPrefix . toCamelCase($routeParts[0], true))) {
             $this->module = $routeParts[0];
+            $this->controller = 'index';
+            $this->action = 'index';
           } else {
+            $this->module = 'default';
             $this->controller = $routeParts[0];
+            $this->action = 'index';
           }
 
           // Remove from residue
@@ -386,7 +390,9 @@ class Routes
           if (is_dir($modulesPathPrefix . toCamelCase($routeParts[0], true))) {
             $this->module = $routeParts[0];
             $this->controller = $routeParts[1];
+            $this->action = 'index';
           } else {
+            $this->module = 'default';
             $this->controller = $routeParts[0];
             $this->action = $routeParts[1];
           }
@@ -415,6 +421,7 @@ class Routes
 
           } else {
             /** Module keeps being default */
+            $this->module = 'default';
             $this->controller = $routeParts[0];
             $this->action = $routeParts[1];
 

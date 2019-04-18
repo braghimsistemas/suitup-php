@@ -87,11 +87,11 @@ final class RoutesTest extends TestCase
     $this->assertEmpty($residues1);
 
     // Default With params
-    $residues2 = $this->routes->setByURI('/index/index/id/1234');
+    $residues2 = $this->routes->setByURI('/index/index/id/1234/left');
     $this->assertEquals('default', $this->routes->getModule());
     $this->assertEquals('index', $this->routes->getController());
     $this->assertEquals('index', $this->routes->getAction());
-    $this->assertEquals('id/1234', $residues2);
+    $this->assertEquals('id/1234/left', $residues2);
 
     // Default 2 paths
     $residues3 = $this->routes->setByURI('/index/index');
@@ -113,6 +113,20 @@ final class RoutesTest extends TestCase
     $this->assertEquals('index', $this->routes->getController());
     $this->assertEquals('index', $this->routes->getAction());
     $this->assertEquals('name/michael-jackson', $residues5);
+
+    // Only controller
+    $residues6 = $this->routes->setByURI('index');
+    $this->assertEquals('default', $this->routes->getModule());
+    $this->assertEquals('index', $this->routes->getController());
+    $this->assertEquals('index', $this->routes->getAction());
+    $this->assertEquals('', $residues6);
+
+    // Only module and controller
+    $residues6 = $this->routes->setByURI('admin/index');
+    $this->assertEquals('admin', $this->routes->getModule());
+    $this->assertEquals('index', $this->routes->getController());
+    $this->assertEquals('index', $this->routes->getAction());
+    $this->assertEquals('', $residues6);
   }
 
   public function testSetupRoutes() {
