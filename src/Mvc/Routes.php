@@ -28,6 +28,8 @@ declare(strict_types=1);
 namespace SuitUp\Mvc;
 
 use Exception;
+use SuitUp\Exception\StructureException;
+
 /**
  * Class Routes
  *
@@ -128,7 +130,7 @@ class Routes
    *
    * @param string|null $requestURI If not given it will be the value from getenv('REQUEST_URI')
    * @return Routes
-   * @throws \Exception
+   * @throws StructureException
    */
   public function setupRoutes(string $requestURI = null): Routes {
 
@@ -190,7 +192,7 @@ class Routes
 
               // If there's no parameter
               if (!isset($routeItem['url_list'])) {
-                throw new Exception('Every literal route must to implement the list of valid URL. It can be a closure function or an array list');
+                throw new StructureException('Every literal route must to implement the list of valid URL. It can be a closure function or an array list');
               }
 
               // We will check for the list if route match to that

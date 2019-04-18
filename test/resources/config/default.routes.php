@@ -14,7 +14,8 @@ return array(
     'controller' => 'album',
     'action' => 'edit',
     'params' => array(
-      'id' => 0
+      'id' => 0,
+      'name'
     )
   ),
 
@@ -37,7 +38,7 @@ return array(
   array(
     'type' => \SuitUp\Mvc\Routes::TYPE_LITERAL,
     'controller' => 'album',
-    'action' => 'add',
+    'action' => 'literal-add-array',
     'url_list' => array(
       '/the-literal-route/like-array.html',
     ),
@@ -48,8 +49,8 @@ return array(
   array(
     'type' => \SuitUp\Mvc\Routes::TYPE_LITERAL,
     'controller' => 'album',
-    'action' => 'add',
-    'url_list' => 'the-literal-route/like-array.html',
+    'action' => 'literal-add-force-string',
+    'url_list' => 'the-literal-route/like-force-string.html',
     'params' => array()
   ),
 );

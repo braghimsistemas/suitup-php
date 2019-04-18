@@ -201,4 +201,32 @@ final class RoutesTest extends TestCase
     $this->assertEquals('literal-add-closure', $this->routes->getAction());
     $this->assertEmpty($this->routes->getParams());
   }
+
+  /**
+   *
+   * @depends testSetupRoutes
+   */
+  public function testSetupRoutesTypeLiteralArray() {
+
+    // Closure Array
+    $this->routes->setupRoutes('/the-literal-route/like-array.html');
+    $this->assertEquals('default', $this->routes->getModule());
+    $this->assertEquals('album', $this->routes->getController());
+    $this->assertEquals('literal-add-array', $this->routes->getAction());
+    $this->assertEmpty($this->routes->getParams());
+  }
+
+  /**
+   *
+   * @depends testSetupRoutes
+   */
+  public function testSetupRoutesTypeLiteralForceString() {
+
+    // Closure Array
+    $this->routes->setupRoutes('the-literal-route/like-force-string.html');
+    $this->assertEquals('default', $this->routes->getModule());
+    $this->assertEquals('album', $this->routes->getController());
+    $this->assertEquals('literal-add-force-string', $this->routes->getAction());
+    $this->assertEmpty($this->routes->getParams());
+  }
 }
