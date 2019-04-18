@@ -20,6 +20,7 @@
         <directory>./_src</directory>
 				<directory>./build</directory>
 				<directory>./test</directory>
+        <directory>./test/resources</directory>
 				<directory>./vendor</directory>
 			</exclude>
 		</whitelist>

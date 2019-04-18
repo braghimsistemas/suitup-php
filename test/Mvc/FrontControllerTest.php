@@ -167,8 +167,8 @@ class FrontControllerTest extends TestCase
   {
     $this->assertEquals('layout.phtml', $instance->getLayoutName());
 
-    $instance->setLayoutName('login');
-    $this->assertEquals('login.phtml', $instance->getLayoutName());
+    $instance->setLayoutName('the-login');
+    $this->assertEquals('the-login.phtml', $instance->getLayoutName());
 
     $instance->setLayoutName('layout');
     $this->assertEquals('layout.phtml', $instance->getLayoutName());

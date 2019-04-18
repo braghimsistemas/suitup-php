@@ -1,2 +1,2 @@
-coverage_clover: build/log/clover.xml
+coverage_clover: build/logs/clover.xml
 
