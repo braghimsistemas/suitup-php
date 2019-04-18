@@ -28,6 +28,7 @@ declare(strict_types=1);
 error_reporting(E_ALL | E_STRICT);
 ini_set('display_errors', '1');
 
+use SuitUp\Mvc\Routes;
 use PHPUnit\Framework\TestCase;
 
 final class RoutesTest extends TestCase
@@ -43,7 +44,7 @@ final class RoutesTest extends TestCase
     $suitup = new SuitUpStart(__DIR__.'/../resources/modules/');
 
     $this->frontController = $suitup->getConfig();
-    $this->routes = new \SuitUp\Mvc\Routes($this->frontController);
+    $this->routes = new Routes($this->frontController);
   }
 
   public function testArrayToParams() {
@@ -58,7 +59,13 @@ final class RoutesTest extends TestCase
     $this->assertContains('value2', $params);
   }
 
-  public function testGetModule() {
+  public function testModule() {
+    $this->assertEquals('default', $this->routes->getModule());
+
+    $this->routes->setModule('admin');
+    $this->assertEquals('admin', $this->routes->getModule());
+
+    $this->routes->setModule('default');
     $this->assertEquals('default', $this->routes->getModule());
   }
 
@@ -68,11 +75,6 @@ final class RoutesTest extends TestCase
 
   public function testGetAction() {
     $this->assertEquals('index', $this->routes->getAction());
-  }
-
-  public function testGetParams() {
-    $this->assertIsArray($this->routes->getParams());
-    $this->assertEmpty($this->routes->getParams());
   }
 
   public function testSetupRoutes() {
@@ -101,6 +103,26 @@ final class RoutesTest extends TestCase
     // GET param must not to exists
     $this->assertArrayNotHasKey('index4', $this->routes->getParams());
     $this->assertNotContains('value4', $this->routes->getParams());
+
+    return $this->routes;
+  }
+
+  /**
+   * @param Routes $routes
+   * @depends testSetupRoutes
+   */
+  public function testParams(Routes $routes) {
+
+    $this->assertIsArray($routes->getParams());
+    $this->assertNotEmpty($routes->getParams());
+
+    $this->assertEquals('value1', $routes->getParam('index1'));
+    $this->assertEquals('value2', $routes->getParam('index2'));
+    $this->assertFalse($routes->getParam('testFalse', false));
+    $this->assertTrue($routes->getParam('testFalse', true));
+    $this->assertNull($routes->getParam('testFalse', null));
+    $this->assertIsInt($routes->getParam('testFalse', 123));
+    $this->assertIsFloat($routes->getParam('testFalse', 0.8));
   }
 
   /**

@@ -248,7 +248,7 @@ class Routes
         $route = trim(preg_replace('/^('.preg_quote($found['name']).')/', '', $route), '/');
 
         // Resolve it's params
-        $this->params = $this->resolveParams($found['params'], explode('/', $route));
+        $this->setParams($this->resolveParams($found['params'], explode('/', $route)));
       }
 
       // Setup FrontController with found parameters
@@ -263,11 +263,11 @@ class Routes
     // If was not set params from pre defined routes we will do it
     // with residues of route
     if (!$this->params && $routeResidue) {
-      $this->params = $this->arrayToParams(explode('/', $routeResidue));
+      $this->setParams($this->arrayToParams(explode('/', $routeResidue)));
     }
 
     // Merge GET params from URL
-    $this->params = array_merge($this->params, (array) filter_input_array(INPUT_GET));
+    $this->params = array_merge($this->getParams(), (array) filter_input_array(INPUT_GET));
     $this->frontController->setParams($this->getParams());
 
     return $this;
