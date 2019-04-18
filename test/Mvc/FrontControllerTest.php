@@ -146,17 +146,19 @@ class FrontControllerTest extends TestCase
    */
   public function testSetRoutesFile(FrontController $instance)
   {
-    // Exception case
-    $this->expectException(SuitUp\Exception\StructureException::class);
-    $instance->setRoutesFile('setting/whatever/name/to/throw/exception.php');
-
     // Real case
     $another = realpath(__DIR__.'/../resources/config').'/another.routes.php';
+    $instance->setRoutesFile($another);
     $this->assertEquals($another, $instance->getRoutesFile());
 
     // Default file
     $defaultRoute = realpath(__DIR__.'/../resources/config').'/default.routes.php';
+    $instance->setRoutesFile($defaultRoute);
     $this->assertEquals($defaultRoute, $instance->getRoutesFile());
+
+    // Exception case
+    $this->expectException(SuitUp\Exception\StructureException::class);
+    $instance->setRoutesFile('setting/whatever/name/to/throw/exception.php');
   }
 
   /**
@@ -438,6 +440,14 @@ class FrontControllerTest extends TestCase
     $this->assertEquals('AlbumController', $newFc->getControllerName());
     $this->assertEquals('addAction', $newFc->getActionName());
     $this->assertEquals(__DIR__, $newFc->getModulePath());
+
+    // Case 2
+    $newFc2 = $instance->mockUpTo('add', 'album', 'admin');
+
+    $this->assertEquals('ModuleAdmin', $newFc2->getModuleName());
+    $this->assertEquals('AlbumController', $newFc2->getControllerName());
+    $this->assertEquals('addAction', $newFc2->getActionName());
+    $this->assertEquals($instance->getModulesPath().'/'.$newFc2->getModuleName(), $newFc2->getModulePath());
   }
 
   /**
@@ -482,6 +492,10 @@ class FrontControllerTest extends TestCase
   {
     $this->assertNull($instance->getLogsPath());
 
+    $instance->setLogsPath(__DIR__.'/../resources/var/log/');
+    $this->assertEquals(realpath(__DIR__.'/../resources/var/log/'), $instance->getLogsPath());
+
+    // Exception case
     $this->expectException(StructureException::class);
     $instance->setLogsPath('var/log/');
   }
