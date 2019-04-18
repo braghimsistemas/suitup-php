@@ -421,6 +421,9 @@ class FrontControllerTest extends TestCase
 
     $instance->setBasePath('');
     $this->assertEquals('', $instance->getBasePath());
+
+    // Append
+    $this->assertEquals('/assets', $instance->getBasePath('assets'));
   }
 
   /**
