@@ -47,13 +47,21 @@ if (file_exists(__DIR__.'/../vendor/autoload.php')) {
 	$autoload->addPsr4('SuitUpTest\\', __DIR__.DIRECTORY_SEPARATOR.'.');
 }
 
+use SuitUp\Exception\NotFoundException;
+use SuitUp\Exception\StructureException;
+
 final class SuitUpStartTest extends PHPUnit\Framework\TestCase
 {
+
+  public function testCreateInstanceException() {
+
+    $this->expectException(StructureException::class);
+    new SuitUpStart(__DIR__.'/resources/not-a-directory/');
+  }
 
   public function testCreateInstance() {
 
     $suitup = new SuitUpStart(__DIR__.'/resources/modules/');
-
     $this->assertInstanceOf('SuitUpStart', $suitup);
 
     return $suitup;
@@ -97,5 +105,21 @@ final class SuitUpStartTest extends PHPUnit\Framework\TestCase
     $suitup->setSqlMonitor(true);
 
     $this->assertTrue($suitup->getConfig()->isSqlMonitor());
+  }
+
+  /**
+   *
+   * @depends testCreateInstance
+   * @param SuitUpStart $suitup
+   * @throws Throwable
+   *
+   */
+  public function testRun(SuitUpStart $suitup) {
+
+    ob_start();
+    $suitup->run();
+    $result = ob_get_clean();
+
+    $this->assertEquals(file_get_contents(__DIR__.'/resources/files/suitup-start/run-1.txt'), $result);
   }
 }

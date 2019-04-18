@@ -88,7 +88,7 @@ class SuitUpStart
 
     // Make sure modules path is a dir
     if (!is_dir($modulesPathDir)) {
-      throw new Exception('The $modulesPath parameter is not a directory');
+      throw new StructureException('The $modulesPath parameter is not a directory');
     }
 
     // Add to the loader all directories from modules path dir.

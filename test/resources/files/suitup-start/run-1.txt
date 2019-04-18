@@ -1,0 +1,3 @@
+<h1>Suitup PHP Framework</h1>
+<p>Hi, I am a test case</p>
+<p>/index/index</p>

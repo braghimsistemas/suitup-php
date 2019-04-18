@@ -27,6 +27,7 @@ declare(strict_types=1);
 namespace SuitUp\Mvc;
 
 use Exception;
+use SuitUp\Exception\StructureException;
 use Throwable;
 use stdClass;
 use ReflectionClass;
@@ -160,7 +161,7 @@ abstract class MvcAbstractController
    *
    * <b>Please, avoid to override this method</b>
    *
-   * @throws Exception
+   * @throws StructureException
    */
   public function render() {
 
@@ -192,7 +193,7 @@ abstract class MvcAbstractController
 
     // Validate
     if (! file_exists($viewFilename)) {
-      throw new Exception("View file '$viewFilename' does not exists. If it is a json response use method jsonResponse()");
+      throw new StructureException("View file '$viewFilename' does not exists. If it is a json response use method jsonResponse()");
     }
 
     // Collect pieces to discover layout filename
