@@ -34,7 +34,7 @@ before_script:
   - git config --global user.email braghim.sistemas@gmail.com
 
 script:
-  - mkdir -p build/logs
+  - mkdir -p build/log
   - php vendor/bin/phpunit
 
 after_script:

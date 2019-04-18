@@ -28,6 +28,7 @@ declare(strict_types=1);
 error_reporting(E_ALL | E_STRICT);
 ini_set('display_errors', '1');
 
+use SuitUp\Exception\StructureException;
 use SuitUp\Mvc\FrontController;
 use PHPUnit\Framework\TestCase;
 
@@ -86,30 +87,15 @@ class FrontControllerTest extends TestCase
    * @param FrontController $instance
    * @depends testCreateInstance
    */
-  public function testSetAction(FrontController $instance)
+  public function testAction(FrontController $instance)
   {
     $this->assertEquals('index', $instance->getAction());
 
-    $instance->setAction('test');
-    $this->assertEquals('test', $instance->getAction());
+    $instance->setAction('test act');
+    $this->assertEquals('test-act', $instance->getAction());
 
     $instance->setAction('index');
     $this->assertEquals('index', $instance->getAction());
-  }
-
-  /**
-   * @param FrontController $instance
-   * @depends testCreateInstance
-   */
-  public function testSetGatewayPath(FrontController $instance)
-  {
-    $this->assertEquals($instance->getModulePath().'/Model/Gateway', $instance->getGatewayPath());
-
-    $instance->setGatewayPath('/test');
-    $this->assertEquals($instance->getModulePath().'/test', $instance->getGatewayPath());
-
-    $instance->setGatewayPath($instance->getModulePath().'/Model/Gateway');
-    $this->assertEquals($instance->getModulePath().'/Model/Gateway', $instance->getGatewayPath());
   }
 
   /**
@@ -177,8 +163,14 @@ class FrontControllerTest extends TestCase
    * @param FrontController $instance
    * @depends testCreateInstance
    */
-  public function testSetLayoutName(FrontController $instance)
+  public function testLayoutName(FrontController $instance)
   {
+    $this->assertEquals('layout.phtml', $instance->getLayoutName());
+
+    $instance->setLayoutName('login');
+    $this->assertEquals('login.phtml', $instance->getLayoutName());
+
+    $instance->setLayoutName('layout');
     $this->assertEquals('layout.phtml', $instance->getLayoutName());
   }
 
@@ -186,8 +178,14 @@ class FrontControllerTest extends TestCase
    * @param FrontController $instance
    * @depends testCreateInstance
    */
-  public function testGetLayoutPath(FrontController $instance)
+  public function testLayoutPath(FrontController $instance)
   {
+    $this->assertEquals('views', $instance->getLayoutPath());
+
+    $instance->setLayoutPath('layout');
+    $this->assertEquals('layout', $instance->getLayoutPath());
+
+    $instance->setLayoutPath('views');
     $this->assertEquals('views', $instance->getLayoutPath());
   }
 
@@ -195,7 +193,7 @@ class FrontControllerTest extends TestCase
    * @param FrontController $instance
    * @depends testCreateInstance
    */
-  public function testSetController(FrontController $instance)
+  public function testController(FrontController $instance)
   {
     $this->assertEquals('index', $instance->getController());
 
@@ -209,10 +207,20 @@ class FrontControllerTest extends TestCase
   /**
    * @param FrontController $instance
    * @depends testCreateInstance
+   * @throws StructureException
    */
-  public function testGetModulesPath(FrontController $instance)
+  public function testModulesPath(FrontController $instance)
   {
     $this->assertEquals(realpath(__DIR__.'/../resources/modules'), $instance->getModulesPath());
+
+    $instance->setModulesPath(__DIR__.'/../resources');
+    $this->assertEquals(realpath(__DIR__.'/../resources'), $instance->getModulesPath());
+
+    $instance->setModulesPath(__DIR__.'/../resources/modules');
+    $this->assertEquals(realpath(__DIR__.'/../resources/modules'), $instance->getModulesPath());
+
+    $this->expectException(StructureException::class);
+    $instance->setModulesPath('modules');
   }
 
   /**
@@ -295,159 +303,197 @@ class FrontControllerTest extends TestCase
     $this->assertEquals('default', $instance->getModule());
   }
 
-//  public function testGetGatewayPath()
-//  {
-//
-//  }
-//
-//  public function testSetFormPath()
-//  {
-//
-//  }
-//
-//  public function testGetAction()
-//  {
-//
-//  }
-//
-//
-//  public function testGetBusinessPath()
-//  {
-//
-//  }
-//
-//  public function testGetActionName()
-//  {
-//
-//  }
-//
-//  public function testGetLayoutName()
-//  {
-//
-//  }
-//
-//  public function testSetViewSuffix()
-//  {
-//
-//  }
-//
-//  public function testSetControllerName()
-//  {
-//
-//  }
-//
-//  public function testSetBasePath()
-//  {
-//
-//  }
-//
-//  public function testGetControllerName()
-//  {
-//
-//  }
-//
-//  public function testMockUpTo()
-//  {
-//
-//  }
-//
-//  public function testSetLayoutSuffix()
-//  {
-//
-//  }
-//
-//  public function testGetFormPath()
-//  {
-//
-//  }
-//
-//  public function testGetController()
-//  {
-//
-//  }
-//
-//  public function testGetBasePath()
-//  {
-//
-//  }
-//
-//  public function testSetRoutesFileSuffix()
-//  {
-//
-//  }
-//
-//  public function testGetModulePath()
-//  {
-//
-//  }
-//
-//  public function testSetLogsPath()
-//  {
-//
-//  }
-//
-//  public function testGetViewSuffix()
-//  {
-//
-//  }
-//
-//  public function testGetLogsPath()
-//  {
-//
-//  }
-//
-//  public function testSetActionName()
-//  {
-//
-//  }
-//
-//  public function testGetLayoutSuffix()
-//  {
-//
-//  }
-//
-//  public function testSetBusinessPath()
-//  {
-//
-//  }
-//
-//  public function testGetRoutesFileSuffix()
-//  {
-//
-//  }
-//
-//  public function testSetLayoutPath()
-//  {
-//
-//  }
-//
-//  public function testSetModulePath()
-//  {
-//
-//  }
-//
-//  public function test__construct()
-//  {
-//
-//  }
-//
-//  public function testSetModule()
-//  {
-//
-//  }
-//
-//  public function testGetParams()
-//  {
-//
-//  }
-//
-//  public function testSetParams()
-//  {
-//
-//  }
-//
-//  public function testSetModulesPath()
-//  {
-//
-//  }
+  /**
+   * @param FrontController $instance
+   * @depends testCreateInstance
+   */
+  public function testFormPath(FrontController $instance)
+  {
+    $this->assertEquals('/Form', $instance->getFormPath());
+
+    $instance->setFormPath('the-forms');
+    $this->assertEquals('/the-forms', $instance->getFormPath());
+
+    $instance->setFormPath('Form');
+    $this->assertEquals('/Form', $instance->getFormPath());
+  }
+
+  /**
+   * @param FrontController $instance
+   * @depends testCreateInstance
+   */
+  public function testGatewayPath(FrontController $instance)
+  {
+    $this->assertEquals('/Model/Gateway', $instance->getGatewayPath());
+
+    $instance->setGatewayPath('/test');
+    $this->assertEquals('/Model/test', $instance->getGatewayPath());
+
+    $instance->setGatewayPath('Gateway');
+    $this->assertEquals('/Model/Gateway', $instance->getGatewayPath());
+  }
+
+  /**
+   * @param FrontController $instance
+   * @depends testCreateInstance
+   */
+  public function testBusinessPath(FrontController $instance)
+  {
+    $this->assertEquals('/Model', $instance->getBusinessPath());
+
+    $instance->setBusinessPath('the models');
+    $this->assertEquals('/the models', $instance->getBusinessPath());
+
+    $instance->setBusinessPath('Model');
+    $this->assertEquals('/Model', $instance->getBusinessPath());
+  }
+
+  /**
+   * @param FrontController $instance
+   * @depends testCreateInstance
+   */
+  public function testActionName(FrontController $instance)
+  {
+    $this->assertEquals('indexAction', $instance->getActionName());
+
+    $instance->setActionName('another name');
+    $this->assertEquals('anotherNameAction', $instance->getActionName());
+
+    $instance->setActionName('index');
+    $this->assertEquals('indexAction', $instance->getActionName());
+  }
+
+  /**
+   * @param FrontController $instance
+   * @depends testCreateInstance
+   */
+  public function testViewSuffix(FrontController $instance)
+  {
+    $this->assertEquals('.phtml', $instance->getViewSuffix());
+
+    $instance->setViewSuffix('ccml');
+    $this->assertEquals('.ccml', $instance->getViewSuffix());
+
+    $instance->setViewSuffix('phtml');
+    $this->assertEquals('.phtml', $instance->getViewSuffix());
+  }
+
+  /**
+   * @param FrontController $instance
+   * @depends testCreateInstance
+   */
+  public function testSetLayoutSuffix(FrontController $instance)
+  {
+    $this->assertEquals('.phtml', $instance->getLayoutSuffix());
+
+    $instance->setLayoutSuffix('ccml');
+    $this->assertEquals('.ccml', $instance->getLayoutSuffix());
+
+    $instance->setLayoutSuffix('phtml');
+    $this->assertEquals('.phtml', $instance->getLayoutSuffix());
+  }
+
+  /**
+   * @param FrontController $instance
+   * @depends testCreateInstance
+   */
+  public function testControllerName(FrontController $instance)
+  {
+    $this->assertEquals('IndexController', $instance->getControllerName());
+
+    $instance->setControllerName('album');
+    $this->assertEquals('AlbumController', $instance->getControllerName());
+
+    $instance->setControllerName('index');
+    $this->assertEquals('IndexController', $instance->getControllerName());
+  }
+
+  /**
+   * @param FrontController $instance
+   * @depends testCreateInstance
+   */
+  public function testBasePath(FrontController $instance)
+  {
+    $this->assertEquals('', $instance->getBasePath());
+
+    $instance->setBasePath('/modules');
+    $this->assertEquals('/modules', $instance->getBasePath());
+
+    $instance->setBasePath('');
+    $this->assertEquals('', $instance->getBasePath());
+  }
+
+  /**
+   * @param FrontController $instance
+   * @depends testCreateInstance
+   */
+  public function testMockUpTo(FrontController $instance)
+  {
+    $newFc = $instance->mockUpTo('add', 'album', 'admin', __DIR__);
+
+    $this->assertEquals('ModuleAdmin', $newFc->getModuleName());
+    $this->assertEquals('AlbumController', $newFc->getControllerName());
+    $this->assertEquals('addAction', $newFc->getActionName());
+    $this->assertEquals(__DIR__, $newFc->getModulePath());
+  }
+
+  /**
+   * @param FrontController $instance
+   * @depends testCreateInstance
+   */
+  public function testSetRoutesFileSuffix(FrontController $instance)
+  {
+    $this->assertEquals('.routes.php', $instance->getRoutesFileSuffix());
+
+    $instance->setRoutesFileSuffix('.pepperoni.phtml');
+    $this->assertEquals('.pepperoni.phtml', $instance->getRoutesFileSuffix());
+
+    $instance->setRoutesFileSuffix('.routes.php');
+    $this->assertEquals('.routes.php', $instance->getRoutesFileSuffix());
+  }
+
+  /**
+   * @param FrontController $instance
+   * @depends testCreateInstance
+   * @throws StructureException
+   */
+  public function testModulePath(FrontController $instance)
+  {
+    $modulePath = realpath(__DIR__.'/../resources/modules/ModuleDefault');
+
+    $this->assertEquals($modulePath, $instance->getModulePath());
+
+    $this->expectException(StructureException::class);
+    $instance->setModulePath('./test');
+
+    $instance->setModulePath($modulePath);
+    $this->assertEquals($modulePath, $instance->getModulePath());
+  }
+
+  /**
+   * @param FrontController $instance
+   * @depends testCreateInstance
+   * @throws StructureException
+   */
+  public function testLogsPath(FrontController $instance)
+  {
+    $this->assertNull($instance->getLogsPath());
+
+    $this->expectException(StructureException::class);
+    $instance->setLogsPath('var/log/');
+  }
+
+  /**
+   * @param FrontController $instance
+   * @depends testCreateInstance
+   */
+  public function testParams(FrontController $instance)
+  {
+    $this->assertIsArray($instance->getParams());
+
+    $instance->setParams(array('index1' => 'value1'));
+
+    $this->assertArrayHasKey('index1', $instance->getParams());
+    $this->assertContains('value1', $instance->getParams());
+  }
 }

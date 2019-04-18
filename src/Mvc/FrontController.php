@@ -152,7 +152,7 @@ class FrontController
   /**
    * @var string
    */
-  private $routesFile;
+  private $routesFile = null;
 
   /**
    * @var array
@@ -220,9 +220,15 @@ class FrontController
    *
    * @param string $modulesPath
    * @return FrontController
+   * @throws StructureException
    */
   public function setModulesPath(string $modulesPath): FrontController {
-    $this->modulesPath = rtrim($modulesPath, '/');
+
+    if (realpath($modulesPath) === false) {
+      throw new StructureException("The path to the modules does not exists: '$modulesPath'");
+    }
+
+    $this->modulesPath = rtrim(realpath($modulesPath), '/');
     return $this;
   }
 
@@ -235,6 +241,8 @@ class FrontController
 
   /**
    * Name for the <b>file</b> to be rendered as layout.
+   * If the file name you are setting up have the extension
+   * file so the layout suffix extension file will be ignored.
    *
    * @param string $layoutName
    * @return FrontController
@@ -256,7 +264,7 @@ class FrontController
    * @return FrontController
    */
   public function setLayoutSuffix(string $layoutSuffix): FrontController {
-    $this->layoutSuffix = $layoutSuffix;
+    $this->layoutSuffix = '.'.trim($layoutSuffix, '.');
     return $this;
   }
 
@@ -309,8 +317,8 @@ class FrontController
    */
   public function setBasePath(string $basePath = null): FrontController {
 
-    if ($basePath) {
-      $this->basePath = $basePath ? "/$basePath" : '';
+    if (!is_null($basePath)) {
+      $this->basePath = ($basePath === '') ? '' : '/'.trim($basePath, '/');
     } else {
 
       // Remove 'DocRoot' from the path to the project root
@@ -352,9 +360,15 @@ class FrontController
   /**
    * @param string $modulePath
    * @return FrontController
+   * @throws StructureException
    */
   public function setModulePath(string $modulePath): FrontController {
-    $this->modulePath = $modulePath;
+
+    if (realpath($modulePath) === false) {
+      throw new StructureException("The path does not exists: '$modulePath'");
+    }
+
+    $this->modulePath = realpath($modulePath);
     return $this;
   }
 
@@ -454,7 +468,7 @@ class FrontController
    * @return FrontController
    */
   public function setViewSuffix(string $viewSuffix): FrontController {
-    $this->viewSuffix = $viewSuffix;
+    $this->viewSuffix = '.'.trim($viewSuffix, '.');
     return $this;
   }
 
@@ -490,7 +504,7 @@ class FrontController
    * @return FrontController
    */
   public function setAction(string $action): FrontController {
-    $this->action = $action;
+    $this->action = toDashCase($action);
     return $this;
   }
 
@@ -522,7 +536,7 @@ class FrontController
    * @return FrontController
    */
   public function setFormPath(string $formPath): FrontController {
-    $this->formPath = $formPath;
+    $this->formPath = '/'.trim($formPath, '/');
     return $this;
   }
 
@@ -538,7 +552,7 @@ class FrontController
    * @return FrontController
    */
   public function setBusinessPath(string $businessPath): FrontController {
-    $this->businessPath = $businessPath;
+    $this->businessPath = '/'.trim($businessPath, '/');
     return $this;
   }
 
@@ -546,7 +560,7 @@ class FrontController
    * @return string
    */
   public function getGatewayPath(): string {
-    return $this->getModulePath().$this->gatewayPath;
+    return $this->gatewayPath;
   }
 
   /**
@@ -554,7 +568,7 @@ class FrontController
    * @return FrontController
    */
   public function setGatewayPath(string $gatewayPath): FrontController {
-    $this->gatewayPath = '/'.trim(str_replace($this->getModulePath(), '', $gatewayPath), '/');
+    $this->gatewayPath = $this->getBusinessPath().'/'.trim($gatewayPath, '/');
     return $this;
   }
 
@@ -643,16 +657,22 @@ class FrontController
   /**
    * @return string
    */
-  public function getLogsPath(): string {
+  public function getLogsPath(): ?string {
     return $this->logsPath;
   }
 
   /**
    * @param string $logsPath
    * @return FrontController
+   * @throws StructureException
    */
   public function setLogsPath(string $logsPath): FrontController {
-    $this->logsPath = $logsPath;
+
+    if (realpath($logsPath) === false) {
+      throw new StructureException("The path to the logs files does not exists: '$logsPath'");
+    }
+
+    $this->logsPath = realpath($logsPath);
     return $this;
   }
 

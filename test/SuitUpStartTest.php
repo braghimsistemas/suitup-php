@@ -93,7 +93,7 @@ final class SuitUpStartTest extends PHPUnit\Framework\TestCase
    */
   public function testSetSqlMonitorTrueByDefault() {
 
-    $suitup = new SuitUpStart('.');
+    $suitup = new SuitUpStart(__DIR__.'/resources/modules/');
     $suitup->setSqlMonitor(true);
 
     $this->assertTrue($suitup->getConfig()->isSqlMonitor());

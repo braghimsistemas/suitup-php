@@ -4,6 +4,7 @@
 		 convertErrorsToExceptions="true"
 		 convertNoticesToExceptions="true"
 		 convertWarningsToExceptions="true"
+     bootstrap="./test/bootstrap.php"
 		 colors="true">
 
 	<testsuites>
@@ -26,6 +27,7 @@
 
 	<php>
 		<ini name="date.timezone" value="America/Sao_Paulo" />
+    <server name="DOCUMENT_ROOT" value="./test/" />
 	</php>
 
 	<logging>

@@ -142,7 +142,7 @@ EOF
     echo -e $"Host added to /etc/hosts file \n"
   fi
 
-  ### Cria pasta de logs
+  ### Cria pasta de log
   mkdir -p "${rootDir}/var/log";
   chmod 777 "${rootDir}/var" -R;
 
