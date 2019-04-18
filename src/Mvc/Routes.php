@@ -353,10 +353,10 @@ class Routes
   public function setByURI(string $routePath): string {
 
     // Pieces of route with dashes instead of special chars
-    $routeParts = array_map('toDashCase', explode('/', $routePath));
+    $routeParts = array_map('toDashCase', explode('/', trim($routePath, '/')));
 
     // Pieces of route as original
-    $residues = explode('/', $routePath);
+    $residues = explode('/', trim($routePath, '/'));
 
     if ($routePath) {
 
