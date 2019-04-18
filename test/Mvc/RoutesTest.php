@@ -147,4 +147,58 @@ final class RoutesTest extends TestCase
     $this->assertArrayHasKey('name', $this->routes->getParams());
     $this->assertContains('album-detail-test', $this->routes->getParams());
   }
+
+  /**
+   *
+   * @depends testSetupRoutes
+   */
+  public function testSetupRoutesTypeReverse() {
+
+    $this->routes->setupRoutes('1234/album-edit.html');
+
+    $this->assertEquals('default', $this->routes->getModule());
+    $this->assertEquals('album', $this->routes->getController());
+    $this->assertEquals('edit', $this->routes->getAction());
+    $this->assertIsArray($this->routes->getParams());
+    $this->assertNotEmpty($this->routes->getParams());
+
+    // URI param must to exists
+    $this->assertArrayHasKey('id', $this->routes->getParams());
+    $this->assertContains('1234', $this->routes->getParams());
+  }
+
+  /**
+   *
+   * @depends testSetupRoutes
+   */
+  public function testSetupRoutesTypeLiteralClosure() {
+
+    // Closure Type 1
+    $this->routes->setupRoutes('the/type/album-add.html');
+    $this->assertEquals('default', $this->routes->getModule());
+    $this->assertEquals('album', $this->routes->getController());
+    $this->assertEquals('literal-add-closure', $this->routes->getAction());
+    $this->assertEmpty($this->routes->getParams());
+
+    // Closure Type 2
+    $this->routes->setupRoutes('the/type/album-add');
+    $this->assertEquals('default', $this->routes->getModule());
+    $this->assertEquals('album', $this->routes->getController());
+    $this->assertEquals('literal-add-closure', $this->routes->getAction());
+    $this->assertEmpty($this->routes->getParams());
+
+    // Closure Type 3
+    $this->routes->setupRoutes('/the/type/albun-add.html');
+    $this->assertEquals('default', $this->routes->getModule());
+    $this->assertEquals('album', $this->routes->getController());
+    $this->assertEquals('literal-add-closure', $this->routes->getAction());
+    $this->assertEmpty($this->routes->getParams());
+
+    // Closure Type 4
+    $this->routes->setupRoutes('the/type/albun-add');
+    $this->assertEquals('default', $this->routes->getModule());
+    $this->assertEquals('album', $this->routes->getController());
+    $this->assertEquals('literal-add-closure', $this->routes->getAction());
+    $this->assertEmpty($this->routes->getParams());
+  }
 }

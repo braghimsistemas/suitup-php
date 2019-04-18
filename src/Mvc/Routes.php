@@ -211,8 +211,10 @@ class Routes
                 if (trim($route, '/') === trim($item, '/')) {
 
                   // Some details...
-                  $routeItem['name'] = $item;
-                  $routeResidue = str_replace($item, '', $routeResidue);
+                  $routeItem['name'] = trim($item, '/');
+
+                  // It's a literal route, there is no residue
+                  $routeResidue = '';
 
                   // Set as found one!
                   $found = $routeItem;
@@ -245,10 +247,12 @@ class Routes
         $this->setAction($found['action'] ?? $this->getAction());
 
         // Remove from route string it's name
-        $route = trim(preg_replace('/^('.preg_quote($found['name']).')/', '', $route), '/');
+        $route = trim(preg_replace('/^('.preg_quote($found['name'], '/').')/', '', $route), '/');
 
         // Resolve it's params
-        $this->setParams($this->resolveParams($found['params'], explode('/', $route)));
+        if (isset($found['params'])) {
+          $this->setParams($this->resolveParams($found['params'], explode('/', $route)));
+        }
       }
 
       // Setup FrontController with found parameters
