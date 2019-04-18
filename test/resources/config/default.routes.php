@@ -15,7 +15,9 @@ return array(
     'action' => 'edit',
     'params' => array(
       'id' => 0,
-      'name'
+      'name',
+      'type' => '',
+      'code' => '/\d+/'
     )
   ),
 
