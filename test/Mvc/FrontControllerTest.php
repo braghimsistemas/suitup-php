@@ -49,6 +49,19 @@ class FrontControllerTest extends TestCase
    * @param FrontController $instance
    * @depends testCreateInstance
    */
+  public function testSetModuleName(FrontController $instance)
+  {
+    $instance->setModuleName('Admin Mod');
+    $this->assertEquals('ModuleAdminMod', $instance->getModuleName());
+
+    $instance->setModuleName('default');
+    $this->assertEquals('ModuleDefault', $instance->getModuleName());
+  }
+
+  /**
+   * @param FrontController $instance
+   * @depends testCreateInstance
+   */
   public function testGetModuleName(FrontController $instance)
   {
     $this->assertEquals('ModuleDefault', $instance->getModuleName());
@@ -107,6 +120,19 @@ class FrontControllerTest extends TestCase
   public function testToArray(FrontController $instance)
   {
     $this->assertIsArray($instance->toArray());
+  }
+
+  /**
+   * @param FrontController $instance
+   * @depends testCreateInstance
+   */
+  public function testSetModulePrefix(FrontController $instance)
+  {
+    $instance->setModulePrefix('mod');
+    $this->assertEquals('Mod', $instance->getModulePrefix());
+
+    $instance->setModulePrefix('module');
+    $this->assertEquals('Module', $instance->getModulePrefix());
   }
 
   /**
@@ -189,41 +215,86 @@ class FrontControllerTest extends TestCase
     $this->assertEquals(realpath(__DIR__.'/../resources/modules'), $instance->getModulesPath());
   }
 
-//  public function testSetModuleName()
-//  {
-//
-//  }
-//
-//  public function testSetModulePrefix()
-//  {
-//
-//  }
-//
-//  public function testIsSqlMonitor()
-//  {
-//
-//  }
-//
-//  public function testSetControllersPath()
-//  {
-//
-//  }
-//
-//  public function testResolveViewFilename()
-//  {
-//
-//  }
-//
-//  public function testGetViewsPath()
-//  {
-//
-//  }
-//
-//  public function testGetModule()
-//  {
-//
-//  }
-//
+  /**
+   * @param FrontController $instance
+   * @depends testCreateInstance
+   */
+  public function testSqlMonitor(FrontController $instance)
+  {
+    $this->assertFalse($instance->isSqlMonitor());
+
+    $instance->setSqlMonitor(true);
+    $this->assertTrue($instance->isSqlMonitor());
+
+    $instance->setSqlMonitor(false);
+    $this->assertFalse($instance->isSqlMonitor());
+  }
+
+  /**
+   * @param FrontController $instance
+   * @depends testCreateInstance
+   */
+  public function testControllersPath(FrontController $instance)
+  {
+    $this->assertEquals('Controllers', $instance->getControllersPath());
+
+    $instance->setControllersPath('control');
+    $this->assertEquals('control', $instance->getControllersPath());
+
+    $instance->setControllersPath('Controllers');
+    $this->assertEquals('Controllers', $instance->getControllersPath());
+  }
+
+  /**
+   * @param FrontController $instance
+   * @depends testCreateInstance
+   */
+  public function testResolveViewFilename(FrontController $instance)
+  {
+    $theFile = realpath(__DIR__.'/../resources/modules').'/ModuleDefault/views/index/index.phtml';
+    $this->assertEquals($theFile, $instance->resolveViewFilename());
+  }
+
+  /**
+   * @param FrontController $instance
+   * @depends testCreateInstance
+   */
+  public function testResolveLayoutFilename(FrontController $instance)
+  {
+    $theFile = realpath(__DIR__.'/../resources/modules').'/ModuleDefault/views/layout.phtml';
+    $this->assertEquals($theFile, $instance->resolveLayoutFilename());
+  }
+
+  /**
+   * @param FrontController $instance
+   * @depends testCreateInstance
+   */
+  public function testViewsPath(FrontController $instance)
+  {
+    $this->assertEquals('views', $instance->getViewsPath());
+
+    $instance->setViewsPath('TestPath');
+    $this->assertEquals('TestPath', $instance->getViewsPath());
+
+    $instance->setViewsPath('views');
+    $this->assertEquals('views', $instance->getViewsPath());
+  }
+
+  /**
+   * @param FrontController $instance
+   * @depends testCreateInstance
+   */
+  public function testModule(FrontController $instance)
+  {
+    $this->assertEquals('default', $instance->getModule());
+
+    $instance->setModule('admin mod');
+    $this->assertEquals('admin-mod', $instance->getModule());
+
+    $instance->setModule('default');
+    $this->assertEquals('default', $instance->getModule());
+  }
+
 //  public function testGetGatewayPath()
 //  {
 //
@@ -239,17 +310,8 @@ class FrontControllerTest extends TestCase
 //
 //  }
 //
-//  public function testGetControllersPath()
-//  {
-//
-//  }
 //
 //  public function testGetBusinessPath()
-//  {
-//
-//  }
-//
-//  public function testSetViewsPath()
 //  {
 //
 //  }
@@ -275,11 +337,6 @@ class FrontControllerTest extends TestCase
 //  }
 //
 //  public function testSetBasePath()
-//  {
-//
-//  }
-//
-//  public function testSetSqlMonitor()
 //  {
 //
 //  }
@@ -355,11 +412,6 @@ class FrontControllerTest extends TestCase
 //  }
 //
 //  public function testGetRoutesFileSuffix()
-//  {
-//
-//  }
-//
-//  public function testResolveLayoutFilename()
 //  {
 //
 //  }

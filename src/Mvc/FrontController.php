@@ -370,7 +370,7 @@ class FrontController
    * @return FrontController
    */
   public function setModulePrefix(string $modulePrefix): FrontController {
-    $this->modulePrefix = $modulePrefix;
+    $this->modulePrefix = toCamelCase($modulePrefix, true);
     return $this;
   }
 
@@ -386,7 +386,7 @@ class FrontController
    * @return FrontController
    */
   public function setModule(string $module): FrontController {
-    $this->module = $module;
+    $this->module = toDashCase($module);
     return $this;
   }
 
