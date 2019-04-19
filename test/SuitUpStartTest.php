@@ -28,10 +28,6 @@ declare(strict_types=1);
 error_reporting(E_ALL | E_STRICT);
 ini_set('display_errors', '1');
 
-// Environment variables
-defined('DEVELOPMENT') || define('DEVELOPMENT', true);
-defined('SHOW_ERRORS') || define('SHOW_ERRORS', true);
-
 if (file_exists(__DIR__.'/../vendor/autoload.php')) {
 
   // We are developing SuitUp itself.
@@ -47,6 +43,7 @@ if (file_exists(__DIR__.'/../vendor/autoload.php')) {
 	$autoload->addPsr4('SuitUpTest\\', __DIR__.DIRECTORY_SEPARATOR.'.');
 }
 
+use SuitUp\Mvc\Routes;
 use SuitUp\Exception\NotFoundException;
 use SuitUp\Exception\StructureException;
 
@@ -110,16 +107,51 @@ final class SuitUpStartTest extends PHPUnit\Framework\TestCase
   /**
    *
    * @depends testCreateInstance
-   * @param SuitUpStart $suitup
    * @throws Throwable
    *
    */
-  public function testRun(SuitUpStart $suitup) {
+  public function testRunNormal() {
+
+    $suitup = new SuitUpStart(__DIR__.'/resources/modules/');
 
     ob_start();
     $suitup->run();
     $result = ob_get_clean();
 
-    $this->assertEquals(file_get_contents(__DIR__.'/resources/files/suitup-start/run-1.txt'), $result);
+    $this->assertEquals(file_get_contents(__DIR__ . '/resources/files/suitup-start/run-normal.txt'), $result);
+  }
+
+  /**
+   *
+   * @depends testCreateInstance
+   * @throws Throwable
+   *
+   */
+  public function testRunRouteAdmin() {
+
+    $suitup = new SuitUpStart(__DIR__.'/resources/modules/');
+    (new Routes($suitup->getConfig()))->setupRoutes('/admin');
+
+    ob_start();
+    $suitup->run();
+    $result = ob_get_clean();
+
+    $this->assertEquals(file_get_contents(__DIR__ . '/resources/files/suitup-start/run-route-admin.txt'), $result);
+  }
+
+  /**
+   *
+   * @depends testCreateInstance
+   * @throws Throwable
+   *
+   */
+  public function testRunRouteNotFound() {
+
+    $suitup = new SuitUpStart(__DIR__.'/resources/modules/');
+    (new Routes($suitup->getConfig()))->setupRoutes('/not-found-route');
+
+    // We know that there's an error here
+    $this->expectException(NotFoundException::class);
+    $suitup->run();
   }
 }

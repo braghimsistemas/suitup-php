@@ -136,10 +136,10 @@ class SuitUpStart
 
           // Well now we have to try to launch ErrorController
           // from framework itself
-          $this->builder(
-            $this->getConfig()->mockUpTo($errorAction, 'default-error', 'error', __DIR__.'/ModuleError'),
-            DEVELOPMENT ? $e : $originalError
-          );
+          $frameworkErrorModule = $this->getConfig()->mockUpTo($errorAction, 'default-error', 'error', __DIR__.'/ModuleError');
+
+          // Try to build it
+          $this->builder($frameworkErrorModule, DEVELOPMENT ? $e : $originalError);
 
         } catch (Throwable $ex) {
 
