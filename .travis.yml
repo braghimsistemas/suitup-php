@@ -18,6 +18,7 @@ env:
   global:
     - DEVELOPMENT=false
     - SHOW_ERRORS=false
+    - IS_TESTCASE=true
 
 matrix:
   fast_finish: true
