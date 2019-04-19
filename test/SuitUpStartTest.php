@@ -155,18 +155,4 @@ final class SuitUpStartTest extends PHPUnit\Framework\TestCase
 
     $this->assertEquals(file_get_contents(__DIR__ . '/resources/files/suitup-start/run-route-not-found.txt'), $result);
   }
-
-//  /**
-//   *
-//   * @depends testCreateInstance
-//   * @throws Throwable
-//   */
-//  public function testRunRouteNotFound() {
-//
-//    $suitup = new SuitUpStart(__DIR__.'/resources/modules/');
-//    (new Routes($suitup->getConfig()))->setupRoutes('/not-found-route');
-//
-//    $this->expectException(NotFoundException::class);
-//    $suitup->run();
-//  }
 }

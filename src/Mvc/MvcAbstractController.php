@@ -430,7 +430,7 @@ abstract class MvcAbstractController
     $append = ltrim(($ref ?? ''), '/');
     $baseUrl .= $append ? '/'.$append : '';
 
-    return $baseUrl;
+    return preg_replace('/\/+/', '/', $baseUrl);
   }
 
   /**
@@ -446,7 +446,11 @@ abstract class MvcAbstractController
     // Append reference
     $append = ltrim(($ref ?? ''), '/');
 
-    return $basePath.($append ? '/'.$append : '');
+    if ($append) {
+      $basePath .= '/'.$append;
+    }
+
+    return preg_replace('/\/+/', '/', $basePath);
   }
 
   /**
@@ -735,17 +739,28 @@ abstract class MvcAbstractController
   }
 
   /**
+   * @return string
+   */
+  public function getSessionFilterNamespace(): string {
+    $namespace = implode('.', array(
+      $this->getFrontController()->getModuleName(),
+      $this->getFrontController()->getControllerName(),
+      $this->getFrontController()->getActionName()
+    ));
+
+    return $namespace;
+  }
+
+  /**
    * Return or create a session specific to create filters.
    * <b>Reserved only one by each action.</b>
    *
    * @return mixed
    */
   public function getSessionFilter() {
-    $namespace = implode('.', array(
-      $this->getFrontController()->getModuleName(),
-      $this->getFrontController()->getControllerName(),
-      $this->getFrontController()->getActionName()
-    ));
+
+    $namespace = $this->getSessionFilterNamespace();
+
     if (! isset($_SESSION[$namespace])) {
       $_SESSION[$namespace] = array();
     }
@@ -760,11 +775,8 @@ abstract class MvcAbstractController
    * @return array
    */
   public function addSessionFilter(string $name, $value = null) {
-    $namespace = implode('.', array(
-      $this->getFrontController()->getModuleName(),
-      $this->getFrontController()->getControllerName(),
-      $this->getFrontController()->getActionName()
-    ));
+
+    $namespace = $this->getSessionFilterNamespace();
 
     if (is_array($name)) {
       foreach ($name as $i => $v) {
@@ -782,11 +794,8 @@ abstract class MvcAbstractController
    * @param string|null $name
    */
   public function removeSessionFilter(string $name = null) {
-    $namespace = implode('.', array(
-      $this->getFrontController()->getModuleName(),
-      $this->getFrontController()->getControllerName(),
-      $this->getFrontController()->getActionName()
-    ));
+
+    $namespace = $this->getSessionFilterNamespace();
 
     if ($name && $_SESSION[$namespace][$name]) {
       unset($_SESSION[$namespace][$name]);
@@ -799,12 +808,8 @@ abstract class MvcAbstractController
    * Note that it will clear ONLY the current action filter session.
    */
   public function clearSessionFilter(): void {
-    $namespace = implode('.', array(
-      $this->getFrontController()->getModuleName(),
-      $this->getFrontController()->getControllerName(),
-      $this->getFrontController()->getActionName()
-    ));
 
+    $namespace = $this->getSessionFilterNamespace();
 		unset($_SESSION[$namespace]);
 	}
 }

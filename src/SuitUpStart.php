@@ -68,6 +68,11 @@ class SuitUpStart
   private $config;
 
   /**
+   * @var MvcAbstractController
+   */
+  private $controller;
+
+  /**
    * SuitUpStart constructor.
    *
    * @param string $modulesPath
@@ -118,7 +123,7 @@ class SuitUpStart
     try {
 
       // If is everything ok this will be the one launch.
-      $this->builder($this->getConfig());
+      $this->controller = $this->builder($this->getConfig());
 
     } catch (Throwable $originalError) {
       try {
@@ -131,7 +136,7 @@ class SuitUpStart
 
         // We got an default-error so let's try to run
         // ErrorController inside the own module
-        $this->builder(
+        $this->controller = $this->builder(
           $this->getConfig()->mockUpTo($errorAction, 'error', 'error'),
           $originalError
         );
@@ -144,7 +149,7 @@ class SuitUpStart
           $frameworkErrorModule = $this->getConfig()->mockUpTo($errorAction, 'default-error', 'error', __DIR__.'/ModuleError');
 
           // Try to build it
-          $this->builder($frameworkErrorModule, DEVELOPMENT ? $e : $originalError);
+          $this->controller = $this->builder($frameworkErrorModule, DEVELOPMENT ? $e : $originalError);
 
         } catch (Throwable $ex) {
 
@@ -232,6 +237,13 @@ class SuitUpStart
    */
   public function getConfig(): FrontController {
     return $this->config;
+  }
+
+  /**
+   * @return MvcAbstractController
+   */
+  public function getController(): ?MvcAbstractController {
+    return $this->controller;
   }
 
   /**
