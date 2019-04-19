@@ -45,9 +45,9 @@ if (! function_exists('dump')) {
      * $argv when you run this function by command line.
      */
     if (isset($argv)) {
-      $output = preg_replace("/\]\=\>\n(\s+)/m", "] => ", ob_get_clean()) . "\n\n";
+      $output = preg_replace("/\]\=\>\r\n(\s+)/m", "] => ", ob_get_clean()) . "\r\n\r\n";
     } else {
-      $output = "<pre>" . preg_replace("/\]\=\>\n(\s+)/m", "] => ", ob_get_clean()) . "</pre>";
+      $output = "<pre>" . preg_replace("/\]\=\>\r\n(\s+)/m", "] => ", ob_get_clean()) . "</pre>";
     }
     if ($echo) {
       exit($output);
