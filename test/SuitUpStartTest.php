@@ -25,22 +25,22 @@
 declare(strict_types=1);
 
 // Initial configs
-error_reporting(E_ALL | E_STRICT);
-ini_set('display_errors', '1');
+//error_reporting(E_ALL | E_STRICT);
+//ini_set('display_errors', '1');
 
 if (file_exists(__DIR__.'/../vendor/autoload.php')) {
 
   // We are developing SuitUp itself.
 
 	$autoload = include __DIR__.'/../vendor/autoload.php';
-	$autoload->addPsr4('SuitUpTest\\', __DIR__.DIRECTORY_SEPARATOR.'.');
+	$autoload->addPsr4('SuitUpTest\\', __DIR__.'/.');
 
 } else if (file_exists(__DIR__.'/../../../autoload.php')) {
 
   // We are testing directly from production (developing a project)
 
 	$autoload = include __DIR__.'/../../../autoload.php';
-	$autoload->addPsr4('SuitUpTest\\', __DIR__.DIRECTORY_SEPARATOR.'.');
+	$autoload->addPsr4('SuitUpTest\\', __DIR__.'/.');
 }
 
 use SuitUp\Mvc\Routes;
