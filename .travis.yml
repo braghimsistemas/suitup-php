@@ -16,8 +16,8 @@ services:
 
 env:
   global:
-    - DEVELOPMENT=true
-    - SHOW_ERRORS=true
+    - DEVELOPMENT=false
+    - SHOW_ERRORS=false
 
 matrix:
   fast_finish: true

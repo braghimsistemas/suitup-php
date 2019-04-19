@@ -219,9 +219,7 @@ abstract class MvcAbstractController
    * <b>Avoid override it</b>
    */
   public function errorAction(): void {
-    if (!IS_TESTCASE) {
-      header(getenv('SERVER_PROTOCOL') . ' 500 Internal Server Error', true, 500);
-    }
+    header(getenv('SERVER_PROTOCOL') . ' 500 Internal Server Error', true, 500);
   }
 
   /**
@@ -230,9 +228,7 @@ abstract class MvcAbstractController
    * <b>Avoid override it</b>
    */
   public function notFoundAction(): void {
-    if (!IS_TESTCASE) {
-      header(getenv('SERVER_PROTOCOL') . ' 404 Not Found', true, 404);
-    }
+    header(getenv('SERVER_PROTOCOL') . ' 404 Not Found', true, 404);
   }
 
   /**
