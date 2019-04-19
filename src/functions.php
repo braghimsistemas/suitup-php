@@ -144,7 +144,7 @@ function renderView($renderViewName, $vars = array(), $renderViewPath = null): s
 }
 
 /**
- * Renderiza um template de paginacao.
+ * Render a pagination template.
  *
  * @param SuitUp\Paginate\Paginate $object Objeto de paginacao criado na query.
  * @param string $renderViewName Nome do arquivo .phtml de paginacao
@@ -298,12 +298,12 @@ if (! function_exists('uploadFileImageBase64')) {
    *
    * <b>It will make the file round to 33% bigger according to PHP Documentation</b>
    *
-   * @param array $file Item $_FILES['arquivo']
+   * @param array $file Item $_FILES['filename']
    * @param int $maxFilesize Default to 512kb
    * @throws Exception
    * @return string
    */
-  function uploadFileImageBase64(array $file, int $maxFilesize = 524288) {
+  function uploadFileImageBase64(array $file, int $maxFilesize = 524288): string {
     // Check errors
     if ($file['error'] != UPLOAD_ERR_OK) {
       throw new Exception("Unexpected default-error, file was not sent, try again");
@@ -353,10 +353,10 @@ if (!function_exists('formSelect')) {
    * @param string $name ID and NAME tag attr's
    * @param array $attrs All other attr's you would like to append to the tag, you probably should like to add class="something" here.
    * @param array $values The options values list with value => text
-   * @param type $selected Option selected item
+   * @param string $selected Option selected item
    * @return string
    */
-  function formSelect(string $name, array $attrs = array(), array $values = array('' => 'Selecione!'), string $selected = null) {
+  function formSelect(string $name, array $attrs = array(), array $values = array('' => 'Select One!'), string $selected = null) {
 
     // Normalize id attr
     $id = preg_replace("/[^0-9a-zA-Z-_]/", '-', $name);
@@ -389,7 +389,7 @@ if (!function_exists('formSelect')) {
    *
    * @param string $name The name and id attributes
    * @param array $attrs The list of attributes
-   * @param array $value Value attribute
+   * @param mixed $value Value attribute
    * @param bool $checked Is checked?
    *
    * @return string
