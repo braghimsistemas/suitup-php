@@ -153,13 +153,6 @@ final class SuitUpStartTest extends PHPUnit\Framework\TestCase
     $suitup->run();
     $result = ob_get_clean();
 
-    dump([
-      'DEVELOPMENT' => DEVELOPMENT,
-      'SHOW_ERRORS' => SHOW_ERRORS,
-      'IS_TESTCASE' => IS_TESTCASE,
-      $_ENV,
-    ]);
-
     $this->assertEquals(file_get_contents(__DIR__ . '/resources/files/suitup-start/run-route-not-found.txt'), $result);
   }
 
