@@ -291,6 +291,59 @@ function getTraceArgsAsString($args, $root = true) {
   return $argString;
 }
 
+if (! function_exists('uploadFileImageBase64')) {
+
+  /**
+   * Transform an image data to Base64.
+   *
+   * <b>It will make the file round to 33% bigger according to PHP Documentation</b>
+   *
+   * @param array $file Item $_FILES['arquivo']
+   * @param int $maxFilesize Default to 512kb
+   * @throws Exception
+   * @return string
+   */
+  function uploadFileImageBase64(array $file, int $maxFilesize = 524288) {
+    // Check errors
+    if ($file['error'] != UPLOAD_ERR_OK) {
+      throw new Exception("Unexpected default-error, file was not sent, try again");
+    }
+
+    // Check size
+    if ($file['size'] > $maxFilesize) {
+      throw new Exception("Too big file, send one with till " . ($maxFilesize / MB) . "Mb");
+    }
+
+    // Define exts e mimetypes
+    $mimeTypes = array(
+      'jpg' => 'image/jpeg',
+      'jpeg' => 'image/jpeg',
+      'jpe' => 'image/jpeg',
+      'gif' => 'image/gif',
+      'png' => 'image/png',
+      'bmp' => 'image/bmp'
+    );
+
+    // Validate EXT
+    $fileExt = preg_replace("/^.+\./", '', $file['name']);
+    if (! array_key_exists($fileExt, $mimeTypes)) {
+      throw new Exception("Invalid extension, please send one of these: (" . implode(", ", array_keys($mimeTypes)) . ")");
+    }
+
+    // Validate MimeType
+    if (! isset($mimeTypes[$fileExt]) || ($file['type'] != $mimeTypes[$fileExt])) {
+      throw new Exception("Invalid file mime type, please send one of these: (" . implode(", ", array_keys($mimeTypes)) . ")");
+    }
+
+    // Validate if file exists
+    if (! file_exists($file['tmp_name']) || ! is_readable($file['tmp_name'])) {
+      throw new Exception("Something went wrong to upload image, try again");
+    }
+    // No errors, try to code to base64
+    return 'data:' . $mimeTypes[$fileExt] . ';base64,' . base64_encode(file_get_contents($file['tmp_name']));
+  }
+}
+
 if (!function_exists('formSelect')) {
 
   /**

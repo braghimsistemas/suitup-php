@@ -574,125 +574,6 @@ abstract class MvcAbstractController
   }
 
   /**
-   * Efetua upload de arquivos.
-   *
-   * @param array $file Arquivo da variável $_FILES['somefile']
-   * @param string $where Caminho absoluto para onde salvar o arquivo, ex.: FILES_PATH . '/somewhere'
-   * @param string $exitFilename Nome do arquivo no final do processo de upload
-   * @param array $allowedExt Lista de extenssoes permitidas para o upload
-   * @return stdClass
-   * @throws Exception
-   */
-  public function uploadFile($file, $where, $exitFilename = null, array $allowedExt = array('jpeg', 'jpg', 'pdf', 'png', 'gif', 'svg')) {
-    $result = new stdClass();
-    $result->filename = "";
-    $result->pathAndFilename = "";
-    $result->fileExt = "";
-
-    $upload = new Upload($file);
-    if ($upload->uploaded) {
-      // Formatos Aceitos (Extensoes)
-      if (in_array($upload->file_src_name_ext, $allowedExt)) {
-
-        // Formatos Aceitos (Mimetypes)
-        $upload->allowed = array(
-          'image/jpg',
-          'image/pjpeg', // JPG no IE7 e IE8
-          'image/jpeg', // JPG no Chrome, Safari, Opera e Firefox
-          'image/png',
-          'image/gif',
-          'application/x-zip-compressed',
-          'application/pdf', // PDF p/ IE8 e Mozilla e Chrome e Safari e Opera
-          'application/download',
-          'application/applefile'
-        );
-        $upload->process($where);
-
-        // Upload deu tudo certo?
-        if ($upload->processed) {
-
-          // Define resultado
-          $result->fileExt = $upload->file_src_name_ext;
-          $result->filename = $upload->file_dst_name;
-          $result->pathAndFilename = $where . $upload->file_dst_name;
-
-          // Permissao total no arquivo
-          chmod($result->pathAndFilename, 0777);
-
-          // Se for para mudar o nome do arquivo de saida
-          if ($exitFilename) {
-
-            // Renomeia
-            if (! rename($result->pathAndFilename, $where . $exitFilename . '.' . $upload->file_src_name_ext)) {
-              throw new Exception("Não foi possível mover o arquivo '{$result->pathAndFilename}'");
-            }
-
-            $result->filename = $exitFilename . '.' . $upload->file_src_name_ext;
-            $result->pathAndFilename = $where . $exitFilename . '.' . $upload->file_src_name_ext;
-          }
-        } else {
-          throw new Exception($upload->error);
-        }
-      } else {
-        throw new Exception("Extenssão inválida");
-      }
-    } else {
-      throw new Exception($upload->error);
-    }
-    return $result;
-  }
-
-  /**
-   * Transform an image data to Base64.
-   *
-   * <b>It will make the file round to 33% bigger according to PHP Documentation</b>
-   *
-   * @param array $file Item $_FILES['arquivo']
-   * @param int $maxFilesize Default to 512kb
-   * @throws Exception
-   * @return string
-   */
-  public function uploadFileImageBase64(array $file, int $maxFilesize = 524288) {
-    // Check errors
-    if ($file['error'] != UPLOAD_ERR_OK) {
-      throw new Exception("Unexpected default-error, file was not sent, try again");
-    }
-
-    // Check size
-    if ($file['size'] > $maxFilesize) {
-      throw new Exception("Too big file, send one with till " . ($maxFilesize / MB) . "Mb");
-    }
-
-    // Define exts e mimetypes
-    $mimeTypes = array(
-      'jpg' => 'image/jpeg',
-      'jpeg' => 'image/jpeg',
-      'jpe' => 'image/jpeg',
-      'gif' => 'image/gif',
-      'png' => 'image/png',
-      'bmp' => 'image/bmp'
-    );
-
-    // Validate EXT
-    $fileExt = preg_replace("/^.+\./", '', $file['name']);
-    if (! array_key_exists($fileExt, $mimeTypes)) {
-      throw new Exception("Invalid extension, please send one of these: (" . implode(", ", array_keys($mimeTypes)) . ")");
-    }
-
-    // Validate MimeType
-    if (! isset($mimeTypes[$fileExt]) || ($file['type'] != $mimeTypes[$fileExt])) {
-      throw new Exception("Invalid file mime type, please send one of these: (" . implode(", ", array_keys($mimeTypes)) . ")");
-    }
-
-    // Validate if file exists
-    if (! file_exists($file['tmp_name']) || ! is_readable($file['tmp_name'])) {
-      throw new Exception("Something went wrong to upload image, try again");
-    }
-    // No errors, try to code to base64
-    return 'data:' . $mimeTypes[$fileExt] . ';base64,' . base64_encode(file_get_contents($file['tmp_name']));
-  }
-
-  /**
    * Return the previous page if it is different from current.
    *
    * @return bool|string
@@ -770,11 +651,11 @@ abstract class MvcAbstractController
   /**
    * Add value by key to the reserved filter session.
    *
-   * @param string $name
+   * @param mixed $name
    * @param mixed $value
    * @return array
    */
-  public function addSessionFilter(string $name, $value = null) {
+  public function addSessionFilter($name, $value = null) {
 
     $namespace = $this->getSessionFilterNamespace();
 
@@ -791,13 +672,13 @@ abstract class MvcAbstractController
   /**
    * Remove item from reserved filter session.
    *
-   * @param string|null $name
+   * @param string $name
    */
-  public function removeSessionFilter(string $name = null) {
+  public function removeSessionFilter(string $name) {
 
     $namespace = $this->getSessionFilterNamespace();
 
-    if ($name && $_SESSION[$namespace][$name]) {
+    if (isset($_SESSION[$namespace][$name])) {
       unset($_SESSION[$namespace][$name]);
     }
   }

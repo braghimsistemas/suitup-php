@@ -170,9 +170,27 @@ class MvcAbstractControllerTest extends TestCase
     $this->assertIsArray($sessionFilter);
 
     $suitup->getController()->addSessionFilter('filter1', 'valueFilter1');
+    $suitup->getController()->addSessionFilter(array(
+      'filter2' => 'valueFilter2',
+      'filter3' => 'valueFilter3',
+      'filter4' => 'valueFilter4',
+    ));
 
     $this->assertArrayHasKey('filter1', $suitup->getController()->getSessionFilter());
     $this->assertContains('valueFilter1', $suitup->getController()->getSessionFilter());
+  }
+
+  /**
+   * @param SuitUpStart $suitup
+   * @depends testCreateInstance
+   */
+  public function testRemoveSessionFilter(SuitUpStart $suitup)
+  {
+    $this->assertArrayHasKey('filter1', $suitup->getController()->getSessionFilter());
+
+    $suitup->getController()->removeSessionFilter('filter1');
+
+    $this->assertArrayNotHasKey('filter1', $suitup->getController()->getSessionFilter());
   }
 
   /**
@@ -262,6 +280,31 @@ class MvcAbstractControllerTest extends TestCase
   {
     $this->assertEquals('/', $suitup->getController()->baseUrl());
     $this->assertEquals('/appended', $suitup->getController()->baseUrl('appended'));
+  }
+
+  /**
+   * @param SuitUpStart $suitup
+   * @depends testCreateInstance
+   */
+  public function testGetReferer(SuitUpStart $suitup)
+  {
+    $this->assertFalse($suitup->getController()->getReferer());
+  }
+
+  /**
+   * @param SuitUpStart $suitup
+   * @depends testCreateInstance
+   */
+  public function testRenderView(SuitUpStart $suitup)
+  {
+    $thePath = __DIR__.'/../resources/files/mvc/mvc-abstract-controller/';
+    $html = $suitup->getController()->renderView(
+      'test-render-view.phtml',
+      array('id' => 321),
+      $thePath
+    );
+
+    $this->assertEquals("<h1>The Rendered view</h1><p>The id is: 321</p>\r\n", $html);
   }
 
   //////////////////////////////////////////// Static methods
