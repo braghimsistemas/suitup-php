@@ -45,6 +45,11 @@ defined('DEVELOPMENT') || define('DEVELOPMENT', (bool) getenv('DEVELOPMENT'));
 defined('SHOW_ERRORS') || define('SHOW_ERRORS', (bool) getenv('SHOW_ERRORS'));
 
 /**
+ * Define that system are running under test cases
+ */
+defined('IS_TESTCASE') || define('IS_TESTCASE', (bool) getenv('IS_TESTCASE'));
+
+/**
  * Class SuitUpStart
  *
  * Everything in SuitUp Framework PHP begins from here.

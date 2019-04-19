@@ -32,6 +32,7 @@
 	<php>
 		<ini name="date.timezone" value="America/Sao_Paulo" />
     <server name="DOCUMENT_ROOT" value="./test/" />
+    <env name="IS_TESTCASE" value="true" />
     <env name="DEVELOPMENT" value="false" />
     <env name="SHOW_ERRORS" value="false" />
 	</php>

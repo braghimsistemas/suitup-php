@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<meta name="description" content="">
+<meta name="author" content="Braghim Sistemas">
+
+<title>Default Error Handler</title>
+
+<!-- Bootstrap core CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+<!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+<!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+		  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+</head>
+
+<body>
+  <!-- Begin page content -->
+  <div class="container">
+			<div class="page-header mt-5">
+  <h1 class="text-danger">
+    <i class="fa fa-exclamation-circle"></i> Error - Page Not Found
+  </h1>
+  <p>
+    Sorry, but the page you are looking for isn't here.
+    <br/>
+    Maybe it was moved without warning and it shouldn't happen to handsome people like you, of course.
+  </p>
+</div>
+  <div class="jumbotron">
+    <p class="lead">Keep calm and continue the navigation going to the previous page or to the Home</p>
+    <div class="mt-5">
+      <a class="btn btn-light btn-lg" href="javascript:void(0);" onclick="window.history.back();" role="button">
+        <i class="fa fa-arrow-left"></i>
+        Go Back
+      </a>
+      <a class="btn btn-primary btn-lg" href="/" role="button">Home Page</a>
+    </div>
+  </div>
+
+		</div>
+</body>
+</html>
