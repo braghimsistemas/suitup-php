@@ -16,9 +16,9 @@ services:
 
 env:
   global:
-    - DEVELOPMENT=false
-    - SHOW_ERRORS=false
-    - IS_TESTCASE=true
+    - DEVELOPMENT=0
+    - SHOW_ERRORS=0
+    - IS_TESTCASE=1
 
 matrix:
   fast_finish: true
