@@ -40,7 +40,7 @@ class DbAdapterTest extends TestCase
         'host' => '0.0.0.0',
         'port' => '3306',
         'dbname' => 'suitup',
-        'username' => 'root',
+        'username' => 'travis',
         'password' => ''
       ));
 
