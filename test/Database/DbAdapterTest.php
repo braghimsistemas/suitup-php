@@ -37,7 +37,7 @@ class DbAdapterTest extends TestCase
 
       // Running tests from TRAVIS CI
       $adapter = new Mysql(array(
-        'host' => '127.0.0.1',
+        'host' => '0.0.0.0',
         'port' => '3306',
         'dbname' => 'suitup',
         'username' => 'root',
@@ -56,8 +56,8 @@ class DbAdapterTest extends TestCase
       ));
     }
 
+    // Create and test instance
     $db = new DbAdapter($adapter);
-
     $this->assertInstanceOf('SuitUp\Database\DbAdapterInterface', $db);
 
     return $db;

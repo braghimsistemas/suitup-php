@@ -63,7 +63,7 @@ class DbAdapter implements DbAdapterInterface
       $this->setConnection($connection);
 
     } catch (\PDOException $e) {
-      throw new DbAdapterException("Database connection cannot be done. Check out your connection parameters and network configuration.", $e->getCode(), $e);
+      throw new DbAdapterException("Database connection error: {$e->getMessage()}", $e->getCode(), $e);
     }
   }
 
