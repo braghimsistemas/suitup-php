@@ -4,7 +4,7 @@
 chdir(__DIR__);
 
 // Define false when it's not Travis CI
-defined('IS_TRAVIS_CI') || define('IS_TRAVIS_CI', false);
+defined('IS_TRAVIS_CI') || define('IS_TRAVIS_CI', (bool) getenv('IS_TRAVIS_CI'));
 
 // Setup DOCUMENT ROOT
 $_ENV['DOCUMENT_ROOT'] = __DIR__;

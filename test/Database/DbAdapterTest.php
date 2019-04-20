@@ -39,7 +39,7 @@ class DbAdapterTest extends TestCase
       $adapter = new Mysql(array(
         'host' => '127.0.0.1',
         'port' => '3306',
-        'dbname' => 'test',
+        'dbname' => 'suitup',
         'username' => 'root',
         'password' => ''
       ));
