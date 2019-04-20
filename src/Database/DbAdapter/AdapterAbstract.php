@@ -49,7 +49,9 @@ abstract class AdapterAbstract implements AdapterInterface
   /**
    * @var string
    */
-  private $options = array();
+  private $options = array(
+    \PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"
+  );
 
   /**
    * @param array $parameters
@@ -141,6 +143,15 @@ abstract class AdapterAbstract implements AdapterInterface
    */
   public function setOptions(array $options): AdapterAbstract {
     $this->options = $options;
+    return $this;
+  }
+
+  /**
+   * @param array $options
+   * @return AdapterAbstract
+   */
+  public function appendOptions(array $options): AdapterAbstract {
+    $this->options = array_merge($this->options, $options);
     return $this;
   }
 }

@@ -33,6 +33,6 @@ class DatabaseGatewayException extends \Exception implements SuitUpExceptionInte
 
   public function getDescription(): string
   {
-    // TODO: Implement getDescription() method.
+    return 'This exception normally is thrown when there is something wrong in the Gateway file or SQL Queries inside it';
   }
 }

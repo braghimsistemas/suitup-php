@@ -24,29 +24,14 @@
  */
 declare(strict_types=1);
 
+namespace SuitUp\Exception;
 
-namespace SuitUp\Database\DbAdapter;
 
-
-interface AdapterInterface
+class QueryTypeException extends \Exception implements SuitUpExceptionInterface
 {
-  public function __construct(array $parameters);
 
-  public function getDsn(): string;
-
-  public function setDsn($dsn): AdapterAbstract;
-
-  public function getUsername(): string;
-
-  public function setUsername($username): AdapterAbstract;
-
-  public function getPassword(): string;
-
-  public function setPassword($password): AdapterAbstract;
-
-  public function getOptions(): array;
-
-  public function setOptions(array $options): AdapterAbstract;
-
-  public function appendOptions(array $options): AdapterAbstract;
+  public function getDescription(): string
+  {
+    return 'This method is thrown when there was an error while typing a query statement';
+  }
 }

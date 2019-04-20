@@ -56,6 +56,6 @@ class Mysql extends AdapterAbstract
     // User and options config
     $this->setUsername($parameters['username'] ?? 'root');
     $this->setPassword($parameters['password'] ?? '');
-    $this->setOptions($parameters['options'] ?? array());
+    $this->appendOptions($parameters['options'] ?? array());
   }
 }
