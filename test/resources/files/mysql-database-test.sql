@@ -1,89 +1,118 @@
-/*
- Navicat MySQL Data Transfer
+-- MySQL dump 10.16  Distrib 10.1.29-MariaDB, for debian-linux-gnu (x86_64)
+--
+-- Host: 127.0.0.1    Database: suitup
+-- ------------------------------------------------------
+-- Server version	10.4.4-MariaDB-1:10.4.4+maria~bionic
 
- Source Server         : Maria Suitup
- Source Server Type    : MariaDB
- Source Server Version : 100404
- Source Host           : localhost:3306
- Source Schema         : suitup
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
- Target Server Type    : MariaDB
- Target Server Version : 100404
- File Encoding         : 65001
+--
+-- Table structure for table `album`
+--
 
- Date: 13/04/2019 23:42:07
-*/
-
-SET NAMES utf8mb4;
-SET FOREIGN_KEY_CHECKS = 0;
-
--- ----------------------------
--- Table structure for album
--- ----------------------------
 DROP TABLE IF EXISTS `album`;
-CREATE TABLE `album`  (
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `album` (
   `pk_album` int(11) NOT NULL AUTO_INCREMENT,
-  `fk_artista` int(11) NOT NULL,
-  `nome` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
-  `genero` enum('Rock','Classica','Pop','Sertanejo','Gospel','Reggae','Bluegrass','Country') CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
-  `ano` varchar(4) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  `votos` int(11) NULL DEFAULT 0,
+  `fk_artist` int(11) NOT NULL,
+  `name` varchar(255) CHARACTER SET latin1 NOT NULL,
+  `genre` enum('Rock','Classic','Pop','Gospel','Reggae','Bluegrass','Country') CHARACTER SET latin1 NOT NULL,
+  `year` varchar(4) CHARACTER SET latin1 DEFAULT NULL,
+  `votes` int(11) DEFAULT 0,
   `status` tinyint(4) NOT NULL DEFAULT 1,
-  `created` timestamp(0) NOT NULL DEFAULT current_timestamp,
-  `updated` timestamp(0) NULL DEFAULT NULL,
+  `created` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`pk_album`) USING BTREE,
-  INDEX `fk_artista`(`fk_artista`) USING BTREE,
-  CONSTRAINT `album_ibfk_1` FOREIGN KEY (`fk_artista`) REFERENCES `artista` (`pk_artista`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+  KEY `fk_artist` (`fk_artist`),
+  CONSTRAINT `album_ibfk_1` FOREIGN KEY (`fk_artist`) REFERENCES `artist` (`pk_artist`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of album
--- ----------------------------
-INSERT INTO `album` VALUES (1, 1, 'Johnny Cash with His Hot and Blue Guitar', 'Country', '1957', 4311, 1, '2019-04-14 02:36:33', NULL);
-INSERT INTO `album` VALUES (2, 1, 'At Folsom Prison', 'Country', '1968', 82736, 1, '2019-04-14 02:39:17', NULL);
+--
+-- Dumping data for table `album`
+--
 
--- ----------------------------
--- Table structure for artista
--- ----------------------------
-DROP TABLE IF EXISTS `artista`;
-CREATE TABLE `artista`  (
-  `pk_artista` int(11) NOT NULL AUTO_INCREMENT,
-  `nome` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+LOCK TABLES `album` WRITE;
+/*!40000 ALTER TABLE `album` DISABLE KEYS */;
+INSERT INTO `album` VALUES (1,1,'Johnny Cash with His Hot and Blue Guitar','Country','1957',4311,1,'2019-04-14 02:36:33',NULL),(2,1,'At Folsom Prison','Country','1968',82736,1,'2019-04-14 02:39:17',NULL);
+/*!40000 ALTER TABLE `album` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `artist`
+--
+
+DROP TABLE IF EXISTS `artist`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `artist` (
+  `pk_artist` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET latin1 NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT 1,
-  `created` timestamp(0) NOT NULL DEFAULT current_timestamp,
-  `updated` timestamp(0) NULL DEFAULT NULL,
-  PRIMARY KEY (`pk_artista`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+  `created` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`pk_artist`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of artista
--- ----------------------------
-INSERT INTO `artista` VALUES (1, 'Johnny Cash', 1, '2019-04-14 02:35:41', NULL);
-INSERT INTO `artista` VALUES (2, 'Natiruts', 1, '2019-04-14 02:35:47', NULL);
-INSERT INTO `artista` VALUES (3, 'Bob Marley', 1, '2019-04-14 02:35:52', NULL);
-INSERT INTO `artista` VALUES (4, 'AC DC', 1, '2019-04-14 02:35:57', NULL);
+--
+-- Dumping data for table `artist`
+--
 
--- ----------------------------
--- Table structure for musica
--- ----------------------------
-DROP TABLE IF EXISTS `musica`;
-CREATE TABLE `musica`  (
-  `pk_musica` int(11) NOT NULL AUTO_INCREMENT,
+LOCK TABLES `artist` WRITE;
+/*!40000 ALTER TABLE `artist` DISABLE KEYS */;
+INSERT INTO `artist` VALUES (1,'Johnny Cash',1,'2019-04-14 02:35:41',NULL),(2,'Natiruts',1,'2019-04-14 02:35:47',NULL),(3,'Bob Marley',1,'2019-04-14 02:35:52',NULL),(4,'AC DC',1,'2019-04-14 02:35:57',NULL);
+/*!40000 ALTER TABLE `artist` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `music`
+--
+
+DROP TABLE IF EXISTS `music`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `music` (
+  `pk_music` int(11) NOT NULL AUTO_INCREMENT,
   `fk_album` int(11) NOT NULL,
-  `nome` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
-  `url` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET latin1 NOT NULL,
+  `url` varchar(255) CHARACTER SET latin1 DEFAULT NULL,
   `status` tinyint(1) NOT NULL DEFAULT 1,
-  `created` timestamp(0) NOT NULL DEFAULT current_timestamp,
-  `updated` timestamp(0) NULL DEFAULT NULL,
-  PRIMARY KEY (`pk_musica`) USING BTREE,
-  INDEX `fk_album`(`fk_album`) USING BTREE,
-  CONSTRAINT `musica_ibfk_1` FOREIGN KEY (`fk_album`) REFERENCES `album` (`pk_album`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+  `created` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`pk_music`) USING BTREE,
+  KEY `fk_album` (`fk_album`),
+  CONSTRAINT `music_ibfk_1` FOREIGN KEY (`fk_album`) REFERENCES `album` (`pk_album`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of musica
--- ----------------------------
-INSERT INTO `musica` VALUES (1, 1, 'Cry! Cry! Cry!', 'https://www.youtube.com/watch?v=XHaVmFKnK7w', 1, '2019-04-14 02:40:17', NULL);
-INSERT INTO `musica` VALUES (2, 1, 'Walk the line', 'https://www.youtube.com/watch?v=KHF9itPLUo4', 1, '2019-04-14 02:40:45', NULL);
+--
+-- Dumping data for table `music`
+--
 
-SET FOREIGN_KEY_CHECKS = 1;
+LOCK TABLES `music` WRITE;
+/*!40000 ALTER TABLE `music` DISABLE KEYS */;
+INSERT INTO `music` VALUES (1,1,'Cry! Cry! Cry!','https://www.youtube.com/watch?v=XHaVmFKnK7w',1,'2019-04-14 02:40:17',NULL),(2,1,'Walk the line','https://www.youtube.com/watch?v=KHF9itPLUo4',1,'2019-04-14 02:40:45',NULL);
+/*!40000 ALTER TABLE `music` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2019-04-20 11:34:15

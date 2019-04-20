@@ -75,7 +75,7 @@ class DbAdapter implements DbAdapterInterface
       }
 
     } catch (\PDOException $e) {
-      throw new DbAdapterException("Database connection error: {$e->getMessage()} (DSN: {$adapter->getDsn()})", $e->getCode(), $e);
+      throw new DbAdapterException("Database connection error: {$e->getMessage()}<br/>DSN: {$adapter->getDsn()}", $e->getCode(), $e);
     }
   }
 

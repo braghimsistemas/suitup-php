@@ -33,6 +33,8 @@ use SuitUp\Exception\StructureException;
 use SuitUp\Mvc\FrontController;
 use SuitUp\Mvc\MvcAbstractController;
 use SuitUp\Mvc\Routes;
+use SuitUp\Database\DbAdapter\AdapterFactory;
+use SuitUp\Database\Gateway\AbstractGateway;
 
 /**
  * Define DEVELOPMENT constant
@@ -120,7 +122,10 @@ class SuitUpStart
    * Effectively runs the entire application
    */
   public function run(): void {
+
     try {
+
+      $this->checkupDefaultAdapter();
 
       // If is everything ok this will be the one launch.
       $this->controller = $this->builder($this->getConfig());
@@ -225,6 +230,42 @@ class SuitUpStart
 
     // Return it's instance
     return $controller;
+  }
+
+  /**
+   * If was not set default adapter this method will
+   * try to do it searching by the file database.config.php
+   * in the config directory.
+   *
+   * @throws StructureException
+   * @throws \SuitUp\Exception\DbAdapterException
+   */
+  private function checkupDefaultAdapter(): void {
+
+    // Was already defined a database config?
+    if (AbstractGateway::getDefaultAdapter() == null) {
+
+      // Check if was defined a default database config file
+      $dbDefaultFilename = realpath($this->getConfig()->getModulesPath().'/..'.$this->getConfig()->getConfigsPath());
+      $dbDefaultFilename .= '/database.config.php';
+
+      // If file exists
+      if (file_exists($dbDefaultFilename)) {
+
+        // Try to get the PHP file content
+        $content = require $dbDefaultFilename;
+
+        if (is_array($content)) {
+
+          // Append to the Gateway as a Default Adapter
+          $adapter = AdapterFactory::getAdapter($content);
+
+          if ($adapter) {
+            AbstractGateway::setDefaultAdapter($adapter);
+          }
+        }
+      }
+    }
   }
 
   /**
