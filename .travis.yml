@@ -27,8 +27,8 @@ matrix:
       - php: hhvm
 
 before_install:
-  - mysql -e "create database IF NOT EXISTS suitup;" -uroot
-  - mysql -uroot suitup < test/resources/files/mysql-database-test.sql
+  - mysql -e "create database IF NOT EXISTS test;" -uroot
+  - mysql -uroot test < test/resources/files/mysql-database-test.sql
 
 before_script:
   - wget http://getcomposer.org/composer.phar
