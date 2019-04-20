@@ -57,7 +57,15 @@ class QueryString
 
   private $limit;
 
-  public function from($table, $schema = null): QueryString {
+  /**
+   * Setup the FROM statement to append to the SQL instruction
+   *
+   * @param string|array $table `tablename as alias` OR array('tablename' => 'alias')
+   * @param string $schema The schema name
+   * @return QueryString
+   * @throws DatabaseGatewayException
+   */
+  public function from($table, string $schema = null): QueryString {
 
     if (is_string($table)) {
       $this->from = $schema ? "$schema.$table" : $table;
@@ -69,6 +77,7 @@ class QueryString
         throw new DatabaseGatewayException('The array in the FROM statement must contain only one row');
       }
 
+      // Setup from statement
       $tableName = $schema ? $schema.'.'.key($table) : key($table);
       $this->from = $tableName.' as '.current($table);
 
@@ -79,6 +88,13 @@ class QueryString
     return $this;
   }
 
+  /**
+   * You can append only one column to the statement if you want to.
+   *
+   * @param string $name
+   * @param string|null $alias
+   * @return QueryString
+   */
   public function column(string $name, string $alias = null): QueryString {
     if ($alias) {
       $this->columns[$name] = $alias;
@@ -88,31 +104,77 @@ class QueryString
     return $this;
   }
 
+  /**
+   * Append a list of columns to the statement
+   *
+   * @param array $columns
+   * @return QueryString
+   */
   public function columns(array $columns): QueryString {
     $this->columns = array_merge($this->columns, $columns);
     return $this;
   }
 
+  /**
+   * Append an INNER JOIN to the statement
+   *
+   * @param string $table
+   * @param string $onClause
+   * @param string|null $schema
+   * @return QueryString
+   */
   public function innerJoin(string $table, string $onClause, string $schema = null): QueryString {
     $this->join[] = new Join(Join::INNER_JOIN, $table, $onClause, $schema);
     return $this;
   }
 
+  /**
+   * Append an OUTER JOIN to the statement
+   *
+   * @param string $table
+   * @param string $onClause
+   * @param string|null $schema
+   * @return QueryString
+   */
   public function outerJoin(string $table, string $onClause, string $schema = null): QueryString {
     $this->join[] = new Join(Join::OUTER_JOIN, $table, $onClause, $schema);
     return $this;
   }
 
+  /**
+   * Append an RIGHT JOIN to the statement
+   *
+   * @param string $table
+   * @param string $onClause
+   * @param string|null $schema
+   * @return QueryString
+   */
   public function rightJoin(string $table, string $onClause, string $schema = null): QueryString {
     $this->join[] = new Join(Join::RIGHT_JOIN, $table, $onClause, $schema);
     return $this;
   }
 
+  /**
+   * Append an LEFT JOIN to the statement
+   *
+   * @param string $table
+   * @param string $onClause
+   * @param string|null $schema
+   * @return QueryString
+   */
   public function leftJoin(string $table, string $onClause, string $schema = null): QueryString {
     $this->join[] = new Join(Join::LEFT_JOIN, $table, $onClause, $schema);
     return $this;
   }
 
+  /**
+   * Append a WHERE command to the statement
+   *
+   * @param $where
+   * @param null $value
+   * @param null $type
+   * @return QueryString
+   */
   public function where($where, $value = null, $type = null): QueryString {
 
     // Loop under values if it is an array
@@ -139,6 +201,14 @@ class QueryString
     return $this;
   }
 
+  /**
+   * Append an OR WHERE statement to the command.
+   *
+   * @param $where
+   * @param null $value
+   * @param null $type
+   * @return QueryString
+   */
   public function orWhere($where, $value = null, $type = null): QueryString {
 
     // Loop under values if it is an array
@@ -165,6 +235,12 @@ class QueryString
     return $this;
   }
 
+  /**
+   * Setup grouping to the query.
+   *
+   * @param $column
+   * @return QueryString
+   */
   public function group($column): QueryString {
     if (is_array($column)) {
       $this->group = array_merge($this->group, $column);
@@ -174,6 +250,12 @@ class QueryString
     return $this;
   }
 
+  /**
+   * Setup the ORDER to the result.
+   *
+   * @param $column
+   * @return QueryString
+   */
   public function order($column): QueryString {
     if (is_array($column)) {
       $this->order = array_merge($this->order, $column);
@@ -183,11 +265,24 @@ class QueryString
     return $this;
   }
 
+  /**
+   * Setting up a HAVING statement. Things are going wild I guess...
+   *
+   * @param $text
+   * @return $this
+   */
   public function having($text) {
     $this->having = $text;
     return $this;
   }
 
+  /**
+   * Limit the query results.
+   *
+   * @param $limit
+   * @param null $offset
+   * @return $this
+   */
   public function limit($limit, $offset = null) {
     $this->limit = $limit;
     if ($offset) {
@@ -196,6 +291,11 @@ class QueryString
     return $this;
   }
 
+  /**
+   * Transform this class to an executable SQL.
+   *
+   * @return string
+   */
   public function __toString() {
     $sql = "SELECT";
 
@@ -263,12 +363,13 @@ class QueryString
   }
 
   /**
-   * By this method
+   * By this method we try to block injection to the SQL
+   *
    * @param $value
    * @param null $type
    * @return string
    */
-  public function quote($value, $type = null): string {
+  public function quote($value, $type = null) {
 
     $numericDataTypes = array(self::INT_TYPE, self::BIGINT_TYPE, self::FLOAT_TYPE);
 
@@ -300,14 +401,15 @@ class QueryString
       return $quotedValue;
     }
 
-    // Quote to strings
-    $result = "'" . addcslashes($value, "\000\n\r\\'\"\032") . "'";
-
     // Int and float values
     if (is_int($value)) {
       $result = $value;
     } elseif (is_float($value)) {
       $result = sprintf('%F', $value);
+    } else {
+
+      // Quote to strings
+      $result = "'" . addcslashes($value, "\000\n\r\\'\"\032") . "'";
     }
     return $result;
   }
