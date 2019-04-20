@@ -24,10 +24,6 @@
  */
 declare(strict_types=1);
 
-// Initial configs
-//error_reporting(E_ALL | E_STRICT);
-//ini_set('display_errors', '1');
-
 use SuitUp\Mvc\Routes;
 use PHPUnit\Framework\TestCase;
 
