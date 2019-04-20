@@ -24,6 +24,7 @@
  */
 namespace SuitUp\Database\Gateway;
 
+use SuitUp\Database\Gateway\QueryString;
 use SuitUp\Database\DbAdapterInterface;
 use SuitUp\Exception\DatabaseGatewayException;
 use SuitUp\Mvc\MvcAbstractController;
@@ -50,6 +51,7 @@ abstract class AbstractGateway
   public function __construct(DbAdapterInterface $dbAdapter = null) {
 
     if ($dbAdapter) {
+
       // Append database adapter
       $this->db = $dbAdapter;
 
@@ -85,11 +87,54 @@ abstract class AbstractGateway
     return self::$defaultAdapter;
   }
 
-  public function select($query) {
-    $sqlFileManager = new SqlFileManager();
-    $sqlFileManager->sql = $query;
-    $sqlFileManager->split();
-    return $sqlFileManager;
+  /**
+   * @param array $columns
+   * @return QueryString
+   * @throws DatabaseGatewayException
+   */
+  public function select($columns = array()): QueryString {
+
+    // Start the instance
+    $querySelector = new QueryString();
+
+    // By type we will start to populate it
+    switch (gettype($columns)) {
+      case 'string':
+
+        // Here we try to keep a compatibility with SuitUp 1
+        // Sadly won't works always
+        if (preg_match('/^(SELECT)/', $columns) !== false) {
+
+          // Remove the word SELECT and FROM to ahead to catch the columns
+          $theColumns = preg_replace("/^(SELECT)\s+/", '', $columns);
+          $theColumns = preg_replace("/(FROM).+/", '', $theColumns);
+          $theColumns = preg_replace("/\s+/", '', $theColumns);
+
+          // Try to setup columns and the from table
+          $querySelector->columns(explode(',', $theColumns));
+          $querySelector->from(preg_replace("/.+FROM /", '', $columns));
+
+        } else {
+
+          // Normal behavior, the list of columns expected
+          $theColumns = preg_replace("/\s+/", '', $columns);
+          $querySelector->columns(explode(',', $theColumns));
+        }
+
+        break;
+      case 'array':
+
+        if ($columns) {
+          // Normal behavior, the list of columns expected
+          $querySelector->columns($columns);
+        }
+
+        break;
+      default:
+        throw new DatabaseGatewayException('Accepted array or string type');
+    }
+
+    return $querySelector;
   }
 
   public function get() {
