@@ -37,7 +37,7 @@ class DbAdapterTest extends TestCase
 
       // Running tests from TRAVIS CI
       $adapter = new Mysql(array(
-        'host' => '0.0.0.0',
+        'host' => '127.0.0.1',
         'port' => '3306',
         'dbname' => 'suitup',
         'username' => 'travis',
