@@ -27,6 +27,7 @@ declare(strict_types=1);
 namespace SuitUp\Database;
 
 use SuitUp\Database\DbAdapter\AdapterInterface;
+use SuitUp\Database\Gateway\AbstractGateway;
 use SuitUp\Exception\DbAdapterException;
 
 /**
@@ -37,8 +38,14 @@ use SuitUp\Exception\DbAdapterException;
  */
 class DbAdapter implements DbAdapterInterface
 {
+  /**
+   * @var AdapterInterface
+   */
   private $adapter;
 
+  /**
+   * @var \PDO
+   */
   private $connection;
 
   /**
@@ -47,7 +54,8 @@ class DbAdapter implements DbAdapterInterface
    * @throws DbAdapterException
    */
   public function __construct(AdapterInterface $adapter) {
-    $this->adapter = $adapter;
+
+    $this->setAdapter($adapter);
 
     try {
 
@@ -62,11 +70,19 @@ class DbAdapter implements DbAdapterInterface
       // Add connection to the instance
       $this->setConnection($connection);
 
+      if (AbstractGateway::getDefaultAdapter() == null) {
+        AbstractGateway::setDefaultAdapter($this);
+      }
+
     } catch (\PDOException $e) {
       throw new DbAdapterException("Database connection error: {$e->getMessage()} (DSN: {$adapter->getDsn()})", $e->getCode(), $e);
     }
   }
 
+  /**
+   * @param AdapterInterface $adapter
+   * @return DbAdapterInterface
+   */
   public function setAdapter(AdapterInterface $adapter): DbAdapterInterface {
     $this->adapter = $adapter;
     return $this;

@@ -24,6 +24,8 @@
  */
 namespace SuitUp\Database\Gateway;
 
+use SuitUp\Database\DbAdapterInterface;
+use SuitUp\Exception\DatabaseGatewayException;
 use SuitUp\Mvc\MvcAbstractController;
 use SuitUp\Database\SqlFileManager;
 use SuitUp\Database\Database;
@@ -35,89 +37,54 @@ use SuitUp\Database\Database;
 abstract class AbstractGateway
 {
 
-  /**
-   * Validacao de instancia da gateway.
-   */
-  const SALT = '56fas43df5a7';
-
-  /**
-   * Nome da tabela
-   * @var string
-   */
   protected $name;
 
-  /**
-   * Chaves primarias da tabela
-   * @var string|array
-   */
   protected $primary;
 
-  /**
-   * Eh possivel configurar uma coluna do banco para ser atualizada
-   * em cada update automaticamente.
-   *
-   * @var array
-   */
   protected $onUpdate;
 
-  /**
-   * @var \SuitUp\Database\Database
-   */
   protected $db;
 
-  /**
-   * O construtor recebe este parâmetro estático
-   * para evitar que um Gateway seja instanciado
-   * por acidente.
-   *
-   * @param bool|string $valid
-   * @throws \Exception
-   */
-  public function __construct($valid = false) {
+  private static $defaultAdapter;
 
-    // Valida instancia da classe
-    // @TODO: Avaliar outras possibilidades
-    if (! $valid || ($valid != self::SALT)) {
-      throw new \Exception("Não utilize uma instância de 'Gateway' fora de sua respectiva 'Business'");
+  public function __construct(DbAdapterInterface $dbAdapter = null) {
+
+    if ($dbAdapter) {
+      // Append database adapter
+      $this->db = $dbAdapter;
+
+    } else {
+
+      // If was not set default adapter
+      if (self::getDefaultAdapter() == null) {
+        throw new DatabaseGatewayException('There is no database connection defined');
+      }
+
+      $this->db = self::getDefaultAdapter();
     }
 
-    $this->db = Database::getInstance();
-
-    // Validação
+    // Checkup gateway
     $this->checkGateway();
   }
 
   /**
-   * Encontra e faz a leitura do arquivo .sql baseado no nome da tabela.
+   * Add to the system a fixed adapter to the database connections.
    *
-   * @param string $filename
-   * @return \SuitUp\Database\SqlFileManager
-   * @throws \Exception
+   * @param DbAdapterInterface $dbAdapter
    */
-  public function sqlFile($filename) {
-
-    // Recupera pasta do modulo e nome da classe (com seus namespaces)
-    $folderModule = MvcAbstractController::$params->moduleName;
-    $className = get_class($this);
-
-    // Trata nome da pasta.
-    $modelNspc = trim(preg_replace(array(
-      "/" . $folderModule . "/",
-      "/(Gateway).+/"
-    ), array(
-      "",
-      ""
-    ), $className), "\\");
-
-    return new SqlFileManager((string) $filename, $this->name, $modelNspc);
+  public static function setDefaultAdapter(DbAdapterInterface $dbAdapter): void {
+    self::$defaultAdapter = $dbAdapter;
   }
 
   /**
-   * Cria uma nova query a partir de uma string no lugar de usar arquivo.
+   * The default adapter connection.
    *
-   * @param string $query
-   * @return \SuitUp\Database\SqlFileManager
+   * @return DbAdapterInterface
    */
+  public static function getDefaultAdapter(): ?DbAdapterInterface {
+    return self::$defaultAdapter;
+  }
+
   public function select($query) {
     $sqlFileManager = new SqlFileManager();
     $sqlFileManager->sql = $query;
@@ -125,12 +92,6 @@ abstract class AbstractGateway
     return $sqlFileManager;
   }
 
-  /**
-   * Retorna um unico registro por PKs.
-   *
-   * @return array
-   * @throws \Exception
-   */
   public function get() {
     $this->checkGateway();
 
@@ -157,15 +118,6 @@ abstract class AbstractGateway
     return $this->db->row($sql);
   }
 
-  /**
-   * Seleciona automaticamente INSERT ou UPDATE. Este método so irá funcionar corretamente
-   * se todas as chaves primárias da tabela forem AUTO INCREMENT, se não é melhor selecionar
-   * o metodo na mão mesmo.
-   *
-   * @param array $data
-   * @return bool|string
-   * @throws \Exception
-   */
   public function save(array $data) {
     $this->checkGateway();
 
@@ -192,12 +144,6 @@ abstract class AbstractGateway
     return ($validPks) ? $this->update($data, $validPks) : $this->insert($data);
   }
 
-  /**
-   * Monta automaticamente a query para inserir um registro no banco.
-   *
-   * @param array $data
-   * @return string
-   */
   public function insert(array $data) {
     $this->checkGateway();
 
@@ -229,15 +175,6 @@ abstract class AbstractGateway
     return $this->db->lastInsertId();
   }
 
-  /**
-   * Monta automaticamente a query para atualizar um registro no banco.
-   *
-   * @param array $data Campos para serem modificados e seus valores.
-   * @param array $where Campo com valor necessário para o banco identificar quais registros vao ser atualizados.
-   * @param boolean $noWhereForSure com o $where vazio este parametro permite apagar todos os registros do banco.
-   * @return boolean false Se nenhuma linha foi afetada
-   * @throws \Exception
-   */
   public function update(array $data, array $where, $noWhereForSure = false) {
     $this->checkGateway();
 
@@ -292,11 +229,6 @@ abstract class AbstractGateway
     return (bool) $this->db->query($sql);
   }
 
-  /**
-   * Remove um registro do banco de dados.
-   *
-   * @return bool
-   */
   public function delete(array $where) {
     $this->checkGateway();
 
@@ -317,15 +249,14 @@ abstract class AbstractGateway
   }
 
   /**
-   * Verifica se este gateway está configurado corretamente.
+   * Checkup under gateway attributes.
    *
-   * @return boolean
-   * @throws \Exception
+   * @return bool
+   * @throws DatabaseGatewayException
    */
   private function checkGateway() {
-    // Valida noma da tabela e chaves primarias
     if (! $this->name || ! $this->primary) {
-      throw new \Exception("Indique o nome da tabela e as colunas chave primária (".get_class($this).")");
+      throw new DatabaseGatewayException("Every Gateway file must to inform name and primary fields (".get_class($this).")");
 		}
 		return true;
 	}

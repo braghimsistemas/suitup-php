@@ -28,9 +28,24 @@ use PHPUnit\Framework\TestCase;
 use SuitUp\Database\DbAdapter;
 use SuitUp\Database\DbAdapter\Mysql;
 use SuitUp\Database\DbAdapterInterface;
+use SuitUp\Exception\DbAdapterException;
 
-class DbAdapterTest extends TestCase
+final class DbAdapterTest extends TestCase
 {
+  public function testCreateInstanceException() {
+
+    $this->expectException(DbAdapterException::class);
+
+    // This connection must to be refused
+    new DbAdapter(new Mysql(array(
+      'host' => '0.0.0.0',
+      'port' => '8822',
+      'dbname' => 'universe',
+      'username' => 'snoop',
+      'password' => 'notset'
+    )));
+  }
+
   public function testCreateInstance() {
 
     if (IS_TRAVIS_CI) {
