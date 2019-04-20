@@ -26,26 +26,58 @@ declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 use SuitUp\Database\DbAdapter;
+use SuitUp\Database\DbAdapter\Mysql;
+use SuitUp\Database\DbAdapterInterface;
 
 class DbAdapterTest extends TestCase
 {
-//  public function testCreateInstance() {
-//
-//    $adapter = new \SuitUp\Database\DbAdapter\Mysql(array(
-//      'host' => 'localhost',
-//      'port' => '3306',
-//      'dbname' => 'suitup',
-//      'username' => 'suitup',
-//      'password' => '123456'
-//    ));
-//
-//    $db = new DbAdapter($adapter);
-//
-//    dump($db);
-//  }
+  public function testCreateInstance() {
 
-//  public function testGetConnection()
-//  {
-//
-//  }
+    if (IS_TRAVIS_CI) {
+
+      // Running tests from TRAVIS CI
+      $adapter = new Mysql(array(
+        'host' => '127.0.0.1',
+        'port' => '3306',
+        'dbname' => 'suitup',
+        'username' => 'root',
+        'password' => ''
+      ));
+
+    } else {
+
+      // Running tests from local machine with docker
+      $adapter = new Mysql(array(
+        'host' => '127.0.0.1',
+        'port' => '3406',
+        'dbname' => 'suitup',
+        'username' => 'root',
+        'password' => '142536'
+      ));
+    }
+
+    $db = new DbAdapter($adapter);
+
+    $this->assertInstanceOf('SuitUp\Database\DbAdapterInterface', $db);
+
+    return $db;
+  }
+
+  /**
+   * @depends testCreateInstance
+   * @param DbAdapterInterface $db
+   */
+  public function testConnection(DbAdapterInterface $db)
+  {
+    $this->assertInstanceOf('PDO', $db->getConnection());
+  }
+
+  /**
+   * @depends testCreateInstance
+   * @param DbAdapterInterface $db
+   */
+  public function testAdapter(DbAdapterInterface $db)
+  {
+    $this->assertInstanceOf('SuitUp\Database\DbAdapter\AdapterInterface', $db->getAdapter());
+  }
 }

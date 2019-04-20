@@ -41,29 +41,56 @@ class DbAdapter implements DbAdapterInterface
 
   private $connection;
 
+  /**
+   * DbAdapter constructor.
+   * @param AdapterInterface $adapter
+   * @throws DbAdapterException
+   */
   public function __construct(AdapterInterface $adapter) {
     $this->adapter = $adapter;
 
     try {
 
       // Try to create a PDO connection object
-      $this->connection = new \PDO(
+      $connection = new \PDO(
         $adapter->getDsn(),
         $adapter->getUsername(),
         $adapter->getPassword(),
         $adapter->getOptions()
       );
 
+      // Add connection to the instance
+      $this->setConnection($connection);
+
     } catch (\PDOException $e) {
       throw new DbAdapterException("Database connection cannot be done. Check out your connection parameters and network configuration.", $e->getCode(), $e);
     }
   }
 
+  public function setAdapter(AdapterInterface $adapter): DbAdapterInterface {
+    $this->adapter = $adapter;
+    return $this;
+  }
+
+  /**
+   * @return AdapterInterface|null
+   */
+  public function getAdapter(): ?AdapterInterface {
+    return $this->adapter;
+  }
+
+  /**
+   * @param \PDO $connection
+   * @return DbAdapterInterface
+   */
   public function setConnection(\PDO $connection): DbAdapterInterface {
     $this->connection = $connection;
     return $this;
   }
 
+  /**
+   * @return \PDO
+   */
   public function getConnection(): \PDO {
     return $this->connection;
   }

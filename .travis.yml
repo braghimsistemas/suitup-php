@@ -19,6 +19,7 @@ env:
     - DEVELOPMENT=0
     - SHOW_ERRORS=0
     - IS_TESTCASE=1
+    - IS_TRAVIS_CI=1
 
 matrix:
   fast_finish: true
@@ -26,7 +27,8 @@ matrix:
       - php: hhvm
 
 before_install:
-  - mysql -e "create database IF NOT EXISTS test;" -uroot
+  - mysql -e "create database IF NOT EXISTS suitup;" -uroot
+  - mysql -uroot suitup < test/resources/files/mysql-database-test.sql
 
 before_script:
   - wget http://getcomposer.org/composer.phar

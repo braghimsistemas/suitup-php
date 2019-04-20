@@ -32,6 +32,10 @@ interface DbAdapterInterface
 {
   public function __construct(AdapterInterface $adapter);
 
+  public function setAdapter(AdapterInterface $adapter): DbAdapterInterface;
+
+  public function getAdapter(): ?AdapterInterface;
+
   public function setConnection(\PDO $connection): DbAdapterInterface;
 
   public function getConnection(): \PDO;
