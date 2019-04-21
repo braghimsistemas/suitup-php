@@ -35,6 +35,12 @@ use SuitUp\Exception\DbAdapterException;
  */
 abstract class AdapterAbstract implements AdapterInterface
 {
+  const INT_TYPE = 'INTEGER';
+
+  const BIGINT_TYPE = 'BIGINT';
+
+  const FLOAT_TYPE = 'FLOAT';
+
   /**
    * @var string
    */

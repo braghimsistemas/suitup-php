@@ -27,6 +27,7 @@ declare(strict_types=1);
 namespace SuitUp\Database;
 
 use http\QueryString;
+use SuitUp\Database\DbAdapter\AdapterAbstract;
 use SuitUp\Database\DbAdapter\AdapterInterface;
 use SuitUp\Database\Gateway\AbstractGateway;
 use SuitUp\Exception\DatabaseGatewayException;
@@ -61,10 +62,10 @@ class DbAdapter implements DbAdapterInterface
 
   /**
    * DbAdapter constructor.
-   * @param AdapterInterface $adapter
+   * @param AdapterAbstract $adapter
    * @throws DbAdapterException
    */
-  public function __construct(AdapterInterface $adapter) {
+  public function __construct(AdapterAbstract $adapter) {
 
     // Set adapter
     $this->adapter = $adapter;
@@ -100,7 +101,7 @@ class DbAdapter implements DbAdapterInterface
   /**
    * @return AdapterInterface|null
    */
-  public function getAdapter(): ?AdapterInterface {
+  public function getAdapter(): ?AdapterAbstract {
     return $this->adapter;
   }
 

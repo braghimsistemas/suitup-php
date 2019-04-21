@@ -26,7 +26,7 @@ declare(strict_types=1);
 
 namespace SuitUp\Database;
 
-use SuitUp\Database\DbAdapter\AdapterInterface;
+use SuitUp\Database\DbAdapter\AdapterAbstract;
 
 /**
  * Interface DbAdapterInterface
@@ -38,16 +38,16 @@ interface DbAdapterInterface
    * Must to setup the adapter database PDO type
    *
    * DbAdapterInterface constructor.
-   * @param AdapterInterface $adapter
+   * @param AdapterAbstract $adapter
    */
-  public function __construct(AdapterInterface $adapter);
+  public function __construct(AdapterAbstract $adapter);
 
   /**
    * Must return the adapter performed
    *
-   * @return AdapterInterface|null
+   * @return AdapterAbstract|null
    */
-  public function getAdapter(): ?AdapterInterface;
+  public function getAdapter(): ?AdapterAbstract;
 
   /**
    * Must return a PDO connection instance
