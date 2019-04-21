@@ -25,6 +25,7 @@
 namespace SuitUp\Database\Business;
 
 use SuitUp\Database\Gateway\AbstractGateway;
+use SuitUp\Exception\DatabaseGatewayException;
 
 /**
  * Class AbstractBusiness
@@ -42,69 +43,77 @@ abstract class AbstractBusiness
    * AbstractBusiness constructor.
    */
   public function __construct() {
-    // Nome da classe
+    // Class name
     $className = explode('\\', get_class($this));
     $className = array_pop($className);
 
-    // Nome do gateway
+    // Gateway name
     $gateway = str_replace($className, 'Gateway', get_class($this)) . '\\' . str_replace('Business', '', $className);
     $this->gateway = new $gateway();
   }
 
   /**
-   * Retorna um unico registro por PKs.
+   * When called, this method will get the first row
+   * with the primaries keys given as implicit param.
+   *
+   * There's an attribute named $primary in your Gateway,
+   * right? This attribute must to be an array what means
+   * that one table can have more than one primary key.
+   * This method will expect as much primary keys as is
+   * provided in that attribute.
    * 
-   * @return array
-   * @throws \Exception
+   * @return mixed
+   * @throws DatabaseGatewayException
    */
   public function get() {
-    return call_user_func_array(array(
-      $this->gateway,
-      'get'
-    ), func_get_args());
+    return call_user_func_array(array($this->gateway, 'get'), func_get_args());
   }
 
   /**
-   * Seleciona automaticamente INSERT ou UPDATE. Este método so irá funcionar corretamente
-   * se todas as chaves primárias da tabela forem AUTO INCREMENT, se não é melhor selecionar
-   * o metodo na mão mesmo.
-   * 
+   * This method will checkup for the primary keys in the data set,
+   * if found make an UPDATE else make an INSERT.
+   *
+   * If the number of primary keys is not zero, but not enough as
+   * the number in the $primary attribute throws an exception.
+   *
    * @param array $data
-   * @return bool|string
-   * @throws \Exception
+   * @return bool
+   * @throws DatabaseGatewayException
    */
   public function save(array $data) {
     return $this->gateway->save($data);
   }
 
   /**
-   * Monta automaticamente a query para inserir um registro no banco.
-   * 
+   * Perform an INSERT statement into database.
+   *
    * @param array $data
-   * @return string
+   * @return mixed
+   * @throws DatabaseGatewayException
    */
   public function insert(array $data) {
     return $this->gateway->insert($data);
   }
 
   /**
-   * Monta automaticamente a query para atualizar um registro no banco.
-   * 
-   * @param array $data Campos para serem modificados e seus valores.
-   * @param array $where Campo com valor necessário para o banco identificar quais registros vao ser atualizados.
-   * @param boolean $noWhereForSure com o $where vazio este parametro permite apagar todos os registros do banco.
-   * @return boolean <b>false</b> Se nenhuma linha foi afetada
-   * @throws \Exception
+   * Perform an UPDATE statement into database.
+   *
+   * @param array $data
+   * @param array $where
+   * @param bool $noWhereForSure If you really want to perform an UPDATE without WHERE =S
+   * @return bool
+   * @throws DatabaseGatewayException
    */
   public function update(array $data, array $where, $noWhereForSure = false) {
     return $this->gateway->update($data, $where, $noWhereForSure);
   }
 
   /**
-   * Remove um registro do banco de dados.
+   * DELETE rows from database.
    *
-   * @param array $where O que deve ser deletado
+   * @param array $where
    * @return bool
+   * @throws DatabaseGatewayException
    */
   public function delete(array $where) {
     return $this->gateway->delete($where);
