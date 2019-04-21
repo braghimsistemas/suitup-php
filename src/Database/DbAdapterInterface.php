@@ -73,6 +73,13 @@ interface DbAdapterInterface
   public function getParams(): array;
 
   /**
+   * Must to clear all params
+   *
+   * @return DbAdapterInterface
+   */
+  public function clearParams(): DbAdapterInterface;
+
+  /**
    * Must to perform whatever query in the database and return its result
    *
    * @param string $query

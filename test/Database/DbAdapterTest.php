@@ -66,19 +66,128 @@ final class DbAdapterTest extends TestCase
 
   /**
    * @depends testCreateInstance
-   * @param DbAdapterInterface $db
+   * @param DbAdapter $db
    */
-  public function testConnection(DbAdapterInterface $db)
+  public function testConnection(DbAdapter $db)
   {
     $this->assertInstanceOf('PDO', $db->getConnection());
   }
 
   /**
    * @depends testCreateInstance
-   * @param DbAdapterInterface $db
+   * @param DbAdapter $db
    */
-  public function testAdapter(DbAdapterInterface $db)
+  public function testAdapter(DbAdapter $db)
   {
     $this->assertInstanceOf('SuitUp\Database\DbAdapter\AdapterInterface', $db->getAdapter());
+    $this->assertInstanceOf('SuitUp\Database\DbAdapter\AdapterAbstract', $db->getAdapter());
+  }
+
+  /**
+   * @depends testCreateInstance
+   * @param DbAdapter $db
+   */
+  public function testParameters(DbAdapter $db)
+  {
+    $this->assertEmpty($db->getParams());
+
+    $db->bind('column1', 'value1');
+    $this->assertContains(':column1'.DbAdapter::PARAM_SEPARATOR.'value1', $db->getParams());
+
+    $db->param('column2', 'value2');
+    $this->assertContains(':column2'.DbAdapter::PARAM_SEPARATOR.'value2', $db->getParams());
+
+    $db->setParam('column3', 'value3');
+    $this->assertContains(':column3'.DbAdapter::PARAM_SEPARATOR.'value3', $db->getParams());
+  }
+
+  /**
+   * @depends testCreateInstance
+   * @param DbAdapter $db
+   * @throws Exception
+   */
+  public function testQuery(DbAdapter $db)
+  {
+    $db->clearParams();
+
+    // It depends on database data from resources/files/mysql-database-test.sql
+    $result1 = $db->query("SELECT * FROM artist");
+    $this->assertIsArray($result1);
+
+    $result2 = $db->fetchAll("SELECT * FROM artist");
+    $this->assertIsArray($result2);
+  }
+
+  /**
+   * @depends testCreateInstance
+   * @param DbAdapter $db
+   * @throws Exception
+   */
+  public function testRow(DbAdapter $db)
+  {
+    $db->clearParams();
+
+    // It depends on database data from resources/files/mysql-database-test.sql
+    $result1 = $db->row("SELECT * FROM artist");
+    $this->assertIsArray($result1);
+    $this->assertArrayHasKey('pk_artist', $result1);
+    $this->assertArrayHasKey('name', $result1);
+
+    $result2 = $db->fetchRow("SELECT * FROM artist");
+    $this->assertIsArray($result2);
+    $this->assertArrayHasKey('pk_artist', $result2);
+    $this->assertArrayHasKey('name', $result2);
+  }
+
+  /**
+   * @depends testCreateInstance
+   * @param DbAdapter $db
+   * @throws Exception
+   */
+  public function testSingle(DbAdapter $db)
+  {
+    $db->clearParams();
+
+    // It depends on database data from resources/files/mysql-database-test.sql
+    $result1 = $db->single("SELECT name FROM artist WHERE pk_artist = :id", array('id' => '2'));
+    $this->assertEquals('Natiruts', $result1);
+
+    $db->clearParams();
+
+    $result2 = $db->fetchSingle("SELECT name FROM artist WHERE pk_artist = 3");
+    $this->assertEquals('Bob Marley', $result2);
+  }
+
+  /**
+   * @depends testCreateInstance
+   * @param DbAdapter $db
+   * @throws Exception
+   */
+  public function testPairs(DbAdapter $db)
+  {
+    $db->clearParams();
+
+    // It depends on database data from resources/files/mysql-database-test.sql
+    $result1 = $db->pairs("SELECT pk_artist, name FROM artist WHERE pk_artist = 3");
+    $this->assertIsArray($result1);
+    $this->assertArrayHasKey('3', $result1);
+    $this->assertContains('Bob Marley', $result1);
+
+    $db->clearParams();
+
+    $result2 = $db->fetchPairs("SELECT pk_artist, name FROM artist");
+    $this->assertIsArray($result2);
+    $this->assertArrayHasKey('2', $result2);
+    $this->assertContains('Natiruts', $result2);
+  }
+
+  /**
+   * @depends testCreateInstance
+   * @param DbAdapter $db
+   * @throws Exception
+   */
+  public function testLastInsertId(DbAdapter $db)
+  {
+    $this->assertEmpty($db->lastInsertId());
   }
 }
