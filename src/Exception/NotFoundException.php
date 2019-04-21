@@ -28,9 +28,8 @@ namespace SuitUp\Exception;
 
 class NotFoundException extends \Exception implements SuitUpExceptionInterface
 {
-
   public function getDescription(): string
   {
-    // TODO: Implement getDescription() method.
+    return 'This error is throws when a controller or action does not exists';
   }
 }

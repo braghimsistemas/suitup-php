@@ -22,7 +22,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 declare(strict_types=1);
 
 namespace SuitUp\Mvc;
@@ -125,16 +124,6 @@ class FrontController
    * @var string
    */
   private $formPath = '/Form';
-
-  /**
-   * @var string
-   */
-  private $businessPath = '/Model';
-
-  /**
-   * @var string
-   */
-  private $gatewayPath = '/Model/Gateway';
 
   /**
    * @var string
@@ -537,38 +526,6 @@ class FrontController
    */
   public function setFormPath(string $formPath): FrontController {
     $this->formPath = '/'.trim($formPath, '/');
-    return $this;
-  }
-
-  /**
-   * @return string
-   */
-  public function getBusinessPath(): string {
-    return $this->businessPath;
-  }
-
-  /**
-   * @param string $businessPath
-   * @return FrontController
-   */
-  public function setBusinessPath(string $businessPath): FrontController {
-    $this->businessPath = '/'.trim($businessPath, '/');
-    return $this;
-  }
-
-  /**
-   * @return string
-   */
-  public function getGatewayPath(): string {
-    return $this->gatewayPath;
-  }
-
-  /**
-   * @param string $gatewayPath
-   * @return FrontController
-   */
-  public function setGatewayPath(string $gatewayPath): FrontController {
-    $this->gatewayPath = $this->getBusinessPath().'/'.trim($gatewayPath, '/');
     return $this;
   }
 

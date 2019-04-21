@@ -30,9 +30,8 @@ namespace SuitUp\Exception;
 
 class DatabaseBusinessException extends \Exception implements SuitUpExceptionInterface
 {
-
   public function getDescription(): string
   {
-    // TODO: Implement getDescription() method.
+    return 'This error is thrown when corresponding Gateway is not found for a given Business';
   }
 }

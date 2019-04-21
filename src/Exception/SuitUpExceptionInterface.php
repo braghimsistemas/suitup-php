@@ -26,7 +26,6 @@ declare(strict_types=1);
 
 namespace SuitUp\Exception;
 
-
 interface SuitUpExceptionInterface
 {
   public function getDescription(): string;

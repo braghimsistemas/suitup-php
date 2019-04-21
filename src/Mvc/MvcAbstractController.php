@@ -563,13 +563,10 @@ abstract class MvcAbstractController
    * @param mixed $value
    */
   public static function updateLoginKey(string $key, $value): void {
-    $login = (array) self::getLogin();
 
-    // @TODO: check why isset does not work here
-    foreach (array_keys($login) as $i) {
-      if ($key == $i) {
-        $_SESSION[self::$authNsp][$key] = $value;
-      }
+    // Update login key
+    if (isset($_SESSION[self::$authNsp][$key])) {
+      $_SESSION[self::$authNsp][$key] = $value;
     }
   }
 

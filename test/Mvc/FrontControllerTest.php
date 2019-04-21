@@ -320,36 +320,6 @@ class FrontControllerTest extends TestCase
    * @param FrontController $instance
    * @depends testCreateInstance
    */
-  public function testGatewayPath(FrontController $instance)
-  {
-    $this->assertEquals('/Model/Gateway', $instance->getGatewayPath());
-
-    $instance->setGatewayPath('/test');
-    $this->assertEquals('/Model/test', $instance->getGatewayPath());
-
-    $instance->setGatewayPath('Gateway');
-    $this->assertEquals('/Model/Gateway', $instance->getGatewayPath());
-  }
-
-  /**
-   * @param FrontController $instance
-   * @depends testCreateInstance
-   */
-  public function testBusinessPath(FrontController $instance)
-  {
-    $this->assertEquals('/Model', $instance->getBusinessPath());
-
-    $instance->setBusinessPath('the models');
-    $this->assertEquals('/the models', $instance->getBusinessPath());
-
-    $instance->setBusinessPath('Model');
-    $this->assertEquals('/Model', $instance->getBusinessPath());
-  }
-
-  /**
-   * @param FrontController $instance
-   * @depends testCreateInstance
-   */
   public function testActionName(FrontController $instance)
   {
     $this->assertEquals('indexAction', $instance->getActionName());

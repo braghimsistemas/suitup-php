@@ -26,12 +26,10 @@ declare(strict_types=1);
 
 namespace SuitUp\Exception;
 
-
 class SuitUpException extends \Exception implements SuitUpExceptionInterface
 {
-
   public function getDescription(): string
   {
-    // TODO: Implement getDescription() method.
+    return 'Something went wrong with SuitUp Framework configs, see the manual for more details';
   }
 }

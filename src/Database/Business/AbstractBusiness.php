@@ -22,9 +22,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+declare(strict_types=1);
+
 namespace SuitUp\Database\Business;
 
 use SuitUp\Database\Gateway\AbstractGateway;
+use SuitUp\Exception\DatabaseBusinessException;
 use SuitUp\Exception\DatabaseGatewayException;
 
 /**
@@ -33,7 +36,6 @@ use SuitUp\Exception\DatabaseGatewayException;
  */
 abstract class AbstractBusiness
 {
-
   /**
    * @var \SuitUp\Database\Gateway\AbstractGateway
    */
@@ -42,14 +44,23 @@ abstract class AbstractBusiness
   /**
    * AbstractBusiness constructor.
    */
-  public function __construct() {
+  public function __construct()
+  {
     // Class name
     $className = explode('\\', get_class($this));
     $className = array_pop($className);
 
     // Gateway name
     $gateway = str_replace($className, 'Gateway', get_class($this)) . '\\' . str_replace('Business', '', $className);
-    $this->gateway = new $gateway();
+
+    try {
+
+      // Try to instance it
+      $this->gateway = new $gateway();
+
+    } catch (\Throwable $exception) {
+      throw new DatabaseBusinessException("Gateway not found: $gateway", 0, $exception);
+    }
   }
 
   /**
@@ -65,7 +76,8 @@ abstract class AbstractBusiness
    * @return mixed
    * @throws DatabaseGatewayException
    */
-  public function get() {
+  public function get()
+  {
     return call_user_func_array(array($this->gateway, 'get'), func_get_args());
   }
 
@@ -80,7 +92,8 @@ abstract class AbstractBusiness
    * @return bool
    * @throws DatabaseGatewayException
    */
-  public function save(array $data) {
+  public function save(array $data)
+  {
     return $this->gateway->save($data);
   }
 
@@ -91,7 +104,8 @@ abstract class AbstractBusiness
    * @return mixed
    * @throws DatabaseGatewayException
    */
-  public function insert(array $data) {
+  public function insert(array $data)
+  {
     return $this->gateway->insert($data);
   }
 
@@ -104,7 +118,8 @@ abstract class AbstractBusiness
    * @return bool
    * @throws DatabaseGatewayException
    */
-  public function update(array $data, array $where, $noWhereForSure = false) {
+  public function update(array $data, array $where, $noWhereForSure = false)
+  {
     return $this->gateway->update($data, $where, $noWhereForSure);
   }
 
@@ -115,7 +130,8 @@ abstract class AbstractBusiness
    * @return bool
    * @throws DatabaseGatewayException
    */
-  public function delete(array $where) {
+  public function delete(array $where)
+  {
     return $this->gateway->delete($where);
   }
 }

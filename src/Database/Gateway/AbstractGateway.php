@@ -22,6 +22,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+declare(strict_types=1);
+
 namespace SuitUp\Database\Gateway;
 
 use SuitUp\Database\Gateway\QueryString;
@@ -42,15 +44,40 @@ use SuitUp\Database\Database;
  */
 abstract class AbstractGateway
 {
-
+  /**
+   * The table name. You can append to it the name of schema if needed.
+   *
+   * @var string
+   */
   protected $name;
 
+  /**
+   * An <b>array</b> with the list of primary keys for this table.
+   *
+   * @var array
+   */
   protected $primary;
 
+  /**
+   * If given, it will be appended to each update. Use this attribute
+   * to perform an updated date for a column, for example.
+   *
+   * @var array
+   */
   protected $onUpdate;
 
+  /**
+   * The instance of DbAdapter
+   *
+   * @var DbAdapterInterface|null
+   */
   protected $db;
 
+  /**
+   * Default instance of DbAdapter
+   *
+   * @var DbAdapterInterface
+   */
   private static $defaultAdapter;
 
   /**

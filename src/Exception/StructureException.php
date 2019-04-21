@@ -28,9 +28,8 @@ namespace SuitUp\Exception;
 
 class StructureException extends \Exception implements SuitUpExceptionInterface
 {
-
   public function getDescription(): string
   {
-    // TODO: Implement getDescription() method.
+    return 'Some kind of SuitUp structure definition was broken, see the manual for details';
   }
 }
