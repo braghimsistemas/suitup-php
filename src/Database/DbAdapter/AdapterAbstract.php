@@ -35,6 +35,22 @@ use SuitUp\Exception\DbAdapterException;
  */
 abstract class AdapterAbstract implements AdapterInterface
 {
+  // JOIN Types -----------
+
+  const INNER_JOIN = 'INNER JOIN';
+
+  const FULL_INNER_JOIN = 'FULL INNER JOIN';
+
+  const OUTER_JOIN = 'OUTER JOIN';
+
+  const FULL_OUTER_JOIN = 'FULL OUTER JOIN';
+
+  const RIGHT_JOIN = 'RIGHT JOIN';
+
+  const LEFT_JOIN = 'LEFT JOIN';
+
+  // Data Types -----------
+
   const INT_TYPE = 'INTEGER';
 
   const BIGINT_TYPE = 'BIGINT';
@@ -165,32 +181,160 @@ abstract class AdapterAbstract implements AdapterInterface
     return $this;
   }
 
+  /**
+   * Provide FROM table
+   * @param $table
+   * @param string|null $schema
+   * @return AdapterAbstract
+   */
   abstract public function from($table, string $schema = null): AdapterAbstract;
 
+  /**
+   * Add a column to the return
+   *
+   * @param string $name
+   * @param string|null $alias
+   * @return AdapterAbstract
+   */
   abstract public function column(string $name, string $alias = null): AdapterAbstract;
 
+  /**
+   * Append a list of columns to the return
+   *
+   * @param array $columns
+   * @return AdapterAbstract
+   */
   abstract public function columns(array $columns): AdapterAbstract;
 
+  /**
+   * A generic inclusion of join statement.
+   *
+   * @param string $type
+   * @param string $table
+   * @param string $onClause
+   * @param string|null $schema
+   * @return AdapterAbstract
+   */
+  abstract public function join(string $type, string $table, string $onClause, string $schema = null): AdapterAbstract;
+
+  /**
+   * INNER JOIN statement
+   *
+   * @param string $table
+   * @param string $onClause
+   * @param string|null $schema
+   * @return AdapterAbstract
+   */
   abstract public function innerJoin(string $table, string $onClause, string $schema = null): AdapterAbstract;
 
+  /**
+   * FULL INNER JOIN statement
+   *
+   * @param string $table
+   * @param string $onClause
+   * @param string|null $schema
+   * @return AdapterAbstract
+   */
+  abstract public function fullInnerJoin(string $table, string $onClause, string $schema = null): AdapterAbstract;
+
+  /**
+   * OUTER JOIN statement
+   *
+   * @param string $table
+   * @param string $onClause
+   * @param string|null $schema
+   * @return AdapterAbstract
+   */
   abstract public function outerJoin(string $table, string $onClause, string $schema = null): AdapterAbstract;
 
+  /**
+   * FULL OUTER JOIN statement
+   *
+   * @param string $table
+   * @param string $onClause
+   * @param string|null $schema
+   * @return AdapterAbstract
+   */
+  abstract public function fullOuterJoin(string $table, string $onClause, string $schema = null): AdapterAbstract;
+
+  /**
+   * RIGHT JOIN statement
+   *
+   * @param string $table
+   * @param string $onClause
+   * @param string|null $schema
+   * @return AdapterAbstract
+   */
   abstract public function rightJoin(string $table, string $onClause, string $schema = null): AdapterAbstract;
 
+  /**
+   * LEFT JOIN statement
+   *
+   * @param string $table
+   * @param string $onClause
+   * @param string|null $schema
+   * @return AdapterAbstract
+   */
   abstract public function leftJoin(string $table, string $onClause, string $schema = null): AdapterAbstract;
 
+  /**
+   * Add one or more item to the list of WHERE clauses
+   *
+   * @param $where
+   * @param null $value
+   * @param null $type
+   * @return AdapterAbstract
+   */
   abstract public function where($where, $value = null, $type = null): AdapterAbstract;
 
+  /**
+   * Add one or more item to the list of OR WHERE clauses
+   *
+   * @param $where
+   * @param null $value
+   * @param null $type
+   * @return AdapterAbstract
+   */
   abstract public function orWhere($where, $value = null, $type = null): AdapterAbstract;
 
+  /**
+   * Add one or a list of GROUP BY clauses
+   *
+   * @param $column
+   * @return AdapterAbstract
+   */
   abstract public function group($column): AdapterAbstract;
 
+  /**
+   * Add one or a list of ODER BY clauses
+   *
+   * @param $column
+   * @return AdapterAbstract
+   */
   abstract public function order($column): AdapterAbstract;
 
+  /**
+   * Provide a HAVING statement
+   *
+   * @param $text
+   * @return mixed
+   */
   abstract public function having($text);
 
+  /**
+   * Provide LIMIT / OFFSET statements
+   *
+   * @param $limit
+   * @param null $offset
+   * @return mixed
+   */
   abstract public function limit($limit, $offset = null);
 
+  /**
+   * When called must to get values set to return a runnable SQL query string.
+   *
+   * @return mixed
+   */
   abstract public function __toString();
 
   /**

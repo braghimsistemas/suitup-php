@@ -141,6 +141,24 @@ class Mysql extends AdapterAbstract
   }
 
   /**
+   * Create whatever type of join by type given.
+   *
+   * @param string $type AdapterAbstract join type
+   * @param string $table
+   * @param string $onClause
+   * @param string|null $schema
+   * @return \SuitUp\Database\DbAdapter\AdapterAbstract
+   */
+  public function join(string $type, string $table, string $onClause, string $schema = null): AdapterAbstract {
+    $this->join[] = array(
+      'type' => $type,
+      'table' => ($schema ? "$schema.$table" : $table),
+      'onClause' => $onClause
+    );
+    return $this;
+  }
+
+  /**
    * Append an INNER JOIN to the statement
    *
    * @param string $table
@@ -149,7 +167,20 @@ class Mysql extends AdapterAbstract
    * @return AdapterAbstract
    */
   public function innerJoin(string $table, string $onClause, string $schema = null): AdapterAbstract {
-    $this->join[] = new Join(Join::INNER_JOIN, $table, $onClause, $schema);
+    $this->join(parent::INNER_JOIN, $table, $onClause, $schema);
+    return $this;
+  }
+
+  /**
+   * Append a FULL INNER JOIN to the statement
+   *
+   * @param string $table
+   * @param string $onClause
+   * @param string|null $schema
+   * @return AdapterAbstract
+   */
+  public function fullInnerJoin(string $table, string $onClause, string $schema = null): AdapterAbstract {
+    $this->join(parent::FULL_INNER_JOIN, $table, $onClause, $schema);
     return $this;
   }
 
@@ -162,7 +193,20 @@ class Mysql extends AdapterAbstract
    * @return AdapterAbstract
    */
   public function outerJoin(string $table, string $onClause, string $schema = null): AdapterAbstract {
-    $this->join[] = new Join(Join::OUTER_JOIN, $table, $onClause, $schema);
+    $this->join(parent::OUTER_JOIN, $table, $onClause, $schema);
+    return $this;
+  }
+
+  /**
+   * Append a FULL OUTER JOIN to the statement
+   *
+   * @param string $table
+   * @param string $onClause
+   * @param string|null $schema
+   * @return AdapterAbstract
+   */
+  public function fullOuterJoin(string $table, string $onClause, string $schema = null): AdapterAbstract {
+    $this->join(parent::FULL_OUTER_JOIN, $table, $onClause, $schema);
     return $this;
   }
 
@@ -175,7 +219,7 @@ class Mysql extends AdapterAbstract
    * @return AdapterAbstract
    */
   public function rightJoin(string $table, string $onClause, string $schema = null): AdapterAbstract {
-    $this->join[] = new Join(Join::RIGHT_JOIN, $table, $onClause, $schema);
+    $this->join(parent::RIGHT_JOIN, $table, $onClause, $schema);
     return $this;
   }
 
@@ -188,7 +232,7 @@ class Mysql extends AdapterAbstract
    * @return AdapterAbstract
    */
   public function leftJoin(string $table, string $onClause, string $schema = null): AdapterAbstract {
-    $this->join[] = new Join(Join::LEFT_JOIN, $table, $onClause, $schema);
+    $this->join(parent::LEFT_JOIN, $table, $onClause, $schema);
     return $this;
   }
 
@@ -343,7 +387,7 @@ class Mysql extends AdapterAbstract
 
     // JOIN statements
     foreach ($this->join as $join) {
-      $sql .= " $join";
+      $sql .= " {$join['type']} {$join['table']} ON {$join['onClause']}";
     }
 
     // Where statements
