@@ -30,13 +30,87 @@ use SuitUp\Database\DbAdapter\AdapterInterface;
 
 interface DbAdapterInterface
 {
+  /**
+   * Must to setup the adapter database PDO type
+   *
+   * DbAdapterInterface constructor.
+   * @param AdapterInterface $adapter
+   */
   public function __construct(AdapterInterface $adapter);
 
-  public function setAdapter(AdapterInterface $adapter): DbAdapterInterface;
-
+  /**
+   * Must return the adapter performed
+   *
+   * @return AdapterInterface|null
+   */
   public function getAdapter(): ?AdapterInterface;
 
-  public function setConnection(\PDO $connection): DbAdapterInterface;
-
+  /**
+   * Must return a PDO connection instance
+   *
+   * @return \PDO
+   */
   public function getConnection(): \PDO;
+
+  /**
+   * Bind one parameter to the followed query
+   *
+   * @param string $name
+   * @param $value
+   * @return DbAdapterInterface
+   */
+  public function bind(string $name, $value): DbAdapterInterface;
+
+  /**
+   * The list of parameters set
+   *
+   * @return array
+   */
+  public function getParams(): array;
+
+  /**
+   * Must to perform whatever query in the database and return its result
+   *
+   * @param string $query
+   * @param array $params
+   * @param int $fetchMode
+   * @return mixed
+   */
+  public function query(string $query, array $params = array(), int $fetchMode = \PDO::FETCH_ASSOC);
+
+  /**
+   * Must to return only the first row with the SQL Query.
+   *
+   * @param string $query
+   * @param array $params
+   * @param int $fetchMode
+   * @return mixed
+   */
+  public function row(string $query, array $params = array(), int $fetchMode = \PDO::FETCH_ASSOC);
+
+  /**
+   * Must to return only the first column of first row with the SQL Query.
+   *
+   * @param string $query
+   * @param array $params
+   * @param int $columnNumber
+   * @return mixed
+   */
+  public function single(string $query, array $params = array(), int $columnNumber = 0);
+
+  /**
+   * Must to return the result set in pairs. For that your SQL Query can SELECT only two columns.
+   *
+   * @param string $query
+   * @param array $params
+   * @return mixed
+   */
+  public function pairs(string $query, array $params = array());
+
+  /**
+   * The last inserted ID.
+   *
+   * @return mixed
+   */
+  public function lastInsertId();
 }

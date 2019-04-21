@@ -32,7 +32,12 @@ use SuitUp\Database\SqlFileManager;
 use SuitUp\Database\Database;
 
 /**
- * Class AbstractGateway
+ * Gateways are our way to treat  the Model classes that will
+ * effectively create the  SQL queries and  run into database
+ * defined  by  the  /config/database.config.php  or directly
+ * with the AbstractGateway::setDefaultAdapter static method.
+ *
+ * @see setDefaultAdapter static method
  * @package SuitUp\Database\Gateway
  */
 abstract class AbstractGateway
@@ -48,11 +53,18 @@ abstract class AbstractGateway
 
   private static $defaultAdapter;
 
+  /**
+   * Constructor
+   *
+   * AbstractGateway constructor.
+   * @param DbAdapterInterface|null $dbAdapter
+   * @throws DatabaseGatewayException
+   */
   public function __construct(DbAdapterInterface $dbAdapter = null) {
 
     if ($dbAdapter) {
 
-      // Append database adapter
+      // Set database adapter
       $this->db = $dbAdapter;
 
     } else {
@@ -62,6 +74,7 @@ abstract class AbstractGateway
         throw new DatabaseGatewayException('There is no database connection defined');
       }
 
+      // Set database adapter
       $this->db = self::getDefaultAdapter();
     }
 
@@ -137,39 +150,62 @@ abstract class AbstractGateway
     return $querySelector;
   }
 
+  /**
+   * When called, this method will get the first row
+   * with the primaries keys given as implicit param.
+   *
+   * There's an attribute named $primary in your Gateway,
+   * right? This attribute must to be an array what means
+   * that one table can have more than one primary key.
+   * This method will expect as much primary keys as is
+   * provided in that attribute.
+   *
+   * @return mixed
+   * @throws DatabaseGatewayException
+   */
   public function get() {
     $this->checkGateway();
 
     $id = func_get_args();
 
-    // Monta query
-    $sql = "SELECT * FROM " . $this->name . " WHERE ";
+    // Create the SQL Query
+    $sql = "SELECT * FROM {$this->name} WHERE ";
     foreach ((array) $this->primary as $key => $primary) {
 
-      // Mais chaves primarias que parametros no metodo
+      // More primary keys than parameters
       if (! isset($id[$key])) {
-        throw new \Exception("O método 'get' só funciona passando TODAS as chaves primárias de uma vez");
+        throw new DatabaseGatewayException("The 'get' method requires every primary keys as parameters to be given in the same order");
       }
 
-      // Parametro na query
-      $sql .= $primary . " = :" . $primary . " AND ";
+      // Query parameter
+      $sql .= $primary . " = :$primary AND ";
 
-      // Parametro, query segura
+      // Safe query
       $this->db->bind($primary, $id[$key]);
     }
     $sql = trim($sql, " AND ");
 
-    // Resultado
+    // Result
     return $this->db->row($sql);
   }
 
+  /**
+   * This method will checkup for the primary keys in the data set,
+   * if found make an UPDATE else make an INSERT.
+   *
+   * If the number of primary keys is not zero, but not enough as
+   * the number in the $primary attribute throws an exception.
+   *
+   * @param array $data
+   * @return bool
+   * @throws DatabaseGatewayException
+   */
   public function save(array $data) {
     $this->checkGateway();
 
-    // Quando, no final, este estiver vazio é INSERT,
-    // se houver algum valor, UPDATE
-    // Se não houver a mesma quantidade de pks aqui
-    // quanto no atributo $this->primary ERRO
+    // There's no PK informed? INSERT
+    // There's PK informed? UPDATE
+    // Not enough PK's informed? EXCEPTION
     $validPks = array();
     foreach ((array) $this->primary as $primary) {
       if (isset($data[$primary])) {
@@ -178,34 +214,41 @@ abstract class AbstractGateway
       }
     }
 
-    /**
-     * O array para salvar tem um número de PKs diferente do que esta setado no atributo $this->primary
-     */
+    // Wrong parameters count.
     if ($validPks && (count($validPks) != count($this->primary))) {
-      throw new \Exception("Para utilizar o metodo 'save' é necessário informar todos os PKs para UPDATE ou nenhum para INSERT");
+      throw new DatabaseGatewayException("Method 'save' requires all primary keys to make an UPDATE and in the same order");
     }
 
-    // Seleciona o metodo
+    // Select the method and run it
     return ($validPks) ? $this->update($data, $validPks) : $this->insert($data);
   }
 
+  /**
+   * Perform an INSERT statement into database.
+   *
+   * @param array $data
+   * @return mixed
+   * @throws DatabaseGatewayException
+   */
   public function insert(array $data) {
+
     $this->checkGateway();
 
-    $sql = "INSERT INTO " . $this->name . " (";
+    // Create the SQL Query
+    $sql = "INSERT INTO {$this->name} (";
 
-    // Colunas
+    // columns
     foreach (array_keys($data) as $column) {
       $sql .= $column . ", ";
     }
     $sql = trim($sql, ', ') . ") VALUES (";
 
-    // Valores
+    // Values
     foreach ($data as $column => $value) {
       if (! is_null($value)) {
         $sql .= ":" . $column . ", ";
 
-        // Query segura
+        // Safe query
         $this->db->bind($column, $value);
       } else {
         $sql .= $column . " = NULL, ";
@@ -213,83 +256,94 @@ abstract class AbstractGateway
     }
     $sql = trim($sql, ', ') . ")";
 
-    // Roda query
+    // Runs
     $this->db->query($sql);
 
-    // Retorna id inserido
+    // Return the last insert ID.
     return $this->db->lastInsertId();
   }
 
+  /**
+   * Perform an UPDATE statement into database.
+   *
+   * @param array $data
+   * @param array $where
+   * @param bool $noWhereForSure If you really want to perform an UPDATE without WHERE =S
+   * @return bool
+   * @throws DatabaseGatewayException
+   */
   public function update(array $data, array $where, $noWhereForSure = false) {
     $this->checkGateway();
 
-    $sql = "UPDATE " . $this->name . " SET ";
+    $sql = "UPDATE {$this->name} SET ";
 
-    // Colunas
+    // Columns
     foreach ($data as $column => $value) {
       if (! is_null($value)) {
         $sql .= $column . " = :" . $column . ", ";
 
-        // Query segura
+        // Safe query
         $this->db->bind($column, $value);
       } else {
         $sql .= $column . " = NULL, ";
       }
     }
 
-    /**
-     * Indicando este atributo o sistema irá atualizar as colunas
-     * em questão em todos os updates sem precisar indicar isso nos
-     * arrays.
-     */
+    // There is some command to run every update?
     if ($this->onUpdate && is_array($this->onUpdate)) {
       foreach ($this->onUpdate as $column => $value) {
         if (! isset($data[$column])) {
-          $sql .= $column . " = " . $value . ", ";
+          $sql .= $column . " = " . str_replace(';', '', $value) . ", ";
         }
       }
     }
 
     $sql = trim($sql, ', ');
 
-    // Nenhum parametro where, locão
+    // UPDATE without WHERE? =S
     if (! $where && ! $noWhereForSure) {
-      throw new \Exception("Nenhuma coluna apontada no WHERE, se tiver certeza de que quer atualizar todos os registros da tabela informe true no parametro \$sure");
+      throw new DatabaseGatewayException("UPDATE without WHERE clause. We do not encourage it");
 
-      // Sure indica que o WHERE nao vai ser utilizado
-    } else if (! $noWhereForSure) {
+    } else if ($where) {
 
       // Where
       $sql .= " WHERE ";
       foreach ($where as $column => $value) {
         $sql .= $column . " = :w_" . $column . " AND ";
 
-        // Query segura
+        // Safe query
         $this->db->bind("w_" . $column, $value);
       }
       $sql = trim($sql, " AND ");
     }
 
-    // Roda query
+    // Runs query
     return (bool) $this->db->query($sql);
   }
 
+  /**
+   * DELETE rows from database.
+   *
+   * @param array $where
+   * @return bool
+   * @throws DatabaseGatewayException
+   */
   public function delete(array $where) {
     $this->checkGateway();
 
-    // Monta query
-    $sql = "DELETE FROM " . $this->name . " WHERE ";
+    // Query
+    $sql = "DELETE FROM {$this->name} WHERE ";
     foreach ($where as $column => $value) {
 
-      // Parametro na query
+      // Parameter
       $sql .= $column . " = :" . $column . " AND ";
 
-      // Parametro, query segura
+      // Safe query
       $this->db->bind($column, $value);
     }
     $sql = preg_replace("/\sAND\s$/", '', $sql);
 
-    // Resultado
+    // Result
     return (bool) $this->db->query($sql);
   }
 

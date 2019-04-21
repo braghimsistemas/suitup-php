@@ -26,6 +26,7 @@ declare(strict_types=1);
 
 namespace SuitUp\Database;
 
+use http\QueryString;
 use SuitUp\Database\DbAdapter\AdapterInterface;
 use SuitUp\Database\Gateway\AbstractGateway;
 use SuitUp\Exception\DatabaseGatewayException;
@@ -66,7 +67,7 @@ class DbAdapter implements DbAdapterInterface
    */
   public function __construct(AdapterInterface $adapter) {
 
-    $this->setAdapter($adapter);
+    $this->adapter = $adapter;
 
     try {
 
@@ -85,7 +86,7 @@ class DbAdapter implements DbAdapterInterface
       $connection->setAttribute(\PDO::ATTR_EMULATE_PREPARES, true);
 
       // Add connection to the instance
-      $this->setConnection($connection);
+      $this->connection = $connection;
 
       if (AbstractGateway::getDefaultAdapter() == null) {
         AbstractGateway::setDefaultAdapter($this);
@@ -97,28 +98,10 @@ class DbAdapter implements DbAdapterInterface
   }
 
   /**
-   * @param AdapterInterface $adapter
-   * @return DbAdapterInterface
-   */
-  public function setAdapter(AdapterInterface $adapter): DbAdapterInterface {
-    $this->adapter = $adapter;
-    return $this;
-  }
-
-  /**
    * @return AdapterInterface|null
    */
   public function getAdapter(): ?AdapterInterface {
     return $this->adapter;
-  }
-
-  /**
-   * @param \PDO $connection
-   * @return DbAdapterInterface
-   */
-  public function setConnection(\PDO $connection): DbAdapterInterface {
-    $this->connection = $connection;
-    return $this;
   }
 
   /**
@@ -143,6 +126,7 @@ class DbAdapter implements DbAdapterInterface
   /**
    * Alias to bind method
    *
+   * @see bind
    * @param string $name
    * @param $value
    * @return DbAdapterInterface
@@ -236,8 +220,11 @@ class DbAdapter implements DbAdapterInterface
   }
 
   /**
-   * Alias to the query method
+   * Alias to the query method.
+   * This method will get the query statement, append the parameters and return
+   * the result with the fetch mode defined.
    *
+   * @see query
    * @param string $query
    * @param array $params
    * @param int $fetchMode
@@ -257,8 +244,7 @@ class DbAdapter implements DbAdapterInterface
    * @return mixed
    * @throws DatabaseGatewayException
    */
-  public function fetchRow(string $query, array $params = array(), int $fetchMode = \PDO::FETCH_ASSOC) {
-
+  public function row(string $query, array $params = array(), int $fetchMode = \PDO::FETCH_ASSOC) {
     // Prepare the statement
     $stmt = $this->getConnection()->prepare(trim($query));
 
@@ -291,16 +277,18 @@ class DbAdapter implements DbAdapterInterface
   }
 
   /**
-   * Alias to the @see fetchRow method
+   * Alias to the row method.
+   * Return only the first row found by the query.
    *
+   * @see row
    * @param string $query
    * @param array $params
    * @param int $fetchMode
    * @return mixed
    * @throws DatabaseGatewayException
    */
-  public function row(string $query, array $params = array(), int $fetchMode = \PDO::FETCH_ASSOC) {
-    return $this->fetchRow($query, $params, $fetchMode);
+  public function fetchRow(string $query, array $params = array(), int $fetchMode = \PDO::FETCH_ASSOC) {
+    return $this->row($query, $params, $fetchMode);
   }
 
   /**
@@ -312,8 +300,7 @@ class DbAdapter implements DbAdapterInterface
    * @return mixed
    * @throws DatabaseGatewayException
    */
-  public function fetchSingle(string $query, array $params = array(), int $columnNumber = 0) {
-
+  public function single(string $query, array $params = array(), int $columnNumber = 0) {
     // Prepare the statement
     $stmt = $this->getConnection()->prepare(trim($query));
 
@@ -346,16 +333,18 @@ class DbAdapter implements DbAdapterInterface
   }
 
   /**
-   * Alias to the @see fetchSingle method
+   * Alias to the single method.
+   * Fetch only the given or first column from the statement. <b>Only the first row</b>.
    *
+   * @see single
    * @param string $query
    * @param array $params
    * @param int $columnNumber
    * @return mixed
    * @throws DatabaseGatewayException
    */
-  public function single(string $query, array $params = array(), int $columnNumber = 0) {
-    return $this->fetchSingle($query, $params, $columnNumber);
+  public function fetchSingle(string $query, array $params = array(), int $columnNumber = 0) {
+    return $this->single($query, $params, $columnNumber);
   }
 
   /**
@@ -366,7 +355,7 @@ class DbAdapter implements DbAdapterInterface
    * @return array
    * @throws DatabaseGatewayException
    */
-  public function fetchPairs(string $query, array $params = array()) {
+  public function pairs(string $query, array $params = array()) {
 
     // Prepare the statement
     $stmt = $this->getConnection()->prepare(trim($query));
@@ -400,15 +389,17 @@ class DbAdapter implements DbAdapterInterface
   }
 
   /**
-   * Alias to the @see fetchPairs method.
+   * Alias to the pairs method.
+   * Return the rows from the query in pairs. Requires the statement to fetch only 2 columns.
    *
+   * @see pairs
    * @param string $query
    * @param array $params
    * @return array
    * @throws DatabaseGatewayException
    */
-  public function pairs(string $query, array $params = array()) {
-    return $this->fetchPairs($query, $params);
+  public function fetchPairs(string $query, array $params = array()) {
+    return $this->pairs($query, $params);
   }
 
   /**
