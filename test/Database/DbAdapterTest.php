@@ -111,10 +111,10 @@ final class DbAdapterTest extends TestCase
     $db->clearParams();
 
     // It depends on database data from resources/files/mysql-database-test.sql
-    $result1 = $db->query("SELECT * FROM artist");
+    $result1 = $db->query("SELECT * FROM artist WHERE status = :status", array('status' => 1));
     $this->assertIsArray($result1);
 
-    $result2 = $db->fetchAll("SELECT * FROM artist");
+    $result2 = $db->fetchAll("SELECT * FROM artist WHERE status = :status", array('status' => 1));
     $this->assertIsArray($result2);
   }
 
@@ -128,12 +128,12 @@ final class DbAdapterTest extends TestCase
     $db->clearParams();
 
     // It depends on database data from resources/files/mysql-database-test.sql
-    $result1 = $db->row("SELECT * FROM artist");
+    $result1 = $db->row("SELECT * FROM artist WHERE status = :status", array('status' => 1));
     $this->assertIsArray($result1);
     $this->assertArrayHasKey('pk_artist', $result1);
     $this->assertArrayHasKey('name', $result1);
 
-    $result2 = $db->fetchRow("SELECT * FROM artist");
+    $result2 = $db->fetchRow("SELECT * FROM artist WHERE status = :status", array('status' => 1));
     $this->assertIsArray($result2);
     $this->assertArrayHasKey('pk_artist', $result2);
     $this->assertArrayHasKey('name', $result2);
@@ -154,7 +154,7 @@ final class DbAdapterTest extends TestCase
 
     $db->clearParams();
 
-    $result2 = $db->fetchSingle("SELECT name FROM artist WHERE pk_artist = 3");
+    $result2 = $db->fetchSingle("SELECT name FROM artist WHERE pk_artist = :id", array('id' => 3));
     $this->assertEquals('Bob Marley', $result2);
   }
 
@@ -168,14 +168,14 @@ final class DbAdapterTest extends TestCase
     $db->clearParams();
 
     // It depends on database data from resources/files/mysql-database-test.sql
-    $result1 = $db->pairs("SELECT pk_artist, name FROM artist WHERE pk_artist = 3");
+    $result1 = $db->pairs("SELECT pk_artist, name FROM artist WHERE pk_artist = :id", array('id' => 3));
     $this->assertIsArray($result1);
     $this->assertArrayHasKey('3', $result1);
     $this->assertContains('Bob Marley', $result1);
 
     $db->clearParams();
 
-    $result2 = $db->fetchPairs("SELECT pk_artist, name FROM artist");
+    $result2 = $db->fetchPairs("SELECT pk_artist, name FROM artist WHERE status = :status", array('status' => 1));
     $this->assertIsArray($result2);
     $this->assertArrayHasKey('2', $result2);
     $this->assertContains('Natiruts', $result2);
