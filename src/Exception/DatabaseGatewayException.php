@@ -26,10 +26,12 @@ declare(strict_types=1);
 
 namespace SuitUp\Exception;
 
-
+/**
+ * Class DatabaseGatewayException
+ * @package SuitUp\Exception
+ */
 class DatabaseGatewayException extends \Exception implements SuitUpExceptionInterface
 {
-
   public function getDescription(): string
   {
     return 'This exception normally is thrown when there is something wrong in the Gateway file or SQL Queries inside it';

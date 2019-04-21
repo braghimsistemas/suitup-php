@@ -26,11 +26,15 @@ declare(strict_types=1);
 
 namespace SuitUp\Database\Gateway;
 
-
 use phpDocumentor\Reflection\Types\Self_;
 use SuitUp\Database\Gateway\QueryString\Join;
 use SuitUp\Exception\DatabaseGatewayException;
 
+/**
+ * Class QueryString
+ *
+ * @package SuitUp\Database\Gateway
+ */
 class QueryString
 {
   const INT_TYPE = 'INTEGER';

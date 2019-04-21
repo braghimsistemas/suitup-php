@@ -36,7 +36,6 @@ use SuitUp\Exception\QueryTypeException;
 /**
  * This class is the connection itself.
  *
- *
  * @package SuitUp\Database
  */
 class DbAdapter implements DbAdapterInterface
@@ -67,6 +66,7 @@ class DbAdapter implements DbAdapterInterface
    */
   public function __construct(AdapterInterface $adapter) {
 
+    // Set adapter
     $this->adapter = $adapter;
 
     try {

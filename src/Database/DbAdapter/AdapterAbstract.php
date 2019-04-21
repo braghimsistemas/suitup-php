@@ -26,9 +26,13 @@ declare(strict_types=1);
 
 namespace SuitUp\Database\DbAdapter;
 
-
 use SuitUp\Exception\DbAdapterException;
 
+/**
+ * Class AdapterAbstract
+ *
+ * @package SuitUp\Database\DbAdapter
+ */
 abstract class AdapterAbstract implements AdapterInterface
 {
   /**

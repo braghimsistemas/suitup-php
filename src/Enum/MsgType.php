@@ -32,7 +32,6 @@ namespace SuitUp\Enum;
  */
 class MsgType
 {
-
   const DANGER = 'danger';
 
   const WARNING = 'warning';

@@ -26,6 +26,11 @@ declare(strict_types=1);
 
 namespace SuitUp\Database\Gateway\QueryString;
 
+/**
+ * Class Join
+ *
+ * @package SuitUp\Database\Gateway\QueryString
+ */
 class Join
 {
   const INNER_JOIN = 'INNER JOIN';

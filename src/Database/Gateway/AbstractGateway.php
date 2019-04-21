@@ -114,7 +114,7 @@ abstract class AbstractGateway
    *
    * @param DbAdapterInterface $dbAdapter
    */
-  public static function setDefaultAdapter(DbAdapterInterface $dbAdapter): void {
+  public static function setDefaultAdapter(DbAdapterInterface $dbAdapter = null): void {
     self::$defaultAdapter = $dbAdapter;
   }
 

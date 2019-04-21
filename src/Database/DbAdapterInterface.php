@@ -28,6 +28,10 @@ namespace SuitUp\Database;
 
 use SuitUp\Database\DbAdapter\AdapterInterface;
 
+/**
+ * Interface DbAdapterInterface
+ * @package SuitUp\Database
+ */
 interface DbAdapterInterface
 {
   /**

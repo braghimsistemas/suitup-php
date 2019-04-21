@@ -29,6 +29,11 @@ namespace SuitUp\Mvc;
 use ReflectionClass;
 use SuitUp\Exception\StructureException;
 
+/**
+ * Class FrontController[
+ *
+ * @package SuitUp\Mvc
+ */
 class FrontController
 {
   /**

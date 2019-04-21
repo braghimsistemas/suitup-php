@@ -28,9 +28,12 @@ namespace SuitUp\Database\DbAdapter;
 
 use SuitUp\Exception\StructureException;
 
+/**
+ * Class AdapterFactory
+ * @package SuitUp\Database\DbAdapter
+ */
 final class AdapterFactory
 {
-
   /**
    * @param array $configs
    * @return bool|DbAdapter

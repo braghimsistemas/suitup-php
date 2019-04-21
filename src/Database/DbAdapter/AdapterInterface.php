@@ -24,10 +24,12 @@
  */
 declare(strict_types=1);
 
-
 namespace SuitUp\Database\DbAdapter;
 
-
+/**
+ * Interface AdapterInterface
+ * @package SuitUp\Database\DbAdapter
+ */
 interface AdapterInterface
 {
   public function __construct(array $parameters);

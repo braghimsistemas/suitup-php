@@ -29,7 +29,7 @@ namespace ModuleError\Controllers;
 use SuitUp\Mvc\MvcAbstractController;
 
 /**
- * Class ErrorController
+ * Class DefaultErrorController
  * @package ModuleError\Controllers
  */
 class DefaultErrorController extends MvcAbstractController

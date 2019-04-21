@@ -26,8 +26,15 @@ declare(strict_types=1);
 
 namespace SuitUp\Exception;
 
+/**
+ * Class StructureException
+ * @package SuitUp\Exception
+ */
 class StructureException extends \Exception implements SuitUpExceptionInterface
 {
+  /**
+   * @return string
+   */
   public function getDescription(): string
   {
     return 'Some kind of SuitUp structure definition was broken, see the manual for details';

@@ -31,8 +31,7 @@ use SuitUp\Exception\StructureException;
 
 /**
  * Class Routes
- *
- * @package Router
+ * @package SuitUp\Mvc
  */
 class Routes
 {

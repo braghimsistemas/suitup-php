@@ -27,7 +27,11 @@ declare(strict_types=1);
 
 namespace SuitUp\Exception;
 
-
+/**
+ * Class DatabaseBusinessException
+ *
+ * @package SuitUp\Exception
+ */
 class DatabaseBusinessException extends \Exception implements SuitUpExceptionInterface
 {
   public function getDescription(): string

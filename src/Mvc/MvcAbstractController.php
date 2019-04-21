@@ -35,6 +35,7 @@ use SuitUp\Enum\MsgType;
 
 /**
  * Class MvcAbstractController
+ *
  * @package SuitUp\Mvc
  */
 abstract class MvcAbstractController

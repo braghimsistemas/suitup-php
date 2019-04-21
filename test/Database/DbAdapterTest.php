@@ -48,28 +48,14 @@ final class DbAdapterTest extends TestCase
 
   public function testCreateInstance() {
 
-    if (IS_TRAVIS_CI) {
-
-      // Running tests from TRAVIS CI
-      $adapter = new Mysql(array(
-        'host' => '127.0.0.1',
-        'port' => '3306',
-        'dbname' => 'suitup',
-        'username' => 'root',
-        'password' => ''
-      ));
-
-    } else {
-
-      // Running tests from local machine with docker
-      $adapter = new Mysql(array(
-        'host' => '127.0.0.1',
-        'port' => '3406',
-        'dbname' => 'suitup',
-        'username' => 'root',
-        'password' => '142536'
-      ));
-    }
+    // Create Mysql Adapter
+    $adapter = new Mysql(array(
+      'host' =>     IS_TRAVIS_CI ? '127.0.0.1' : '127.0.0.1',
+      'port' =>     IS_TRAVIS_CI ? '3306'      : '3406',
+      'dbname' =>   IS_TRAVIS_CI ? 'suitup'    : 'suitup',
+      'username' => IS_TRAVIS_CI ? 'root'      : 'root',
+      'password' => IS_TRAVIS_CI ? ''          : '142536'
+    ));
 
     // Create and test instance
     $db = new DbAdapter($adapter);

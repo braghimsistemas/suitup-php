@@ -24,12 +24,15 @@
  */
 declare(strict_types=1);
 
-
 namespace SuitUp\Database\DbAdapter;
-
 
 use SuitUp\Exception\DbAdapterException;
 
+/**
+ * Class Postgres
+ *
+ * @package SuitUp\Database\DbAdapter
+ */
 class Postgres extends AdapterAbstract
 {
 

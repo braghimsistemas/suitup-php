@@ -26,9 +26,15 @@ declare(strict_types=1);
 
 namespace SuitUp\Exception;
 
+/**
+ * Class QueryTypeException
+ * @package SuitUp\Exception
+ */
 class QueryTypeException extends \Exception implements SuitUpExceptionInterface
 {
-
+  /**
+   * @return string
+   */
   public function getDescription(): string
   {
     return 'This method is thrown when there was an error while typing a query statement';

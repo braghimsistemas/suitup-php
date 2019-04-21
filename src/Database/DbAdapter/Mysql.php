@@ -24,15 +24,17 @@
  */
 declare(strict_types=1);
 
-
 namespace SuitUp\Database\DbAdapter;
-
 
 use SuitUp\Exception\DbAdapterException;
 
+/**
+ * Class Mysql
+ *
+ * @package SuitUp\Database\DbAdapter
+ */
 class Mysql extends AdapterAbstract
 {
-
   /**
    * Mysql constructor.
    *

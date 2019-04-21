@@ -42,6 +42,7 @@ if (file_exists(__DIR__.'/../vendor/autoload.php')) {
 use SuitUp\Mvc\Routes;
 use SuitUp\Exception\NotFoundException;
 use SuitUp\Exception\StructureException;
+use SuitUp\Database\Gateway\AbstractGateway;
 
 final class SuitUpStartTest extends PHPUnit\Framework\TestCase
 {
@@ -109,6 +110,9 @@ final class SuitUpStartTest extends PHPUnit\Framework\TestCase
   public function testRunNormal() {
 
     $suitup = new SuitUpStart(__DIR__.'/resources/modules/');
+
+    // Clear adapter to force system find default database.config.php file
+    AbstractGateway::setDefaultAdapter(null);
 
     ob_start();
     $suitup->run();
