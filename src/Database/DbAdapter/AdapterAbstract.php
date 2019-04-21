@@ -164,4 +164,84 @@ abstract class AdapterAbstract implements AdapterInterface
     $this->options = array_merge($this->options, $options);
     return $this;
   }
+
+  abstract public function from($table, string $schema = null): AdapterAbstract;
+
+  abstract public function column(string $name, string $alias = null): AdapterAbstract;
+
+  abstract public function columns(array $columns): AdapterAbstract;
+
+  abstract public function innerJoin(string $table, string $onClause, string $schema = null): AdapterAbstract;
+
+  abstract public function outerJoin(string $table, string $onClause, string $schema = null): AdapterAbstract;
+
+  abstract public function rightJoin(string $table, string $onClause, string $schema = null): AdapterAbstract;
+
+  abstract public function leftJoin(string $table, string $onClause, string $schema = null): AdapterAbstract;
+
+  abstract public function where($where, $value = null, $type = null): AdapterAbstract;
+
+  abstract public function orWhere($where, $value = null, $type = null): AdapterAbstract;
+
+  abstract public function group($column): AdapterAbstract;
+
+  abstract public function order($column): AdapterAbstract;
+
+  abstract public function having($text);
+
+  abstract public function limit($limit, $offset = null);
+
+  abstract public function __toString();
+
+  /**
+   * By this method we try to block injection to the SQL
+   *
+   * @param $value
+   * @param null $type
+   * @return string
+   */
+  public function quote($value, $type = null) {
+
+    $numericDataTypes = array(self::INT_TYPE, self::BIGINT_TYPE, self::FLOAT_TYPE);
+
+    if ($type !== null && in_array($type = strtoupper($type), $numericDataTypes)) {
+
+      $quotedValue = '0';
+      switch ($type) {
+        case self::INT_TYPE: // 32-bit integer
+          $quotedValue = (string) intval($value);
+          break;
+        case self::BIGINT_TYPE: // 64-bit integer
+          // ANSI SQL-style hex literals (e.g. x'[\dA-F]+')
+          // are not supported here, because these are string
+          // literals, not numeric literals.
+          if (preg_match('/^(
+                          [+-]?                  # optional sign
+                          (?:
+                            0[Xx][\da-fA-F]+     # ODBC-style hexadecimal
+                            |\d+                 # decimal or octal, or MySQL ZEROFILL decimal
+                            (?:[eE][+-]?\d+)?    # optional exponent on decimals or octals
+                          )
+                        )/x', (string) $value, $matches)) {
+            $quotedValue = $matches[1];
+          }
+          break;
+        case self::FLOAT_TYPE: // float or decimal
+          $quotedValue = sprintf('%F', $value);
+      }
+      return $quotedValue;
+    }
+
+    // Int and float values
+    if (is_int($value)) {
+      $result = $value;
+    } elseif (is_float($value)) {
+      $result = sprintf('%F', $value);
+    } else {
+
+      // Quote to strings
+      $result = "'" . addcslashes($value, "\000\n\r\\'\"\032") . "'";
+    }
+    return $result;
+  }
 }
