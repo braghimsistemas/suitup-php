@@ -50,6 +50,11 @@ class AbstractBusinessTest extends TestCase
 
   public function testInstance() {
     $this->assertInstanceOf('SuitUp\Database\Business\AbstractBusiness', $this->bo);
+
+    $this->expectException(SuitUp\Exception\DatabaseBusinessException::class);
+    $this->getMockBuilder('SuitUp\Database\Business\AbstractBusiness')
+      ->setConstructorArgs(array())
+      ->getMockForAbstractClass();
   }
 
   public function testGet() {
