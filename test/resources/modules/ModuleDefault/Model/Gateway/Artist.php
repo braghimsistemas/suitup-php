@@ -17,7 +17,7 @@ class Artist extends AbstractGateway {
    * that must to be updated with current timestamp
    * every UPDATE call
    */
-  // protected $onUpdate = array('edited' => 'NOW()');
+  protected $onUpdate = array('updated' => 'NOW()');
 
 
 }

@@ -384,7 +384,7 @@ abstract class AbstractGateway
   private function checkGateway() {
     if (! $this->name || ! $this->primary) {
       throw new DatabaseGatewayException("Every Gateway file must to inform name and primary fields (".get_class($this).")");
-		}
-		return true;
+    }
+    return true;
 	}
 }
