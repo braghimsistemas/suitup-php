@@ -63,6 +63,57 @@ class AbstractBusinessTest extends TestCase
 
   public function testInsert() {
 
+    $id = $this->bo->insert(array(
+      'name' => 'Chico Buarque',
+      'status' => 0
+    ));
+
+    // Get the inserted row
+    $row = $this->bo->get($id);
+
+    $this->assertIsArray($row);
+    $this->assertArrayHasKey('pk_artist', $row);
+    $this->assertArrayHasKey('name', $row);
+    $this->assertContains('Chico Buarque', $row);
+
+    return $id;
+  }
+
+  /**
+   * @depends testInsert
+   * @param mixed $id
+   * @throws \SuitUp\Exception\DatabaseGatewayException
+   */
+  public function testUpdate($id) {
+
+    $this->bo->update(array('name' => 'Buarque Chico'), array('pk_artist' => $id));
+
+    // Get the inserted row
+    $row = $this->bo->get($id);
+
+    $this->assertIsArray($row);
+    $this->assertArrayHasKey('pk_artist', $row);
+    $this->assertArrayHasKey('name', $row);
+    $this->assertContains('Buarque Chico', $row);
+  }
+
+  /**
+   * @depends testInsert
+   * @param mixed $id
+   * @throws \SuitUp\Exception\DatabaseGatewayException
+   */
+  public function testDelete($id) {
+
+    $this->bo->delete(array('pk_artist' => $id));
+
+    // Get the inserted row
+    $this->assertFalse($this->bo->get($id));
+  }
+
+  /////------------------- Save
+
+  public function testSaveInsert() {
+
     $id = $this->bo->save(array(
       'name' => 'Caetano Veloso',
       'status' => 1
@@ -80,11 +131,11 @@ class AbstractBusinessTest extends TestCase
   }
 
   /**
-   * @depends testInsert
+   * @depends testSaveInsert
    * @param mixed $id
    * @throws \SuitUp\Exception\DatabaseGatewayException
    */
-  public function testUpdate($id) {
+  public function testSaveUpdate($id) {
 
     $this->bo->save(array(
       'pk_artist' => $id,
@@ -101,11 +152,11 @@ class AbstractBusinessTest extends TestCase
   }
 
   /**
-   * @depends testInsert
+   * @depends testSaveInsert
    * @param mixed $id
    * @throws \SuitUp\Exception\DatabaseGatewayException
    */
-  public function testDelete($id) {
+  public function testSaveDelete($id) {
 
     $this->bo->delete(array('pk_artist' => $id));
 
