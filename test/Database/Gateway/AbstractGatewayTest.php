@@ -88,4 +88,12 @@ class AbstractGatewayTest extends TestCase
 
     $this->assertEquals('SELECT m.* FROM music m WHERE (status = 1)', $query->__toString());
   }
+
+  public function testSelect3() {
+    $query = $this->bo->gateway()->select('m.pk_music, m.name, m.status, m.created')
+      ->from('music m')
+      ->where('status = ?', 1);
+
+    $this->assertEquals('SELECT m.pk_music, m.name, m.status, m.created FROM music m WHERE (status = 1)', $query->__toString());
+  }
 }
