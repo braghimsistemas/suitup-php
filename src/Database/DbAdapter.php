@@ -28,10 +28,13 @@ namespace SuitUp\Database;
 
 use SuitUp\Database\DbAdapter\AdapterAbstract;
 use SuitUp\Database\DbAdapter\AdapterInterface;
+use SuitUp\Database\DbAdapter\Mysql;
+use SuitUp\Database\DbAdapter\Postgres;
 use SuitUp\Database\Gateway\AbstractGateway;
 use SuitUp\Exception\DatabaseGatewayException;
 use SuitUp\Exception\DbAdapterException;
 use SuitUp\Exception\QueryTypeException;
+use SuitUp\Exception\StructureException;
 
 /**
  * This class is the connection itself.
@@ -95,6 +98,47 @@ class DbAdapter implements DbAdapterInterface
     } catch (\PDOException $e) {
       throw new DbAdapterException("Database connection error: {$e->getMessage()}<br/>DSN: {$adapter->getDsn()}", $e->getCode(), $e);
     }
+  }
+
+  /**
+   * @param array $configs
+   * @return bool|DbAdapter
+   * @throws StructureException
+   * @throws \SuitUp\Exception\DbAdapterException
+   */
+  public static function factory(array $configs)
+  {
+    $adapter = null;
+
+    foreach (array_keys($configs) as $key) {
+      if (in_array($key, array('type', 'dbtype', 'adapter', 'dbadapter'))) {
+
+        // Store and remove type
+        $type = $configs[$key];
+        unset($configs[$key]);
+
+        switch ($type) {
+          case 'mysql':
+            $adapter = new Mysql($configs);
+            break;
+          case 'postgres':
+          case 'postgre':
+          case 'pgsql':
+            $adapter = new Postgres($configs);
+            break;
+          default:
+            throw new StructureException("The database adapter '$key' is not a known adapter type");
+        }
+        break;
+      } else {
+        throw new StructureException("Since Suitup PHP 2.0 you need to provide an index called 'adapter' in the database.config.php file");
+      }
+    }
+
+    if ($adapter) {
+      return new DbAdapter($adapter);
+    }
+    return false;
   }
 
   /**

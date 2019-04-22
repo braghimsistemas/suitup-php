@@ -32,7 +32,7 @@ use SuitUp\Exception\StructureException;
 use SuitUp\Mvc\FrontController;
 use SuitUp\Mvc\MvcAbstractController;
 use SuitUp\Mvc\Routes;
-use SuitUp\Database\DbAdapter\AdapterFactory;
+use SuitUp\Database\DbAdapter;
 use SuitUp\Database\Gateway\AbstractGateway;
 
 /**
@@ -257,7 +257,7 @@ class SuitUpStart
         if (is_array($content)) {
 
           // Append to the Gateway as a Default Adapter
-          $adapter = AdapterFactory::getAdapter($content);
+          $adapter = DbAdapter::factory($content);
 
           if ($adapter) {
             AbstractGateway::setDefaultAdapter($adapter);

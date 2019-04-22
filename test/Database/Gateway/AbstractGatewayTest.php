@@ -24,7 +24,7 @@
  */
 declare(strict_types=1);
 
-use SuitUp\Database\DbAdapter\AdapterFactory;
+use SuitUp\Database\DbAdapter;
 use SuitUp\Database\Gateway\AbstractGateway;
 use PHPUnit\Framework\TestCase;
 use SuitUp\Exception\DatabaseGatewayException;
@@ -50,7 +50,7 @@ class AbstractGatewayTest extends TestCase
     $content = require __DIR__.'/../../resources/config/database.config.php';
 
     // Append to the Gateway as a Default Adapter
-    $adapter = AdapterFactory::getAdapter($content);
+    $adapter = DbAdapter::factory($content);
 
     $this->getMockBuilder(AbstractGateway::class)
       ->setConstructorArgs(array($adapter))
