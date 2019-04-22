@@ -181,6 +181,8 @@ abstract class AdapterAbstract implements AdapterInterface
     return $this;
   }
 
+  abstract public function resetQuery(): AdapterAbstract;
+
   /**
    * Provide FROM table
    * @param $table

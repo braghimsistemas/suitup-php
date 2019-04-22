@@ -24,6 +24,7 @@
  */
 declare(strict_types=1);
 
+use \ModuleDefault\Model\MusicBusiness;
 use SuitUp\Database\DbAdapter;
 use SuitUp\Database\Gateway\AbstractGateway;
 use PHPUnit\Framework\TestCase;
@@ -31,6 +32,22 @@ use SuitUp\Exception\DatabaseGatewayException;
 
 class AbstractGatewayTest extends TestCase
 {
+  private $bo;
+
+  public function __construct($name = null, array $data = [], $dataName = '')
+  {
+    parent::__construct($name, $data, $dataName);
+
+    $suitup = new SuitUpStart(__DIR__.'/../../resources/modules/');
+
+    // Doesn't matter the output
+    ob_start();
+    $suitup->run();
+    ob_clean();
+
+    $this->bo = new MusicBusiness();
+  }
+
   public function testConstructorWithoutArgs() {
 
     // Exception because there's no Gateway to populate name and primary attributes
@@ -55,5 +72,20 @@ class AbstractGatewayTest extends TestCase
     $this->getMockBuilder(AbstractGateway::class)
       ->setConstructorArgs(array($adapter))
       ->getMockForAbstractClass();
+  }
+
+  public function testSelect1() {
+    $query = $this->bo->gateway()->select('SELECT m.* FROM music m')
+      ->where('status = ?', 1);
+
+    $this->assertEquals('SELECT m.* FROM music m WHERE (status = 1)', $query->__toString());
+  }
+
+  public function testSelect2() {
+    $query = $this->bo->gateway()->select(array('m.*'))
+      ->from('music m')
+      ->where('status = ?', 1);
+
+    $this->assertEquals('SELECT m.* FROM music m WHERE (status = 1)', $query->__toString());
   }
 }

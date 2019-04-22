@@ -136,7 +136,7 @@ abstract class AbstractGateway
   public function select($columns = array()): AdapterAbstract {
 
     // Start the instance
-    $querySelector = $this->db->getAdapter();
+    $querySelector = $this->db->getAdapter()->resetQuery();
 
     // By type we will start to populate it
     switch (gettype($columns)) {

@@ -83,6 +83,26 @@ class Mysql extends AdapterAbstract
   }
 
   /**
+   * Reset values to start create a new query.
+   *
+   * @return \SuitUp\Database\DbAdapter\AdapterAbstract
+   */
+  public function resetQuery(): AdapterAbstract
+  {
+    $this->sql = null;
+    $this->from = '';
+    $this->columns = array();
+    $this->join = array();
+    $this->where = array();
+    $this->group = array();
+    $this->order = array();
+    $this->having = null;
+    $this->limit = null;
+
+    return $this;
+  }
+
+  /**
    * Setup the FROM statement to append to the SQL instruction
    *
    * @param string|array $table `tablename as alias` OR array('tablename' => 'alias')
