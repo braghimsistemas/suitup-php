@@ -33,6 +33,7 @@ use SuitUp\Database\DbAdapter\AdapterAbstract;
 use SuitUp\Database\DbAdapter\AdapterInterface;
 use SuitUp\Database\DbAdapter\Mysql\MysqlAdapter;
 use SuitUp\Database\DbAdapter\Mysql\PostgresAdapter;
+use SuitUp\Database\DbAdapter\QueryCreatorInterface;
 use SuitUp\Database\Gateway\AbstractGateway;
 use SuitUp\Exception\DatabaseGatewayException;
 use SuitUp\Exception\DbAdapterException;
@@ -596,12 +597,12 @@ class DbAdapter implements DbAdapterInterface
   }
 
   /**
-   * @param AdapterAbstract $adapter
+   * @param QueryCreatorInterface $adapter
    * @param array $params
    * @param Closure|null $closureFunc
    * @return Paginate
    */
-  public function paginate(AdapterAbstract $adapter, array $params = array(), Closure $closureFunc = null): Paginate {
+  public function paginate(QueryCreatorInterface $adapter, array $params = array(), Closure $closureFunc = null): Paginate {
     return new Paginate($this, $adapter, $params, $closureFunc);
   }
 }

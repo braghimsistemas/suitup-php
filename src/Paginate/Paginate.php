@@ -28,7 +28,7 @@ namespace SuitUp\Paginate;
 
 use Closure;
 use Countable;
-use SuitUp\Database\DbAdapter\AdapterAbstract;
+use SuitUp\Database\DbAdapter\QueryCreatorInterface;
 use SuitUp\Database\DbAdapterInterface;
 use SuitUp\Exception\PaginateException;
 
@@ -52,7 +52,7 @@ class Paginate implements Countable, PaginateI
   /**
    * The SQL Query object
    *
-   * @var AdapterAbstract
+   * @var QueryCreatorInterface
    */
   private $adapter;
 
@@ -130,11 +130,11 @@ class Paginate implements Countable, PaginateI
    * Setup pagination by database connection and the object to construct the Sql query.
    *
    * @param DbAdapterInterface $db
-   * @param AdapterAbstract $adapter
+   * @param QueryCreatorInterface $adapter
    * @param array $params A list of parameters to the query
    * @param Closure $closureFunc
    */
-  public function __construct(DbAdapterInterface $db, AdapterAbstract $adapter, array $params = array(), Closure $closureFunc = null) {
+  public function __construct(DbAdapterInterface $db, QueryCreatorInterface $adapter, array $params = array(), Closure $closureFunc = null) {
 
     $this->setDb($db);
 
@@ -174,10 +174,10 @@ class Paginate implements Countable, PaginateI
   /**
    * This object is responsible for assembling SQL queries.
    *
-   * @param AdapterAbstract $adapter
+   * @param QueryCreatorInterface $adapter
    * @return Paginate
    */
-  public function setAdapter(AdapterAbstract $adapter): Paginate {
+  public function setAdapter(QueryCreatorInterface $adapter): Paginate {
     $this->adapter = $adapter;
     return $this;
   }
@@ -185,9 +185,9 @@ class Paginate implements Countable, PaginateI
   /**
    * Return the object is responsible for assembling SQL queries.
    *
-   * @return AdapterAbstract
+   * @return QueryCreatorInterface
    */
-  public function getAdapter(): AdapterAbstract {
+  public function getAdapter(): QueryCreatorInterface {
     return $this->adapter;
   }
 

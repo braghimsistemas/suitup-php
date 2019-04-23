@@ -29,6 +29,7 @@ namespace SuitUp\Paginate;
 use Closure;
 use Iterator;
 use SuitUp\Database\DbAdapter\AdapterAbstract;
+use SuitUp\Database\DbAdapter\QueryCreatorInterface;
 use SuitUp\Database\DbAdapterInterface;
 
 /**
@@ -50,15 +51,15 @@ interface PaginateI extends Iterator
   public function getDb(): DbAdapterInterface;
 
   /**
-   * @param AdapterAbstract $adapter
+   * @param QueryCreatorInterface $adapter
    * @return Paginate
    */
-  public function setAdapter(AdapterAbstract $adapter): Paginate;
+  public function setAdapter(QueryCreatorInterface $adapter): Paginate;
 
   /**
-   * @return AdapterAbstract
+   * @return QueryCreatorInterface
    */
-  public function getAdapter(): AdapterAbstract;
+  public function getAdapter(): QueryCreatorInterface;
 
   /**
    * @param int $pageRange
