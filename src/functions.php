@@ -24,6 +24,7 @@
  */
 declare(strict_types=1);
 
+use SuitUp\Database\DbAdapter;
 use SuitUp\Exception\SuitUpException;
 use SuitUp\Paginate\Paginate;
 
@@ -300,6 +301,37 @@ function getTraceArgsAsString($args, $root = true) {
       $argString .= gettype($args);
   }
   return $argString;
+}
+
+/**
+ * Call it on your view to see the list of queries executed on the current page.
+ * @return string
+ */
+function queryLog(): string {
+
+  // If there's no log return an empty string
+  if (!DbAdapter::isSqlMonitor()) {
+    return "";
+  }
+
+  $html = file_get_contents(__DIR__ . '/resource/query-logger.html');
+  $html .= '<div id="__SuitUp-query-log-tab__">SQL Monitor <span id="close">X</span></div>';
+  $html .= '<div id="__SuitUp-query-log__">';
+  $html .= '<div class="headding">Queries executed on this page <span id="closebox">X</span></div>';
+  $html .= '<div class="mainbox">';
+
+  // Query with parameters
+  foreach (array_reverse(DbAdapter::$queryLogs) as $k => $item) {
+    if ($item['params']) {
+      foreach ($item['params'] as $param => $value) {
+        $item['sql'] = str_replace($param, "'$value'", $item['sql']);
+      }
+    }
+    // $params = html_entity_decode(dump($item['params'], false));
+    $html .= "<span>#$k - " . count($item['params']) . ' parameter(s)</span><p>' . $item['sql'] . '</p><hr/>';
+  }
+  $html .= '</div>';
+  return $html;
 }
 
 if (! function_exists('uploadFileImageBase64')) {

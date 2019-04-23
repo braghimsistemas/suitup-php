@@ -299,7 +299,7 @@ class SuitUpStart
    * @return SuitUpStart
    */
   public function setSqlMonitor(bool $status): SuitUpStart {
-    $this->getConfig()->setSqlMonitor($status);
+    DbAdapter::setSqlMonitor($status);
     return $this;
   }
 }

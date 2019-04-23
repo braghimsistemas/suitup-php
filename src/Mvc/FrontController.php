@@ -124,11 +124,6 @@ class FrontController
   private $action = 'index';
 
   /**
-   * @var bool
-   */
-  private $sqlMonitor = false;
-
-  /**
    * @var string
    */
   private $formPath = '/Form';
@@ -502,22 +497,6 @@ class FrontController
    */
   public function setAction(string $action): FrontController {
     $this->action = toDashCase($action);
-    return $this;
-  }
-
-  /**
-   * @return bool
-   */
-  public function isSqlMonitor(): bool {
-    return $this->sqlMonitor;
-  }
-
-  /**
-   * @param bool $sqlMonitor
-   * @return FrontController
-   */
-  public function setSqlMonitor(bool $sqlMonitor): FrontController {
-    $this->sqlMonitor = $sqlMonitor;
     return $this;
   }
 

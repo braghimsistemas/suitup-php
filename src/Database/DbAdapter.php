@@ -54,6 +54,36 @@ class DbAdapter implements DbAdapterInterface
   const PARAM_SEPARATOR = "\x7F";
 
   /**
+   * By default the SQL monitoring is disabled
+   *
+   * @var bool
+   */
+  private static $sqlMonitor = false;
+
+  /**
+   * Enable/disable Sql Monitor
+   *
+   * @param bool $status
+   */
+  public static function setSqlMonitor(bool $status): void {
+    self::$sqlMonitor = $status;
+  }
+
+  /**
+   * Return Sql Monitor status
+   *
+   * @return bool
+   */
+  public static function isSqlMonitor(): bool {
+    return self::$sqlMonitor;
+  }
+
+  /**
+   * @var array
+   */
+  public static $queryLogs = array();
+
+  /**
    * @var AdapterInterface
    */
   private $adapter;
@@ -150,7 +180,7 @@ class DbAdapter implements DbAdapterInterface
   }
 
   /**
-   * @return AdapterInterface
+   * @return AdapterAbstract
    */
   public function getAdapter(): AdapterAbstract {
     return $this->adapter;
@@ -239,12 +269,21 @@ class DbAdapter implements DbAdapterInterface
       $this->bind($name, $value);
     }
 
+    // Params to log
+    $logParams = array();
+
     // Bind parameters
     foreach ($this->getParams() as $param) {
 
       $parameters = explode(self::PARAM_SEPARATOR, $param);
       $stmt->bindParam($parameters[0], $parameters[1]);
+
+      // Store params to log
+      $logParams[] = $parameters[0];
     }
+
+    // Store log (even when is not shown)
+    self::$queryLogs[] = array('sql' => $query, 'params' => $logParams);
 
     // Get the first instruction to let know what kind of query it is
     $rawStmtParts = explode(" ", trim($query));
