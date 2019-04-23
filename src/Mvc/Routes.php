@@ -37,7 +37,7 @@ class Routes
 {
   /**
    * In the reverse routes the key name that determines the route came in the END of URL.
-   * Eg.: Rota = my-route.html = /param1/param2/param3/my-route.html
+   * Eg.: Rote = my-route.html = /param1/param2/param3/my-route.html
    *
    * 'my-route.html' => array(
    *		'controller' => 'index',
@@ -54,28 +54,28 @@ class Routes
    * <b>Rotas lineares não aceitam URL, apenas nomes:</b>
    *
    * CERTO
-   * Rota: 'colaboradores.html'
-   * URL : /modulo/colaboradores.html/perfis/param1/param2
-   * Resultado: params = ['perfis', 'param1', 'param2']
+   * Route: 'my-profile.html'
+   * URL : /module/my-profile.html/perfis/param1/param2
+   * Result Params: ['perfis', 'param1', 'param2']
    *
    * ERRADO
-   * Rota: 'colaboradores/perfis'
-   * URL : /modulo/colaboradores/perfis/param1/param2
-   * Resultado: Não funciona!
+   * Rota: 'colaboradores.mrc/something'
+   * URL : /module/colaboradores.mrc/something/param1/param2
+   * Result: Does not work!
    *
-   * <b>Exemplos de rotas lineares</b>
+   * <b>Examples:</b>
    * return array(
    *		'dashboard' => array(
    *			'controller' => 'index',
    *			'action' => 'index',
    *		),
-   *		'meu-perfil.html' => array(
-   *			'controller' => 'perfil',
+   *		'my-profile.html' => array(
+   *			'controller' => 'profile',
    *			'action' => 'index',
    *		),
    *		'colaboradores.mrc' => array(
-   *			'controller' => 'besteira',
-   *			'action' => 'blabla',
+   *			'controller' => 'something',
+   *			'action' => 'some-stuff',
    *			'params' => array('id' => '2'),
    *		),
    * );

@@ -175,7 +175,7 @@ class SuitUpStart
    * @throws Exception
    */
   public function builder(FrontController $frontController, Throwable $exception = null): ?MvcAbstractController {
-    
+
     // Define modulo
     if (! is_dir($frontController->getModulePath()) || ! is_readable($frontController->getModulePath())) {
       throw new StructureException("Module folder '{$frontController->getModulePath()}' does not exists");
@@ -219,6 +219,13 @@ class SuitUpStart
     if ($exception) {
       $controller->setException($exception);
     }
+
+    // Include the path to current the module
+    // and to the current views folder
+    set_include_path(get_include_path().':'.
+      $frontController->getModulePath().':'.
+      $frontController->getModulePath().'/'.$frontController->getViewsPath()
+    );
 
     // Launch methods for the win!
     $controller->preDispatch();

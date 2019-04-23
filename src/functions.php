@@ -74,11 +74,11 @@ if (! function_exists('isClosure')) {
 
   /**
    * Return true when a given item is a closure function
-   * 
+   *
    * @return bool
    */
   function isClosure($item): bool {
-    return (is_object($item) && ($item instanceof \Closure));
+    return (is_object($item) && ($item instanceof Closure));
   }
 }
 
@@ -122,8 +122,7 @@ if (! function_exists('toDashCase')) {
  *
  * @param string $renderViewName Filename to be rendered with .phtml extension
  * @param array|mixed $vars Variables to be used inside view file
- * @param string $renderViewPath Path to the file, it's possible to set full file
- *                               path direct in the first param here
+ * @param string $renderViewPath Path to the file, it's possible to set full file path direct in the first param here
  * @return string
  */
 function renderView($renderViewName, $vars = array(), $renderViewPath = null): string {
@@ -147,13 +146,12 @@ function renderView($renderViewName, $vars = array(), $renderViewPath = null): s
 /**
  * Render a pagination template.
  *
- * @param SuitUp\Paginate\Paginate $object Objeto de paginacao criado na query.
- * @param string $renderViewName Nome do arquivo .phtml de paginacao
- * @return string Html pronto dos botoes de paginacao
+ * @param Paginate $object
+ * @param string $renderViewName File name to render pagination
+ * @return string Html to navigate through pages
  */
-function paginateControl(\SuitUp\Paginate\Paginate $object, $renderViewName = 'paginacao.phtml') {
-
-  // Return
+function paginateControl(\SuitUp\Paginate\Paginate $object, $renderViewName = 'paginate.phtml'): string {
+  // Result
   $items = array();
 
   $currentPage = ($object->getCurrentPage() > 0) ? $object->getCurrentPage() : 1;
@@ -173,8 +171,9 @@ function paginateControl(\SuitUp\Paginate\Paginate $object, $renderViewName = 'p
       $page = $currentPage - ($bothSides - $i);
 
       if ($page <= $totalPages) {
-        if ($page >= 1)
+        if ($page >= 1) {
           $items[] = $page;
+        }
       }
     }
 
@@ -226,20 +225,21 @@ function paginateControl(\SuitUp\Paginate\Paginate $object, $renderViewName = 'p
   // Define a url base.
   $url = '/' . preg_replace("/\?(" . preg_quote(getenv('QUERY_STRING'), "/") . ")/", "", trim(getenv('REQUEST_URI'), '/')) . "?";
   foreach ((array) filter_input_array(INPUT_GET) as $i => $value) {
-    if ($i != 'pagina') {
+    if ($i != \SuitUp\Paginate\Paginate::getParamName()) {
       $url .= $i . '=' . $value . '&';
     }
   }
   $url = trim(trim($url, '?'), '&');
 
-  // Envia para view que monta o html da paginacao
+  // Parameters to the view create properly html
   return renderView($renderViewName, array(
-    'items' => $items,
+    'pages' => $items,
     'totalPages' => $totalPages,
     'currentPage' => $currentPage,
     'nextPage' => in_array(($currentPage + 1), $items) ? $currentPage + 1 : false,
     'previousPage' => in_array(($currentPage - 1), $items) ? $currentPage - 1 : false,
-    'baseUrl' => $url . (preg_match("/\?/", $url) ? '&' : '?')
+    'baseUrl' => $url . (preg_match("/\?/", $url) ? '&' : '?'),
+    'paramName' => \SuitUp\Paginate\Paginate::getParamName()
   ));
 }
 

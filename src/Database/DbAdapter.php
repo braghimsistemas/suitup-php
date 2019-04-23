@@ -35,6 +35,7 @@ use SuitUp\Exception\DatabaseGatewayException;
 use SuitUp\Exception\DbAdapterException;
 use SuitUp\Exception\QueryTypeException;
 use SuitUp\Exception\StructureException;
+use SuitUp\Paginate\Paginate;
 
 /**
  * This class is the connection itself.
@@ -43,6 +44,9 @@ use SuitUp\Exception\StructureException;
  */
 class DbAdapter implements DbAdapterInterface
 {
+  /**
+   * Invisible separator
+   */
   const PARAM_SEPARATOR = "\x7F";
 
   /**
@@ -462,5 +466,14 @@ class DbAdapter implements DbAdapterInterface
    */
   public function lastInsertId() {
     return $this->getConnection()->lastInsertId();
+  }
+
+  /**
+   * @param AdapterAbstract $adapter
+   * @param \Closure|null $closureFunc
+   * @return Paginate
+   */
+  public function paginate(AdapterAbstract $adapter, \Closure $closureFunc = null): Paginate {
+    return new Paginate($this, $adapter, $closureFunc);
   }
 }

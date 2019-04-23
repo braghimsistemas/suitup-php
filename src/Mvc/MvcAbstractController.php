@@ -27,11 +27,15 @@ declare(strict_types=1);
 namespace SuitUp\Mvc;
 
 use Exception;
-use SuitUp\Exception\StructureException;
-use Throwable;
-use stdClass;
 use ReflectionClass;
+use ReflectionException;
 use SuitUp\Enum\MsgType;
+use SuitUp\Exception\StructureException;
+use SuitUp\Paginate\Paginate;
+use Throwable;
+use const IS_TESTCASE;
+use function GuzzleHttp\json_encode;
+use function renderView;
 
 /**
  * Class MvcAbstractController
@@ -104,7 +108,7 @@ abstract class MvcAbstractController
    * MvcAbstractController constructor.
    *
    * @param FrontController $frontController
-   * @throws \ReflectionException
+   * @throws ReflectionException
    */
   public function __construct(FrontController $frontController) {
 
@@ -691,4 +695,15 @@ abstract class MvcAbstractController
     $namespace = $this->getSessionFilterNamespace();
 		unset($_SESSION[$namespace]);
 	}
+
+  /**
+   * Render a pagination template.
+   *
+   * @param Paginate $object
+   * @param string $renderViewName File name to render pagination
+   * @return string Html to navigate through pages
+   */
+  public function paginateControl(Paginate $object, $renderViewName = 'paginate.phtml'): string {
+    return paginateControl($object, $renderViewName);
+  }
 }

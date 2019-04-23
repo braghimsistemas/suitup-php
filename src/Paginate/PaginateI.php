@@ -26,9 +26,10 @@ declare(strict_types=1);
 
 namespace SuitUp\Paginate;
 
-use SuitUp\Database\Database;
-use SuitUp\Database\SqlFileManager;
+use Closure;
 use Iterator;
+use SuitUp\Database\DbAdapter\AdapterAbstract;
+use SuitUp\Database\DbAdapterInterface;
 
 /**
  * Interface PaginateI
@@ -38,67 +39,78 @@ interface PaginateI extends Iterator
 {
 
   /**
-   * @param \SuitUp\Database\Database $db
+   * @param DbAdapterInterface $db
    * @return \SuitUp\Paginate\Paginate
    */
-  public function setDb(Database $db);
+  public function setDb(DbAdapterInterface $db): Paginate;
 
   /**
-   * @return \SuitUp\Database\Persistence
+   * @return DbAdapterInterface
    */
-  public function getDb();
+  public function getDb(): DbAdapterInterface;
 
   /**
-   * @param \SuitUp\Database\SqlFileManager $adapter
-   * @return \SuitUp\Database\SqlFileManager
-   */
-  public function setAdapter(SqlFileManager $adapter);
-
-  /**
-   * @return \SuitUp\Database\SqlFileManager
-   */
-  public function getAdapter();
-
-  /**
-   * @param $pageRange
+   * @param AdapterAbstract $adapter
    * @return \SuitUp\Paginate\Paginate
    */
-  public function setPageRange($pageRange);
+  public function setAdapter(AdapterAbstract $adapter): Paginate;
+
+  /**
+   * @return AdapterAbstract
+   */
+  public function getAdapter(): AdapterAbstract;
+
+  /**
+   * @param int $pageRange
+   * @return \SuitUp\Paginate\Paginate
+   */
+  public function setPageRange(int $pageRange): Paginate;
 
   /**
    * @return int
    */
-  public function getPageRange();
+  public function getPageRange(): int;
 
   /**
-   * @param $currentPage
+   * @param mixed $currentPage
    * @return \SuitUp\Paginate\Paginate
    */
-  public function setCurrentPage($currentPage);
+  public function setCurrentPage($currentPage): Paginate;
 
   /**
    * @return int
    */
-  public function getCurrentPage();
+  public function getCurrentPage(): int;
 
   /**
-   * @param $numberPerPage
+   * @param int $numberPerPage
    * @return \SuitUp\Paginate\Paginate
    */
-  public function setNumberPerPage($numberPerPage);
+  public function setNumberPerPage(int $numberPerPage): Paginate;
 
   /**
    * @return int
    */
-  public function getNumberPerPage();
+  public function getNumberPerPage(): int;
+
+  /**
+   * @param Closure $func
+   * @return \SuitUp\Paginate\Paginate
+   */
+  public function setClosureFunc(Closure $func): Paginate;
+
+  /**
+   * @return Closure
+   */
+  public function getClosureFunc(): Closure;
 
   /**
    * @return int
    */
-  public function getTotalPages();
+  public function getTotalPages(): int;
 
-	/**
-	 * @return array
-	 */
-	public function getResult();
+  /**
+   * @return array
+   */
+	public function getResult(): array;
 }

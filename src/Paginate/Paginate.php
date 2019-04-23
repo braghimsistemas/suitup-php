@@ -26,10 +26,11 @@ declare(strict_types=1);
 
 namespace SuitUp\Paginate;
 
+use Closure;
 use Countable;
-use SuitUp\Database\Database;
-use SuitUp\Database\SqlFileManager;
-use SuitUp\Routes\Routes;
+use SuitUp\Database\DbAdapter\AdapterAbstract;
+use SuitUp\Database\DbAdapterInterface;
+use SuitUp\Exception\PaginateException;
 
 /**
  * Class Paginate
@@ -38,127 +39,139 @@ use SuitUp\Routes\Routes;
  */
 class Paginate implements Countable, PaginateI
 {
+  /**
+   * The name of parameter from URL
+   */
+  private static $paramName = 'page';
 
   /**
-   * @var \SuitUp\Database\Database
+   * @var DbAdapterInterface
    */
   private $db;
 
   /**
-   * Query que foi construida
+   * The SQL Query object
    *
-   * @access private
-   * @var SqlFileManager
+   * @var AdapterAbstract
    */
   private $adapter;
 
   /**
-   * Linhas retornadas pela consulta.
+   * The result set.
    *
-   * @access private
    * @var array
    */
   private $result;
 
   /**
    * Quantidade total de pagina que a consulta pode retornar
+   * Number total of pages with the SQL Query.
    *
-   * @access private
    * @var integer
    */
   private $totalPages = 1;
 
   /**
-   * Numero de paginas que sera mostrada na paginacao
+   * Total pages shown to the user to choose
    *
-   * @access private
    * @var integer
    */
   private $pageRange = 5;
 
   /**
-   * Numero da pagina atual
+   * The current page number
    *
-   * @access private
    * @var integer
    */
   private $currentPage = 1;
 
   /**
-   * Quantidade maxima de registros mostrados por pagina
+   * Maximum registers shown on each page
    *
-   * @access private
    * @var integer
    */
   private $numberPerPage = 50;
 
   /**
-   * Funcao passada como parametro que executa uma determinada acao a cada
-   * item do resultado.
+   * This callback function is executed for each row returned by the SQL Query
    *
-   * @var \Closure
+   * @var Closure
    */
   private $itemCallback;
 
   /**
-   * Basta indicar o objeto de banco de dados e a query em forma de objeto SqlFileManager.
+   * Change the name of parameter in the URL that identifies the current page
    *
-   * @param \SuitUp\Database\Database $db
-   * @param \SuitUp\Database\SqlFileManager $adapter
-   * @param \Closure $clousureFunc
+   * @param string $name
+   * @return void
    */
-  public function __construct(Database $db, SqlFileManager $adapter, $clousureFunc = null) {
+  public static function setParamName(string $name): void {
+    self::$paramName = $name;
+  }
+
+  /**
+   * Return the parameter in the URL that identifies the current page
+   *
+   * @return string
+   */
+  public static function getParamName(): string {
+    return self::$paramName;
+  }
+
+  /**
+   * Setup pagination by database connection and the object to construct the Sql query.
+   *
+   * @param DbAdapterInterface $db
+   * @param AdapterAbstract $adapter
+   * @param Closure $clousureFunc
+   */
+  public function __construct(DbAdapterInterface $db, AdapterAbstract $adapter, Closure $clousureFunc = null) {
     $this->setDb($db);
     $this->setAdapter($adapter);
     if ($clousureFunc) {
       $this->setClosureFunc($clousureFunc);
     }
-
-    // Seta automaticamente o numero da pagina atual
-    $params = array_merge((array) filter_input_array(INPUT_GET), Routes::getInstance()->getParams());
-    if (isset($params['pagina'])) {
-      $this->setCurrentPage((int) $params['pagina']);
-    }
   }
 
   /**
-   * Instancia do controlador de queries.
+   * The Db Adapter responsible to the connection and to management of
+   * SQL Queries
    *
-   * @param \SuitUp\Database\Database $db
-   * @return \SuitUp\Paginate\Paginate
+   * @param DbAdapterInterface $db
+   * @return Paginate
    */
-  public function setDb(Database $db) {
+  public function setDb(DbAdapterInterface $db): Paginate {
     $this->db = $db;
     return $this;
   }
 
   /**
-   * Retorna a classe que executa as queries.
+   * The Db Adapter responsible to the connection and to management of
+   * SQL Queries
    *
-   * @return \SuitUp\Database\Persistence
+   * @return DbAdapterInterface
    */
-  public function getDb() {
+  public function getDb(): DbAdapterInterface {
     return $this->db;
   }
 
   /**
-   * Set adapter data
+   * This object is responsible for assembling SQL queries.
    *
-   * @param \SuitUp\Database\SqlFileManager $adapter
-   * @return \SuitUp\Paginate\Paginate
+   * @param AdapterAbstract $adapter
+   * @return Paginate
    */
-  public function setAdapter(SqlFileManager $adapter) {
+  public function setAdapter(AdapterAbstract $adapter): Paginate {
     $this->adapter = $adapter;
-
     return $this;
   }
 
   /**
-   * Return SQL object stored
+   * Return the object is responsible for assembling SQL queries.
    *
-   * @return SqlFileManager
+   * @return AdapterAbstract
    */
-  public function getAdapter() {
+  public function getAdapter(): AdapterAbstract {
     return $this->adapter;
   }
 
@@ -166,13 +179,13 @@ class Paginate implements Countable, PaginateI
    * Set page to range in view to user
    *
    * @param string $pageRange
-   * @return \SuitUp\Paginate\Paginate
-   * @throws \Exception
+   * @return Paginate
+   * @throws PaginateException
    */
-  public function setPageRange($pageRange) {
+  public function setPageRange($pageRange): Paginate {
     if (is_integer($pageRange)) {
       if ($pageRange <= 2) {
-        throw new \Exception("O mínimo de paginas para o range é 3");
+        throw new PaginateException("The minimum range of pages must to be greater or equal to 3");
       }
     } else {
       $pageRange = 'total';
@@ -184,25 +197,24 @@ class Paginate implements Countable, PaginateI
   }
 
   /**
-   * Return number of pages to range
+   * Return the number of pages in the range defined
    *
    * @return int
    */
-  public function getPageRange() {
+  public function getPageRange(): int {
     return $this->pageRange;
   }
 
   /**
    * Set current page. The offset of slice.
    *
-   * @param int $currentPage
-   * @return \SuitUp\Paginate\Paginate
+   * @param mixed $currentPage
+   * @return Paginate
    */
-  public function setCurrentPage($currentPage) {
+  public function setCurrentPage($currentPage): Paginate {
     if ((int) $currentPage >= 1) {
       $this->currentPage = (int) $currentPage;
     }
-
     return $this;
   }
 
@@ -211,7 +223,7 @@ class Paginate implements Countable, PaginateI
    *
    * @return int
    */
-  public function getCurrentPage() {
+  public function getCurrentPage(): int {
     return (int) $this->currentPage;
   }
 
@@ -219,13 +231,12 @@ class Paginate implements Countable, PaginateI
    * Number of rows per page
    *
    * @param int $numberPerPage
-   * @return \SuitUp\Paginate\Paginate
+   * @return Paginate
    */
-  public function setNumberPerPage($numberPerPage) {
+  public function setNumberPerPage(int $numberPerPage): Paginate {
     if ((int) $numberPerPage >= 1) {
       $this->numberPerPage = (int) $numberPerPage;
     }
-
     return $this;
   }
 
@@ -234,31 +245,33 @@ class Paginate implements Countable, PaginateI
    *
    * @return int
    */
-  public function getNumberPerPage() {
+  public function getNumberPerPage(): int {
     return (int) $this->numberPerPage;
   }
 
   /**
-   * Adiciona a paginacao uma funcao que sera executada
-   * em cada item retornado na query.
-   * Isto faz com que a paginacao seja rapida como de costume,
-   * mas evita que seja necessario fazer loops no controlador
-   * para buscar itens dependentes de algum item no banco.
-   * Como por exemplo os logs operacionais de um usuário.
+   * Append to the Paginate object a function that will be
+   * executed for each row in the dataset.
    *
-   * @param \Closure $func
+   * <b>It was made like that to avoid you to make loops
+   * under the result set as array, what is a great lost of
+   * performance.</b>
+   *
+   * @param Closure $func
    * @return $this
    */
-  public function setClosureFunc($func) {
+  public function setClosureFunc(Closure $func): Paginate {
     $this->itemCallback = $func;
     return $this;
   }
 
   /**
-   * Retorna a funcao de callback para os itens da paginacao.
-   * @return \Closure
+   * Return the function that must to be called for each row
+   * in the dataset.
+   *
+   * @return Closure
    */
-  public function getClosureFunc() {
+  public function getClosureFunc(): Closure {
     return $this->itemCallback;
   }
 
@@ -267,9 +280,21 @@ class Paginate implements Countable, PaginateI
    *
    * @return int
    */
-  public function getTotalPages() {
+  public function getTotalPages(): int {
     return (int) $this->totalPages;
   }
+
+  /**
+   * Return data sliced
+   *
+   * @return array
+   */
+  public function getResult(): array {
+		if ($this->result === null) {
+			$this->rewind();
+		}
+		return $this->result;
+	}
 
   /**
    * Countable SPL. This class can count the number of results the object
@@ -277,23 +302,28 @@ class Paginate implements Countable, PaginateI
    *
    * @return int
    */
-  public function count() {
+  public function count(): int {
     if ($this->result === null) {
       $this->rewind();
     }
 
+    // Get the query as string
+    $query = $this->getAdapter()->__toString();
+
     /**
-     * Contagem total de registros, direto pelo banco de dados.
+     * Count the total rows possible with this SQL Query
+     *
+     * @todo Check with other types of database (postgres, db2, etc...) if the base query to do it must to be change.
      */
-    return (int) $this->db->single("SELECT COUNT(1) FROM ({$this->getAdapter()}) as tmp");
+    return (int) $this->getDb()->single("SELECT COUNT(1) FROM ($query) as tmp");
   }
 
   /**
    * Iterator. This method set in each loop the actual result
    *
-   * @return \SuitUp\Paginate\Paginate
+   * @return Paginate
    */
-  public function rewind() {
+  public function rewind(): Paginate {
     $this->_setResult();
     return $this;
   }
@@ -301,7 +331,7 @@ class Paginate implements Countable, PaginateI
   /**
    * Iterator SPL. Gives the current data of object as an array
    *
-   * @return array
+   * @return mixed
    */
   public function current() {
     if ($this->result === null) {
@@ -322,7 +352,7 @@ class Paginate implements Countable, PaginateI
   /**
    * Iterator SPL. Gives the key data of object as an array
    *
-   * @return int
+   * @return mixed
    */
   public function key() {
     return key($this->result);
@@ -331,9 +361,9 @@ class Paginate implements Countable, PaginateI
   /**
    * Iterator SPL. Gives the next data of object as an array
    *
-   * @return \SuitUp\Paginate\Paginate
+   * @return Paginate
    */
-  public function next() {
+  public function next(): Paginate {
     next($this->result);
     return $this;
   }
@@ -343,17 +373,22 @@ class Paginate implements Countable, PaginateI
    *
    * @return bool
    */
-  public function valid() {
+  public function valid(): bool {
     return $this->current() !== false;
   }
 
   /**
    * Determine the total of pages the data will sliced
    *
-   * @return \SuitUp\Paginate\Paginate
+   * @return Paginate
    */
-  private function _setTotalPages() {
-    $this->totalPages = (int) ceil(count($this->db->query($this->getAdapter())) / $this->getNumberPerPage());
+  private function _setTotalPages(): Paginate {
+
+    // Get the query string
+    $query = $this->getAdapter()->__toString();
+
+    // Calculate
+    $this->totalPages = (int) ceil(count($this->getDb()->query($query)) / $this->getNumberPerPage());
 
     return $this;
   }
@@ -363,12 +398,10 @@ class Paginate implements Countable, PaginateI
    * based on number per page and the relation between current page with number
    * per page.
    *
-   * @return \SuitUp\Paginate\Paginate
+   * @return Paginate
    */
-  private function _setResult() {
+  private function _setResult(): Paginate {
     $this->_setTotalPages();
-
-    $adapter = clone $this->getAdapter();
 
     if ($this->getCurrentPage() > $this->getTotalPages()) {
       $this->setCurrentPage($this->getTotalPages());
@@ -380,29 +413,24 @@ class Paginate implements Countable, PaginateI
       $offSet = 0;
     }
 
-    $this->result = $this->db->query($adapter->limit($this->getNumberPerPage(), $offSet));
+    // Clone the object to avoid modification on it
+    $adapter = clone $this->getAdapter();
 
-    // Se há funcao de callback executa-a
+    // Effectivate the query
+    $query = $adapter->limit($this->getNumberPerPage(), $offSet)->__toString();
+    $this->result = $this->getDb()->query($query);
+
+    // If there's callback function
     if ($this->itemCallback) {
       $callBack = $this->itemCallback;
       foreach ($this->result as $key => $item) {
+
+        // Replace the item with what was returned by the
+        // user function
         $this->result[$key] = $callBack($item);
       }
       reset($this->result);
     }
     return $this;
   }
-
-  /**
-   * Return data sliced
-   *
-   * @return array
-   */
-  public function getResult() {
-		// @TODO: Watch
-		if ($this->result === null) {
-			$this->rewind();
-		}
-		return $this->result;
-	}
 }
