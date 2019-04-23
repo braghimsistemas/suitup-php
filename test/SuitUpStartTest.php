@@ -43,6 +43,7 @@ use SuitUp\Mvc\Routes;
 use SuitUp\Exception\NotFoundException;
 use SuitUp\Exception\StructureException;
 use SuitUp\Database\Gateway\AbstractGateway;
+use SuitUp\Database\DbAdapter;
 
 final class SuitUpStartTest extends PHPUnit\Framework\TestCase
 {
@@ -79,15 +80,15 @@ final class SuitUpStartTest extends PHPUnit\Framework\TestCase
   public function testSetSqlMonitor(SuitUpStart $suitup) {
 
     // Must to be false by default
-    $this->assertFalse($suitup->getConfig()->isSqlMonitor());
+    $this->assertFalse(DbAdapter::isSqlMonitor());
 
     // True case
     $suitup->setSqlMonitor(true);
-    $this->assertTrue($suitup->getConfig()->isSqlMonitor());
+    $this->assertTrue(DbAdapter::isSqlMonitor());
 
     // False case
     $suitup->setSqlMonitor(false);
-    $this->assertFalse($suitup->getConfig()->isSqlMonitor());
+    $this->assertFalse(DbAdapter::isSqlMonitor());
   }
 
   /**
@@ -98,7 +99,7 @@ final class SuitUpStartTest extends PHPUnit\Framework\TestCase
     $suitup = new SuitUpStart(__DIR__.'/resources/modules/');
     $suitup->setSqlMonitor(true);
 
-    $this->assertTrue($suitup->getConfig()->isSqlMonitor());
+    $this->assertTrue(DbAdapter::isSqlMonitor());
   }
 
   /**

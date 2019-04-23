@@ -57,6 +57,13 @@ class Paginate implements Countable, PaginateI
   private $adapter;
 
   /**
+   * A list of parameters to append to the query
+   *
+   * @var array
+   */
+  private $params = array();
+
+  /**
    * The result set.
    *
    * @var array
@@ -64,8 +71,7 @@ class Paginate implements Countable, PaginateI
   private $result;
 
   /**
-   * Quantidade total de pagina que a consulta pode retornar
-   * Number total of pages with the SQL Query.
+   * Number total of pages
    *
    * @var integer
    */
@@ -100,7 +106,8 @@ class Paginate implements Countable, PaginateI
   private $itemCallback;
 
   /**
-   * Change the name of parameter in the URL that identifies the current page
+   * Change the name of parameter in the URL that identifies the current page.
+   * It is used in the paginate.phtml file.
    *
    * @param string $name
    * @return void
@@ -110,7 +117,8 @@ class Paginate implements Countable, PaginateI
   }
 
   /**
-   * Return the parameter in the URL that identifies the current page
+   * Return the parameter in the URL that identifies the current page.
+   * It is used in the paginate.phtml file.
    *
    * @return string
    */
@@ -123,13 +131,21 @@ class Paginate implements Countable, PaginateI
    *
    * @param DbAdapterInterface $db
    * @param AdapterAbstract $adapter
-   * @param Closure $clousureFunc
+   * @param array $params A list of parameters to the query
+   * @param Closure $closureFunc
    */
-  public function __construct(DbAdapterInterface $db, AdapterAbstract $adapter, Closure $clousureFunc = null) {
+  public function __construct(DbAdapterInterface $db, AdapterAbstract $adapter, array $params = array(), Closure $closureFunc = null) {
+
     $this->setDb($db);
+
     $this->setAdapter($adapter);
-    if ($clousureFunc) {
-      $this->setClosureFunc($clousureFunc);
+
+    if ($params) {
+      $this->setParams($params);
+    }
+
+    if ($closureFunc) {
+      $this->setClosureFunc($closureFunc);
     }
   }
 
@@ -173,6 +189,26 @@ class Paginate implements Countable, PaginateI
    */
   public function getAdapter(): AdapterAbstract {
     return $this->adapter;
+  }
+
+  /**
+   * List of parameters to the SQL Query
+   *
+   * @param array $params
+   * @return Paginate
+   */
+  public function setParams(array $params): Paginate {
+    $this->params = $params;
+    return $this;
+  }
+
+  /**
+   * List of parameters to the SQL Query
+   *
+   * @return array
+   */
+  public function getParams(): array {
+    return $this->params;
   }
 
   /**
@@ -315,7 +351,7 @@ class Paginate implements Countable, PaginateI
      *
      * @todo Check with other types of database (postgres, db2, etc...) if the base query to do it must to be change.
      */
-    return (int) $this->getDb()->single("SELECT COUNT(1) FROM ($query) as tmp");
+    return (int) $this->getDb()->single("/* SuitUp Paginate */\r\nSELECT COUNT(1) FROM ($query) as tmp", $this->getParams());
   }
 
   /**
@@ -338,10 +374,9 @@ class Paginate implements Countable, PaginateI
       $this->rewind();
     }
 
-    // Recupera item atual
     $item = current($this->result);
 
-    // Se há funcao de callback executa-a
+    // If there's an encapsulated function call it
     if ($this->itemCallback) {
       $callBack = $this->itemCallback;
       $callBack($item);
@@ -386,9 +421,10 @@ class Paginate implements Countable, PaginateI
 
     // Get the query string
     $query = $this->getAdapter()->__toString();
+    $count = $this->getDb()->single("/* SuitUp Paginate */\r\nSELECT COUNT(1) FROM ($query) as tmp", $this->getParams());
 
     // Calculate
-    $this->totalPages = (int) ceil(count($this->getDb()->query($query)) / $this->getNumberPerPage());
+    $this->totalPages = (int) ceil($count / $this->getNumberPerPage());
 
     return $this;
   }
@@ -416,9 +452,9 @@ class Paginate implements Countable, PaginateI
     // Clone the object to avoid modification on it
     $adapter = clone $this->getAdapter();
 
-    // Effectivate the query
-    $query = $adapter->limit($this->getNumberPerPage(), $offSet)->__toString();
-    $this->result = $this->getDb()->query($query);
+    // Effectuate the query
+    $query = "/* SuitUp Paginate */\r\n".$adapter->limit($this->getNumberPerPage(), $offSet)->__toString();
+    $this->result = $this->getDb()->query($query, $this->getParams());
 
     // If there's callback function
     if ($this->itemCallback) {

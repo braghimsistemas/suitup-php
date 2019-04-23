@@ -225,21 +225,6 @@ class FrontControllerTest extends TestCase
    * @param FrontController $instance
    * @depends testCreateInstance
    */
-  public function testSqlMonitor(FrontController $instance)
-  {
-    $this->assertFalse($instance->isSqlMonitor());
-
-    $instance->setSqlMonitor(true);
-    $this->assertTrue($instance->isSqlMonitor());
-
-    $instance->setSqlMonitor(false);
-    $this->assertFalse($instance->isSqlMonitor());
-  }
-
-  /**
-   * @param FrontController $instance
-   * @depends testCreateInstance
-   */
   public function testControllersPath(FrontController $instance)
   {
     $this->assertEquals('Controllers', $instance->getControllersPath());

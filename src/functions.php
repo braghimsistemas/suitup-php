@@ -322,13 +322,21 @@ function queryLog(): string {
 
   // Query with parameters
   foreach (array_reverse(DbAdapter::$queryLogs) as $k => $item) {
-    if ($item['params']) {
+    if (count($item['params'])) {
+
+      $html .= "<span>#$k - ".count($item['params']).' parameter(s)</span>';
+
+      $params = array();
       foreach ($item['params'] as $param => $value) {
-        $item['sql'] = str_replace($param, "'$value'", $item['sql']);
+        $params[] = "$param=[$value]";
       }
+      $html .= '<p>' . implode('<br/>', $params) . '</p>';
+
+    } else {
+      $html .= "<span>#$k - No parameters</span>";
     }
-    // $params = html_entity_decode(dump($item['params'], false));
-    $html .= "<span>#$k - " . count($item['params']) . ' parameter(s)</span><p>' . $item['sql'] . '</p><hr/>';
+
+    $html .= '<p>'.nl2br($item['sql']).'</p><hr/>';
   }
   $html .= '</div>';
   return $html;

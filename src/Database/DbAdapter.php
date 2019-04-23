@@ -279,7 +279,7 @@ class DbAdapter implements DbAdapterInterface
       $stmt->bindParam($parameters[0], $parameters[1]);
 
       // Store params to log
-      $logParams[] = $parameters[0];
+      $logParams[$parameters[0]] = $parameters[1];
     }
 
     // Store log (even when is not shown)
@@ -354,12 +354,21 @@ class DbAdapter implements DbAdapterInterface
       $this->bind($name, $value);
     }
 
+    // Params to log
+    $logParams = array();
+
     // Bind parameters
     foreach ($this->getParams() as $param) {
 
       $parameters = explode(self::PARAM_SEPARATOR, $param);
       $stmt->bindParam($parameters[0], $parameters[1]);
+
+      // Store params to log
+      $logParams[$parameters[0]] = $parameters[1];
     }
+
+    // Store log (even when is not shown)
+    self::$queryLogs[] = array('sql' => $query, 'params' => $logParams);
 
     try {
 
@@ -410,12 +419,21 @@ class DbAdapter implements DbAdapterInterface
       $this->bind($name, $value);
     }
 
+    // Params to log
+    $logParams = array();
+
     // Bind parameters
     foreach ($this->getParams() as $param) {
 
       $parameters = explode(self::PARAM_SEPARATOR, $param);
       $stmt->bindParam($parameters[0], $parameters[1]);
+
+      // Store params to log
+      $logParams[$parameters[0]] = $parameters[1];
     }
+
+    // Store log (even when is not shown)
+    self::$queryLogs[] = array('sql' => $query, 'params' => $logParams);
 
     try {
 
@@ -466,12 +484,21 @@ class DbAdapter implements DbAdapterInterface
       $this->bind($name, $value);
     }
 
+    // Params to log
+    $logParams = array();
+
     // Bind parameters
     foreach ($this->getParams() as $param) {
 
       $parameters = explode(self::PARAM_SEPARATOR, $param);
       $stmt->bindParam($parameters[0], $parameters[1]);
+
+      // Store params to log
+      $logParams[$parameters[0]] = $parameters[1];
     }
+
+    // Store log (even when is not shown)
+    self::$queryLogs[] = array('sql' => $query, 'params' => $logParams);
 
     try {
 
@@ -513,10 +540,11 @@ class DbAdapter implements DbAdapterInterface
 
   /**
    * @param AdapterAbstract $adapter
+   * @param array $params
    * @param Closure|null $closureFunc
    * @return Paginate
    */
-  public function paginate(AdapterAbstract $adapter, Closure $closureFunc = null): Paginate {
-    return new Paginate($this, $adapter, $closureFunc);
+  public function paginate(AdapterAbstract $adapter, array $params = array(), Closure $closureFunc = null): Paginate {
+    return new Paginate($this, $adapter, $params, $closureFunc);
   }
 }
