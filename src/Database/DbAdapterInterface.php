@@ -28,7 +28,6 @@ namespace SuitUp\Database;
 
 use PDO;
 use SuitUp\Database\DbAdapter\AdapterAbstract;
-use SuitUp\Database\DbAdapterInterface;
 
 /**
  * Interface DbAdapterInterface

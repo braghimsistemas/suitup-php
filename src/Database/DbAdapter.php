@@ -286,7 +286,7 @@ class DbAdapter implements DbAdapterInterface
     self::$queryLogs[] = array('sql' => $query, 'params' => $logParams);
 
     // Get the first instruction to let know what kind of query it is
-    $rawStmtParts = explode(" ", trim($query));
+    $rawStmtParts = explode(" ", trim(preg_replace("/\/\*\*?.+\*\//m", '', $query)));
     $stmtType = strtolower($rawStmtParts[0]);
 
     try {
