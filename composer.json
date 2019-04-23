@@ -12,16 +12,15 @@
 	"require": {
 		"php": ">=7.2",
     "ext-json": "*",
-    "ext-gd": "*",
-		"zendframework/zend-validator" : "^2",
-    "verot/class.upload.php": "dev-master"
+		"zendframework/zend-validator" : "^2"
   },
 	"require-dev": {
 		"phpunit/phpunit": "^8.0",
 		"php-coveralls/php-coveralls": "^v2"
 	},
 	"suggest": {
-		"phpmailer/phpmailer": "Not implemented in framework itself, but helps a lot and it's very simple."
+		"phpmailer/phpmailer": "Not implemented in framework itself, but helps a lot and it's very simple.",
+    "verot/class.upload.php": "If you need to manipulate uploads."
 	},
 	"autoload": {
 		"classmap": ["./src/SuitUpStart.php"]

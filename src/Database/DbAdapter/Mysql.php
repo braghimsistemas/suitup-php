@@ -156,7 +156,13 @@ class Mysql extends AdapterAbstract
    * @return AdapterAbstract
    */
   public function columns(array $columns): AdapterAbstract {
-    $this->columns = array_merge($this->columns, $columns);
+    foreach ($columns as $name => $alias) {
+      if (is_string($name)) {
+        $this->column($name, $alias);
+      } else {
+        $this->column($alias);
+      }
+    }
     return $this;
   }
 
