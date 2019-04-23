@@ -26,7 +26,7 @@ declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 use SuitUp\Database\DbAdapter;
-use SuitUp\Database\DbAdapter\Mysql;
+use SuitUp\Database\DbAdapter\Mysql\MysqlAdapter;
 use SuitUp\Database\DbAdapterInterface;
 use SuitUp\Exception\DbAdapterException;
 
@@ -37,7 +37,7 @@ final class DbAdapterTest extends TestCase
     $this->expectException(DbAdapterException::class);
 
     // This connection must to be refused
-    new DbAdapter(new Mysql(array(
+    new DbAdapter(new MysqlAdapter(array(
       'host' => '0.0.0.0',
       'port' => '8822',
       'dbname' => 'universe',
@@ -48,8 +48,8 @@ final class DbAdapterTest extends TestCase
 
   public function testCreateInstance() {
 
-    // Create Mysql Adapter
-    $adapter = new Mysql(array(
+    // Create MysqlAdapter Adapter
+    $adapter = new MysqlAdapter(array(
       'host' =>     IS_TRAVIS_CI ? '127.0.0.1' : '127.0.0.1',
       'port' =>     IS_TRAVIS_CI ? '3306'      : '3406',
       'dbname' =>   IS_TRAVIS_CI ? 'suitup'    : 'suitup',

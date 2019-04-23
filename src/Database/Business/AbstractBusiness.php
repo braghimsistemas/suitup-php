@@ -26,10 +26,10 @@ declare(strict_types=1);
 
 namespace SuitUp\Database\Business;
 
-use Throwable;
 use SuitUp\Database\Gateway\AbstractGateway;
 use SuitUp\Exception\DatabaseBusinessException;
 use SuitUp\Exception\DatabaseGatewayException;
+use Throwable;
 
 /**
  * Class AbstractBusiness

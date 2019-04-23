@@ -31,8 +31,8 @@ use PDO;
 use PDOException;
 use SuitUp\Database\DbAdapter\AdapterAbstract;
 use SuitUp\Database\DbAdapter\AdapterInterface;
-use SuitUp\Database\DbAdapter\Mysql;
-use SuitUp\Database\DbAdapter\Postgres;
+use SuitUp\Database\DbAdapter\Mysql\MysqlAdapter;
+use SuitUp\Database\DbAdapter\Mysql\PostgresAdapter;
 use SuitUp\Database\Gateway\AbstractGateway;
 use SuitUp\Exception\DatabaseGatewayException;
 use SuitUp\Exception\DbAdapterException;
@@ -157,12 +157,12 @@ class DbAdapter implements DbAdapterInterface
 
         switch ($type) {
           case 'mysql':
-            $adapter = new Mysql($configs);
+            $adapter = new MysqlAdapter($configs);
             break;
           case 'postgres':
           case 'postgre':
           case 'pgsql':
-            $adapter = new Postgres($configs);
+            $adapter = new PostgresAdapter($configs);
             break;
           default:
             throw new StructureException("The database adapter '$key' is not a known adapter type");

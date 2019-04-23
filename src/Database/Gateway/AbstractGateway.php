@@ -26,7 +26,7 @@ declare(strict_types=1);
 
 namespace SuitUp\Database\Gateway;
 
-use SuitUp\Database\DbAdapter\AdapterAbstract;
+use SuitUp\Database\DbAdapter\QueryCreatorInterface;
 use SuitUp\Database\DbAdapterInterface;
 use SuitUp\Exception\DatabaseGatewayException;
 
@@ -126,13 +126,13 @@ abstract class AbstractGateway
 
   /**
    * @param array $columns
-   * @return QueryString
+   * @return QueryCreatorInterface
    * @throws DatabaseGatewayException
    */
-  public function select($columns = array()): AdapterAbstract {
+  public function select($columns = array()): QueryCreatorInterface {
 
     // Start the instance
-    $querySelector = $this->db->getAdapter()->resetQuery();
+    $querySelector = $this->db->getAdapter()->getQueryCreator();
 
     // By type we will start to populate it
     switch (gettype($columns)) {

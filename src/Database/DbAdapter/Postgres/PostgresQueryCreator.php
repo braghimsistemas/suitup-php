@@ -24,19 +24,13 @@
  */
 declare(strict_types=1);
 
-namespace SuitUp\Database\DbAdapter;
+namespace SuitUp\Database\DbAdapter\Mysql;
 
-use stdClass;
 use SuitUp\Database\DbAdapter\AdapterAbstract;
+use SuitUp\Database\DbAdapter\QueryCreatorInterface;
 use SuitUp\Exception\DatabaseGatewayException;
-use SuitUp\Exception\DbAdapterException;
 
-/**
- * Class Mysql
- *
- * @package SuitUp\Database\DbAdapter
- */
-class Mysql extends AdapterAbstract
+class PostgresQueryCreator implements QueryCreatorInterface
 {
   public $sql;
 
@@ -57,60 +51,14 @@ class Mysql extends AdapterAbstract
   private $limit;
 
   /**
-   * Mysql constructor.
-   *
-   * @param array $parameters
-   * @throws DbAdapterException
-   */
-  public function __construct(array $parameters) {
-
-    // Check if user setup parameters as right
-    $this->validateParams($parameters);
-
-    // The heart of matter
-    $params = new stdClass();
-    $params->host = $parameters['host'] ?? 'localhost';
-    $params->port = $parameters['port'] ?? '3306';
-    $params->dbname = $parameters['dbname'] ?? null;
-
-    // Setup dsn string
-    $this->setDsn("mysql:host={$params->host};port={$params->port};dbname={$params->dbname}");
-
-    // User and options config
-    $this->setUsername($parameters['username'] ?? 'root');
-    $this->setPassword($parameters['password'] ?? '');
-    $this->appendOptions($parameters['options'] ?? array());
-  }
-
-  /**
-   * Reset values to start create a new query.
-   *
-   * @return AdapterAbstract
-   */
-  public function resetQuery(): AdapterAbstract
-  {
-    $this->sql = null;
-    $this->from = '';
-    $this->columns = array();
-    $this->join = array();
-    $this->where = array();
-    $this->group = array();
-    $this->order = array();
-    $this->having = null;
-    $this->limit = null;
-
-    return $this;
-  }
-
-  /**
    * Setup the FROM statement to append to the SQL instruction
    *
    * @param string|array $table `tablename as alias` OR array('tablename' => 'alias')
    * @param string $schema The schema name
-   * @return AdapterAbstract
+   * @return QueryCreatorInterface
    * @throws DatabaseGatewayException
    */
-  public function from($table, string $schema = null): AdapterAbstract {
+  public function from($table, string $schema = null): QueryCreatorInterface {
 
     if (is_string($table)) {
       $this->from = $schema ? "$schema.$table" : $table;
@@ -138,9 +86,9 @@ class Mysql extends AdapterAbstract
    *
    * @param string $name
    * @param string|null $alias
-   * @return AdapterAbstract
+   * @return QueryCreatorInterface
    */
-  public function column(string $name, string $alias = null): AdapterAbstract {
+  public function column(string $name, string $alias = null): QueryCreatorInterface {
     if ($alias) {
       $this->columns[$name] = $alias;
     } else {
@@ -153,9 +101,9 @@ class Mysql extends AdapterAbstract
    * Append a list of columns to the statement
    *
    * @param array $columns
-   * @return AdapterAbstract
+   * @return QueryCreatorInterface
    */
-  public function columns(array $columns): AdapterAbstract {
+  public function columns(array $columns): QueryCreatorInterface {
     foreach ($columns as $name => $alias) {
       if (is_string($name)) {
         $this->column($name, $alias);
@@ -169,13 +117,13 @@ class Mysql extends AdapterAbstract
   /**
    * Create whatever type of join by type given.
    *
-   * @param string $type AdapterAbstract join type
+   * @param string $type QueryCreatorInterface join type
    * @param string $table
    * @param string $onClause
    * @param string|null $schema
-   * @return AdapterAbstract
+   * @return QueryCreatorInterface
    */
-  public function join(string $type, string $table, string $onClause, string $schema = null): AdapterAbstract {
+  public function join(string $type, string $table, string $onClause, string $schema = null): QueryCreatorInterface {
     $this->join[] = array(
       'type' => $type,
       'table' => ($schema ? "$schema.$table" : $table),
@@ -190,10 +138,10 @@ class Mysql extends AdapterAbstract
    * @param string $table
    * @param string $onClause
    * @param string|null $schema
-   * @return AdapterAbstract
+   * @return QueryCreatorInterface
    */
-  public function innerJoin(string $table, string $onClause, string $schema = null): AdapterAbstract {
-    $this->join(parent::INNER_JOIN, $table, $onClause, $schema);
+  public function innerJoin(string $table, string $onClause, string $schema = null): QueryCreatorInterface {
+    $this->join(AdapterAbstract::INNER_JOIN, $table, $onClause, $schema);
     return $this;
   }
 
@@ -203,10 +151,10 @@ class Mysql extends AdapterAbstract
    * @param string $table
    * @param string $onClause
    * @param string|null $schema
-   * @return AdapterAbstract
+   * @return QueryCreatorInterface
    */
-  public function fullInnerJoin(string $table, string $onClause, string $schema = null): AdapterAbstract {
-    $this->join(parent::FULL_INNER_JOIN, $table, $onClause, $schema);
+  public function fullInnerJoin(string $table, string $onClause, string $schema = null): QueryCreatorInterface {
+    $this->join(AdapterAbstract::FULL_INNER_JOIN, $table, $onClause, $schema);
     return $this;
   }
 
@@ -216,10 +164,10 @@ class Mysql extends AdapterAbstract
    * @param string $table
    * @param string $onClause
    * @param string|null $schema
-   * @return AdapterAbstract
+   * @return QueryCreatorInterface
    */
-  public function outerJoin(string $table, string $onClause, string $schema = null): AdapterAbstract {
-    $this->join(parent::OUTER_JOIN, $table, $onClause, $schema);
+  public function outerJoin(string $table, string $onClause, string $schema = null): QueryCreatorInterface {
+    $this->join(AdapterAbstract::OUTER_JOIN, $table, $onClause, $schema);
     return $this;
   }
 
@@ -229,10 +177,10 @@ class Mysql extends AdapterAbstract
    * @param string $table
    * @param string $onClause
    * @param string|null $schema
-   * @return AdapterAbstract
+   * @return QueryCreatorInterface
    */
-  public function fullOuterJoin(string $table, string $onClause, string $schema = null): AdapterAbstract {
-    $this->join(parent::FULL_OUTER_JOIN, $table, $onClause, $schema);
+  public function fullOuterJoin(string $table, string $onClause, string $schema = null): QueryCreatorInterface {
+    $this->join(AdapterAbstract::FULL_OUTER_JOIN, $table, $onClause, $schema);
     return $this;
   }
 
@@ -242,10 +190,10 @@ class Mysql extends AdapterAbstract
    * @param string $table
    * @param string $onClause
    * @param string|null $schema
-   * @return AdapterAbstract
+   * @return QueryCreatorInterface
    */
-  public function rightJoin(string $table, string $onClause, string $schema = null): AdapterAbstract {
-    $this->join(parent::RIGHT_JOIN, $table, $onClause, $schema);
+  public function rightJoin(string $table, string $onClause, string $schema = null): QueryCreatorInterface {
+    $this->join(AdapterAbstract::RIGHT_JOIN, $table, $onClause, $schema);
     return $this;
   }
 
@@ -255,10 +203,10 @@ class Mysql extends AdapterAbstract
    * @param string $table
    * @param string $onClause
    * @param string|null $schema
-   * @return AdapterAbstract
+   * @return QueryCreatorInterface
    */
-  public function leftJoin(string $table, string $onClause, string $schema = null): AdapterAbstract {
-    $this->join(parent::LEFT_JOIN, $table, $onClause, $schema);
+  public function leftJoin(string $table, string $onClause, string $schema = null): QueryCreatorInterface {
+    $this->join(AdapterAbstract::LEFT_JOIN, $table, $onClause, $schema);
     return $this;
   }
 
@@ -268,9 +216,9 @@ class Mysql extends AdapterAbstract
    * @param $where
    * @param null $value
    * @param null $type
-   * @return AdapterAbstract
+   * @return QueryCreatorInterface
    */
-  public function where($where, $value = null, $type = null): AdapterAbstract {
+  public function where($where, $value = null, $type = null): QueryCreatorInterface {
 
     // Loop under values if it is an array
     if (is_array($where)) {
@@ -284,10 +232,10 @@ class Mysql extends AdapterAbstract
     if (! is_null($value)) {
 
       // If it is a sub query
-      if ($value instanceof AdapterAbstract) {
+      if ($value instanceof QueryCreatorInterface) {
         $where = str_replace('?', $value, $where);
       } else {
-        $where = str_replace('?', $this->quote($value, $type), $where);
+        $where = str_replace('?', AdapterAbstract::quote($value, $type), $where);
       }
     }
 
@@ -302,9 +250,9 @@ class Mysql extends AdapterAbstract
    * @param $where
    * @param null $value
    * @param null $type
-   * @return AdapterAbstract
+   * @return QueryCreatorInterface
    */
-  public function orWhere($where, $value = null, $type = null): AdapterAbstract {
+  public function orWhere($where, $value = null, $type = null): QueryCreatorInterface {
 
     // Loop under values if it is an array
     if (is_array($where)) {
@@ -318,10 +266,10 @@ class Mysql extends AdapterAbstract
     if (! is_null($value)) {
 
       // If it is a sub query
-      if ($value instanceof AdapterAbstract) {
+      if ($value instanceof QueryCreatorInterface) {
         $where = str_replace('?', $value, $where);
       } else {
-        $where = str_replace('?', $this->quote($value, $type), $where);
+        $where = str_replace('?', AdapterAbstract::quote($value, $type), $where);
       }
     }
 
@@ -334,9 +282,9 @@ class Mysql extends AdapterAbstract
    * Setup grouping to the query.
    *
    * @param $column
-   * @return AdapterAbstract
+   * @return self
    */
-  public function group($column): AdapterAbstract {
+  public function group($column): QueryCreatorInterface {
     if (is_array($column)) {
       $this->group = array_merge($this->group, $column);
     } else {
@@ -349,9 +297,9 @@ class Mysql extends AdapterAbstract
    * Setup the ORDER to the result.
    *
    * @param $column
-   * @return AdapterAbstract
+   * @return QueryCreatorInterface
    */
-  public function order($column): AdapterAbstract {
+  public function order($column): QueryCreatorInterface {
     if (is_array($column)) {
       $this->order = array_merge($this->order, $column);
     } else {
@@ -366,7 +314,7 @@ class Mysql extends AdapterAbstract
    * @param $text
    * @return $this
    */
-  public function having($text) {
+  public function having($text): QueryCreatorInterface {
     $this->having = $text;
     return $this;
   }
@@ -378,7 +326,7 @@ class Mysql extends AdapterAbstract
    * @param null $offset
    * @return $this
    */
-  public function limit($limit, $offset = null) {
+  public function limit($limit, $offset = null): QueryCreatorInterface {
     $this->limit = $limit;
     if ($offset) {
       $this->limit .= " OFFSET " . $offset;
@@ -391,7 +339,7 @@ class Mysql extends AdapterAbstract
    *
    * @return string
    */
-  public function __toString() {
+  public function __toString(): string {
     $sql = "SELECT";
 
     // Columns

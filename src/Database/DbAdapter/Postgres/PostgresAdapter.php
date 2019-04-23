@@ -24,22 +24,24 @@
  */
 declare(strict_types=1);
 
-namespace SuitUp\Database\DbAdapter;
+namespace SuitUp\Database\DbAdapter\Postgres;
 
+use Database\DbAdapter\Mysql\PostgresQueryCreator;
 use stdClass;
 use SuitUp\Database\DbAdapter\AdapterAbstract;
+use SuitUp\Database\DbAdapter\QueryCreatorInterface;
 use SuitUp\Exception\DbAdapterException;
 
 /**
- * Class Postgres
+ * Class PostgresAdapter
  *
  * @package SuitUp\Database\DbAdapter
  */
-class Postgres extends AdapterAbstract
+class PostgresAdapter extends AdapterAbstract
 {
 
   /**
-   * Postgres constructor.
+   * PostgresAdapter constructor.
    *
    * @param array $parameters
    * @throws DbAdapterException
@@ -64,76 +66,8 @@ class Postgres extends AdapterAbstract
     $this->appendOptions($parameters['options'] ?? array());
   }
 
-  public function __toString() {
-    // @TODO: Implement
+  public function getQueryCreator(): QueryCreatorInterface
+  {
+    return new PostgresQueryCreator();
   }
-
-  public function column(string $name, mixed $alias = null): AdapterAbstract {
-    // @TODO: Implement
-  }
-
-  public function columns(array $columns): AdapterAbstract {
-    // @TODO: Implement
-  }
-
-  public function from($table, mixed $schema = null): AdapterAbstract {
-    // @TODO: Implement
-  }
-
-  public function fullInnerJoin(string $table, string $onClause, mixed $schema = null): AdapterAbstract {
-    // @TODO: Implement
-  }
-
-  public function fullOuterJoin(string $table, string $onClause, mixed $schema = null): AdapterAbstract {
-    // @TODO: Implement
-  }
-
-  public function group($column): AdapterAbstract {
-    // @TODO: Implement
-  }
-
-  public function having($text) {
-    // @TODO: Implement
-  }
-
-  public function innerJoin(string $table, string $onClause, mixed $schema = null): AdapterAbstract {
-    // @TODO: Implement
-  }
-
-  public function join(string $type, string $table, string $onClause, mixed $schema = null): AdapterAbstract {
-    // @TODO: Implement
-  }
-
-  public function leftJoin(string $table, string $onClause, mixed $schema = null): AdapterAbstract {
-    // @TODO: Implement
-  }
-
-  public function limit($limit, $offset = null) {
-    // @TODO: Implement
-  }
-
-  public function orWhere($where, $value = null, $type = null): AdapterAbstract {
-    // @TODO: Implement
-  }
-
-  public function order($column): AdapterAbstract {
-    // @TODO: Implement
-  }
-
-  public function outerJoin(string $table, string $onClause, mixed $schema = null): AdapterAbstract {
-    // @TODO: Implement
-  }
-
-  public function resetQuery(): AdapterAbstract {
-    // @TODO: Implement
-  }
-
-  public function rightJoin(string $table, string $onClause, mixed $schema = null): AdapterAbstract {
-    // @TODO: Implement
-  }
-
-  public function where($where, $value = null, $type = null): AdapterAbstract {
-    // @TODO: Implement
-  }
-
 }
