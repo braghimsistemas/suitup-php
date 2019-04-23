@@ -79,6 +79,7 @@ if (! function_exists('isClosure')) {
   /**
    * Return true when a given item is a closure function
    *
+   * @param $item
    * @return bool
    */
   function isClosure($item): bool {

@@ -202,6 +202,8 @@ abstract class Validation {
           continue;
         }
 
+        // @TODO: Create a closure type function validator
+
         // We don't know where this validation method can be
         throw new FormValidatorException("The method '$methodOrClass' ou '$method' does not exists to validate the field");
       }
@@ -212,15 +214,20 @@ abstract class Validation {
         foreach ($item['filter'] as $withOptions => $method) {
 
           // It is a filter with options
-          if (method_exists($this, $withOptions)) {
+          if (is_string($withOptions) && method_exists($this, $withOptions)) {
 
             $filterOptions = $method;
             $this->data[$field]['value'] = $this->$withOptions($this->data[$field]['value'], $filterOptions);
 
-          } else if (method_exists($this, $method)) {
+          } else if (is_string($method) && method_exists($this, $method)) {
 
             // A method
             $this->data[$field]['value'] = $this->$method($this->data[$field]['value']);
+
+          } else if (is_string($method) && isClosure($method)) {
+
+            // A closure function
+            $this->data[$field]['value'] = $method($this->data[$field]['value']);
 
           } else if (function_exists($method)) {
 
