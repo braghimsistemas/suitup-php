@@ -154,14 +154,14 @@ class SuitUpStart
           $frameworkErrorModule = $this->getConfig()->mockUpTo($errorAction, 'default-error', 'error', __DIR__.'/ModuleError');
 
           // Try to build it
-          $this->controller = $this->builder($frameworkErrorModule, DEVELOPMENT ? $e : $originalError);
+          $this->controller = $this->builder($frameworkErrorModule, $originalError);
 
         } catch (Throwable $ex) {
 
           // Sadly it came till here, it's such a shame and we
           // made everything that was possible. Now it's your
           // job champs! Good luck ='(
-          throw (DEVELOPMENT ? $ex : $originalError);
+          throw ($originalError);
         }
       }
     }
