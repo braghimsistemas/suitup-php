@@ -324,7 +324,7 @@ function queryLog(): string {
   foreach (array_reverse(DbAdapter::$queryLogs) as $k => $item) {
     if (count($item['params'])) {
 
-      $html .= "<span>#$k - ".count($item['params']).' parameter(s)</span>';
+      $html .= '<span>#'.($k+1).' - '.count($item['params']).' parameter(s)</span>';
 
       $params = array();
       foreach ($item['params'] as $param => $value) {
@@ -333,12 +333,13 @@ function queryLog(): string {
       $html .= '<p>' . implode('<br/>', $params) . '</p>';
 
     } else {
-      $html .= "<span>#$k - No parameters</span>";
+      $html .= '<span>#'.($k+1).' - No parameters</span>';
     }
 
     $html .= '<p>'.nl2br($item['sql']).'</p><hr/>';
   }
   $html .= '</div>';
+  $html .= "\r\n<!-- /SuitUp Sql Monitor - It must not to be shown in production -->\r\n\r\n";
   return $html;
 }
 
