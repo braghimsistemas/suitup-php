@@ -26,8 +26,8 @@ declare(strict_types=1);
 
 namespace SuitUp\Database\DbAdapter;
 
+use stdClass;
 use SuitUp\Database\DbAdapter\AdapterAbstract;
-use SuitUp\Database\Gateway\QueryString\Join;
 use SuitUp\Exception\DatabaseGatewayException;
 use SuitUp\Exception\DbAdapterException;
 
@@ -68,7 +68,7 @@ class Mysql extends AdapterAbstract
     $this->validateParams($parameters);
 
     // The heart of matter
-    $params = new \stdClass();
+    $params = new stdClass();
     $params->host = $parameters['host'] ?? 'localhost';
     $params->port = $parameters['port'] ?? '3306';
     $params->dbname = $parameters['dbname'] ?? null;
@@ -85,7 +85,7 @@ class Mysql extends AdapterAbstract
   /**
    * Reset values to start create a new query.
    *
-   * @return \SuitUp\Database\DbAdapter\AdapterAbstract
+   * @return AdapterAbstract
    */
   public function resetQuery(): AdapterAbstract
   {
@@ -167,7 +167,7 @@ class Mysql extends AdapterAbstract
    * @param string $table
    * @param string $onClause
    * @param string|null $schema
-   * @return \SuitUp\Database\DbAdapter\AdapterAbstract
+   * @return AdapterAbstract
    */
   public function join(string $type, string $table, string $onClause, string $schema = null): AdapterAbstract {
     $this->join[] = array(

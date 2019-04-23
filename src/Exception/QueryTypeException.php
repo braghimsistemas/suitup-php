@@ -26,11 +26,14 @@ declare(strict_types=1);
 
 namespace SuitUp\Exception;
 
+use Exception;
+use SuitUp\Exception\SuitUpExceptionInterface;
+
 /**
  * Class QueryTypeException
  * @package SuitUp\Exception
  */
-class QueryTypeException extends \Exception implements SuitUpExceptionInterface
+class QueryTypeException extends Exception implements SuitUpExceptionInterface
 {
   /**
    * @return string

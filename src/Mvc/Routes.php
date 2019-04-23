@@ -26,8 +26,9 @@ declare(strict_types=1);
 
 namespace SuitUp\Mvc;
 
-use Exception;
 use SuitUp\Exception\StructureException;
+use function isClosure;
+use function toCamelCase;
 
 /**
  * Class Routes

@@ -26,6 +26,9 @@ declare(strict_types=1);
 
 namespace SuitUp\FormValidator;
 
+use SuitUp\Exception\FormValidatorException;
+use Zend\Validator\AbstractValidator;
+
 /**
  * Class Validation
  * @package SuitUp\FormValidator
@@ -121,7 +124,7 @@ abstract class Validation {
   /**
    * Efetua as validacoes necessarias.
    *
-   * @throws \Exception
+   * @throws FormValidatorException
    * @return bool
    */
   private function validateForm() {
@@ -153,7 +156,7 @@ abstract class Validation {
           $options = $method;
 
           /**
-           * @var \Zend\Validator\AbstractValidator
+           * @var AbstractValidator
            */
           $validator = new $methodOrClass($options);
 
@@ -211,7 +214,7 @@ abstract class Validation {
         }
 
         // Se chegar aqui é pq não tem metodo para validar o campo =/
-        throw new \Exception("O metodo '$methodOrClass' ou '$method' não existe para validar o campo");
+        throw new FormValidatorException("O metodo '$methodOrClass' ou '$method' não existe para validar o campo");
       }
 
       // Filtros
@@ -235,7 +238,7 @@ abstract class Validation {
 
             // Não! É um erro =S
           } else {
-            throw new \Exception("O metodo '$method' não existe para filtrar o campo");
+            throw new Exception("O metodo '$method' não existe para filtrar o campo");
           }
         }
       }

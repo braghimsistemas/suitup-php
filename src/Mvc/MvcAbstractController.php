@@ -34,7 +34,7 @@ use SuitUp\Exception\StructureException;
 use SuitUp\Paginate\Paginate;
 use Throwable;
 use const IS_TESTCASE;
-use function GuzzleHttp\json_encode;
+use function paginateControl;
 use function renderView;
 
 /**

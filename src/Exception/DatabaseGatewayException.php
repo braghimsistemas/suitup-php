@@ -26,11 +26,14 @@ declare(strict_types=1);
 
 namespace SuitUp\Exception;
 
+use Exception;
+use SuitUp\Exception\SuitUpExceptionInterface;
+
 /**
  * Class DatabaseGatewayException
  * @package SuitUp\Exception
  */
-class DatabaseGatewayException extends \Exception implements SuitUpExceptionInterface
+class DatabaseGatewayException extends Exception implements SuitUpExceptionInterface
 {
   public function getDescription(): string
   {

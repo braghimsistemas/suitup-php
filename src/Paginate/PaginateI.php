@@ -40,7 +40,7 @@ interface PaginateI extends Iterator
 
   /**
    * @param DbAdapterInterface $db
-   * @return \SuitUp\Paginate\Paginate
+   * @return Paginate
    */
   public function setDb(DbAdapterInterface $db): Paginate;
 
@@ -51,7 +51,7 @@ interface PaginateI extends Iterator
 
   /**
    * @param AdapterAbstract $adapter
-   * @return \SuitUp\Paginate\Paginate
+   * @return Paginate
    */
   public function setAdapter(AdapterAbstract $adapter): Paginate;
 
@@ -62,7 +62,7 @@ interface PaginateI extends Iterator
 
   /**
    * @param int $pageRange
-   * @return \SuitUp\Paginate\Paginate
+   * @return Paginate
    */
   public function setPageRange(int $pageRange): Paginate;
 
@@ -73,7 +73,7 @@ interface PaginateI extends Iterator
 
   /**
    * @param mixed $currentPage
-   * @return \SuitUp\Paginate\Paginate
+   * @return Paginate
    */
   public function setCurrentPage($currentPage): Paginate;
 
@@ -84,7 +84,7 @@ interface PaginateI extends Iterator
 
   /**
    * @param int $numberPerPage
-   * @return \SuitUp\Paginate\Paginate
+   * @return Paginate
    */
   public function setNumberPerPage(int $numberPerPage): Paginate;
 
@@ -95,7 +95,7 @@ interface PaginateI extends Iterator
 
   /**
    * @param Closure $func
-   * @return \SuitUp\Paginate\Paginate
+   * @return Paginate
    */
   public function setClosureFunc(Closure $func): Paginate;
 

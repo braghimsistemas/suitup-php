@@ -26,6 +26,8 @@ declare(strict_types=1);
 
 namespace SuitUp\Database\DbAdapter;
 
+use SuitUp\Database\DbAdapter\AdapterAbstract;
+
 /**
  * Interface AdapterInterface
  * @package SuitUp\Database\DbAdapter

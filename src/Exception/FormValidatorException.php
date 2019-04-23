@@ -26,11 +26,14 @@ declare(strict_types=1);
 
 namespace SuitUp\Exception;
 
+use Exception;
+use SuitUp\Exception\SuitUpExceptionInterface;
+
 /**
  * Class FormValidatorException
  * @package SuitUp\Exception
  */
-class FormValidatorException extends \Exception implements SuitUpExceptionInterface
+class FormValidatorException extends Exception implements SuitUpExceptionInterface
 {
   /**
    * @return string

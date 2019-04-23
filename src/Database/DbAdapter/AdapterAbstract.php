@@ -26,6 +26,9 @@ declare(strict_types=1);
 
 namespace SuitUp\Database\DbAdapter;
 
+use PDO;
+use SuitUp\Database\DbAdapter\AdapterAbstract;
+use SuitUp\Database\DbAdapter\AdapterInterface;
 use SuitUp\Exception\DbAdapterException;
 
 /**
@@ -76,7 +79,7 @@ abstract class AdapterAbstract implements AdapterInterface
    * @var string
    */
   private $options = array(
-    \PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"
+    PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"
   );
 
   /**

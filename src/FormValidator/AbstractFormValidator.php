@@ -27,9 +27,9 @@ declare(strict_types=1);
 namespace SuitUp\FormValidator;
 
 use DateTime;
-use Exception;
 use SuitUp\Exception\FormValidatorException;
-use SuitUp\Exception\StructureException;
+use SuitUp\FormValidator\FormResult;
+use SuitUp\FormValidator\Validation;
 
 /**
  * Class AbstractFormValidator

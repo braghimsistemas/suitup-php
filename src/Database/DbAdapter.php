@@ -26,6 +26,9 @@ declare(strict_types=1);
 
 namespace SuitUp\Database;
 
+use Closure;
+use PDO;
+use PDOException;
 use SuitUp\Database\DbAdapter\AdapterAbstract;
 use SuitUp\Database\DbAdapter\AdapterInterface;
 use SuitUp\Database\DbAdapter\Mysql;
@@ -36,6 +39,7 @@ use SuitUp\Exception\DbAdapterException;
 use SuitUp\Exception\QueryTypeException;
 use SuitUp\Exception\StructureException;
 use SuitUp\Paginate\Paginate;
+use Throwable;
 
 /**
  * This class is the connection itself.
@@ -55,7 +59,7 @@ class DbAdapter implements DbAdapterInterface
   private $adapter;
 
   /**
-   * @var \PDO
+   * @var PDO
    */
   private $connection;
 
@@ -79,7 +83,7 @@ class DbAdapter implements DbAdapterInterface
     try {
 
       // Try to create a PDO connection object
-      $connection = new \PDO(
+      $connection = new PDO(
         $adapter->getDsn(),
         $adapter->getUsername(),
         $adapter->getPassword(),
@@ -87,10 +91,10 @@ class DbAdapter implements DbAdapterInterface
       );
 
       # We can now log any exceptions on Fatal error.
-      $connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+      $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
       # Disable emulation of prepared statements, use REAL prepared statements instead.
-      $connection->setAttribute(\PDO::ATTR_EMULATE_PREPARES, true);
+      $connection->setAttribute(PDO::ATTR_EMULATE_PREPARES, true);
 
       // Add connection to the instance
       $this->connection = $connection;
@@ -99,7 +103,7 @@ class DbAdapter implements DbAdapterInterface
         AbstractGateway::setDefaultAdapter($this);
       }
 
-    } catch (\PDOException $e) {
+    } catch (PDOException $e) {
       throw new DbAdapterException("Database connection error: {$e->getMessage()}<br/>DSN: {$adapter->getDsn()}", $e->getCode(), $e);
     }
   }
@@ -108,7 +112,7 @@ class DbAdapter implements DbAdapterInterface
    * @param array $configs
    * @return bool|DbAdapter
    * @throws StructureException
-   * @throws \SuitUp\Exception\DbAdapterException
+   * @throws DbAdapterException
    */
   public static function factory(array $configs)
   {
@@ -153,9 +157,9 @@ class DbAdapter implements DbAdapterInterface
   }
 
   /**
-   * @return \PDO
+   * @return PDO
    */
-  public function getConnection(): \PDO {
+  public function getConnection(): PDO {
     return $this->connection;
   }
 
@@ -225,7 +229,7 @@ class DbAdapter implements DbAdapterInterface
    * @throws \Exception
    * @return array|int|null
    */
-  public function query(string $query, array $params = array(), int $fetchMode = \PDO::FETCH_ASSOC) {
+  public function query(string $query, array $params = array(), int $fetchMode = PDO::FETCH_ASSOC) {
 
     // Prepare the statement
     $stmt = $this->getConnection()->prepare(trim($query));
@@ -267,7 +271,7 @@ class DbAdapter implements DbAdapterInterface
         default:
           throw new QueryTypeException('The statement does not seems to be a valid SQL Query');
       }
-    } catch (\Throwable $exception) {
+    } catch (Throwable $exception) {
       throw new DatabaseGatewayException('Database QUERY error: '.$exception->getMessage(), 0, $exception);
     }
 
@@ -289,7 +293,7 @@ class DbAdapter implements DbAdapterInterface
    * @return array|int|null
    * @throws \Exception
    */
-  public function fetchAll(string $query, array $params = array(), int $fetchMode = \PDO::FETCH_ASSOC) {
+  public function fetchAll(string $query, array $params = array(), int $fetchMode = PDO::FETCH_ASSOC) {
     return $this->query($query, $params, $fetchMode);
   }
 
@@ -302,7 +306,7 @@ class DbAdapter implements DbAdapterInterface
    * @return mixed
    * @throws DatabaseGatewayException
    */
-  public function row(string $query, array $params = array(), int $fetchMode = \PDO::FETCH_ASSOC) {
+  public function row(string $query, array $params = array(), int $fetchMode = PDO::FETCH_ASSOC) {
     // Prepare the statement
     $stmt = $this->getConnection()->prepare(trim($query));
 
@@ -324,7 +328,7 @@ class DbAdapter implements DbAdapterInterface
       $stmt->execute();
       $result = $stmt->fetch($fetchMode);
 
-    } catch (\Throwable $exception) {
+    } catch (Throwable $exception) {
       throw new DatabaseGatewayException('Database QUERY error: '.$exception->getMessage(), 0, $exception);
     }
 
@@ -345,7 +349,7 @@ class DbAdapter implements DbAdapterInterface
    * @return mixed
    * @throws DatabaseGatewayException
    */
-  public function fetchRow(string $query, array $params = array(), int $fetchMode = \PDO::FETCH_ASSOC) {
+  public function fetchRow(string $query, array $params = array(), int $fetchMode = PDO::FETCH_ASSOC) {
     return $this->row($query, $params, $fetchMode);
   }
 
@@ -380,7 +384,7 @@ class DbAdapter implements DbAdapterInterface
       $stmt->execute();
       $result = $stmt->fetchColumn($columnNumber);
 
-    } catch (\Throwable $exception) {
+    } catch (Throwable $exception) {
       throw new DatabaseGatewayException('Database QUERY error: '.$exception->getMessage(), 0, $exception);
     }
 
@@ -434,9 +438,9 @@ class DbAdapter implements DbAdapterInterface
 
       // Let's do it baby!
       $stmt->execute();
-      $result = $stmt->fetchAll(\PDO::FETCH_KEY_PAIR);
+      $result = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
 
-    } catch (\Throwable $exception) {
+    } catch (Throwable $exception) {
       throw new DatabaseGatewayException('Database QUERY error: '.$exception->getMessage(), 0, $exception);
     }
 
@@ -470,10 +474,10 @@ class DbAdapter implements DbAdapterInterface
 
   /**
    * @param AdapterAbstract $adapter
-   * @param \Closure|null $closureFunc
+   * @param Closure|null $closureFunc
    * @return Paginate
    */
-  public function paginate(AdapterAbstract $adapter, \Closure $closureFunc = null): Paginate {
+  public function paginate(AdapterAbstract $adapter, Closure $closureFunc = null): Paginate {
     return new Paginate($this, $adapter, $closureFunc);
   }
 }

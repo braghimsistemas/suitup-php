@@ -26,7 +26,9 @@ declare(strict_types=1);
 
 namespace SuitUp\Database;
 
+use PDO;
 use SuitUp\Database\DbAdapter\AdapterAbstract;
+use SuitUp\Database\DbAdapterInterface;
 
 /**
  * Interface DbAdapterInterface
@@ -52,9 +54,9 @@ interface DbAdapterInterface
   /**
    * Must return a PDO connection instance
    *
-   * @return \PDO
+   * @return PDO
    */
-  public function getConnection(): \PDO;
+  public function getConnection(): PDO;
 
   /**
    * Bind one parameter to the followed query
@@ -87,7 +89,7 @@ interface DbAdapterInterface
    * @param int $fetchMode
    * @return mixed
    */
-  public function query(string $query, array $params = array(), int $fetchMode = \PDO::FETCH_ASSOC);
+  public function query(string $query, array $params = array(), int $fetchMode = PDO::FETCH_ASSOC);
 
   /**
    * Must to return only the first row with the SQL Query.
@@ -97,7 +99,7 @@ interface DbAdapterInterface
    * @param int $fetchMode
    * @return mixed
    */
-  public function row(string $query, array $params = array(), int $fetchMode = \PDO::FETCH_ASSOC);
+  public function row(string $query, array $params = array(), int $fetchMode = PDO::FETCH_ASSOC);
 
   /**
    * Must to return only the first column of first row with the SQL Query.

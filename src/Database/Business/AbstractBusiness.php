@@ -26,6 +26,7 @@ declare(strict_types=1);
 
 namespace SuitUp\Database\Business;
 
+use Throwable;
 use SuitUp\Database\Gateway\AbstractGateway;
 use SuitUp\Exception\DatabaseBusinessException;
 use SuitUp\Exception\DatabaseGatewayException;
@@ -37,7 +38,7 @@ use SuitUp\Exception\DatabaseGatewayException;
 abstract class AbstractBusiness
 {
   /**
-   * @var \SuitUp\Database\Gateway\AbstractGateway
+   * @var AbstractGateway
    */
   protected $gateway;
 
@@ -58,7 +59,7 @@ abstract class AbstractBusiness
       // Try to instance it
       $this->gateway = new $gateway();
 
-    } catch (\Throwable $exception) {
+    } catch (Throwable $exception) {
       throw new DatabaseBusinessException("Gateway not found: $gateway", 0, $exception);
     }
   }
@@ -72,7 +73,7 @@ abstract class AbstractBusiness
    * that one table can have more than one primary key.
    * This method will expect as much primary keys as is
    * provided in that attribute.
-   * 
+   *
    * @return mixed
    * @throws DatabaseGatewayException
    */

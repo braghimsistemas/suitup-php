@@ -27,7 +27,10 @@ declare(strict_types=1);
 namespace SuitUp\Mvc;
 
 use ReflectionClass;
+use ReflectionException;
 use SuitUp\Exception\StructureException;
+use function toCamelCase;
+use function toDashCase;
 
 /**
  * Class FrontController[
@@ -642,7 +645,7 @@ class FrontController
    * Return a list of values as array
    *
    * @return array
-   * @throws \ReflectionException
+   * @throws ReflectionException
    */
   public function toArray(): array {
 

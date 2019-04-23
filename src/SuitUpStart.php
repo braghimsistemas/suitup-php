@@ -27,13 +27,14 @@ declare(strict_types=1);
 include_once __DIR__ . "/Autoload/Psr4AutoloaderClass.php";
 include_once __DIR__ . "/functions.php";
 
+use SuitUp\Database\DbAdapter;
+use SuitUp\Database\Gateway\AbstractGateway;
+use SuitUp\Exception\DbAdapterException;
 use SuitUp\Exception\NotFoundException;
 use SuitUp\Exception\StructureException;
 use SuitUp\Mvc\FrontController;
 use SuitUp\Mvc\MvcAbstractController;
 use SuitUp\Mvc\Routes;
-use SuitUp\Database\DbAdapter;
-use SuitUp\Database\Gateway\AbstractGateway;
 
 /**
  * Define DEVELOPMENT constant
@@ -244,7 +245,7 @@ class SuitUpStart
    * in the config directory.
    *
    * @throws StructureException
-   * @throws \SuitUp\Exception\DbAdapterException
+   * @throws DbAdapterException
    */
   private function checkupDefaultAdapter(): void {
 

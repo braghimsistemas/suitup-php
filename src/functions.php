@@ -24,6 +24,9 @@
  */
 declare(strict_types=1);
 
+use SuitUp\Exception\SuitUpException;
+use SuitUp\Paginate\Paginate;
+
 define('KB', 1024);          // Em bytes
 define('MB', 1048576);       // Em bytes
 define('GB', 1073741824);    // Em bytes
@@ -150,7 +153,7 @@ function renderView($renderViewName, $vars = array(), $renderViewPath = null): s
  * @param string $renderViewName File name to render pagination
  * @return string Html to navigate through pages
  */
-function paginateControl(\SuitUp\Paginate\Paginate $object, $renderViewName = 'paginate.phtml'): string {
+function paginateControl(Paginate $object, $renderViewName = 'paginate.phtml'): string {
   // Result
   $items = array();
 
@@ -225,7 +228,7 @@ function paginateControl(\SuitUp\Paginate\Paginate $object, $renderViewName = 'p
   // Define a url base.
   $url = '/' . preg_replace("/\?(" . preg_quote(getenv('QUERY_STRING'), "/") . ")/", "", trim(getenv('REQUEST_URI'), '/')) . "?";
   foreach ((array) filter_input_array(INPUT_GET) as $i => $value) {
-    if ($i != \SuitUp\Paginate\Paginate::getParamName()) {
+    if ($i != Paginate::getParamName()) {
       $url .= $i . '=' . $value . '&';
     }
   }
@@ -239,7 +242,7 @@ function paginateControl(\SuitUp\Paginate\Paginate $object, $renderViewName = 'p
     'nextPage' => in_array(($currentPage + 1), $items) ? $currentPage + 1 : false,
     'previousPage' => in_array(($currentPage - 1), $items) ? $currentPage - 1 : false,
     'baseUrl' => $url . (preg_match("/\?/", $url) ? '&' : '?'),
-    'paramName' => \SuitUp\Paginate\Paginate::getParamName()
+    'paramName' => Paginate::getParamName()
   ));
 }
 
@@ -307,12 +310,12 @@ if (! function_exists('uploadFileImageBase64')) {
   function uploadFileImageBase64(array $file, int $maxFilesize = 524288): string {
     // Check errors
     if ($file['error'] != UPLOAD_ERR_OK) {
-      throw new Exception("Unexpected default-error, file was not sent, try again");
+      throw new SuitUpException("Unexpected default-error, file was not sent, try again");
     }
 
     // Check size
     if ($file['size'] > $maxFilesize) {
-      throw new Exception("Too big file, send one with till " . ($maxFilesize / MB) . "Mb");
+      throw new SuitUpException("Too big file, send one with till " . ($maxFilesize / MB) . "Mb");
     }
 
     // Define exts e mimetypes
@@ -328,17 +331,17 @@ if (! function_exists('uploadFileImageBase64')) {
     // Validate EXT
     $fileExt = preg_replace("/^.+\./", '', $file['name']);
     if (! array_key_exists($fileExt, $mimeTypes)) {
-      throw new Exception("Invalid extension, please send one of these: (" . implode(", ", array_keys($mimeTypes)) . ")");
+      throw new SuitUpException("Invalid extension, please send one of these: (" . implode(", ", array_keys($mimeTypes)) . ")");
     }
 
     // Validate MimeType
     if (! isset($mimeTypes[$fileExt]) || ($file['type'] != $mimeTypes[$fileExt])) {
-      throw new Exception("Invalid file mime type, please send one of these: (" . implode(", ", array_keys($mimeTypes)) . ")");
+      throw new SuitUpException("Invalid file mime type, please send one of these: (" . implode(", ", array_keys($mimeTypes)) . ")");
     }
 
     // Validate if file exists
     if (! file_exists($file['tmp_name']) || ! is_readable($file['tmp_name'])) {
-      throw new Exception("Something went wrong to upload image, try again");
+      throw new SuitUpException("Something went wrong to upload image, try again");
     }
     // No errors, try to code to base64
     return 'data:' . $mimeTypes[$fileExt] . ';base64,' . base64_encode(file_get_contents($file['tmp_name']));

@@ -26,11 +26,14 @@ declare(strict_types=1);
 
 namespace SuitUp\Exception;
 
+use Exception;
+use SuitUp\Exception\SuitUpExceptionInterface;
+
 /**
  * Class DbAdapterException
  * @package SuitUp\Exception
  */
-class DbAdapterException extends \Exception implements SuitUpExceptionInterface
+class DbAdapterException extends Exception implements SuitUpExceptionInterface
 {
   /**
    * @return string

@@ -27,12 +27,8 @@ declare(strict_types=1);
 namespace SuitUp\Database\Gateway;
 
 use SuitUp\Database\DbAdapter\AdapterAbstract;
-use SuitUp\Database\Gateway\QueryString;
 use SuitUp\Database\DbAdapterInterface;
 use SuitUp\Exception\DatabaseGatewayException;
-use SuitUp\Mvc\MvcAbstractController;
-use SuitUp\Database\SqlFileManager;
-use SuitUp\Database\Database;
 
 /**
  * Gateways are our way to treat  the Model classes that will

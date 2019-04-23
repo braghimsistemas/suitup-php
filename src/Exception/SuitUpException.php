@@ -26,11 +26,14 @@ declare(strict_types=1);
 
 namespace SuitUp\Exception;
 
+use Exception;
+use SuitUp\Exception\SuitUpExceptionInterface;
+
 /**
  * Class SuitUpException
  * @package SuitUp\Exception
  */
-class SuitUpException extends \Exception implements SuitUpExceptionInterface
+class SuitUpException extends Exception implements SuitUpExceptionInterface
 {
   /**
    * @return string

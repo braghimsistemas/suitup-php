@@ -26,6 +26,7 @@ declare(strict_types=1);
 
 namespace SuitUp\FormValidator;
 
+use stdClass;
 use SuitUp\Exception\FormValidatorException;
 
 /**
@@ -34,7 +35,7 @@ use SuitUp\Exception\FormValidatorException;
  *
  * @package SuitUp\FormValidator
  */
-class FormResult extends \stdClass
+class FormResult extends stdClass
 {
 
   /**
