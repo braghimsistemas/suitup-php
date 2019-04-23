@@ -153,7 +153,7 @@ function renderView($renderViewName, $vars = array(), $renderViewPath = null): s
  * @param string $renderViewName File name to render pagination
  * @return string Html to navigate through pages
  */
-function paginateControl(Paginate $object, $renderViewName = 'paginate.phtml'): string {
+function paginateControl(Paginate $object, string $renderViewName = null): string {
   // Result
   $items = array();
 
@@ -233,6 +233,11 @@ function paginateControl(Paginate $object, $renderViewName = 'paginate.phtml'): 
     }
   }
   $url = trim(trim($url, '?'), '&');
+
+  // If was not informed a custom paginate file we will append our own
+  if (is_null($renderViewName)) {
+    $renderViewName = __DIR__.'/resource/paginate.phtml';
+  }
 
   // Parameters to the view create properly html
   return renderView($renderViewName, array(

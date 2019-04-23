@@ -17,11 +17,11 @@
 		<whitelist addUncoveredFilesFromWhitelist="true">
 			<directory suffix=".php">.</directory>
 			<exclude>
-        <directory>./_src</directory>
 				<directory>./build</directory>
 				<directory>./test</directory>
         <directory>./test/resources</directory>
 				<directory>./vendor</directory>
+        <directory>./src/resource</directory>
         <directory>./src/ModuleError</directory>
         <directory>./src/Exception</directory>
         <directory>./src/Enum</directory>

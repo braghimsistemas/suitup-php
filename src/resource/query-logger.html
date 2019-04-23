@@ -1,0 +1,141 @@
+<style type="text/css">
+	/** Tab ***/
+	div#__SuitUp-query-log-tab__ {
+		/** Reset **/
+		margin: 0;
+		padding: 0;
+		border: 0;
+		outline: 0;
+		font-weight: inherit;
+		font-style: inherit;
+		font-size: 100%;
+		font-family: inherit;
+		vertical-align: baseline;
+		line-height: initial;
+		text-align: left;
+		/** Reset **/
+		
+		font-family: arial, verdana;
+		color: #333;
+		font-size: 9pt;
+		font-weight: bold;
+		position: fixed;
+		bottom: 0;
+		right: 30px;
+		padding: 5px 15px 10px 15px;
+		border-bottom: 0;
+		border-radius: 5px 5px 0 0;
+		background: #000;
+		opacity: 0.7;
+		filter: alpha(opacity=70);  /* For IE8 and earlier */
+		color: #FFF;
+		cursor: pointer;
+		z-index: 99999;
+	}
+	div#__SuitUp-query-log-tab__ span#close {
+		position: absolute;
+		top: -6px;
+		right: -6px;
+		background: #fff;
+		color: #333;
+		padding: 2px 5px;
+		border: 1px solid #BBB;
+		border-radius: 100%;
+		font-size: 7pt;
+		font-weight: bold;
+	}
+	
+	/** Painel ***/
+	div#__SuitUp-query-log__ {
+		/** Reset **/
+		margin: 0;
+		padding: 0;
+		border: 0;
+		outline: 0;
+		font-weight: inherit;
+		font-style: inherit;
+		font-size: 100%;
+		font-family: inherit;
+		vertical-align: baseline;
+		line-height: initial;
+		text-align: left;
+		/** Reset **/
+		
+		font-family: monospace, arial, verdana;
+		color: #333;
+		font-size: 9pt;
+		position: fixed;
+		bottom: 0;
+		left: 20px;
+		right: 20px;
+		z-index: 99999;
+		display: none;
+	}
+	div#__SuitUp-query-log__ div.headding {
+		color: #fff;
+		background: #333;
+		padding: 7px;
+		border: 0;
+		border-radius: 5px 5px 0 0;
+		cursor: pointer;
+	}
+	div#__SuitUp-query-log__ div.headding span#closebox {
+		float: right;
+	}
+	div#__SuitUp-query-log__ .mainbox {
+		min-height: 200px;
+		height: calc(100vh / 2);
+		overflow-y: scroll;
+		background: #fff;
+		padding: 20px;
+		border-left: 1px solid #BBB;
+		border-right: 1px solid #BBB;
+	}
+	div#__SuitUp-query-log__ .mainbox hr {
+		margin-top: 5px;
+		margin-bottom: 15px;
+		border: 0;
+		border-top: 1px solid #DDD;
+	}
+	div#__SuitUp-query-log__ .mainbox > span {
+		display: block;
+		font-size: 11pt;
+		font-weight: bold;
+		color: #999;
+	}
+</style>
+<script type="text/javascript">
+	window.onload = function() {
+		
+		// Box where queries are shown
+		var box = document.querySelector('div#__SuitUp-query-log__');
+		
+		// Tab to show the box
+		var tab = document.querySelector('div#__SuitUp-query-log-tab__');
+		tab.onclick = function(e) {
+			tab.style.display = 'none';
+			
+			// e.originalTarget = Firefox
+			// e.toElement = Chrome
+			var targetE = e.originalTarget || e.toElement;
+			if (targetE.localName == 'div') {
+				box.style.display = 'block';
+			}
+		};
+		
+		// Box top header
+		var heading = document.querySelector('div#__SuitUp-query-log__ div.headding');
+		heading.onclick = function(e) {
+			box.style.display = 'none';
+			tab.style.display = 'block';
+		};
+		
+		// Type 'q' show the tab
+		document.onkeypress = function (e) {
+			e = e || window.event;
+			if ((e.code == "KeyQ") && !e.ctrlKey && !e.shiftKey && !e.altKey && (box.style.display == 'none')) {
+				tab.style.display = 'block';
+			}
+		};
+	};
+</script>

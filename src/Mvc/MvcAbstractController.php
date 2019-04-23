@@ -703,7 +703,7 @@ abstract class MvcAbstractController
    * @param string $renderViewName File name to render pagination
    * @return string Html to navigate through pages
    */
-  public function paginateControl(Paginate $object, $renderViewName = 'paginate.phtml'): string {
+  public function paginateControl(Paginate $object, string $renderViewName = null): string {
     return paginateControl($object, $renderViewName);
   }
 }
