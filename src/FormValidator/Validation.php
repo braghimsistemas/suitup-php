@@ -27,7 +27,6 @@ declare(strict_types=1);
 namespace SuitUp\FormValidator;
 
 use SuitUp\Exception\FormValidatorException;
-use Zend\Validator\AbstractValidator;
 
 /**
  * Class Validation
@@ -36,22 +35,22 @@ use Zend\Validator\AbstractValidator;
 abstract class Validation {
 
   /**
-   * @var array Parametros que serao validados
+   * @var array Parameters to be validated
    */
   protected $data = array();
 
   /**
-   * @var array Mensagens de erro para os campos que nao passaram na validacao. Disponivel apenas apos o isValid.
+   * @var array Error messages
    */
   public $messages = array();
 
   /**
-   * @var array Post do formulario
+   * @var array POST data
    */
   public $post = array();
 
   /**
-   * @var null|bool Status das validacoes
+   * @var null|bool
    */
   private $valid = null;
 
@@ -65,11 +64,10 @@ abstract class Validation {
   }
 
   /**
-   * Verifica de acordo com as regras definidas para cada campo
-   * se todos os campos do formulario sao validos. Soh retorna
-   * true caso TODOS eles sejam validos.
+   * Check if all data validation defined is true.
    *
-   * @return boolean
+   * @return bool|null
+   * @throws FormValidatorException
    */
   public function isValid() {
     if ($this->valid === null) {
@@ -79,22 +77,20 @@ abstract class Validation {
   }
 
   /**
-   * Chame este metodo para capturar os dados do post "limpos", ou seja, filtrados pelas
-   * regras definidas para cada campo.
-   *
-   * Se o formulário ainda não estiver validado a validação é feita, ou seja, depois de chamar este método
-   * ou o isValid não é mais possível adicionar campos para validação.
+   * Call this method to get all validated data filtered by functions defined in the Form class.
+   * If called before isValid method so the validation will be done.
    *
    * @return array
+   * @throws FormValidatorException
    */
   public function getData() {
 
-    // Se o formulario ainda não foi validado vamos valida-lo.
+    // If form is not validated yet, do it.
     if ($this->valid === null) {
       $this->validateForm();
     }
 
-    // Captura os resultados da validacao
+    // Get validated data to return
     $data = array();
     foreach ($this->data as $key => $item) {
       $data[$key] = isset($item['value']) ? $item['value'] : '';
@@ -103,7 +99,7 @@ abstract class Validation {
   }
 
   /**
-   * Adiciona um item ao array de retorno dos dados.
+   * Append some value to the result data.
    *
    * @param string $index
    * @param mixed $data
@@ -113,7 +109,7 @@ abstract class Validation {
   }
 
   /**
-   * Retorna lista de mensagens de validacao.
+   * Return the list of error messages.
    *
    * @return array
    */
@@ -122,42 +118,35 @@ abstract class Validation {
   }
 
   /**
-   * Efetua as validacoes necessarias.
+   * Make the validation
    *
+   * @return bool|null
    * @throws FormValidatorException
-   * @return bool
    */
   private function validateForm() {
     $result = true;
     foreach ($this->data as $field => $item) {
 
-      // Tipos de campos que nem chegaram no post
+      // Fields that is not on the dataset.
       if (!isset($this->post[$field])) {
         $this->post[$field] = '';
       }
 
-      // Validacoes
+      // Loop under rules
       foreach ($item['validation'] as $methodOrClass => $method) {
 
-        // Validacao do ZEND =)
-        if (class_exists($methodOrClass)) {
+        // Zend validations
+        if (is_string($methodOrClass) && class_exists($methodOrClass)) {
 
-          // Campo não vazio, pois é claro que estando
-          // vazio toda validacao será falsa.
-          // Se quer validar se esta vazio deve utilizar
-          // o metodo notEmpty
+          // If field is empty, next
           if (!$this->post[$field]) {
             continue;
           }
 
-          // Como é uma validacao do Zend
-          // então nao é um metodo que chega como valor,
-          // mas as opções do validador
+          // Instead of value it is the Zend Validation options
           $options = $method;
 
-          /**
-           * @var AbstractValidator
-           */
+          // Make the Zend Validation
           $validator = new $methodOrClass($options);
 
           if (!$validator->isValid($this->post[$field])) {
@@ -169,8 +158,8 @@ abstract class Validation {
           continue;
         }
 
-        // É um metodo de validacao dentro da classe, mas que referencia outro campo
-        if (method_exists($this, $methodOrClass)) {
+        // It is a validation with options
+        if (is_string($methodOrClass) && method_exists($this, $methodOrClass)) {
 
           $options = $method;
           $validation = $this->$methodOrClass($this->post[$field], $options);
@@ -192,7 +181,7 @@ abstract class Validation {
           continue;
         }
 
-        // É um metodo comum de validacao dentro da propria classe
+        // Normal validation option
         if (method_exists($this, $method)) {
           $validation = $this->$method($this->post[$field]);
           if ($validation->error) {
@@ -213,48 +202,47 @@ abstract class Validation {
           continue;
         }
 
-        // Se chegar aqui é pq não tem metodo para validar o campo =/
-        throw new FormValidatorException("O metodo '$methodOrClass' ou '$method' não existe para validar o campo");
+        // We don't know where this validation method can be
+        throw new FormValidatorException("The method '$methodOrClass' ou '$method' does not exists to validate the field");
       }
 
-      // Filtros
+      // Filters
       $this->data[$field]['value'] = $this->post[$field];
       if (isset($item['filter'])) {
         foreach ($item['filter'] as $withOptions => $method) {
 
-          // É um metodo que tem opcoes
+          // It is a filter with options
           if (method_exists($this, $withOptions)) {
 
             $filterOptions = $method;
             $this->data[$field]['value'] = $this->$withOptions($this->data[$field]['value'], $filterOptions);
 
-            // É um metodo?
           } else if (method_exists($this, $method)) {
+
+            // A method
             $this->data[$field]['value'] = $this->$method($this->data[$field]['value']);
 
-            // É uma função?
           } else if (function_exists($method)) {
+
+            // A function
             $this->data[$field]['value'] = $method($this->data[$field]['value']);
 
-            // Não! É um erro =S
           } else {
-            throw new Exception("O metodo '$method' não existe para filtrar o campo");
+            throw new Exception("The method '$method' does not exists to filter the field");
           }
         }
       }
     }
 
-    // Se faltou algum campo do post que não
-    // levou nenhum tipo de validacao nem filtro
+    // Data without validation neither filter
     foreach ($this->post as $key => $value) {
       if (!isset($this->data[$key])) {
         $this->data[$key]['value'] = $value;
       }
     }
 
-    // Seta o objeto
+    // The object
     $this->valid = (bool) $result;
     return $this->valid;
   }
-
 }
