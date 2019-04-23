@@ -700,7 +700,9 @@ abstract class MvcAbstractController
    * Render a pagination template.
    *
    * @param Paginate $object
-   * @param string $renderViewName File name to render pagination
+   * @param string $renderViewName File name to render pagination. Relative to the current views folder.
+   *  If none is given we will render our default file based on Bootstrap 4
+   *
    * @return string Html to navigate through pages
    */
   public function paginateControl(Paginate $object, string $renderViewName = null): string {
