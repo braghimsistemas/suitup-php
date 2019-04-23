@@ -180,6 +180,63 @@ class DbAdapter implements DbAdapterInterface
   }
 
   /**
+   * Begin a transaction in the database
+   *
+   * @return bool
+   * @throws DbAdapterException
+   */
+  public static function beginTransaction(): bool
+  {
+    if (!AbstractGateway::getDefaultAdapter()) {
+      throw new DbAdapterException('There is no database connection to begin a transaction');
+    }
+
+    if (AbstractGateway::getDefaultAdapter()->getConnection()->inTransaction()) {
+      throw new DbAdapterException('There is already an active transaction');
+    }
+
+    return AbstractGateway::getDefaultAdapter()->getConnection()->beginTransaction();
+  }
+
+  /**
+   * Commit data to an active transaction
+   *
+   * @return bool
+   * @throws DbAdapterException
+   */
+  public static function commit(): bool
+  {
+    if (!AbstractGateway::getDefaultAdapter()) {
+      throw new DbAdapterException('There is no database connection to begin a transaction');
+    }
+
+    if (!AbstractGateway::getDefaultAdapter()->getConnection()->inTransaction()) {
+      throw new DbAdapterException('There is no active transaction to commit');
+    }
+
+    return AbstractGateway::getDefaultAdapter()->getConnection()->commit();
+  }
+
+  /**
+   * Rollback data to an active transaction
+   *
+   * @return bool
+   * @throws DbAdapterException
+   */
+  public static function rollBack(): bool
+  {
+    if (!AbstractGateway::getDefaultAdapter()) {
+      throw new DbAdapterException('There is no database connection to begin a transaction');
+    }
+
+    if (!AbstractGateway::getDefaultAdapter()->getConnection()->inTransaction()) {
+      throw new DbAdapterException('There is no active transaction to commit');
+    }
+
+    return AbstractGateway::getDefaultAdapter()->getConnection()->rollBack();
+  }
+
+  /**
    * @return AdapterAbstract
    */
   public function getAdapter(): AdapterAbstract {
