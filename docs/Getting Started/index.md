@@ -36,13 +36,29 @@ Remember that there are two features that you need to install: `Docker` and `Doc
 
 Walk to the folder where you want to install the project, maybe you already have Apache and PHP installed, but you don't need to put it on the localhost, actually you can install anywhere when we talk about Docker, of course.
 
+Clone the project
+
     $ git clone git@github.com:braghimsistemas/suitup-skeleton.git
 
-    $ cd suitup-skeleton
+Enter inside the project folder
 
-    $ php composer.phar update
+    $ cd suitup-skeleton
+    
+Up the Docker services
     
     $ docker-compose up -d
+
+Access the Docker apache container
+
+    $ docker exec -it suitup-apache /bin/bash
+    
+Walk to the application docker folder
+    
+    $ cd /app
+
+Download the composer packages
+
+    $ php composer.phar update
 
 Done! After that all you need is to access on your browser: `localhost:8080`
 
