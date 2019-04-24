@@ -26,7 +26,9 @@ There are several ways to create projects with Suitup Framework, you can even cr
 
 Docker is a tool created to store containers and it works almost like virtual machines. When you create a project with Docker it's not necessary even to have Apache installed in you machine, even linux is not required, Docker will manage everything for you by a predefined structure described in the `docker-compose.yml`
 
-To begin with Docker you will needed to install locally following your system requirements. [Here you can find all documentation need to do it](https://www.docker.com/get-started). Remember that there are two features that you need to install: `Docker` and `Docker Compose`!
+To begin with Docker you need to install it locally following your system requirements.
+[Here you can find all documentation needed to do it](https://www.docker.com/get-started).
+Remember that there are two features that you need to install: `Docker` and `Docker Compose`!
 
   > 1. Docker is the easyest way to init a Suitup project but maybe it's the hardest way to modify it because of the configurations made by `docker-compose.yml` file.
 
@@ -37,6 +39,8 @@ Walk to the folder where you want to install the project, maybe you already have
     $ git clone git@github.com:braghimsistemas/suitup-skeleton.git
 
     $ cd suitup-skeleton
+
+    $ php composer.phar update
     
     $ docker-compose up -d
 
