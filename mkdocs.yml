@@ -3,3 +3,4 @@ theme: readthedocs
 nav:
   - Introduction: index.md
   - Getting Started: Getting Started/index.md
+  - SuitUp 1 Compatibility: SuitUp 1 Compatibility/index.md
