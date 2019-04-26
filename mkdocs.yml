@@ -5,20 +5,25 @@ site_author: Braghim Sistemas
 repo_url: https://github.com/braghimsistemas/suitup-php
 
 theme:
-    name: readthedocs
-    highlightjs: true
-    hljs_languages:
-        - yaml
-        - php
+  name: readthedocs
+  highlightjs: true
+  hljs_languages:
+    - yaml
+    - php
+
+extra_css:
+  - css/extra-style.css
 
 nav:
-    - Introduction:
-        - index.md
-        - SuitUp 1 Compatibility: compatibility/index.md
-    - User Guide:
-        - Getting Started: getting-started/index.md
-    - About:
-        - License: about/LICENSE.md
+  - Introduction:
+    - index.md
+    - SuitUp 1 Compatibility: compatibility/index.md
+  - User Guide:
+    - Getting Started: getting-started/index.md
+  - About:
+    - License: about/LICENSE.md
 
 plugins:
-    - search
+  - search
+
+copyright: Copyright &copy; 2019 Braghim Sistemas

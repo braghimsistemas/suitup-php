@@ -27,8 +27,8 @@ It means, roughly, that you will write PHP and HTML separate and all logic is or
 
 ---
 
-# [Getting Started](Getting Started/index.md)
-Let us walk you through our [Tutorial](Getting Started/index.md) project and show you how Suitup can help you
+# [Getting Started](getting-started/index.md)
+Let us walk you through our [Tutorial](getting-started/index.md) project and show you how Suitup can help you
 
 ---
 # Why we keep this project?
