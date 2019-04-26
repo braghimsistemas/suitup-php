@@ -12,9 +12,11 @@ theme:
         - php
 
 nav:
-    - Introduction: index.md
-    - Getting Started: "Getting Started/index.md"
-    - SuitUp 1 Compatibility: "SuitUp 1 Compatibility/index.md"
+    - Introduction:
+        - index.md
+        - SuitUp 1 Compatibility: "SuitUp 1 Compatibility/index.md"
+    - Documents:
+        - Getting Started: "Getting Started/index.md"
 
 markdown_extensions:
     - def_list
