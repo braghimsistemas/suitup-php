@@ -14,15 +14,17 @@ To begin/commit/rollBack transactions use the methods below:
 ### Database connection
 You can keep the usual file `config/database.config.php` but now its contents must to be like that:
 
-    <?php
-    return array(
-      'adapter' => 'mysql',
-      'host' => '127.0.0.1',
-      'port' => '3306',
-      'dbname' => 'suitup',
-      'username' => 'root',
-      'password' => '',
-    );
+```php
+<?php
+return array(
+  'adapter' => 'mysql',
+  'host' => '127.0.0.1',
+  'port' => '3306',
+  'dbname' => 'suitup',
+  'username' => 'root',
+  'password' => '',
+);
+```
 
   > Note the 'adapter' key that was included. So will be possible to create connection to another kind of database as
   postgres or DB2, but it is not implemented yet. Maybe you can help us with that... Why not? =)

@@ -1,6 +1,28 @@
 site_name: Suitup Framework
-theme: readthedocs
+site_author: Braghim Sistemas
+
+repo_url: https://github.com/braghimsistemas/suitup-php
+
+theme:
+    name: readthedocs
+    highlightjs: true
+    hljs_languages:
+        - yaml
+        - php
+
 nav:
   - Introduction: index.md
-  - Getting Started
-  - SuitUp 1 Compatibility: SuitUp 1 Compatibility/index.md
+  - Getting Started: "Getting Started/index.md"
+  - SuitUp 1 Compatibility: "SuitUp 1 Compatibility/index.md"
+
+markdown_extensions:
+    - toc:
+        permalink: 
+    - admonition
+    - def_list
+    - mdx_gh_links:
+        user: mkdocs
+        repo: mkdocs
+
+plugins:
+    - search
