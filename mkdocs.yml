@@ -11,13 +11,12 @@ theme:
 extra_css:
   - css/extra-style.css
 pages:
-  - Introduction:
-    - index.md
-    - SuitUp 1 Compatibility: compatibility/index.md
+  - Home: index.md
   - User Guide:
     - Getting Started: getting-started/index.md
   - About:
     - License: about/LICENSE.md
+    - SuitUp 1 Compatibility: compatibility/index.md
 plugins:
   - search
 copyright: Copyright &copy; 2019 Braghim Sistemas
