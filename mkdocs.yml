@@ -1,19 +1,15 @@
 site_name: Suitup Framework
 site_description: Awesome PHP Framework with high productivity
 site_author: Braghim Sistemas
-
 repo_url: https://github.com/braghimsistemas/suitup-php
-
 theme:
   name: readthedocs
   highlightjs: true
   hljs_languages:
     - yaml
     - php
-
 extra_css:
   - css/extra-style.css
-
 nav:
   - Introduction:
     - index.md
@@ -22,8 +18,6 @@ nav:
     - Getting Started: getting-started/index.md
   - About:
     - License: about/LICENSE.md
-
 plugins:
   - search
-
 copyright: Copyright &copy; 2019 Braghim Sistemas
