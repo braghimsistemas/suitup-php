@@ -10,7 +10,7 @@ theme:
     - php
 extra_css:
   - css/extra-style.css
-nav:
+pages:
   - Introduction:
     - index.md
     - SuitUp 1 Compatibility: compatibility/index.md
