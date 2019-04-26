@@ -17,13 +17,7 @@ nav:
     - SuitUp 1 Compatibility: "SuitUp 1 Compatibility/index.md"
 
 markdown_extensions:
-    - toc:
-        permalink: 
-    - admonition
     - def_list
-    - mdx_gh_links:
-        user: mkdocs
-        repo: mkdocs
 
 plugins:
     - search
