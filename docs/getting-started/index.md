@@ -48,17 +48,28 @@ Up the Docker services
     
     $ docker-compose up -d
 
-Access the Docker apache container
+After that, you must be able to access `localhost:8080` and the project must to be running
+already, but as you don't downloaded dependencies the following message will be shown.
 
-    $ docker exec -it suitup-apache /bin/bash
+`Project dependencies not found, run 'php composer.phar install'`
+
+We are assuming that you don't have php installed, so let access the Docker apache container
+and download the composer dependencies from there. _Remember that if you have PHP 7.2 installed
+it's just run in the root of project the command recommended above._
+
+    $ docker exec -it suitup-skeleton /bin/bash
     
-Walk to the application docker folder
+Walk into application docker folder
     
     $ cd /app
 
-Download the composer packages
+Download the composer dependencies
 
     $ php composer.phar update
+
+Grant access to the vendors folder
+
+    $ chmod 775 vendor -R
 
 Done! After that all you need is to access on your browser: `localhost:8080`
 
