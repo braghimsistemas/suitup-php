@@ -14,12 +14,11 @@ theme:
 nav:
     - Introduction:
         - index.md
-        - SuitUp 1 Compatibility: "SuitUp 1 Compatibility/index.md"
-    - Documents:
-        - Getting Started: "Getting Started/index.md"
-
-markdown_extensions:
-    - def_list
+        - SuitUp 1 Compatibility: compatibility/index.md
+    - User Guide:
+        - Getting Started: getting-started/index.md
+    - About:
+        - License: about/LICENSE.md
 
 plugins:
     - search
