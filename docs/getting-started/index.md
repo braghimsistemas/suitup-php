@@ -15,7 +15,7 @@ no matter how method of instalation you will choose, the structure will be the s
   > You will be able to change directory structure of the project later if you want to,
   but for this tutorials we will follow the basic structure, making everything easyer.
 
-# Install
+## Install
 
 There are several ways to create projects with Suitup Framework, you can even create a new project
 by command line with our Suitup Manager software. Bellow you will find a list with all this
@@ -27,9 +27,9 @@ possibilities by difficult level:
   - [From Source (Recommended)](#from-source) - medium
 
   > To really understand HOW Suitup works **we recommend you to install by [From Source](#from-source)**
-  method even it taking too much more time.
+  method even it taking a bit more time.
 
-## Docker
+### Docker
 
 Docker is a tool created to store containers and it works almost like virtual machines. When you
 create a project with Docker it's not necessary even to have Apache installed in you machine,
@@ -86,10 +86,83 @@ Grant access to the vendors folder
 
 Done! After that all you need is to access on your browser: `localhost:8080`
 
-## Skeleton Project
+### Skeleton Project
 
+[Check here](#setup-web-server) how to setup the web server first.
 
+Clone the project from it's repository on github:
 
-## Suitup Manager
+    $ git clone git@github.com:braghimsistemas/suitup-skeleton.git
 
-## From Source
+Walk into folder:
+
+    $ cd suitup-skeleton/
+
+Install composer dependencies
+
+    $ php composer.phar install
+
+Done! Open on the browser the following address: `http://localhost/suitup-skeleton`
+(assuming that you installed directly on the localhost). If it was done with virtual
+host don't forget of add the line `127.0.0.1  {the new domain}` to the `/etc/hosts` file.
+
+### Suitup Manager
+
+### From Source
+
+---
+
+## Setup Web Server
+
+Before begin you need to install a web server like apache, nginx or whatever you
+prefer and PHP version 7.2+. The `mod_rewrite` is required to work with friendly
+URL's routes.
+
+  - Apache: `$ sudo a2enmod rewrite`
+
+After enable mod rewrite you shall need to restar the server.
+
+### Apache Server
+
+Install apache web server with apt:
+
+`$ sudo apt-get install apache2`
+
+It's important that you need to **allow override** on the virtual host
+where you will run the application (even in localhost). It will allow
+to replace in the URL names of directories with needed route names
+like modules, controllers, actions and parameters too. In few words it
+means that every request in the `http://localhost`, no matter what URI,
+will call the same file: `/var/www/html/index.php`
+
+The example bellow shows how the default virtual host address must looks
+like with that.
+
+`# vi /etc/apache2/sites-available/000-default.conf`
+
+```
+# Apache Example
+<VirtualHost *:80>
+    ServerAdmin webmaster@localhost
+
+    ServerName localhost
+    ServerAlias localhost
+
+    DocumentRoot /var/www/html
+    <Directory /var/www/html>
+        Options Indexes FollowSymLinks
+        AllowOverride all
+        Order allow,deny
+        Allow from all
+    </Directory>
+
+    LogLevel error
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+</VirtualHost>
+```
+
+### Nginx Server
+
+### PHP Built-in Server
