@@ -26,6 +26,7 @@ declare(strict_types=1);
 
 namespace SuitUp\Database\DbAdapter\Mysql;
 
+use PDO;
 use stdClass;
 use SuitUp\Database\DbAdapter\AdapterAbstract;
 use SuitUp\Database\DbAdapter\QueryCreatorInterface;
@@ -61,6 +62,10 @@ class MysqlAdapter extends AdapterAbstract
     // User and options config
     $this->setUsername($parameters['username'] ?? 'root');
     $this->setPassword($parameters['password'] ?? '');
+
+    $this->appendOptions(array(
+      PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"
+    ));
     $this->appendOptions($parameters['options'] ?? array());
   }
 
