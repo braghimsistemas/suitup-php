@@ -1,4 +1,4 @@
-# SuitUp 2 -- PHP Framework  
+# SuitUp 2 -- PHP Framework
 > Legendary web applications
 
 [![Build Status](https://travis-ci.org/braghimsistemas/suitup-php.svg?branch=version2.0)](https://travis-ci.org/braghimsistemas/suitup-php)
@@ -15,15 +15,15 @@
 Check out our [wiki](https://github.com/braghimsistemas/suitup-php/wiki), there you will be able to install the project quickly and start a web application with productivity focus.
 
 #### PHP Documentation
-As sooner as possible we will release documentation in the Read the Docs org.
+You can find all documentation in the [Read The Docs](https://suitup-php.readthedocs.io/en/master/). We are trying to keep that as up to date as code itself, but hope you understand that it may not be always the reality...
 
-**Legendary Web Applications**  
+**Legendary Web Applications**
 While you write the code for an application there is a lot of code you probably will use again and again and will have to copy for another application in future. Because of this, someone too smarty for whon we have to congrats a lot, created a project which works as a structure (just like a wireframe) with a lot of features you only have to use. With this project is possible to create whatever kind of web application **quickly** and it's just awesome!
 
 _SuitUp_ is a PHP\* OOP\*\* framework which helps you to do what you have to do quickly, it's focused on productivity without forget about security and good practices.
 
-\* Works on [PHP](//php.net) applications based  
-\*\* OOP - [Object-oriented programming](//en.wikipedia.org/wiki/Object-oriented_programming) where programming projects works with _objects_ concepts.  
+\* Works on [PHP](//php.net) applications based
+\*\* OOP - [Object-oriented programming](//en.wikipedia.org/wiki/Object-oriented_programming) where programming projects works with _objects_ concepts.
 
 ### Modules
 You can write different and separate applications in the same project which will be accessed just changing the base URL.
@@ -33,9 +33,9 @@ It means, roughly, that you will write PHP and HTML separate and all logic is or
 
 ---
 ### Why we keep this project?
-At the start, we created this project just for personal use, because the usual frameworks wasn't giving us the speed and facility we expected from a framework PHP. We just want to create a web project as quick as possible. So we created SuitUp, a framework which you can create your web project truly fast and everything is really patterned. We are really happy and satisfied with the results we got with SuitUp yet here. 
+At the start, we created this project just for personal use, because the usual frameworks wasn't giving us the speed and facility we expected from a framework PHP. We just want to create a web project as quick as possible. So we created SuitUp, a framework which you can create your web project truly fast and everything is really patterned. We are really happy and satisfied with the results we got with SuitUp yet here.
 
-Try it you too, awesome web projects with SuitUp PHP Framework! **Now in version 2!!** 
+Try it you too, awesome web projects with SuitUp PHP Framework! **Now in version 2!!**
 
 ### Contributors
 Everyone is welcome to contribute with _SuitUp PHP Framework_. Just fork it, make your changes as minimal as possible and create a _pull request_. We ask to create minimal changes because by this way it's easier to merge your request to the project in approve case.
@@ -45,9 +45,9 @@ Everyone is welcome to contribute with _SuitUp PHP Framework_. Just fork it, mak
 ### Thanks to
 [JetBrains](https://www.jetbrains.com/?from=SuitUp+PHP+Framework+2) that gave us a free license of PHPStorm to maintain this project and develop with maximum productivity.
 
-![PHPStorm](https://i.ibb.co/xXB4Fzc/phpstorm-64.png) 
+![PHPStorm](https://i.ibb.co/xXB4Fzc/phpstorm-64.png)
 
 ---
 
-Made with love by Braghim Sistemas.  
+Made with love by Braghim Sistemas.
 Thank you very much!
