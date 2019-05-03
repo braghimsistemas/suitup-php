@@ -60,7 +60,7 @@ class SuitUpStart
   /**
    * Versão atual do sistema
    */
-  const VERSION = '1.2.4';
+  const VERSION = '1.2.5';
 
   /**
    * Caminho, no projeto do usuario, onde se encontram as pastas dos módulos.
