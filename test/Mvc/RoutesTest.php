@@ -128,11 +128,11 @@ final class RoutesTest extends TestCase
   public function testSetupRoutes() {
 
     // After this method the Routes class will update
-    $this->routes->setupRoutes('/test/routes/index1/value1/index2/value2?index3=value3&index4=value4');
+    $this->routes->setupRoutes('/test routes/routes test/index1/value1/index2/value 2?index3=value3&index4=value4');
 
     $this->assertEquals('default', $this->routes->getModule());
-    $this->assertEquals('test', $this->routes->getController());
-    $this->assertEquals('routes', $this->routes->getAction());
+    $this->assertEquals('test-routes', $this->routes->getController());
+    $this->assertEquals('routes-test', $this->routes->getAction());
     $this->assertIsArray($this->routes->getParams());
     $this->assertNotEmpty($this->routes->getParams());
 
@@ -142,7 +142,7 @@ final class RoutesTest extends TestCase
 
     // URI param must to exists
     $this->assertArrayHasKey('index2', $this->routes->getParams());
-    $this->assertContains('value2', $this->routes->getParams());
+    $this->assertContains('value 2', $this->routes->getParams());
 
     // GET param must not to exists
     $this->assertArrayNotHasKey('index3', $this->routes->getParams());
@@ -165,7 +165,7 @@ final class RoutesTest extends TestCase
     $this->assertNotEmpty($routes->getParams());
 
     $this->assertEquals('value1', $routes->getParam('index1'));
-    $this->assertEquals('value2', $routes->getParam('index2'));
+    $this->assertEquals('value 2', $routes->getParam('index2'));
     $this->assertFalse($routes->getParam('testFalse', false));
     $this->assertTrue($routes->getParam('testFalse', true));
     $this->assertNull($routes->getParam('testFalse', null));

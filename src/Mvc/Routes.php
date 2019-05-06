@@ -144,7 +144,7 @@ class Routes
     $basePathRegExp = '/^('.preg_quote(trim($this->frontController->getBasePath(), '/'), '/').')/';
 
     // Remove from URI blank spaces and the BasePath
-    $route = trim(preg_replace($basePathRegExp, '', preg_replace("/\s+/", '-', urldecode($uri))), '/');
+    $route = trim(preg_replace($basePathRegExp, '', urldecode($uri)), '/');
 
     // First of all we set by URI that is useful always
     $routeResidue = $this->setByURI($route);
