@@ -62,7 +62,7 @@ class SuitUpStart
   /**
    * Current system version
    */
-  const VERSION = '2.0.1';
+  const VERSION = '2.0.2';
 
   /**
    * @var FrontController
@@ -124,6 +124,11 @@ class SuitUpStart
   public function run(): void {
 
     try {
+
+      // This function must to translate all php errors and notices to Exceptions
+      set_error_handler(function ($errno, $errstr, $errfile, $errline ,array $errcontex) {
+        throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+      });
 
       $this->checkupDefaultAdapter();
 
