@@ -96,7 +96,7 @@ if (! function_exists('toCamelCase')) {
    */
   function toCamelCase(string $var, bool $upperFirst = false): string {
     $var = strtolower($var);
-    $var = preg_replace("/[^a-zA-Z0-9]+/", " ", $var);
+    $var = preg_replace("/[^a-zA-Z0-9_]+/", " ", $var);
     $var = ucwords($var);
     $var = preg_replace("/\s+/", "", $var);
 
@@ -117,7 +117,7 @@ if (! function_exists('toDashCase')) {
    */
   function toDashCase(string $var): string {
     $var = strtolower($var);
-    $var = preg_replace("/[^a-zA-Z0-9]+/", "-", $var);
+    $var = preg_replace("/[^a-zA-Z0-9.\-_+]+/", "-", $var);
     return $var;
   }
 }

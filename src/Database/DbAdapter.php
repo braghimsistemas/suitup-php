@@ -148,6 +148,7 @@ class DbAdapter implements DbAdapterInterface
   public static function factory(array $configs)
   {
     $adapter = null;
+    $adapterKeyFound = false;
 
     foreach (array_keys($configs) as $key) {
       if (in_array($key, array('type', 'dbtype', 'adapter', 'dbadapter'))) {
@@ -159,19 +160,24 @@ class DbAdapter implements DbAdapterInterface
         switch ($type) {
           case 'mysql':
             $adapter = new MysqlAdapter($configs);
+            $adapterKeyFound = true;
             break;
           case 'postgres':
           case 'postgre':
           case 'pgsql':
             $adapter = new PostgresAdapter($configs);
+            $adapterKeyFound = true;
             break;
           default:
             throw new StructureException("The database adapter '$key' is not a known adapter type");
         }
         break;
-      } else {
-        throw new StructureException("Since Suitup PHP 2.0 you need to provide an index called 'adapter' in the database.config.php file");
       }
+    }
+
+    // Check if the adapter key exists
+    if (!$adapterKeyFound) {
+      throw new StructureException("Since Suitup PHP 2.0 you need to provide an index called 'adapter' in the database.config.php file");
     }
 
     if ($adapter) {

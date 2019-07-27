@@ -81,7 +81,7 @@ final class functionsTest extends TestCase
   public function testToDashCase() {
 
     $this->assertEquals(
-      'most-people-think-great-god-will-come-from-the-sky',
+      'most-people-think-great-god-will-come+from-the-sky',
       toDashCase('Most people#think Great@God will come+from¨the SkY')
     );
   }
