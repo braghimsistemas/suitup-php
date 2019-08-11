@@ -12,7 +12,9 @@ To properly create documentation for Suitup you will need [MkDocs](https://www.m
 
 Download and install python 3, there's no secrets here.
 
-### Download and install pip
+### Download and install
+
+  Get `pip` [here](https://pip.readthedocs.io/en/stable/installing/)
 
     $ python3.5 ~/Downloads/get-pip.py
 
