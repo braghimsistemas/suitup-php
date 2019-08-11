@@ -1,4 +1,6 @@
-# Requirements
+# How to begin
+
+## Requirements
 
 Suitup Framework requires PHP >= 7.2 and whatever web server you prefer. For this tutorials we
 will create the project with some addictional features to make it easy and improve the Suitup
@@ -136,6 +138,16 @@ Ps.: A folder with that name given to the project will be created
 
 ### From Source
 
+For beginners, at least with **this** framework, we highly recommend to
+create your project by this method so you will understand a bit more how
+SuitUp works and its mechanics.
+
+Start setting up the [web server](#Setup-web-server) as you wish. We will assume that you are creating a project named **cowboys** into default localhost. Get into your localhost folder (over linux defaults it is `/var/www/html`).
+
+As this is the more instructive but the largest way to do, follow this [complete tutorial](from-source) that will lead you on how to create all the files one by one and its contents, letting you know what everything means step by step. That's why this is the best way to begin.
+
+[Install From Source Tutorial](from-source)
+
 ---
 
 ## Setup Web Server
@@ -194,29 +206,5 @@ like with that.
 </VirtualHost>
 ```
 
-Also you will need to set some `.htaccess` configs so SuitUp can work properly.
-
-```
-RewriteEngine on
-
-# The following rule tells Apache that if the requested filename
-# exists, simply serve it.
-RewriteCond %{REQUEST_FILENAME} -s [OR]
-RewriteCond %{REQUEST_FILENAME} -l [OR]
-RewriteCond %{REQUEST_FILENAME} -d
-RewriteRule ^.*$ - [NC,L]
-# The following rewrites all other queries to index.php. The 
-# condition ensures that if you are using Apache aliases to do
-# mass virtual hosting, the base path will be prepended to 
-# allow proper resolution of the index.php file; it will work
-# in non-aliased environments as well, providing a safe, one-size 
-# fits all solution.
-RewriteCond %{REQUEST_URI}::$1 ^(/.+)(.+)::\2$
-RewriteRule ^(.*) - [E=BASE:%1]
-RewriteRule ^(.*)$ %{ENV:BASE}index.php [NC,L]
-
-# Env variables
-SetEnv DEVELOPMENT true
-SetEnv SHOW_ERRORS true
-```
+That's it. Your apache server is ready to run SuitUp framework.
 
