@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Awesome PHP Framework with high productivity">
+  <meta name="author" content="Braghim Sistemas">
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Install From Source Tutorial - Suitup Framework</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  <link href="../../css/extra-style.css" rel="stylesheet">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Install From Source Tutorial";
+    var mkdocs_page_input_path = "getting-started/from-source/index.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/php.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> Suitup Framework</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">User Guide</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../">Getting Started</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">About</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../../about/LICENSE/">License</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../compatibility/">SuitUp 1 Compatibility</a>
+                </li>
+    </ul>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">Suitup Framework</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Install From Source Tutorial</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/braghimsistemas/suitup-php/edit/master/docs/getting-started/from-source/index.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="install-from-source-tutorial">Install From Source Tutorial</h1>
+<h2 id="project-structure">Project Structure</h2>
+<p>Create the project folder and get into it</p>
+<pre><code>$ mkdir cowboys
+$ cd cowboys
+</code></pre>
+<p>Let's create all basic needed structure of folders and files, to do that just follow the tree below.</p>
+<pre><code>cowboys/
+├── assets
+│   ├── main.js
+│   └── styles.css
+├── config
+│   ├── database.config.php
+│   └── default.routes.php
+├── modules
+│   └── ModuleDefault
+│       ├── Controllers
+│       │   ├── AbstractController.php
+│       │   └── IndexController.php
+│       ├── Form
+│       ├── Model
+│       │   └── Gateway
+│       └── views
+│           ├── index
+│           │   └── index.phtml
+│           └── layout.phtml
+├── .htaccess
+└── index.php
+</code></pre>
+
+<h2 id="composer-require">Composer require</h2>
+<p><a href="https://getcomposer.org">Composer</a> will download all Suitup files and its dependencies as well manage future updates, so you don't have to worry about it.</p>
+<p>Download the <code>composer.phar</code> file to manage the project dependencies from <a href="https://getcomposer.org/composer.phar">here</a> or go to the <a href="https://getcomposer.org/download/">Composer Download page</a> and choose your preferred type of install.</p>
+<p>Run composer <code>require</code> to download suitup and its dependencies. It will automatically create a <code>composer.json</code> file too (a file with your project specifications).</p>
+<pre><code>$ php composer.phar require braghim-sistemas/suitup-php ^2
+</code></pre>
+<p>Also you will need to set some <code>.htaccess</code> configs so SuitUp can work properly.</p>
+<h2 id="files-contents">Files contents</h2>
+<h3 id="htaccess-file">.htaccess file</h3>
+<p>file: <code>cowboys/.htaccess</code></p>
+<pre><code>RewriteEngine on
+
+# The following rule tells Apache that if the requested filename
+# exists, simply serve it.
+RewriteCond %{REQUEST_FILENAME} -s [OR]
+RewriteCond %{REQUEST_FILENAME} -l [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^.*$ - [NC,L]
+# The following rewrites all other queries to index.php. The 
+# condition ensures that if you are using Apache aliases to do
+# mass virtual hosting, the base path will be prepended to 
+# allow proper resolution of the index.php file; it will work
+# in non-aliased environments as well, providing a safe, one-size 
+# fits all solution.
+RewriteCond %{REQUEST_URI}::$1 ^(/.+)(.+)::\2$
+RewriteRule ^(.*) - [E=BASE:%1]
+RewriteRule ^(.*)$ %{ENV:BASE}index.php [NC,L]
+
+# Env variables
+SetEnv DEVELOPMENT true
+SetEnv SHOW_ERRORS true
+</code></pre>
+
+<h3 id="index-file">Index file</h3>
+<p>file: <code>cowboys/index.php</code></p>
+<pre><code class="php">&lt;?php
+session_start();
+
+// Set your timezone
+// date_default_timezone_set('America/Sao_Paulo');
+
+// Defined constants to determine test environment or production
+define('DEVELOPMENT', (bool) getenv(&quot;DEVELOPMENT&quot;));
+define('SHOW_ERRORS', (bool) getenv(&quot;SHOW_ERRORS&quot;));
+if (SHOW_ERRORS) {
+  error_reporting(E_ALL);
+  ini_set('display_errors', true);
+}
+
+// Root path
+// Now everything is related to this folder
+chdir(__DIR__);
+
+// Simple functions you should implement
+// include_once './functions.php';
+
+// Setup autoloading composer
+if (file_exists('vendor/autoload.php')) {
+  $loader = include 'vendor/autoload.php';
+
+  // You may want to implement your own libraries
+  // $loader-&gt;add('System', 'library/.');
+} else {
+  exit(&quot;Project dependencies not found, run 'php composer.phar install'&quot;);
+}
+
+// Let's start SuitUp Framework
+$mvc = new SuitUpStart('modules/');
+
+// Sql monitoring
+$mvc-&gt;setSqlMonitor(DEVELOPMENT);
+
+$mvc-&gt;run();
+
+</code></pre>
+
+<h3 id="abstract-controller">Abstract Controller</h3>
+<p>file: <code>cowboys/modules/ModuleDefault/Controllers/AbstractController.php</code></p>
+<pre><code class="php">&lt;?php
+namespace ModuleDefault\Controllers;
+
+use SuitUp\Mvc\MvcAbstractController;
+
+class AbstractController extends MvcAbstractController
+{
+  public function init() {
+    parent::init(); // Keep this line
+  }
+
+  public function posDispatch() {
+    parent::posDispatch(); // Keep this line
+  }
+}
+
+</code></pre>
+
+<h3 id="index-controller">Index Controller</h3>
+<p>file: <code>cowboys/modules/ModuleDefault/Controllers/IndexController.php</code></p>
+<pre><code class="php">&lt;?php
+namespace ModuleDefault\Controllers;
+
+class IndexController extends AbstractController
+{
+  public function indexAction() {
+    // Here is where the legends begins...
+  }
+}
+
+</code></pre>
+
+<h3 id="html-layout">HTML Layout</h3>
+<p>file: <code>cowboys/modules/ModuleDefault/views/layout.phtml</code></p>
+<pre><code class="html">&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+  &lt;head&gt;
+    &lt;!-- Required meta tags --&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, shrink-to-fit=no&quot;&gt;
+
+    &lt;!-- Bootstrap CSS --&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css&quot; integrity=&quot;sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO&quot; crossorigin=&quot;anonymous&quot;&gt;
+
+    &lt;title&gt;Hello, world!&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+      &lt;h1&gt;ModuleDefault&lt;/h1&gt;
+      &lt;h4&gt;Created by SuitUp Manager Version: 1.0.0&lt;/h4&gt;
+
+      &lt;?php echo $content; ?&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Optional JavaScript --&gt;
+    &lt;!-- jQuery first, then Popper.js, then Bootstrap JS --&gt;
+    &lt;script src=&quot;https://code.jquery.com/jquery-3.3.1.slim.min.js&quot; integrity=&quot;sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js&quot; integrity=&quot;sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js&quot; integrity=&quot;sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/holder/2.9.0/holder.js&quot;&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+
+</code></pre>
+
+<h3 id="html-view">HTML View</h3>
+<p>file: <code>cowboys/modules/ModuleDefault/views/index/index.phtml</code></p>
+<pre><code class="html">&lt;!-- The content created automatically --&gt;
+&lt;div class=&quot;row&quot;&gt;
+  &lt;div class=&quot;col-6&quot;&gt;
+    &lt;div class=&quot;card&quot;&gt;
+      &lt;img class=&quot;card-img-top&quot; src=&quot;holder.js/100px180/&quot; alt=&quot;Card image cap&quot;&gt;
+      &lt;div class=&quot;card-body&quot;&gt;
+        &lt;h5 class=&quot;card-title&quot;&gt;Card title&lt;/h5&gt;
+        &lt;p class=&quot;card-text&quot;&gt;Some quick example text to build on the card title and make up the bulk of the card's content.&lt;/p&gt;
+        &lt;a href=&quot;#&quot; class=&quot;btn btn-primary&quot;&gt;Go somewhere&lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;col-6&quot;&gt;
+    &lt;div class=&quot;card&quot;&gt;
+      &lt;img class=&quot;card-img-top&quot; src=&quot;holder.js/100px180/&quot; alt=&quot;Card image cap&quot;&gt;
+      &lt;div class=&quot;card-body&quot;&gt;
+        &lt;h5 class=&quot;card-title&quot;&gt;Card title&lt;/h5&gt;
+        &lt;p class=&quot;card-text&quot;&gt;Some quick example text to build on the card title and make up the bulk of the card's content.&lt;/p&gt;
+        &lt;a href=&quot;#&quot; class=&quot;btn btn-primary&quot;&gt;Go somewhere&lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+      <p>Copyright &copy; 2019 Braghim Sistemas</p>
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/braghimsistemas/suitup-php/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+
+</body>
+</html>
+
+<!--
+MkDocs version : 1.0.4
+Build Date UTC : 2019-08-11 15:09:13
+-->

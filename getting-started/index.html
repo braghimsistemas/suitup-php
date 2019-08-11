@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta name="author" content="Braghim Sistemas">
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Getting Started - Suitup Framework</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  <link href="../css/extra-style.css" rel="stylesheet">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Getting Started";
+    var mkdocs_page_input_path = "getting-started/index.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/php.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> Suitup Framework</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">User Guide</span>
+    <ul class="subnav">
+                <li class=" current">
+                    
+    <a class="current" href="./">Getting Started</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#how-to-begin">How to begin</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l4" href="#requirements">Requirements</a></li>
+        
+            <li><a class="toctree-l4" href="#install">Install</a></li>
+        
+            <li><a class="toctree-l4" href="#setup-web-server">Setup Web Server</a></li>
+        
+        </ul>
+    
+
+    </ul>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">About</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../about/LICENSE/">License</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../compatibility/">SuitUp 1 Compatibility</a>
+                </li>
+    </ul>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">Suitup Framework</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>User Guide &raquo;</li>
+        
+      
+    
+    <li>Getting Started</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/braghimsistemas/suitup-php/edit/master/docs/getting-started/index.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="how-to-begin">How to begin</h1>
+<h2 id="requirements">Requirements</h2>
+<p>Suitup Framework requires PHP &gt;= 7.2 and whatever web server you prefer. For this tutorials we
+will create the project with some addictional features to make it easy and improve the Suitup
+super powers. To engage you with that check it out if you need first study some of following
+features: <code>Composer</code> - <code>Git</code> - <code>Apache</code> - <code>htaccess</code> and <em>optionally</em> <code>MySql</code> - <code>Docker &amp; Docker Compose</code></p>
+<p><strong>Github</strong> </p>
+<p>First of all, there are a Skeleton Project created properly to begin new projects in the link bellow,
+no matter how method of instalation you will choose, the structure will be the same:</p>
+<p><a href="https://github.com/braghimsistemas/suitup-skeleton">https://github.com/braghimsistemas/suitup-skeleton</a></p>
+<blockquote>
+<p>You will be able to change directory structure of the project later if you want to,
+  but for this tutorials we will follow the basic structure, making everything easyer.</p>
+</blockquote>
+<h2 id="install">Install</h2>
+<p>There are several ways to create projects with Suitup Framework, you can even create a new project
+by command line with our Suitup Manager software. Bellow you will find a list with all this
+possibilities by difficult level:</p>
+<ul>
+<li><a href="#docker">Docker</a> - Very easy</li>
+<li><a href="#skeleton-project">Skeleton Project</a> - easy</li>
+<li><a href="#suitup-manager">Suitup Manager (command line)</a> - easy</li>
+<li><a href="#from-source">From Source (Recommended for beginners)</a> - medium</li>
+</ul>
+<blockquote>
+<p>To really understand HOW Suitup works <strong>we recommend you to install by <a href="#from-source">From Source</a></strong>
+  method even it taking a bit more time.</p>
+</blockquote>
+<h3 id="docker">Docker</h3>
+<p>Docker is a tool created to store containers and it works almost like virtual machines. When you
+create a project with Docker it's not necessary even to have Apache installed in you machine,
+even linux is not required, Docker will manage everything for you by a predefined structure
+described in the <code>docker-compose.yml</code> file.</p>
+<p>To begin with Docker you need to install it locally following your system requirements.
+<a href="https://www.docker.com/get-started">Here you can find all documentation needed to do it</a>.
+Remember that there are two features that you need to install: <code>Docker</code> and <code>Docker Compose</code>!</p>
+<blockquote>
+<ol>
+<li>
+<p>Docker is one of the easyest way to init a Suitup project but maybe it's the hardest way to
+  modify it because of the configurations made by <code>docker-compose.yml</code> file.</p>
+</li>
+<li>
+<p>We will assume that you are on linux (GNU system based).</p>
+</li>
+</ol>
+</blockquote>
+<p>Walk to the folder where you want to install the project, maybe you already have Apache and PHP
+installed, but you don't need to put it on the localhost, actually you can install anywhere when
+we talk about Docker, of course.</p>
+<p>Clone the project</p>
+<pre><code>/* Step 1. */
+$ git clone git@github.com:braghimsistemas/suitup-skeleton.git
+</code></pre>
+<p>Enter inside the project folder</p>
+<pre><code>/* Step 2. */
+$ cd suitup-skeleton
+</code></pre>
+<p>Up the Docker services</p>
+<pre><code>/* Step 3. */
+$ docker-compose up -d
+</code></pre>
+<p>After that, you must be able to access <code>localhost:8080</code> and the project must to be running
+already, but as you don't downloaded dependencies the following message will be shown.</p>
+<p><code>Project dependencies not found, run 'php composer.phar install'</code></p>
+<p>We are assuming that you don't have php installed, so let access the Docker apache container
+and download the composer dependencies from there. <em>Remember that if you already have PHP 7.2+ installed skip to the step 6 and <strong>avoid</strong> step 7.</em></p>
+<pre><code>/* Step 4. */
+$ docker exec -it suitup-skeleton /bin/bash
+</code></pre>
+<p>Walk into application docker folder</p>
+<pre><code>/* Step 5. */
+$ cd /app
+</code></pre>
+<p>Download the composer dependencies</p>
+<pre><code>/* Step 6. */
+$ php composer.phar install
+</code></pre>
+<p>Grant access to the vendors folder</p>
+<pre><code>/* Step 7. */
+$ chmod 775 vendor -R
+</code></pre>
+<p>Done! After that all you need is to access on your browser: <code>localhost:8080</code></p>
+<h3 id="skeleton-project">Skeleton Project</h3>
+<p><a href="#setup-web-server">Check here</a> to see how to setup a web server first.</p>
+<p>Clone the project from it's repository on github:</p>
+<pre><code>$ git clone git@github.com:braghimsistemas/suitup-skeleton.git
+</code></pre>
+<p>Walk into folder:</p>
+<pre><code>$ cd suitup-skeleton/
+</code></pre>
+<p>Install composer dependencies</p>
+<pre><code>$ php composer.phar install
+</code></pre>
+<p>Done! Open on the browser the following address: <code>http://localhost/suitup-skeleton</code>
+(assuming that you installed directly on the localhost). If it was done with virtual
+host don't forget to add the line <code>127.0.0.1  {the new domain}</code> to the <code>/etc/hosts</code> file.</p>
+<h3 id="suitup-manager">Suitup Manager</h3>
+<p>To automate some repetitive tasks we created a command line debian based software that can initialize a new project, create a new controller, "model" files, forms, etc...</p>
+<p>All you gotta do to get it is to download the <code>suitup.deb</code> file from the latest release <a href="https://github.com/braghimsistemas/suitup-php/releases/latest">from here</a> and install it with the command bellow.</p>
+<pre><code>$ sudo dpkg -i ~/Downloads/suitup.deb
+</code></pre>
+<p>After that you must to be able to run the <code>suitup</code> command from your terminal with the following options:</p>
+<pre><code>$ suitup install            /* Install a brand new project */
+$ suitup create module      /* create a new module to an existing project */
+$ suitup create controller  /* create a new controller with its views */
+$ suitup create form        /* Starts a new form validator */
+$ suitup create dbtable     /* Create the structure to a database table (Business and Gateway files) */
+</code></pre>
+<p>So run <code>$ suitup install</code> and follow the suggested steps to entirely create a new project, it will ask you to automatically download composer dependencies too.</p>
+<p>After that you just need to <a href="#setup-web-server">setup the web server</a> and be happy with your brand new project.</p>
+<p>Ps.: A folder with that name given to the project will be created</p>
+<h3 id="from-source">From Source</h3>
+<p>For beginners, at least with <strong>this</strong> framework, we highly recommend to
+create your project by this method so you will understand a bit more how
+SuitUp works and its mechanics.</p>
+<p>Start setting up the <a href="#Setup-web-server">web server</a> as you wish. We will assume that you are creating a project named <strong>cowboys</strong> into default localhost. Get into your localhost folder (over linux defaults it is <code>/var/www/html</code>).</p>
+<p>As this is the more instructive but the largest way to do, follow this <a href="from-source">complete tutorial</a> that will lead you on how to create all the files one by one and its contents, letting you know what everything means step by step. That's why this is the best way to begin.</p>
+<p><a href="from-source">Install From Source Tutorial</a></p>
+<hr />
+<h2 id="setup-web-server">Setup Web Server</h2>
+<p>First of all you will need a web server like apache, nginx or whatever you prefer and PHP version 7.2+.</p>
+<blockquote>
+<p>A Web server is a program that uses HTTP (Hypertext Transfer Protocol) to serve the files that form Web pages to users, in response to their requests, which are forwarded by their computers' HTTP clients. Dedicated computers and appliances may be referred to as Web servers as well. Reference: <a href="https://whatis.techtarget.com/definition/Web-server">WhatIs.com</a></p>
+</blockquote>
+<h3 id="apache-web-server">Apache Web Server</h3>
+<p>Install apache web server with apt:</p>
+<pre><code>$ sudo apt-get install apache2
+</code></pre>
+<p>The <code>mod_rewrite</code> is required to work with friendly
+URL's routes.</p>
+<pre><code>$ sudo a2enmod rewrite
+</code></pre>
+<p>After enable mod rewrite you shall need to restart the server.</p>
+<pre><code>$ sudo service apache2 restart
+</code></pre>
+<p>It's important that you need to <strong>allow override</strong> on the virtual host
+where you will run the application (even in localhost). It will allow
+to replace in the URL names of directories with needed route names
+like modules, controllers, actions and parameters too. In few words it
+means that every request in the <code>http://localhost</code>, no matter what URI,
+will call the same file: <code>/var/www/html/index.php</code></p>
+<p>The example bellow shows how the default virtual host address must looks
+like with that.</p>
+<pre><code>$ sudo vi /etc/apache2/sites-available/000-default.conf
+</code></pre>
+<pre><code># Apache Example
+&lt;VirtualHost *:80&gt;
+    ServerAdmin webmaster@localhost
+
+    ServerName localhost
+    ServerAlias localhost
+
+    DocumentRoot /var/www/html
+    &lt;Directory /var/www/html&gt;
+        Options Indexes FollowSymLinks
+        AllowOverride all
+        Order allow,deny
+        Allow from all
+    &lt;/Directory&gt;
+
+    LogLevel error
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+&lt;/VirtualHost&gt;
+</code></pre>
+
+<p>That's it. Your apache server is ready to run SuitUp framework.</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../about/LICENSE/" class="btn btn-neutral float-right" title="License">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href=".." class="btn btn-neutral" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+      <p>Copyright &copy; 2019 Braghim Sistemas</p>
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/braghimsistemas/suitup-php/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href=".." style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../about/LICENSE/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+
+</body>
+</html>
