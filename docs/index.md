@@ -1,4 +1,4 @@
-# SuitUp 2
+# SuitUp 2 - PHP Framework
 > Legendary web applications
 
 [![Build Status](https://travis-ci.org/braghimsistemas/suitup-php.svg?branch=version2.0)](https://travis-ci.org/braghimsistemas/suitup-php)
