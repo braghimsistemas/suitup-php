@@ -102,7 +102,7 @@
       <div class="md-flex__cell md-flex__cell--shrink">
         <a href=".." title="Suitup Framework" class="md-header-nav__button md-logo">
           
-            <i class="md-icon"></i>
+            <i class="md-icon">person_pin_circle</i>
           
         </a>
       </div>
@@ -168,7 +168,7 @@
     </div>
   
   <div class="md-source__repository">
-    GitHub
+    braghimsistemas/suitup-php
   </div>
 </a>
           </div>
@@ -194,7 +194,7 @@
   <label class="md-nav__title md-nav__title--site" for="__drawer">
     <a href=".." title="Suitup Framework" class="md-nav__button md-logo">
       
-        <i class="md-icon"></i>
+        <i class="md-icon">person_pin_circle</i>
       
     </a>
     Suitup Framework
@@ -215,7 +215,7 @@
     </div>
   
   <div class="md-source__repository">
-    GitHub
+    braghimsistemas/suitup-php
   </div>
 </a>
     </div>
@@ -259,7 +259,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../getting-started/" title="Getting Started" class="md-nav__link">
+    <a href="../user-guide/getting-started/" title="Getting Started" class="md-nav__link">
       Getting Started
     </a>
   </li>
@@ -274,18 +274,30 @@
       
       
 
+
+  <li class="md-nav__item">
+    <a href="../contributors/" title="Contributors" class="md-nav__link">
+      Contributors
+    </a>
+  </li>
+
+    
+      
+      
+      
+
   
 
 
   <li class="md-nav__item md-nav__item--active md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4" checked>
     
-    <label class="md-nav__link" for="nav-3">
+    <label class="md-nav__link" for="nav-4">
       About
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
-      <label class="md-nav__title" for="nav-3">
+      <label class="md-nav__title" for="nav-4">
         About
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -449,16 +461,17 @@
 some differences as the list below. </p>
 <h2 id="database-connection">Database connection</h2>
 <p>You can keep the usual file <code>config/database.config.php</code> but now its contents must to be like that:</p>
-<pre><code class="php">&lt;?php
-return array(
-  'adapter' =&gt; 'mysql', // New property key
-  'host' =&gt; '127.0.0.1',
-  'port' =&gt; '3306',
-  'dbname' =&gt; 'suitup',
-  'username' =&gt; 'root',
-  'password' =&gt; '',
-);
-</code></pre>
+<div class="codehilite"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">return</span> <span class="k">array</span><span class="p">(</span>
+  <span class="s1">&#39;adapter&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;mysql&#39;</span><span class="p">,</span> <span class="c1">// New property key</span>
+  <span class="s1">&#39;host&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;127.0.0.1&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;port&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;3306&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;dbname&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;suitup&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;username&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;root&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;password&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+<span class="p">);</span>
+</pre></div>
+
 
 <blockquote>
 <p>Note the 'adapter' key that was included. So will be possible to create connection to
