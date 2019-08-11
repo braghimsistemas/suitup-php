@@ -3,7 +3,7 @@ site_description: Awesome PHP Framework with high productivity
 site_author: Braghim Sistemas
 repo_url: https://github.com/braghimsistemas/suitup-php
 theme:
-  name: material
+  name: readthedocs
   highlightjs: true
   hljs_languages:
     - yaml
