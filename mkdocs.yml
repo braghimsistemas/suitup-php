@@ -15,10 +15,12 @@ theme:
     - php
 extra_css:
   - css/extra-style.css
-pages:
+nav:
   - Home: index.md
   - User Guide:
     - Getting Started: user-guide/getting-started/index.md
+    - Tutorial for impatients: user-guide/getting-started/impatients/index.md
+    - Step By Step Tutorial: user-guide/getting-started/from-source/index.md
   - Contributors: contributors/index.md
   - About:
     - License: about/LICENSE.md
@@ -29,4 +31,6 @@ markdown_extensions:
   - admonition
   - codehilite
   - meta
+  - toc:
+      permalink: true
 copyright: Copyright &copy; 2019 Braghim Sistemas

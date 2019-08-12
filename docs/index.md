@@ -16,8 +16,8 @@ While you write the code for an application there is a lot of code you probably 
 
 _SuitUp_ is a PHP\* OOP\*\* framework which helps you to do what you have to do quickly, it's focused on productivity without forget about security and good practices.
 
-\* Works on [PHP](//php.net) applications based  
-\*\* OOP - [Object-oriented programming](//en.wikipedia.org/wiki/Object-oriented_programming) where programming projects works with _objects_ concepts.  
+\* Works on [PHP](//php.net) applications based
+\*\* OOP - [Object-oriented programming](//en.wikipedia.org/wiki/Object-oriented_programming) where programming projects works with _objects_ concepts.
 
 ### Modules
 You can write different and separate applications in the same project which will be accessed just changing the base URL.
@@ -27,14 +27,14 @@ It means, roughly, that you will write PHP and HTML separate and all logic is or
 
 ---
 
-# [Getting Started](getting-started/index.md)
-Let us walk you through our [Tutorial](getting-started/index.md) project and show you how Suitup can help you
+# [Getting Started](user-guide/getting-started/index.md)
+Let us walk you through our [Tutorial](user-guide/getting-started/index.md) project and show you how Suitup can help you
 
 ---
 # Why we keep this project?
-At the start, we created this project just for personal use, because the usual frameworks wasn't giving us the speed and facility we expected from a framework PHP. We just want to create a web project as quick as possible. So we created SuitUp, a framework which you can create your web project truly fast and everything is really patterned. We are really happy and satisfied with the results we got with SuitUp yet here. 
+At the start, we created this project just for personal use, because the usual frameworks wasn't giving us the speed and facility we expected from a framework PHP. We just want to create a web project as quick as possible. So we created SuitUp, a framework which you can create your web project truly fast and everything is really patterned. We are really happy and satisfied with the results we got with SuitUp yet here.
 
-Try it you too, awesome web projects with SuitUp PHP Framework! **Now in version 2!!** 
+Try it you too, awesome web projects with SuitUp PHP Framework! **Now in version 2!!**
 
 ### Contributors
 Everyone is welcome to contribute with _SuitUp PHP Framework_. Just fork it, make your changes as minimal as possible and create a _pull request_. We ask to create minimal changes because by this way it's easier to merge your request to the project in approve case.
@@ -44,9 +44,9 @@ Everyone is welcome to contribute with _SuitUp PHP Framework_. Just fork it, mak
 ### Thanks to
 [JetBrains](https://www.jetbrains.com/?from=SuitUp+PHP+Framework+2) that gave us a free license of PHPStorm to maintain this project and develop with maximum productivity.
 
-![PHPStorm](https://i.ibb.co/xXB4Fzc/phpstorm-64.png) 
+![PHPStorm](https://i.ibb.co/xXB4Fzc/phpstorm-64.png)
 
 ---
 
-Made with love by Braghim Sistemas.  
+Made with love by Braghim Sistemas.
 Thank you very much!
