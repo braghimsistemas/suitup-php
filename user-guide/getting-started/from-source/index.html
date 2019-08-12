@@ -40,7 +40,7 @@
     
     
       
-        <title>Suitup Framework</title>
+        <title>Step By Step Tutorial - Suitup Framework</title>
       
     
     
@@ -117,7 +117,7 @@
             </span>
             <span class="md-header-nav__topic">
               
-                Install From Source Tutorial
+                Step By Step Tutorial
               
             </span>
           
@@ -238,10 +238,12 @@
       
       
 
+  
 
-  <li class="md-nav__item md-nav__item--nested">
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
     
     <label class="md-nav__link" for="nav-2">
       User Guide
@@ -262,6 +264,130 @@
     <a href="../" title="Getting Started" class="md-nav__link">
       Getting Started
     </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../impatients/" title="Tutorial for impatients" class="md-nav__link">
+      Tutorial for impatients
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Step By Step Tutorial
+      </label>
+    
+    <a href="./" title="Step By Step Tutorial" class="md-nav__link md-nav__link--active">
+      Step By Step Tutorial
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#project-structure" title="Project Structure" class="md-nav__link">
+    Project Structure
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#composer-require" title="Composer require" class="md-nav__link">
+    Composer require
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#files-contents" title="Files contents" class="md-nav__link">
+    Files contents
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#htaccess-file" title=".htaccess file" class="md-nav__link">
+    .htaccess file
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#index-file" title="Index file" class="md-nav__link">
+    Index file
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#abstract-controller" title="Abstract Controller" class="md-nav__link">
+    Abstract Controller
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#index-controller" title="Index Controller" class="md-nav__link">
+    Index Controller
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#html-layout" title="HTML Layout" class="md-nav__link">
+    HTML Layout
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#html-view" title="HTML View" class="md-nav__link">
+    HTML View
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
   </li>
 
         
@@ -438,8 +564,8 @@
                   <a href="https://github.com/braghimsistemas/suitup-php/edit/master/docs/user-guide/getting-started/from-source/index.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <h1 id="install-from-source-tutorial">Install From Source Tutorial</h1>
-<h2 id="project-structure">Project Structure</h2>
+                <h1 id="install-from-source-tutorial">Install From Source Tutorial<a class="headerlink" href="#install-from-source-tutorial" title="Permanent link">&para;</a></h1>
+<h2 id="project-structure">Project Structure<a class="headerlink" href="#project-structure" title="Permanent link">&para;</a></h2>
 <p>Create the project folder and get into it</p>
 <div class="codehilite"><pre><span></span>$ mkdir cowboys
 $ <span class="nb">cd</span> cowboys
@@ -471,7 +597,7 @@ $ <span class="nb">cd</span> cowboys
 </pre></div>
 
 
-<h2 id="composer-require">Composer require</h2>
+<h2 id="composer-require">Composer require<a class="headerlink" href="#composer-require" title="Permanent link">&para;</a></h2>
 <p><a href="https://getcomposer.org">Composer</a> will download all Suitup files and its dependencies as well manage future updates, so you don't have to worry about it.</p>
 <p>Download the <code>composer.phar</code> file to manage the project dependencies from <a href="https://getcomposer.org/composer.phar">here</a> or go to the <a href="https://getcomposer.org/download/">Composer Download page</a> and choose your preferred type of install.</p>
 <p>Run composer <code>require</code> to download suitup and its dependencies. It will automatically create a <code>composer.json</code> file too (a file with your project specifications).</p>
@@ -480,8 +606,8 @@ $ <span class="nb">cd</span> cowboys
 
 
 <p>Also you will need to set some <code>.htaccess</code> configs so SuitUp can work properly.</p>
-<h2 id="files-contents">Files contents</h2>
-<h3 id="htaccess-file">.htaccess file</h3>
+<h2 id="files-contents">Files contents<a class="headerlink" href="#files-contents" title="Permanent link">&para;</a></h2>
+<h3 id="htaccess-file">.htaccess file<a class="headerlink" href="#htaccess-file" title="Permanent link">&para;</a></h3>
 <p>file: <code>cowboys/.htaccess</code></p>
 <div class="codehilite"><pre><span></span><span class="nv">RewriteEngine</span> <span class="nv">on</span>
 
@@ -507,7 +633,7 @@ $ <span class="nb">cd</span> cowboys
 </pre></div>
 
 
-<h3 id="index-file">Index file</h3>
+<h3 id="index-file">Index file<a class="headerlink" href="#index-file" title="Permanent link">&para;</a></h3>
 <p>file: <code>cowboys/index.php</code></p>
 <div class="codehilite"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="nb">session_start</span><span class="p">();</span>
@@ -550,7 +676,7 @@ $ <span class="nb">cd</span> cowboys
 </pre></div>
 
 
-<h3 id="abstract-controller">Abstract Controller</h3>
+<h3 id="abstract-controller">Abstract Controller<a class="headerlink" href="#abstract-controller" title="Permanent link">&para;</a></h3>
 <p>file: <code>cowboys/modules/ModuleDefault/Controllers/AbstractController.php</code></p>
 <div class="codehilite"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="k">namespace</span> <span class="nx">ModuleDefault\Controllers</span><span class="p">;</span>
@@ -570,7 +696,7 @@ $ <span class="nb">cd</span> cowboys
 </pre></div>
 
 
-<h3 id="index-controller">Index Controller</h3>
+<h3 id="index-controller">Index Controller<a class="headerlink" href="#index-controller" title="Permanent link">&para;</a></h3>
 <p>file: <code>cowboys/modules/ModuleDefault/Controllers/IndexController.php</code></p>
 <div class="codehilite"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="k">namespace</span> <span class="nx">ModuleDefault\Controllers</span><span class="p">;</span>
@@ -584,7 +710,7 @@ $ <span class="nb">cd</span> cowboys
 </pre></div>
 
 
-<h3 id="html-layout">HTML Layout</h3>
+<h3 id="html-layout">HTML Layout<a class="headerlink" href="#html-layout" title="Permanent link">&para;</a></h3>
 <p>file: <code>cowboys/modules/ModuleDefault/views/layout.phtml</code></p>
 <div class="codehilite"><pre><span></span><span class="cp">&lt;!doctype html&gt;</span>
 <span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&quot;en&quot;</span><span class="p">&gt;</span>
@@ -617,7 +743,7 @@ $ <span class="nb">cd</span> cowboys
 </pre></div>
 
 
-<h3 id="html-view">HTML View</h3>
+<h3 id="html-view">HTML View<a class="headerlink" href="#html-view" title="Permanent link">&para;</a></h3>
 <p>file: <code>cowboys/modules/ModuleDefault/views/index/index.phtml</code></p>
 <div class="codehilite"><pre><span></span><span class="c">&lt;!-- The content created automatically --&gt;</span>
 <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;row&quot;</span><span class="p">&gt;</span>
@@ -659,6 +785,41 @@ $ <span class="nb">cd</span> cowboys
       
         
 <footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../impatients/" title="Tutorial for impatients" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Tutorial for impatients
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../../../contributors/" title="Contributors" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Contributors
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">

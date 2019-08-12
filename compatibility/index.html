@@ -265,6 +265,30 @@
   </li>
 
         
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../user-guide/getting-started/impatients/" title="Tutorial for impatients" class="md-nav__link">
+      Tutorial for impatients
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../user-guide/getting-started/from-source/" title="Step By Step Tutorial" class="md-nav__link">
+      Step By Step Tutorial
+    </a>
+  </li>
+
+        
       </ul>
     </nav>
   </li>
@@ -456,10 +480,10 @@
                   <a href="https://github.com/braghimsistemas/suitup-php/edit/master/docs/compatibility/index.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <h1 id="comparing-to-suitup-version-1">Comparing to SuitUp version 1</h1>
+                <h1 id="comparing-to-suitup-version-1">Comparing to SuitUp version 1<a class="headerlink" href="#comparing-to-suitup-version-1" title="Permanent link">&para;</a></h1>
 <p>We keep great compatibility with previous version talking about construct a project with SuitUp of course, but there are
 some differences as the list below. </p>
-<h2 id="database-connection">Database connection</h2>
+<h2 id="database-connection">Database connection<a class="headerlink" href="#database-connection" title="Permanent link">&para;</a></h2>
 <p>You can keep the usual file <code>config/database.config.php</code> but now its contents must to be like that:</p>
 <div class="codehilite"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="k">return</span> <span class="k">array</span><span class="p">(</span>
@@ -478,14 +502,14 @@ some differences as the list below. </p>
   another kind of database as postgres or DB2, but it is not implemented yet.
   Maybe you can help us with that... Why not? =)</p>
 </blockquote>
-<h3 id="transactions">Transactions</h3>
+<h3 id="transactions">Transactions<a class="headerlink" href="#transactions" title="Permanent link">&para;</a></h3>
 <p>To begin/commit/rollBack transactions use the methods below:</p>
 <ul>
 <li><code>SuitUp\Database\DbAdapter::beginTransaction()</code></li>
 <li><code>SuitUp\Database\DbAdapter::commit()</code></li>
 <li><code>SuitUp\Database\DbAdapter::rollBack()</code></li>
 </ul>
-<h2 id="layout-messages">Layout Messages</h2>
+<h2 id="layout-messages">Layout Messages<a class="headerlink" href="#layout-messages" title="Permanent link">&para;</a></h2>
 <p>To capture the messages from layout in the previous version there was a variable available called <code>$layoutMessages</code>, but
 now its name is just <code>$messages</code>.</p>
                 

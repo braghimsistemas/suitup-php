@@ -366,6 +366,30 @@
   </li>
 
         
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="impatients/" title="Tutorial for impatients" class="md-nav__link">
+      Tutorial for impatients
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="from-source/" title="Step By Step Tutorial" class="md-nav__link">
+      Step By Step Tutorial
+    </a>
+  </li>
+
+        
       </ul>
     </nav>
   </li>
@@ -538,8 +562,8 @@
                   <a href="https://github.com/braghimsistemas/suitup-php/edit/master/docs/user-guide/getting-started/index.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <h1 id="how-to-begin">How to begin</h1>
-<h2 id="requirements">Requirements</h2>
+                <h1 id="how-to-begin">How to begin<a class="headerlink" href="#how-to-begin" title="Permanent link">&para;</a></h1>
+<h2 id="requirements">Requirements<a class="headerlink" href="#requirements" title="Permanent link">&para;</a></h2>
 <p>Suitup Framework requires PHP &gt;= 7.2 and whatever web server you prefer. For this tutorials we
 will create the project with some addictional features to make it easy and improve the Suitup
 super powers. To engage you with that check it out if you need first study some of following
@@ -552,7 +576,7 @@ no matter how method of instalation you will choose, the structure will be the s
 <p>You will be able to change directory structure of the project later if you want to,
   but for this tutorials we will follow the basic structure, making everything easyer.</p>
 </blockquote>
-<h2 id="install">Install</h2>
+<h2 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h2>
 <p>There are several ways to create projects with Suitup Framework, you can even create a new project
 by command line with our Suitup Manager software. Bellow you will find a list with all this
 possibilities by difficult level:</p>
@@ -566,7 +590,7 @@ possibilities by difficult level:</p>
 <p>To really understand HOW Suitup works <strong>we recommend you to install by <a href="#from-source">From Source</a></strong>
   method even it taking a bit more time.</p>
 </blockquote>
-<h3 id="docker">Docker</h3>
+<h3 id="docker">Docker<a class="headerlink" href="#docker" title="Permanent link">&para;</a></h3>
 <p>Docker is a tool created to store containers and it works almost like virtual machines. When you
 create a project with Docker it's not necessary even to have Apache installed in you machine,
 even linux is not required, Docker will manage everything for you by a predefined structure
@@ -635,7 +659,7 @@ $ <span class="nv">docker</span> <span class="k">exec</span> <span class="o">-</
 
 
 <p>Done! After that all you need is to access on your browser: <code>localhost:8080</code></p>
-<h3 id="skeleton-project">Skeleton Project</h3>
+<h3 id="skeleton-project">Skeleton Project<a class="headerlink" href="#skeleton-project" title="Permanent link">&para;</a></h3>
 <p><a href="#setup-web-server">Check here</a> to see how to setup a web server first.</p>
 <p>Clone the project from it's repository on github:</p>
 <div class="codehilite"><pre><span></span>$ git clone git@github.com:braghimsistemas/suitup-skeleton.git
@@ -655,7 +679,7 @@ $ <span class="nv">docker</span> <span class="k">exec</span> <span class="o">-</
 <p>Done! Open on the browser the following address: <code>http://localhost/suitup-skeleton</code>
 (assuming that you installed directly on the localhost). If it was done with virtual
 host don't forget to add the line <code>127.0.0.1  {the new domain}</code> to the <code>/etc/hosts</code> file.</p>
-<h3 id="suitup-manager">Suitup Manager</h3>
+<h3 id="suitup-manager">Suitup Manager<a class="headerlink" href="#suitup-manager" title="Permanent link">&para;</a></h3>
 <p>To automate some repetitive tasks we created a command line debian based software that can initialize a new project, create a new controller, "model" files, forms, etc...</p>
 <p>All you gotta do to get it is to download the <code>suitup.deb</code> file from the latest release <a href="https://github.com/braghimsistemas/suitup-php/releases/latest">from here</a> and install it with the command bellow.</p>
 <div class="codehilite"><pre><span></span>$ sudo dpkg -i ~/Downloads/suitup.deb
@@ -674,7 +698,7 @@ $ suitup create dbtable     /* Create the structure to a database table <span cl
 <p>So run <code>$ suitup install</code> and follow the suggested steps to entirely create a new project, it will ask you to automatically download composer dependencies too.</p>
 <p>After that you just need to <a href="#setup-web-server">setup the web server</a> and be happy with your brand new project.</p>
 <p>Ps.: A folder with that name given to the project will be created</p>
-<h3 id="from-source">From Source</h3>
+<h3 id="from-source">From Source<a class="headerlink" href="#from-source" title="Permanent link">&para;</a></h3>
 <p>For beginners, at least with <strong>this</strong> framework, we highly recommend to
 create your project by this method so you will understand a bit more how
 SuitUp works and its mechanics.</p>
@@ -682,12 +706,12 @@ SuitUp works and its mechanics.</p>
 <p>As this is the more instructive but the largest way to do, follow this <a href="from-source">complete tutorial</a> that will lead you on how to create all the files one by one and its contents, letting you know what everything means step by step. That's why this is the best way to begin.</p>
 <p><a href="from-source">Install From Source Tutorial</a></p>
 <hr />
-<h2 id="setup-web-server">Setup Web Server</h2>
+<h2 id="setup-web-server">Setup Web Server<a class="headerlink" href="#setup-web-server" title="Permanent link">&para;</a></h2>
 <p>First of all you will need a web server like apache, nginx or whatever you prefer and PHP version 7.2+.</p>
 <blockquote>
 <p>A Web server is a program that uses HTTP (Hypertext Transfer Protocol) to serve the files that form Web pages to users, in response to their requests, which are forwarded by their computers' HTTP clients. Dedicated computers and appliances may be referred to as Web servers as well. Reference: <a href="https://whatis.techtarget.com/definition/Web-server">WhatIs.com</a></p>
 </blockquote>
-<h3 id="apache-web-server">Apache Web Server</h3>
+<h3 id="apache-web-server">Apache Web Server<a class="headerlink" href="#apache-web-server" title="Permanent link">&para;</a></h3>
 <p>Install apache web server with apt:</p>
 <div class="codehilite"><pre><span></span>$ sudo apt-get install apache2
 </pre></div>
@@ -775,13 +799,13 @@ like with that.</p>
           </a>
         
         
-          <a href="../../contributors/" title="Contributors" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="impatients/" title="Tutorial for impatients" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Contributors
+                Tutorial for impatients
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">
