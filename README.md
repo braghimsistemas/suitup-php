@@ -11,11 +11,10 @@
 ### Composer
 `composer require braghim-sistemas/suitup-php`
 
-### How to do?
-Check out our [wiki](https://github.com/braghimsistemas/suitup-php/wiki), there you will be able to install the project quickly and start a web application with productivity focus.
+### Getting Started
 
 #### PHP Documentation
-You can find all documentation in the [Read The Docs](https://suitup-php.readthedocs.io/en/master/). We are trying to keep that as up to date as code itself, but hope you understand that it may not be always the reality...
+You can find all documentation in the [Official docs](https://braghimsistemas.github.io/suitup-php/). We are trying to keep that as up to date as code itself, but hope you understand that it may not be always the reality...
 
 **Legendary Web Applications**
 While you write the code for an application there is a lot of code you probably will use again and again and will have to copy for another application in future. Because of this, someone too smarty for whon we have to congrats a lot, created a project which works as a structure (just like a wireframe) with a lot of features you only have to use. With this project is possible to create whatever kind of web application **quickly** and it's just awesome!

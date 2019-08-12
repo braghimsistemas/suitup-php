@@ -9,10 +9,6 @@ theme:
     primary: deep purple
   logo:
     icon: person_pin_circle
-  highlightjs: true
-  hljs_languages:
-    - yaml
-    - php
 extra_css:
   - css/extra-style.css
 nav:
