@@ -9,13 +9,14 @@ features: `Composer` - `Git` - `Apache` - `htaccess` and _optionally_ `MySql` - 
 
 **Github** 
 
-First of all, there are a Skeleton Project created properly to begin new projects in the link bellow,
+First of all, there is a Skeleton Project created properly to begin new projects in the link bellow,
 no matter how method of instalation you will choose, the structure will be the same:
 
 [https://github.com/braghimsistemas/suitup-skeleton](https://github.com/braghimsistemas/suitup-skeleton)
 
-  > You will be able to change directory structure of the project later if you want to,
-  but for this tutorials we will follow the basic structure, making everything easyer.
+!!! tip
+    You will be able to change directory structure of the project later if you want to,
+    but for this tutorials we will follow the basic structure, making everything easyer.
 
 ## Install
 
@@ -28,8 +29,9 @@ possibilities by difficult level:
   - [Suitup Manager (command line)](#suitup-manager) - easy
   - [From Source (Recommended for beginners)](#from-source) - medium
 
-  > To really understand HOW Suitup works **we recommend you to install by [From Source](#from-source)**
-  method even it taking a bit more time.
+!!! info "Important"
+    To really understand HOW Suitup works **we recommend you to install by [From Source](#from-source)**
+    method even it taking a bit more time.
 
 ### Docker
 
@@ -42,10 +44,11 @@ To begin with Docker you need to install it locally following your system requir
 [Here you can find all documentation needed to do it](https://www.docker.com/get-started).
 Remember that there are two features that you need to install: `Docker` and `Docker Compose`!
 
-  > 1. Docker is one of the easyest way to init a Suitup project but maybe it's the hardest way to
-  modify it because of the configurations made by `docker-compose.yml` file.
+!!! warning
+    1. Docker is one of the easyest way to init a Suitup project but maybe it's the hardest way to
+    modify it because of the configurations made by `docker-compose.yml` file.
 
-  > 2. We will assume that you are on linux (GNU system based).
+    2. We will assume that you are on linux (GNU system based).
 
 Walk to the folder where you want to install the project, maybe you already have Apache and PHP
 installed, but you don't need to put it on the localhost, actually you can install anywhere when
@@ -53,17 +56,20 @@ we talk about Docker, of course.
 
 Clone the project
 
-    /* Step 1. */
+    #!bash
+    # step 1.
     $ git clone git@github.com:braghimsistemas/suitup-skeleton.git
 
 Enter inside the project folder
 
-    /* Step 2. */
+    #!bash
+    # Step 2.
     $ cd suitup-skeleton
     
 Up the Docker services
 
-    /* Step 3. */
+    #!bash
+    # Step 3.
     $ docker-compose up -d
 
 After that, you must be able to access `localhost:8080` and the project must to be running
@@ -74,22 +80,26 @@ already, but as you don't downloaded dependencies the following message will be 
 We are assuming that you don't have php installed, so let access the Docker apache container
 and download the composer dependencies from there. _Remember that if you already have PHP 7.2+ installed skip to the step 6 and **avoid** step 7._
 
-    /* Step 4. */
+    #!bash
+    # Step 4.
     $ docker exec -it suitup-skeleton /bin/bash
     
 Walk into application docker folder
     
-    /* Step 5. */
+    #!bash
+    # Step 5.
     $ cd /app
 
 Download the composer dependencies
 
-    /* Step 6. */
+    #!bash
+    # Step 6.
     $ php composer.phar install
 
 Grant access to the vendors folder
 
-    /* Step 7. */
+    #!bash
+    #Step 7.
     $ chmod 775 vendor -R
 
 Done! After that all you need is to access on your browser: `localhost:8080`
@@ -100,14 +110,17 @@ Done! After that all you need is to access on your browser: `localhost:8080`
 
 Clone the project from it's repository on github:
 
+    #!bash
     $ git clone git@github.com:braghimsistemas/suitup-skeleton.git
 
 Walk into folder:
 
+    #!bash
     $ cd suitup-skeleton/
 
 Install composer dependencies
 
+    #!bash
     $ php composer.phar install
 
 Done! Open on the browser the following address: `http://localhost/suitup-skeleton`
@@ -120,15 +133,21 @@ To automate some repetitive tasks we created a command line debian based softwar
 
 All you gotta do to get it is to download the `suitup.deb` file from the latest release [from here](https://github.com/braghimsistemas/suitup-php/releases/latest) and install it with the command bellow.
 
+    #!bash
     $ sudo dpkg -i ~/Downloads/suitup.deb
 
 After that you must to be able to run the `suitup` command from your terminal with the following options:
 
+!!! tip
+    Use the commands bellow to run automated actions into your project
+
+    ```bash
     $ suitup install            /* Install a brand new project */
     $ suitup create module      /* create a new module to an existing project */
     $ suitup create controller  /* create a new controller with its views */
     $ suitup create form        /* Starts a new form validator */
     $ suitup create dbtable     /* Create the structure to a database table (Business and Gateway files) */
+    ```
 
 So run `$ suitup install` and follow the suggested steps to entirely create a new project, it will ask you to automatically download composer dependencies too.
 
@@ -154,21 +173,25 @@ As this is the more instructive but the largest way to do, follow this [complete
 
 First of all you will need a web server like apache, nginx or whatever you prefer and PHP version 7.2+.
 
-> A Web server is a program that uses HTTP (Hypertext Transfer Protocol) to serve the files that form Web pages to users, in response to their requests, which are forwarded by their computers' HTTP clients. Dedicated computers and appliances may be referred to as Web servers as well. Reference: [WhatIs.com](https://whatis.techtarget.com/definition/Web-server)
+!!! question "What is a WEB SERVER?"
+    A Web server is a program that uses HTTP (Hypertext Transfer Protocol) to serve the files that form Web pages to users, in response to their requests, which are forwarded by their computers' HTTP clients. Dedicated computers and appliances may be referred to as Web servers as well. Reference: [WhatIs.com](https://whatis.techtarget.com/definition/Web-server)
 
 ### Apache Web Server
 
 Install apache web server with apt:
 
+    #!bash
     $ sudo apt-get install apache2
 
 The `mod_rewrite` is required to work with friendly
 URL's routes.
 
+    #!bash
     $ sudo a2enmod rewrite
 
 After enable mod rewrite you shall need to restart the server.
 
+    #!bash
     $ sudo service apache2 restart
 
 It's important that you need to **allow override** on the virtual host
@@ -181,6 +204,7 @@ will call the same file: `/var/www/html/index.php`
 The example bellow shows how the default virtual host address must looks
 like with that.
 
+    #!bash
     $ sudo vi /etc/apache2/sites-available/000-default.conf
 
 ```
