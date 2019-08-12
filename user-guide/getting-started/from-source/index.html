@@ -561,19 +561,40 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/braghimsistemas/suitup-php/edit/master/docs/user-guide/getting-started/from-source/index.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="https://github.com/braghimsistemas/suitup-php/edit/master/docs/user-guide/getting-started/from-source.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
                 <h1 id="install-from-source-tutorial">Install From Source Tutorial<a class="headerlink" href="#install-from-source-tutorial" title="Permanent link">&para;</a></h1>
 <h2 id="project-structure">Project Structure<a class="headerlink" href="#project-structure" title="Permanent link">&para;</a></h2>
 <p>Create the project folder and get into it</p>
-<div class="codehilite"><pre><span></span>$ mkdir cowboys
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span>$ mkdir cowboys
 $ <span class="nb">cd</span> cowboys
 </pre></div>
-
+</td></tr></table>
 
 <p>Let's create all basic needed structure of folders and files, to do that just follow the tree below.</p>
-<div class="codehilite"><pre><span></span><span class="n">cowboys</span><span class="o">/</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">cowboys</span><span class="o">/</span>
 <span class="err">├──</span> <span class="n">assets</span>
 <span class="err">│</span>   <span class="err">├──</span> <span class="n">main</span><span class="p">.</span><span class="n">js</span>
 <span class="err">│</span>   <span class="err">└──</span> <span class="n">styles</span><span class="p">.</span><span class="n">css</span>
@@ -595,21 +616,41 @@ $ <span class="nb">cd</span> cowboys
 <span class="err">├──</span> <span class="p">.</span><span class="n">htaccess</span>
 <span class="err">└──</span> <span class="k">index</span><span class="p">.</span><span class="n">php</span>
 </pre></div>
-
+</td></tr></table>
 
 <h2 id="composer-require">Composer require<a class="headerlink" href="#composer-require" title="Permanent link">&para;</a></h2>
 <p><a href="https://getcomposer.org">Composer</a> will download all Suitup files and its dependencies as well manage future updates, so you don't have to worry about it.</p>
 <p>Download the <code>composer.phar</code> file to manage the project dependencies from <a href="https://getcomposer.org/composer.phar">here</a> or go to the <a href="https://getcomposer.org/download/">Composer Download page</a> and choose your preferred type of install.</p>
 <p>Run composer <code>require</code> to download suitup and its dependencies. It will automatically create a <code>composer.json</code> file too (a file with your project specifications).</p>
-<div class="codehilite"><pre><span></span>$ php composer.phar require braghim-sistemas/suitup-php ^2
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span>$ php composer.phar require braghim-sistemas/suitup-php ^2
 </pre></div>
-
+</td></tr></table>
 
 <p>Also you will need to set some <code>.htaccess</code> configs so SuitUp can work properly.</p>
 <h2 id="files-contents">Files contents<a class="headerlink" href="#files-contents" title="Permanent link">&para;</a></h2>
 <h3 id="htaccess-file">.htaccess file<a class="headerlink" href="#htaccess-file" title="Permanent link">&para;</a></h3>
 <p>file: <code>cowboys/.htaccess</code></p>
-<div class="codehilite"><pre><span></span><span class="nv">RewriteEngine</span> <span class="nv">on</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="nv">RewriteEngine</span> <span class="nv">on</span>
 
 # <span class="nv">The</span> <span class="nv">following</span> <span class="nv">rule</span> <span class="nv">tells</span> <span class="nv">Apache</span> <span class="nv">that</span> <span class="k">if</span> <span class="nv">the</span> <span class="nv">requested</span> <span class="nv">filename</span>
 # <span class="nv">exists</span>, <span class="nv">simply</span> <span class="nv">serve</span> <span class="nv">it</span>.
@@ -631,11 +672,48 @@ $ <span class="nb">cd</span> cowboys
 <span class="k">SetEnv</span> <span class="nv">DEVELOPMENT</span> <span class="nv">true</span>
 <span class="k">SetEnv</span> <span class="nv">SHOW_ERRORS</span> <span class="nv">true</span>
 </pre></div>
-
+</td></tr></table>
 
 <h3 id="index-file">Index file<a class="headerlink" href="#index-file" title="Permanent link">&para;</a></h3>
 <p>file: <code>cowboys/index.php</code></p>
-<div class="codehilite"><pre><span></span><span class="cp">&lt;?php</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="nb">session_start</span><span class="p">();</span>
 
 <span class="c1">// Set your timezone</span>
@@ -674,11 +752,25 @@ $ <span class="nb">cd</span> cowboys
 
 <span class="nv">$mvc</span><span class="o">-&gt;</span><span class="na">run</span><span class="p">();</span>
 </pre></div>
-
+</td></tr></table>
 
 <h3 id="abstract-controller">Abstract Controller<a class="headerlink" href="#abstract-controller" title="Permanent link">&para;</a></h3>
 <p>file: <code>cowboys/modules/ModuleDefault/Controllers/AbstractController.php</code></p>
-<div class="codehilite"><pre><span></span><span class="cp">&lt;?php</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="k">namespace</span> <span class="nx">ModuleDefault\Controllers</span><span class="p">;</span>
 
 <span class="k">use</span> <span class="nx">SuitUp\Mvc\MvcAbstractController</span><span class="p">;</span>
@@ -694,11 +786,19 @@ $ <span class="nb">cd</span> cowboys
   <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
-
+</td></tr></table>
 
 <h3 id="index-controller">Index Controller<a class="headerlink" href="#index-controller" title="Permanent link">&para;</a></h3>
 <p>file: <code>cowboys/modules/ModuleDefault/Controllers/IndexController.php</code></p>
-<div class="codehilite"><pre><span></span><span class="cp">&lt;?php</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="k">namespace</span> <span class="nx">ModuleDefault\Controllers</span><span class="p">;</span>
 
 <span class="k">class</span> <span class="nc">IndexController</span> <span class="k">extends</span> <span class="nx">AbstractController</span>
@@ -708,11 +808,38 @@ $ <span class="nb">cd</span> cowboys
   <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
-
+</td></tr></table>
 
 <h3 id="html-layout">HTML Layout<a class="headerlink" href="#html-layout" title="Permanent link">&para;</a></h3>
 <p>file: <code>cowboys/modules/ModuleDefault/views/layout.phtml</code></p>
-<div class="codehilite"><pre><span></span><span class="cp">&lt;!doctype html&gt;</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="cp">&lt;!doctype html&gt;</span>
 <span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&quot;en&quot;</span><span class="p">&gt;</span>
   <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
     <span class="c">&lt;!-- Required meta tags --&gt;</span>
@@ -741,11 +868,33 @@ $ <span class="nb">cd</span> cowboys
   <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
 <span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
 </pre></div>
-
+</td></tr></table>
 
 <h3 id="html-view">HTML View<a class="headerlink" href="#html-view" title="Permanent link">&para;</a></h3>
 <p>file: <code>cowboys/modules/ModuleDefault/views/index/index.phtml</code></p>
-<div class="codehilite"><pre><span></span><span class="c">&lt;!-- The content created automatically --&gt;</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c">&lt;!-- The content created automatically --&gt;</span>
 <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;row&quot;</span><span class="p">&gt;</span>
   <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;col-6&quot;</span><span class="p">&gt;</span>
     <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;card&quot;</span><span class="p">&gt;</span>
@@ -769,6 +918,7 @@ $ <span class="nb">cd</span> cowboys
   <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
 <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
 </pre></div>
+</td></tr></table>
                 
                   
                 

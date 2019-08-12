@@ -485,7 +485,15 @@
 some differences as the list below. </p>
 <h2 id="database-connection">Database connection<a class="headerlink" href="#database-connection" title="Permanent link">&para;</a></h2>
 <p>You can keep the usual file <code>config/database.config.php</code> but now its contents must to be like that:</p>
-<div class="codehilite"><pre><span></span><span class="cp">&lt;?php</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="k">return</span> <span class="k">array</span><span class="p">(</span>
   <span class="s1">&#39;adapter&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;mysql&#39;</span><span class="p">,</span> <span class="c1">// New property key</span>
   <span class="s1">&#39;host&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;127.0.0.1&#39;</span><span class="p">,</span>
@@ -495,7 +503,7 @@ some differences as the list below. </p>
   <span class="s1">&#39;password&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
 <span class="p">);</span>
 </pre></div>
-
+</td></tr></table>
 
 <blockquote>
 <p>Note the 'adapter' key that was included. So will be possible to create connection to

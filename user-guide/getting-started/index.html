@@ -569,13 +569,14 @@ will create the project with some addictional features to make it easy and impro
 super powers. To engage you with that check it out if you need first study some of following
 features: <code>Composer</code> - <code>Git</code> - <code>Apache</code> - <code>htaccess</code> and <em>optionally</em> <code>MySql</code> - <code>Docker &amp; Docker Compose</code></p>
 <p><strong>Github</strong> </p>
-<p>First of all, there are a Skeleton Project created properly to begin new projects in the link bellow,
+<p>First of all, there is a Skeleton Project created properly to begin new projects in the link bellow,
 no matter how method of instalation you will choose, the structure will be the same:</p>
 <p><a href="https://github.com/braghimsistemas/suitup-skeleton">https://github.com/braghimsistemas/suitup-skeleton</a></p>
-<blockquote>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
 <p>You will be able to change directory structure of the project later if you want to,
-  but for this tutorials we will follow the basic structure, making everything easyer.</p>
-</blockquote>
+but for this tutorials we will follow the basic structure, making everything easyer.</p>
+</div>
 <h2 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h2>
 <p>There are several ways to create projects with Suitup Framework, you can even create a new project
 by command line with our Suitup Manager software. Bellow you will find a list with all this
@@ -586,10 +587,11 @@ possibilities by difficult level:</p>
 <li><a href="#suitup-manager">Suitup Manager (command line)</a> - easy</li>
 <li><a href="#from-source">From Source (Recommended for beginners)</a> - medium</li>
 </ul>
-<blockquote>
+<div class="admonition info">
+<p class="admonition-title">Important</p>
 <p>To really understand HOW Suitup works <strong>we recommend you to install by <a href="#from-source">From Source</a></strong>
-  method even it taking a bit more time.</p>
-</blockquote>
+method even it taking a bit more time.</p>
+</div>
 <h3 id="docker">Docker<a class="headerlink" href="#docker" title="Permanent link">&para;</a></h3>
 <p>Docker is a tool created to store containers and it works almost like virtual machines. When you
 create a project with Docker it's not necessary even to have Apache installed in you machine,
@@ -598,83 +600,91 @@ described in the <code>docker-compose.yml</code> file.</p>
 <p>To begin with Docker you need to install it locally following your system requirements.
 <a href="https://www.docker.com/get-started">Here you can find all documentation needed to do it</a>.
 Remember that there are two features that you need to install: <code>Docker</code> and <code>Docker Compose</code>!</p>
-<blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
 <ol>
 <li>
 <p>Docker is one of the easyest way to init a Suitup project but maybe it's the hardest way to
-  modify it because of the configurations made by <code>docker-compose.yml</code> file.</p>
+modify it because of the configurations made by <code>docker-compose.yml</code> file.</p>
 </li>
 <li>
 <p>We will assume that you are on linux (GNU system based).</p>
 </li>
 </ol>
-</blockquote>
+</div>
 <p>Walk to the folder where you want to install the project, maybe you already have Apache and PHP
 installed, but you don't need to put it on the localhost, actually you can install anywhere when
 we talk about Docker, of course.</p>
 <p>Clone the project</p>
-<div class="codehilite"><pre><span></span><span class="cm">/* Step 1. */</span><span class="w"></span>
-<span class="err">$</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="n">clone</span><span class="w"> </span><span class="n">git</span><span class="nv">@github</span><span class="p">.</span><span class="nl">com</span><span class="p">:</span><span class="n">braghimsistemas</span><span class="o">/</span><span class="n">suitup</span><span class="o">-</span><span class="n">skeleton</span><span class="p">.</span><span class="n">git</span><span class="w"></span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># step 1.</span>
+$ git clone git@github.com:braghimsistemas/suitup-skeleton.git
 </pre></div>
-
+</td></tr></table>
 
 <p>Enter inside the project folder</p>
-<div class="codehilite"><pre><span></span><span class="cm">/* Step 2. */</span><span class="w"></span>
-<span class="err">$</span><span class="w"> </span>cd<span class="w"> </span>suitup<span class="o">-</span>skeleton<span class="w"></span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># Step 2.</span>
+$ <span class="nb">cd</span> suitup-skeleton
 </pre></div>
-
+</td></tr></table>
 
 <p>Up the Docker services</p>
-<div class="codehilite"><pre><span></span><span class="cm">/* Step 3. */</span><span class="w"></span>
-<span class="err">$</span><span class="w"> </span>docker<span class="o">-</span>compose<span class="w"> </span>up<span class="w"> </span><span class="o">-</span>d<span class="w"></span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># Step 3.</span>
+$ docker-compose up -d
 </pre></div>
-
+</td></tr></table>
 
 <p>After that, you must be able to access <code>localhost:8080</code> and the project must to be running
 already, but as you don't downloaded dependencies the following message will be shown.</p>
 <p><code>Project dependencies not found, run 'php composer.phar install'</code></p>
 <p>We are assuming that you don't have php installed, so let access the Docker apache container
 and download the composer dependencies from there. <em>Remember that if you already have PHP 7.2+ installed skip to the step 6 and <strong>avoid</strong> step 7.</em></p>
-<div class="codehilite"><pre><span></span><span class="cm">/* Step 4. */</span>
-$ <span class="nv">docker</span> <span class="k">exec</span> <span class="o">-</span><span class="nv">it</span> <span class="nv">suitup</span><span class="o">-</span><span class="nv">skeleton</span> <span class="o">/</span><span class="nv">bin</span><span class="o">/</span><span class="nv">bash</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># Step 4.</span>
+$ docker <span class="nb">exec</span> -it suitup-skeleton /bin/bash
 </pre></div>
-
+</td></tr></table>
 
 <p>Walk into application docker folder</p>
-<div class="codehilite"><pre><span></span><span class="cm">/* Step 5. */</span><span class="w"></span>
-<span class="err">$</span><span class="w"> </span>cd<span class="w"> </span><span class="o">/</span>app<span class="w"></span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># Step 5.</span>
+$ <span class="nb">cd</span> /app
 </pre></div>
-
+</td></tr></table>
 
 <p>Download the composer dependencies</p>
-<div class="codehilite"><pre><span></span><span class="cm">/* Step 6. */</span><span class="w"></span>
-<span class="err">$</span><span class="w"> </span>php<span class="w"> </span>composer<span class="o">.</span>phar<span class="w"> </span>install<span class="w"></span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># Step 6.</span>
+$ php composer.phar install
 </pre></div>
-
+</td></tr></table>
 
 <p>Grant access to the vendors folder</p>
-<div class="codehilite"><pre><span></span><span class="cm">/* Step 7. */</span><span class="w"></span>
-<span class="err">$</span><span class="w"> </span>chmod<span class="w"> </span><span class="m">775</span><span class="w"> </span>vendor<span class="w"> </span><span class="o">-</span>R<span class="w"></span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1">#Step 7.</span>
+$ chmod <span class="m">775</span> vendor -R
 </pre></div>
-
+</td></tr></table>
 
 <p>Done! After that all you need is to access on your browser: <code>localhost:8080</code></p>
 <h3 id="skeleton-project">Skeleton Project<a class="headerlink" href="#skeleton-project" title="Permanent link">&para;</a></h3>
 <p><a href="#setup-web-server">Check here</a> to see how to setup a web server first.</p>
 <p>Clone the project from it's repository on github:</p>
-<div class="codehilite"><pre><span></span>$ git clone git@github.com:braghimsistemas/suitup-skeleton.git
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span>$ git clone git@github.com:braghimsistemas/suitup-skeleton.git
 </pre></div>
-
+</td></tr></table>
 
 <p>Walk into folder:</p>
-<div class="codehilite"><pre><span></span>$ <span class="nb">cd</span> suitup-skeleton/
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span>$ <span class="nb">cd</span> suitup-skeleton/
 </pre></div>
-
+</td></tr></table>
 
 <p>Install composer dependencies</p>
-<div class="codehilite"><pre><span></span>$ php composer.phar install
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span>$ php composer.phar install
 </pre></div>
-
+</td></tr></table>
 
 <p>Done! Open on the browser the following address: <code>http://localhost/suitup-skeleton</code>
 (assuming that you installed directly on the localhost). If it was done with virtual
@@ -682,19 +692,27 @@ host don't forget to add the line <code>127.0.0.1  {the new domain}</code> to th
 <h3 id="suitup-manager">Suitup Manager<a class="headerlink" href="#suitup-manager" title="Permanent link">&para;</a></h3>
 <p>To automate some repetitive tasks we created a command line debian based software that can initialize a new project, create a new controller, "model" files, forms, etc...</p>
 <p>All you gotta do to get it is to download the <code>suitup.deb</code> file from the latest release <a href="https://github.com/braghimsistemas/suitup-php/releases/latest">from here</a> and install it with the command bellow.</p>
-<div class="codehilite"><pre><span></span>$ sudo dpkg -i ~/Downloads/suitup.deb
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span>$ sudo dpkg -i ~/Downloads/suitup.deb
 </pre></div>
-
+</td></tr></table>
 
 <p>After that you must to be able to run the <code>suitup</code> command from your terminal with the following options:</p>
-<div class="codehilite"><pre><span></span>$ suitup install            /* Install a brand new project */
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Use the commands bellow to run automated actions into your project</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span>$ suitup install            /* Install a brand new project */
 $ suitup create module      /* create a new module to an existing project */
 $ suitup create controller  /* create a new controller with its views */
 $ suitup create form        /* Starts a new form validator */
 $ suitup create dbtable     /* Create the structure to a database table <span class="o">(</span>Business and Gateway files<span class="o">)</span> */
 </pre></div>
+</td></tr></table>
 
-
+</div>
 <p>So run <code>$ suitup install</code> and follow the suggested steps to entirely create a new project, it will ask you to automatically download composer dependencies too.</p>
 <p>After that you just need to <a href="#setup-web-server">setup the web server</a> and be happy with your brand new project.</p>
 <p>Ps.: A folder with that name given to the project will be created</p>
@@ -708,25 +726,26 @@ SuitUp works and its mechanics.</p>
 <hr />
 <h2 id="setup-web-server">Setup Web Server<a class="headerlink" href="#setup-web-server" title="Permanent link">&para;</a></h2>
 <p>First of all you will need a web server like apache, nginx or whatever you prefer and PHP version 7.2+.</p>
-<blockquote>
+<div class="admonition question">
+<p class="admonition-title">What is a WEB SERVER?</p>
 <p>A Web server is a program that uses HTTP (Hypertext Transfer Protocol) to serve the files that form Web pages to users, in response to their requests, which are forwarded by their computers' HTTP clients. Dedicated computers and appliances may be referred to as Web servers as well. Reference: <a href="https://whatis.techtarget.com/definition/Web-server">WhatIs.com</a></p>
-</blockquote>
+</div>
 <h3 id="apache-web-server">Apache Web Server<a class="headerlink" href="#apache-web-server" title="Permanent link">&para;</a></h3>
 <p>Install apache web server with apt:</p>
-<div class="codehilite"><pre><span></span>$ sudo apt-get install apache2
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span>$ sudo apt-get install apache2
 </pre></div>
-
+</td></tr></table>
 
 <p>The <code>mod_rewrite</code> is required to work with friendly
 URL's routes.</p>
-<div class="codehilite"><pre><span></span>$ sudo a2enmod rewrite
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span>$ sudo a2enmod rewrite
 </pre></div>
-
+</td></tr></table>
 
 <p>After enable mod rewrite you shall need to restart the server.</p>
-<div class="codehilite"><pre><span></span>$ sudo service apache2 restart
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span>$ sudo service apache2 restart
 </pre></div>
-
+</td></tr></table>
 
 <p>It's important that you need to <strong>allow override</strong> on the virtual host
 where you will run the application (even in localhost). It will allow
@@ -736,11 +755,30 @@ means that every request in the <code>http://localhost</code>, no matter what UR
 will call the same file: <code>/var/www/html/index.php</code></p>
 <p>The example bellow shows how the default virtual host address must looks
 like with that.</p>
-<div class="codehilite"><pre><span></span>$ sudo vi /etc/apache2/sites-available/000-default.conf
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span>$ sudo vi /etc/apache2/sites-available/000-default.conf
 </pre></div>
+</td></tr></table>
 
-
-<div class="codehilite"><pre><span></span># Apache Example
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20</pre></div></td><td class="code"><div class="codehilite"><pre><span></span># Apache Example
 <span class="nt">&lt;VirtualHost</span> <span class="err">*:80</span><span class="nt">&gt;</span>
     ServerAdmin webmaster@localhost
 
@@ -761,7 +799,7 @@ like with that.</p>
 
 <span class="nt">&lt;/VirtualHost&gt;</span>
 </pre></div>
-
+</td></tr></table>
 
 <p>That's it. Your apache server is ready to run SuitUp framework.</p>
                 
