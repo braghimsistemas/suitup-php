@@ -159,7 +159,7 @@ Ps.: A folder with that name given to the project will be created
 
 For beginners, at least with **this** framework, we highly recommend to
 create your project by this method so you will understand a bit more how
-SuitUp works and its mechanics.
+Suitup works and its mechanics.
 
 Start setting up the [web server](#Setup-web-server) as you wish. We will assume that you are creating a project named **cowboys** into default localhost. Get into your localhost folder (over linux defaults it is `/var/www/html`).
 
@@ -230,5 +230,5 @@ like with that.
 </VirtualHost>
 ```
 
-That's it. Your apache server is ready to run SuitUp framework.
+That's it. Your apache server is ready to run Suitup framework.
 

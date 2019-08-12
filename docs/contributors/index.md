@@ -2,7 +2,15 @@ title: How to contribute
 
 # How to contribute
 
-Everyone is welcome to contribute with _SuitUp PHP Framework_. Just fork it, make your changes as minimal as possible and create a _pull request_. We ask to create minimal changes because by this way it's easier to merge your request to the project in approve case.
+Everyone is welcome to contribute with _Suitup PHP Framework_. Just fork it, make your changes as minimal as possible and create a _pull request_. We ask to create minimal changes because by this way it's easier to merge your request to the project in approve case.
+
+## Development Tools
+
+As you want to contribute with the project there are mainly three projects that you must to know:
+
+  * Obviouslly [Suitup PHP Framework](https://github.com/braghimsistemas/suitup-php)
+  * [Suitup Skeleton](https://github.com/braghimsistemas/suitup-skeleton) - a sample project
+  * [Suitup Dev](https://github.com/braghimsistemas/suitup2-dev) - An entire development environment project (always work in progress)
 
 ## Update the documentation
 

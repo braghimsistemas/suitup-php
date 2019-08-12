@@ -43,7 +43,7 @@ Run composer `require` to download suitup and its dependencies. It will automati
 
     $ php composer.phar require braghim-sistemas/suitup-php ^2
 
-Also you will need to set some `.htaccess` configs so SuitUp can work properly.
+Also you will need to set some `.htaccess` configs so Suitup can work properly.
 
 ## Files contents
 
@@ -59,11 +59,11 @@ RewriteCond %{REQUEST_FILENAME} -s [OR]
 RewriteCond %{REQUEST_FILENAME} -l [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^.*$ - [NC,L]
-# The following rewrites all other queries to index.php. The 
+# The following rewrites all other queries to index.php. The
 # condition ensures that if you are using Apache aliases to do
-# mass virtual hosting, the base path will be prepended to 
+# mass virtual hosting, the base path will be prepended to
 # allow proper resolution of the index.php file; it will work
-# in non-aliased environments as well, providing a safe, one-size 
+# in non-aliased environments as well, providing a safe, one-size
 # fits all solution.
 RewriteCond %{REQUEST_URI}::$1 ^(/.+)(.+)::\2$
 RewriteRule ^(.*) - [E=BASE:%1]
@@ -102,15 +102,15 @@ chdir(__DIR__);
 // Setup autoloading composer
 if (file_exists('vendor/autoload.php')) {
   $loader = include 'vendor/autoload.php';
-  
+
   // You may want to implement your own libraries
   // $loader->add('System', 'library/.');
 } else {
   exit("Project dependencies not found, run 'php composer.phar install'");
 }
 
-// Let's start SuitUp Framework
-$mvc = new SuitUpStart('modules/');
+// Let's start Suitup Framework
+$mvc = new SuitupStart('modules/');
 
 // Sql monitoring
 $mvc->setSqlMonitor(DEVELOPMENT);
@@ -126,14 +126,14 @@ file: `cowboys/modules/ModuleDefault/Controllers/AbstractController.php`
 <?php
 namespace ModuleDefault\Controllers;
 
-use SuitUp\Mvc\MvcAbstractController;
+use Suitup\Mvc\MvcAbstractController;
 
 class AbstractController extends MvcAbstractController
 {
   public function init() {
     parent::init(); // Keep this line
   }
-  
+
   public function posDispatch() {
     parent::posDispatch(); // Keep this line
   }
@@ -175,8 +175,9 @@ file: `cowboys/modules/ModuleDefault/views/layout.phtml`
   </head>
   <body>
     <div class="container">
-      <h1>ModuleDefault</h1>
-      <h4>Created by SuitUp Manager Version: 1.0.0</h4>
+      <h1>Suitup PHP Framework</h1>
+      <h3>ModuleDefault</h3>
+      <h4>From Source Tutorial</h4>
 
       <?php echo $content; ?>
     </div>

@@ -17,6 +17,7 @@ nav:
     - Getting Started: user-guide/getting-started/index.md
     - Tutorial for impatients: user-guide/getting-started/impatients.md
     - Step By Step Tutorial: user-guide/getting-started/from-source.md
+    - Reference: user-guide/reference/index.md
   - Contributors: contributors/index.md
   - About:
     - License: about/LICENSE.md

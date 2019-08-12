@@ -1,6 +1,6 @@
-# Comparing to SuitUp version 1
+# Comparing to Suitup version 1
 
-We keep great compatibility with previous version talking about construct a project with SuitUp of course, but there are
+We keep great compatibility with previous version talking about construct a project with Suitup of course, but there are
 some differences as the list below. 
 
 ## Database connection
@@ -26,9 +26,9 @@ return array(
 
 To begin/commit/rollBack transactions use the methods below:
 
-  - `SuitUp\Database\DbAdapter::beginTransaction()`
-  - `SuitUp\Database\DbAdapter::commit()`
-  - `SuitUp\Database\DbAdapter::rollBack()`
+  - `Suitup\Database\DbAdapter::beginTransaction()`
+  - `Suitup\Database\DbAdapter::commit()`
+  - `Suitup\Database\DbAdapter::rollBack()`
   
 ## Layout Messages
 
