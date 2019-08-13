@@ -1,8 +1,11 @@
 site_name: Suitup Framework
 site_description: Awesome PHP Framework with high productivity
 site_author: Braghim Sistemas
+
 repo_name: braghimsistemas/suitup-php
 repo_url: https://github.com/braghimsistemas/suitup-php
+edit_uri: ""
+
 theme:
   name: material
   palette:
@@ -27,9 +30,30 @@ plugins:
 markdown_extensions:
   - admonition
   - codehilite:
+      guess_lang: true
       linenums: true
   - meta
   - toc:
       permalink: true
   - pymdownx.superfences
+
 copyright: Copyright &copy; 2019 Braghim Sistemas
+google_analytics:
+  - 'UA-64023203-5'
+  - 'auto'
+extra:
+  social:
+    - type: 'github'
+      link: 'https://github.com/braghimsistemas'
+    - type: 'youtube'
+      link: 'https://www.youtube.com/channel/UCnQKkBQpuqSqTIWN0XGgAlQ'
+    - type: 'facebook'
+      link: 'https://www.facebook.com/braghimsistemas/'
+    - type: 'github'
+      link: 'https://github.com/marcobraghim'
+    - type: 'github'
+      link: 'https://github.com/thizer'
+    - type:  'youtube'
+      link: 'https://www.youtube.com/channel/UCwoZZYTjG-RsvaQZVTyc_5w'
+    - type: 'facebook'
+      link: 'https://www.facebook.com/thizer.apps/'

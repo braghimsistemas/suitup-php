@@ -50,7 +50,7 @@ Also you will need to set some `.htaccess` configs so Suitup can work properly.
 ### .htaccess file
 file: `cowboys/.htaccess`
 
-```
+```properties
 RewriteEngine on
 
 # The following rule tells Apache that if the requested filename
