@@ -71,6 +71,31 @@
     
     
       
+        
+<script>
+  window.ga = window.ga || function() {
+    (ga.q = ga.q || []).push(arguments)
+  }
+  ga.l = +new Date
+  /* Setup integration and send page view */
+  ga("create", "UA-64023203-5", "auto")
+  ga("set", "anonymizeIp", true)
+  ga("send", "pageview")
+  /* Register handler to log search on blur */
+  document.addEventListener("DOMContentLoaded", () => {
+    if (document.forms.search) {
+      var query = document.forms.search.query
+      query.addEventListener("blur", function() {
+        if (this.value) {
+          var path = document.location.pathname;
+          ga("send", "pageview", path + "?q=" + this.value)
+        }
+      })
+    }
+  })
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+      
     
     
   </head>
@@ -155,7 +180,7 @@
 
   
 
-<a href="https://github.com/braghimsistemas/suitup-php/" title="Go to repository" class="md-source" data-md-source="github">
+<a href="https://github.com/braghimsistemas/suitup-php" title="Go to repository" class="md-source" data-md-source="github">
   
     <div class="md-source__icon">
       <svg viewBox="0 0 24 24" width="24" height="24">
@@ -202,7 +227,7 @@
 
   
 
-<a href="https://github.com/braghimsistemas/suitup-php/" title="Go to repository" class="md-source" data-md-source="github">
+<a href="https://github.com/braghimsistemas/suitup-php" title="Go to repository" class="md-source" data-md-source="github">
   
     <div class="md-source__icon">
       <svg viewBox="0 0 24 24" width="24" height="24">
@@ -403,6 +428,25 @@
           Material for MkDocs</a>
       </div>
       
+  <div class="md-footer-social">
+    <link rel="stylesheet" href="/assets/fonts/font-awesome.css">
+    
+      <a href="https://github.com/braghimsistemas" class="md-footer-social__link fa fa-github"></a>
+    
+      <a href="https://www.youtube.com/channel/UCnQKkBQpuqSqTIWN0XGgAlQ" class="md-footer-social__link fa fa-youtube"></a>
+    
+      <a href="https://www.facebook.com/braghimsistemas/" class="md-footer-social__link fa fa-facebook"></a>
+    
+      <a href="https://github.com/marcobraghim" class="md-footer-social__link fa fa-github"></a>
+    
+      <a href="https://github.com/thizer" class="md-footer-social__link fa fa-github"></a>
+    
+      <a href="https://www.youtube.com/channel/UCwoZZYTjG-RsvaQZVTyc_5w" class="md-footer-social__link fa fa-youtube"></a>
+    
+      <a href="https://www.facebook.com/thizer.apps/" class="md-footer-social__link fa fa-facebook"></a>
+    
+  </div>
+
     </div>
   </div>
 </footer>

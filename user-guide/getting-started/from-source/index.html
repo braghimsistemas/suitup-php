@@ -71,6 +71,31 @@
     
     
       
+        
+<script>
+  window.ga = window.ga || function() {
+    (ga.q = ga.q || []).push(arguments)
+  }
+  ga.l = +new Date
+  /* Setup integration and send page view */
+  ga("create", "UA-64023203-5", "auto")
+  ga("set", "anonymizeIp", true)
+  ga("send", "pageview")
+  /* Register handler to log search on blur */
+  document.addEventListener("DOMContentLoaded", () => {
+    if (document.forms.search) {
+      var query = document.forms.search.query
+      query.addEventListener("blur", function() {
+        if (this.value) {
+          var path = document.location.pathname;
+          ga("send", "pageview", path + "?q=" + this.value)
+        }
+      })
+    }
+  })
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+      
     
     
   </head>
@@ -159,7 +184,7 @@
 
   
 
-<a href="https://github.com/braghimsistemas/suitup-php/" title="Go to repository" class="md-source" data-md-source="github">
+<a href="https://github.com/braghimsistemas/suitup-php" title="Go to repository" class="md-source" data-md-source="github">
   
     <div class="md-source__icon">
       <svg viewBox="0 0 24 24" width="24" height="24">
@@ -206,7 +231,7 @@
 
   
 
-<a href="https://github.com/braghimsistemas/suitup-php/" title="Go to repository" class="md-source" data-md-source="github">
+<a href="https://github.com/braghimsistemas/suitup-php" title="Go to repository" class="md-source" data-md-source="github">
   
     <div class="md-source__icon">
       <svg viewBox="0 0 24 24" width="24" height="24">
@@ -573,8 +598,6 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/braghimsistemas/suitup-php/edit/master/docs/user-guide/getting-started/from-source.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
-                
                 
                 <h1 id="install-from-source-tutorial">Install From Source Tutorial<a class="headerlink" href="#install-from-source-tutorial" title="Permanent link">&para;</a></h1>
 <h2 id="project-structure">Project Structure<a class="headerlink" href="#project-structure" title="Permanent link">&para;</a></h2>
@@ -662,27 +685,27 @@ $ <span class="nb">cd</span> cowboys
 18
 19
 20
-21</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="nv">RewriteEngine</span> <span class="nv">on</span>
+21</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="na">RewriteEngine</span> <span class="s">on</span>
 
-# <span class="nv">The</span> <span class="nv">following</span> <span class="nv">rule</span> <span class="nv">tells</span> <span class="nv">Apache</span> <span class="nv">that</span> <span class="k">if</span> <span class="nv">the</span> <span class="nv">requested</span> <span class="nv">filename</span>
-# <span class="nv">exists</span>, <span class="nv">simply</span> <span class="nv">serve</span> <span class="nv">it</span>.
-<span class="nv">RewriteCond</span> <span class="o">%</span>{<span class="nv">REQUEST_FILENAME</span>} <span class="o">-</span><span class="nv">s</span> [<span class="nv">OR</span>]
-<span class="nv">RewriteCond</span> <span class="o">%</span>{<span class="nv">REQUEST_FILENAME</span>} <span class="o">-</span><span class="nv">l</span> [<span class="nv">OR</span>]
-<span class="nv">RewriteCond</span> <span class="o">%</span>{<span class="nv">REQUEST_FILENAME</span>} <span class="o">-</span><span class="nv">d</span>
-<span class="nv">RewriteRule</span> <span class="o">^</span>.<span class="o">*</span>$ <span class="o">-</span> [<span class="nv">NC</span>,<span class="nv">L</span>]
-# <span class="nv">The</span> <span class="nv">following</span> <span class="nv">rewrites</span> <span class="nv">all</span> <span class="nv">other</span> <span class="nv">queries</span> <span class="nv">to</span> <span class="nv">index</span>.<span class="nv">php</span>. <span class="nv">The</span>
-# <span class="nv">condition</span> <span class="nv">ensures</span> <span class="nv">that</span> <span class="k">if</span> <span class="nv">you</span> <span class="nv">are</span> <span class="nv">using</span> <span class="nv">Apache</span> <span class="nv">aliases</span> <span class="nv">to</span> <span class="k">do</span>
-# <span class="nv">mass</span> <span class="nv">virtual</span> <span class="nv">hosting</span>, <span class="nv">the</span> <span class="nv">base</span> <span class="nv">path</span> <span class="nv">will</span> <span class="nv">be</span> <span class="nv">prepended</span> <span class="nv">to</span>
-# <span class="nv">allow</span> <span class="nv">proper</span> <span class="nv">resolution</span> <span class="nv">of</span> <span class="nv">the</span> <span class="nv">index</span>.<span class="nv">php</span> <span class="nv">file</span><span class="c1">; it will work</span>
-# <span class="nv">in</span> <span class="nv">non</span><span class="o">-</span><span class="nv">aliased</span> <span class="nv">environments</span> <span class="nv">as</span> <span class="nv">well</span>, <span class="nv">providing</span> <span class="nv">a</span> <span class="nv">safe</span>, <span class="nv">one</span><span class="o">-</span><span class="nv">size</span>
-# <span class="nv">fits</span> <span class="nv">all</span> <span class="nv">solution</span>.
-<span class="nv">RewriteCond</span> <span class="o">%</span>{<span class="nv">REQUEST_URI</span>}::<span class="mh">$1</span> <span class="o">^</span><span class="ss">(</span><span class="o">/</span>.<span class="o">+</span><span class="ss">)(</span>.<span class="o">+</span><span class="ss">)</span>::\<span class="mi">2</span>$
-<span class="nv">RewriteRule</span> <span class="o">^</span><span class="ss">(</span>.<span class="o">*</span><span class="ss">)</span> <span class="o">-</span> [<span class="nv">E</span><span class="o">=</span><span class="nv">BASE</span>:<span class="o">%</span><span class="mi">1</span>]
-<span class="nv">RewriteRule</span> <span class="o">^</span><span class="ss">(</span>.<span class="o">*</span><span class="ss">)</span>$ <span class="o">%</span>{<span class="nv">ENV</span>:<span class="nv">BASE</span>}<span class="nv">index</span>.<span class="nv">php</span> [<span class="nv">NC</span>,<span class="nv">L</span>]
+<span class="c"># The following rule tells Apache that if the requested filename</span>
+<span class="c"># exists, simply serve it.</span>
+<span class="err">RewriteCond</span> <span class="err">%{REQUEST_FILENAME}</span> <span class="err">-s</span> <span class="err">[OR]</span>
+<span class="err">RewriteCond</span> <span class="err">%{REQUEST_FILENAME}</span> <span class="err">-l</span> <span class="err">[OR]</span>
+<span class="err">RewriteCond</span> <span class="err">%{REQUEST_FILENAME}</span> <span class="err">-d</span>
+<span class="err">RewriteRule</span> <span class="err">^.*$</span> <span class="err">-</span> <span class="err">[NC,L]</span>
+<span class="c"># The following rewrites all other queries to index.php. The</span>
+<span class="c"># condition ensures that if you are using Apache aliases to do</span>
+<span class="c"># mass virtual hosting, the base path will be prepended to</span>
+<span class="c"># allow proper resolution of the index.php file; it will work</span>
+<span class="c"># in non-aliased environments as well, providing a safe, one-size</span>
+<span class="c"># fits all solution.</span>
+<span class="na">RewriteCond %{REQUEST_URI}</span><span class="o">:</span><span class="s">:$1 ^(/.+)(.+)::\2$</span>
+<span class="na">RewriteRule ^(.*) - [E</span><span class="o">=</span><span class="s">BASE:%1]</span>
+<span class="na">RewriteRule ^(.*)$ %{ENV</span><span class="o">:</span><span class="s">BASE}index.php [NC,L]</span>
 
-# <span class="nv">Env</span> <span class="nv">variables</span>
-<span class="k">SetEnv</span> <span class="nv">DEVELOPMENT</span> <span class="nv">true</span>
-<span class="k">SetEnv</span> <span class="nv">SHOW_ERRORS</span> <span class="nv">true</span>
+<span class="c"># Env variables</span>
+<span class="err">SetEnv</span> <span class="err">DEVELOPMENT</span> <span class="err">true</span>
+<span class="err">SetEnv</span> <span class="err">SHOW_ERRORS</span> <span class="err">true</span>
 </pre></div>
 </td></tr></table>
 
@@ -1000,6 +1023,25 @@ $ <span class="nb">cd</span> cowboys
           Material for MkDocs</a>
       </div>
       
+  <div class="md-footer-social">
+    <link rel="stylesheet" href="../../../assets/fonts/font-awesome.css">
+    
+      <a href="https://github.com/braghimsistemas" class="md-footer-social__link fa fa-github"></a>
+    
+      <a href="https://www.youtube.com/channel/UCnQKkBQpuqSqTIWN0XGgAlQ" class="md-footer-social__link fa fa-youtube"></a>
+    
+      <a href="https://www.facebook.com/braghimsistemas/" class="md-footer-social__link fa fa-facebook"></a>
+    
+      <a href="https://github.com/marcobraghim" class="md-footer-social__link fa fa-github"></a>
+    
+      <a href="https://github.com/thizer" class="md-footer-social__link fa fa-github"></a>
+    
+      <a href="https://www.youtube.com/channel/UCwoZZYTjG-RsvaQZVTyc_5w" class="md-footer-social__link fa fa-youtube"></a>
+    
+      <a href="https://www.facebook.com/thizer.apps/" class="md-footer-social__link fa fa-facebook"></a>
+    
+  </div>
+
     </div>
   </div>
 </footer>
