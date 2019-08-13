@@ -373,6 +373,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#mvc" title="MVC" class="md-nav__link">
+    MVC
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#abstract-controller" title="Abstract Controller" class="md-nav__link">
     Abstract Controller
   </a>
@@ -550,6 +557,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#mvc" title="MVC" class="md-nav__link">
+    MVC
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#abstract-controller" title="Abstract Controller" class="md-nav__link">
     Abstract Controller
   </a>
@@ -600,6 +614,10 @@
                 
                 
                 <h1 id="install-from-source-tutorial">Install From Source Tutorial<a class="headerlink" href="#install-from-source-tutorial" title="Permanent link">&para;</a></h1>
+<p>Start setting up the <a href="/user-guide/getting-started/#setup-web-server">web server</a> as you wish.
+We will assume that you are creating a project named <strong>cowboys</strong>
+into default localhost. Get into your localhost folder (over linux
+defaults it is <code>/var/www/html</code>).</p>
 <h2 id="project-structure">Project Structure<a class="headerlink" href="#project-structure" title="Permanent link">&para;</a></h2>
 <p>Create the project folder and get into it</p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
@@ -656,15 +674,16 @@ $ <span class="nb">cd</span> cowboys
 <h2 id="composer-require">Composer require<a class="headerlink" href="#composer-require" title="Permanent link">&para;</a></h2>
 <p><a href="https://getcomposer.org">Composer</a> will download all Suitup files and its dependencies as well manage future updates, so you don't have to worry about it.</p>
 <p>Download the <code>composer.phar</code> file to manage the project dependencies from <a href="https://getcomposer.org/composer.phar">here</a> or go to the <a href="https://getcomposer.org/download/">Composer Download page</a> and choose your preferred type of install.</p>
-<p>Run composer <code>require</code> to download suitup and its dependencies. It will automatically create a <code>composer.json</code> file too (a file with your project specifications).</p>
+<p>Run composer <code>require</code> to download Suitup and its dependencies. It will automatically create a <code>composer.json</code> file too (a file with your project specifications).</p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span>$ php composer.phar require braghim-sistemas/suitup-php ^2
 </pre></div>
 </td></tr></table>
 
-<p>Also you will need to set some <code>.htaccess</code> configs so Suitup can work properly.</p>
 <h2 id="files-contents">Files contents<a class="headerlink" href="#files-contents" title="Permanent link">&para;</a></h2>
+<p>Let's put some content into these files. </p>
 <h3 id="htaccess-file">.htaccess file<a class="headerlink" href="#htaccess-file" title="Permanent link">&para;</a></h3>
 <p>file: <code>cowboys/.htaccess</code></p>
+<p>Set some <code>.htaccess</code> configs so Suitup can work properly.</p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span> 1
  2
  3
@@ -709,8 +728,29 @@ $ <span class="nb">cd</span> cowboys
 </pre></div>
 </td></tr></table>
 
+<div class="admonition note">
+<p class="admonition-title">Important</p>
+<p>Note that there's two  environments variables <code>DEVELOPMENT</code> and <code>SHOW_ERRORS</code>.</p>
+<p>You can set all the system to show in the screen the errors occurring in real
+time to debug. It will be done in the errors pages.</p>
+<p>Of course if you define <code>DEVELOPMENT</code> another kind of actions will be launched
+as you wish in the system such as show a list of SQL queries done to load the
+page. Actually this one is set so you can use your creativity to use as wish.</p>
+<p>You can simply don't use it by removing these lines or commenting as shown bellow. </p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c"># Env variables</span>
+<span class="c">#SetEnv DEVELOPMENT true</span>
+<span class="c">#SetEnv SHOW_ERRORS true</span>
+</pre></div>
+</td></tr></table>
+
+</div>
 <h3 id="index-file">Index file<a class="headerlink" href="#index-file" title="Permanent link">&para;</a></h3>
 <p>file: <code>cowboys/index.php</code></p>
+<p>This is the most important file of whole system. It's by this file that every
+call to the system is done and every URL should run by here. It's from here that
+the system will load everything, even the Suitup itself.</p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span> 1
  2
  3
@@ -789,8 +829,47 @@ $ <span class="nb">cd</span> cowboys
 </pre></div>
 </td></tr></table>
 
+<h3 id="mvc">MVC<a class="headerlink" href="#mvc" title="Permanent link">&para;</a></h3>
+<p>A stop to coffee...</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Now we will begin to setup some MVC code. If you aren't familiar to this concept yet,
+please go ahead and make some researches so you can back to this tutorial with
+necessary knowledge to continue. </p>
+</div>
+<p>Basically...</p>
+<blockquote>
+<p>"MVC is a software architecture - the structure of the system - that separates domain/application/business (whatever you prefer) logic from the rest of the user interface. It does this by separating the application into three parts: the model, the view, and the controller.</p>
+<p>The model manages fundamental behaviors and data of the application. It can respond to requests for information, respond to instructions to change the state of its information, and even to notify observers in event-driven systems when information changes. This could be a database, or any number of data structures or storage systems. In short, it is the data and data-management of the application.</p>
+<p>The view effectively provides the user interface element of the application. It'll render data from the model into a form that is suitable for the user interface.</p>
+<p>The controller receives user input and makes calls to model objects and the view to perform appropriate actions.</p>
+<p>All in all, these three components work together to create the three basic components of MVC."</p>
+</blockquote>
+<p><a href="https://softwareengineering.stackexchange.com/a/127632">Link to this reference</a></p>
 <h3 id="abstract-controller">Abstract Controller<a class="headerlink" href="#abstract-controller" title="Permanent link">&para;</a></h3>
 <p>file: <code>cowboys/modules/ModuleDefault/Controllers/AbstractController.php</code></p>
+<p>This file will be a regards to the all controllers from the module, it means that
+all the others controllers will extends the <code>AbstractController</code> so its contents
+is shared over. So if you need to create a method that must to be accessible over
+all controllers, make it in this file.</p>
+<p>This file is not actually required, but helps a lot and we highly recommend</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Over this class there's some methods that is automatically called by Suitup
+in a certain order:</p>
+<ul>
+<li>__construct() // Avoid override this method</li>
+<li>preDispatch()</li>
+<li>init()</li>
+<li>{current}Action()</li>
+<li>posDispatch()</li>
+</ul>
+</div>
+<div class="admonition danger">
+<p class="admonition-title">IMPORTANT</p>
+<p><strong>Every time you override one of these methods, please call the parent method
+inside to ensure that it will work properly</strong></p>
+</div>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span> 1
  2
  3
