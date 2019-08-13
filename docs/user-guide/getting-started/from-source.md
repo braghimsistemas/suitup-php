@@ -1,5 +1,10 @@
 # Install From Source Tutorial
 
+Start setting up the [web server](/user-guide/getting-started/#setup-web-server) as you wish.
+We will assume that you are creating a project named **cowboys**
+into default localhost. Get into your localhost folder (over linux
+defaults it is `/var/www/html`).
+
 ## Project Structure
 
 Create the project folder and get into it
@@ -39,16 +44,18 @@ cowboys/
 
 Download the `composer.phar` file to manage the project dependencies from [here](https://getcomposer.org/composer.phar) or go to the [Composer Download page](https://getcomposer.org/download/) and choose your preferred type of install.
 
-Run composer `require` to download suitup and its dependencies. It will automatically create a `composer.json` file too (a file with your project specifications).
+Run composer `require` to download Suitup and its dependencies. It will automatically create a `composer.json` file too (a file with your project specifications).
 
     $ php composer.phar require braghim-sistemas/suitup-php ^2
 
-Also you will need to set some `.htaccess` configs so Suitup can work properly.
-
 ## Files contents
+
+Let's put some content into these files. 
 
 ### .htaccess file
 file: `cowboys/.htaccess`
+
+Set some `.htaccess` configs so Suitup can work properly.
 
 ```properties
 RewriteEngine on
@@ -74,8 +81,30 @@ SetEnv DEVELOPMENT true
 SetEnv SHOW_ERRORS true
 ```
 
+!!! note "Important"
+    Note that there's two  environments variables `DEVELOPMENT` and `SHOW_ERRORS`.
+    
+    You can set all the system to show in the screen the errors occurring in real
+    time to debug. It will be done in the errors pages.
+    
+    Of course if you define `DEVELOPMENT` another kind of actions will be launched
+    as you wish in the system such as show a list of SQL queries done to load the
+    page. Actually this one is set so you can use your creativity to use as wish.
+    
+    You can simply don't use it by removing these lines or commenting as shown bellow. 
+    
+    ```properties
+    # Env variables
+    #SetEnv DEVELOPMENT true
+    #SetEnv SHOW_ERRORS true
+    ```  
+
 ### Index file
 file: `cowboys/index.php`
+
+This is the most important file of whole system. It's by this file that every
+call to the system is done and every URL should run by here. It's from here that
+the system will load everything, even the Suitup itself.
 
 ```php
 <?php
@@ -119,9 +148,54 @@ $mvc->run();
 
 ```
 
+### MVC
+
+A stop to coffee...
+
+!!! Tip 
+    Now we will begin to setup some MVC code. If you aren't familiar to this concept yet,
+    please go ahead and make some researches so you can back to this tutorial with
+    necessary knowledge to continue. 
+
+Basically...
+
+> "MVC is a software architecture - the structure of the system - that separates domain/application/business (whatever you prefer) logic from the rest of the user interface. It does this by separating the application into three parts: the model, the view, and the controller.
+
+> The model manages fundamental behaviors and data of the application. It can respond to requests for information, respond to instructions to change the state of its information, and even to notify observers in event-driven systems when information changes. This could be a database, or any number of data structures or storage systems. In short, it is the data and data-management of the application.
+ 
+> The view effectively provides the user interface element of the application. It'll render data from the model into a form that is suitable for the user interface.
+ 
+> The controller receives user input and makes calls to model objects and the view to perform appropriate actions.
+ 
+> All in all, these three components work together to create the three basic components of MVC."
+
+[Link to this reference](https://softwareengineering.stackexchange.com/a/127632)
+
 ### Abstract Controller
 file: `cowboys/modules/ModuleDefault/Controllers/AbstractController.php`
 
+This file will be a regards to the all controllers from the module, it means that
+all the others controllers will extends the `AbstractController` so its contents
+is shared over. So if you need to create a method that must to be accessible over
+all controllers, make it in this file.
+
+This file is not actually required, but helps a lot and we highly recommend
+
+!!! Tip
+    Over this class there's some methods that is automatically called by Suitup
+    in a certain order:
+    
+    * __construct() // Avoid override this method
+    * preDispatch()
+    * init()
+    * {current}Action()
+    * posDispatch()
+    
+!!! Danger "IMPORTANT"
+    **Every time you override one of these methods, please call the parent method
+    inside to ensure that it will work properly**
+    
+    
 ```php
 <?php
 namespace ModuleDefault\Controllers;

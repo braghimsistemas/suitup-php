@@ -161,8 +161,6 @@ For beginners, at least with **this** framework, we highly recommend to
 create your project by this method so you will understand a bit more how
 Suitup works and its mechanics.
 
-Start setting up the [web server](#Setup-web-server) as you wish. We will assume that you are creating a project named **cowboys** into default localhost. Get into your localhost folder (over linux defaults it is `/var/www/html`).
-
 As this is the more instructive but the largest way to do, follow this [complete tutorial](from-source) that will lead you on how to create all the files one by one and its contents, letting you know what everything means step by step. That's why this is the best way to begin.
 
 [Install From Source Tutorial](from-source)
