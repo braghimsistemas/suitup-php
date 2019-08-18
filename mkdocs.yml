@@ -42,6 +42,8 @@ nav:
       - Form Validation: user-guide/reference/overview.md
       - Pagination: user-guide/reference/overview.md
       - Functions outstand: user-guide/reference/overview.md
+  - Troubleshooting:
+    - Github Issues: troubleshooting/issues.md
   - Contributors: contributors/index.md
   - About:
     - License: about/LICENSE.md
