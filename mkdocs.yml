@@ -23,7 +23,7 @@ nav:
     - Getting Started: user-guide/getting-started/index.md
     - Tutorial for impatients: user-guide/getting-started/impatients.md
     - Step By Step Tutorial: user-guide/getting-started/from-source.md
-    - Reference:
+    - Reference documents:
       - Overview: user-guide/reference/overview.md
       - Routes: user-guide/reference/overview.md
       - Controllers & Actions: user-guide/reference/overview.md
@@ -46,8 +46,9 @@ nav:
     - Github Issues: troubleshooting/issues.md
   - Contributors: contributors/index.md
   - About:
+    - Overview: about/index.md
+    - Comparing to Suitup 1: about/compatibility.md
     - License: about/LICENSE.md
-    - SuitUp 1 Compatibility: compatibility/index.md
 plugins:
   - search
 markdown_extensions:

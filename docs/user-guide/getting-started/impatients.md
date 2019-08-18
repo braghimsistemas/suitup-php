@@ -26,6 +26,6 @@ Done!
     Open on the browser the following address: `http://localhost/suitup-skeleton`
     (assuming that you installed directly on the localhost).
 
----
+## What's next?
 
-
+Check out the [reference guide](/user-guide/reference/overview/) to get the most out of this project.

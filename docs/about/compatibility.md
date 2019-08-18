@@ -1,4 +1,4 @@
-# Comparing to Suitup version 1
+# Comparing to Suitup 1
 
 We keep great compatibility with previous version talking about construct a project with Suitup of course, but there are
 some differences as the list below. 
@@ -12,7 +12,7 @@ return array(
   'adapter' => 'mysql', // New property key
   'host' => '127.0.0.1',
   'port' => '3306',
-  'dbname' => 'suitup',
+  'dbname' => 'suitup', // Before was 'database'
   'username' => 'root',
   'password' => '',
 );

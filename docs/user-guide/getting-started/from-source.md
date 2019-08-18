@@ -296,3 +296,7 @@ file: `cowboys/modules/ModuleDefault/views/index/index.phtml`
 </div>
 
 ```
+
+## What's next?
+
+Check out the [reference guide](/user-guide/reference/overview/) to get the most out of this project.
