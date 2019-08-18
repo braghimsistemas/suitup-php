@@ -1,6 +1,6 @@
 site_name: Suitup Framework
 site_description: Awesome PHP Framework with high productivity
-site_author: Braghim Sistemas
+site_author: https://www.thizer.com
 
 repo_name: braghimsistemas/suitup-php
 repo_url: https://github.com/braghimsistemas/suitup-php
@@ -8,6 +8,9 @@ edit_uri: ""
 
 theme:
   name: material
+  feature:
+      tabs:
+          true
   palette:
     primary: deep purple
   logo:
@@ -15,12 +18,30 @@ theme:
 extra_css:
   - css/extra-style.css
 nav:
-  - Home: index.md
   - User Guide:
+    - Home: index.md
     - Getting Started: user-guide/getting-started/index.md
     - Tutorial for impatients: user-guide/getting-started/impatients.md
     - Step By Step Tutorial: user-guide/getting-started/from-source.md
-    - Reference: user-guide/reference/index.md
+    - Reference:
+      - Overview: user-guide/reference/overview.md
+      - Routes: user-guide/reference/overview.md
+      - Controllers & Actions: user-guide/reference/overview.md
+      - Abstract Controller: user-guide/reference/overview.md
+      - Error Controller: user-guide/reference/overview.md
+      - Modules: user-guide/reference/overview.md
+      - Views & Layouts: user-guide/reference/overview.md
+      - Models (database):
+        - Workflow ((IMPORTANT)): user-guide/reference/overview.md
+        - Business: user-guide/reference/overview.md
+        - Gateways: user-guide/reference/overview.md
+        - Adapters (help wanted): user-guide/reference/overview.md
+        - SQL Queries: user-guide/reference/overview.md
+        - SQL Monitor: user-guide/reference/overview.md
+        - Out of box: user-guide/reference/overview.md
+      - Form Validation: user-guide/reference/overview.md
+      - Pagination: user-guide/reference/overview.md
+      - Functions outstand: user-guide/reference/overview.md
   - Contributors: contributors/index.md
   - About:
     - License: about/LICENSE.md
