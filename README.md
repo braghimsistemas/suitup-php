@@ -21,8 +21,9 @@ While you write the code for an application there is a lot of code you probably 
 
 _SuitUp_ is a PHP\* OOP\*\* framework which helps you to do what you have to do quickly, it's focused on productivity without forget about security and good practices.
 
-\* Works on [PHP](//php.net) applications based
-\*\* OOP - [Object-oriented programming](//en.wikipedia.org/wiki/Object-oriented_programming) where programming projects works with _objects_ concepts.
+    \* Works on [PHP](//php.net) applications based
+    
+    \*\* OOP - [Object-oriented programming](//en.wikipedia.org/wiki/Object-oriented_programming) where programming projects works with _objects_ concepts.
 
 ### Modules
 You can write different and separate applications in the same project which will be accessed just changing the base URL.

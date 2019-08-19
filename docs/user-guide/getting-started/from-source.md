@@ -218,6 +218,17 @@ class AbstractController extends MvcAbstractController
 ### Index Controller
 file: `cowboys/modules/ModuleDefault/Controllers/IndexController.php`
 
+With Suitup you **don't necessary have to create a route for every page**,
+it is made automatically by accessing the right URL for every `controller`
+and `action`. A `controller` basically is a `class` that contain `methods (functions)`,
+these methods we call `actions`. 
+
+In the example bellow we can access the `indexAction` by three ways:
+
+  1. `http://localhost/cowboys`
+  2. `http://localhost/cowboys/index`
+  3. `http://localhost/cowboys/index/index`
+
 ```php
 <?php
 namespace ModuleDefault\Controllers;
@@ -231,8 +242,23 @@ class IndexController extends AbstractController
 
 ```
 
+!!! question "Why `index`?"
+    Like PHP itself when no controller name is set will be called the IndexController
+    inside the module chosen, so as the action name too.
+    
+    **`/index/index` = (new IndexController())->indexAction();**
+
+    Ps.: Default module is _ModuleDefault_.
+
 ### HTML Layout
 file: `cowboys/modules/ModuleDefault/views/layout.phtml`
+
+_Layout_ is a HTML content file with the code that will be shared with several pages, so you don't
+have to include header and footer html files inside your template pages.
+
+Layout files can be changed in execution time from the Controller.
+
+Usually, we set the layout file and use it all over the module except at home (landing page) and login pages.
 
 ```html
 <!doctype html>
@@ -269,6 +295,8 @@ file: `cowboys/modules/ModuleDefault/views/layout.phtml`
 
 ### HTML View
 file: `cowboys/modules/ModuleDefault/views/index/index.phtml`
+
+The page content itself, this content is not shared over none other page.
 
 ```html
 <!-- The content created automatically -->
