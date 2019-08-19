@@ -23,6 +23,7 @@ nav:
     - Getting Started: user-guide/getting-started/index.md
     - Tutorial for impatients: user-guide/getting-started/impatients.md
     - Step By Step Tutorial: user-guide/getting-started/from-source.md
+    - Demo projects: user-guide/demo-projects/index.md
     - Reference documents:
       - Overview: user-guide/reference/overview.md
       - Routes: user-guide/reference/overview.md
