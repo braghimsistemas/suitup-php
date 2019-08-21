@@ -139,7 +139,7 @@ if (file_exists('vendor/autoload.php')) {
 }
 
 // Let's start Suitup Framework
-$mvc = new SuitupStart('modules/');
+$mvc = new SuitUpStart('modules/');
 
 // Sql monitoring
 $mvc->setSqlMonitor(DEVELOPMENT);
@@ -200,7 +200,7 @@ This file is not actually required, but helps a lot and we highly recommend
 <?php
 namespace ModuleDefault\Controllers;
 
-use Suitup\Mvc\MvcAbstractController;
+use SuitUp\Mvc\MvcAbstractController;
 
 class AbstractController extends MvcAbstractController
 {
@@ -274,10 +274,20 @@ Usually, we set the layout file and use it all over the module except at home (l
     <title>Hello, world!</title>
   </head>
   <body>
-    <div class="container">
-      <h1>Suitup PHP Framework</h1>
-      <h3>ModuleDefault</h3>
-      <h4>From Source Tutorial</h4>
+    <div class="container mt-3">
+      <div class="row">
+        <div class="col-12 col-sm-8">
+          <h1>Suitup PHP Framework</h1>
+        </div>
+        <div class="col-12 col-sm-4 text-right">
+          <a href="https://github.com/braghimsistemas/suitup-php" class="btn btn-warning"><i class="fab fa-github-alt"></i> View on github</a>
+        </div>
+      </div>
+      <h4>
+        <a href="https://braghimsistemas.github.io/suitup-php/user-guide/getting-started/from-source/" target="_blank">
+          From Source Tutorial
+        </a>
+      </h4>
 
       <?php echo $content; ?>
     </div>
@@ -288,6 +298,7 @@ Usually, we set the layout file and use it all over the module except at home (l
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/holder/2.9.0/holder.js"></script>
+    <script src="https://kit.fontawesome.com/7578043df8.js"></script>
   </body>
 </html>
 
@@ -299,7 +310,20 @@ file: `cowboys/modules/ModuleDefault/views/index/index.phtml`
 The page content itself, this content is not shared over none other page.
 
 ```html
-<!-- The content created automatically -->
+<div class="alert alert-success" role="alert">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+
+  <h4 class="alert-heading">Well done!</h4>
+  <p>Aww yeah, you successfully completed all the steps right to create your first site with Suitup PHP Framework!</p>
+  <hr>
+  <p class="mb-0">
+    Now keep learning going to the next step into 
+    <a class="alert-link" href="https://braghimsistemas.github.io/suitup-php/user-guide/reference/overview/">Reference documents</a>.
+  </p>
+</div>
+
 <div class="row">
   <div class="col-6">
     <div class="card">
@@ -324,6 +348,12 @@ The page content itself, this content is not shared over none other page.
 </div>
 
 ```
+
+## The Result
+
+If everything it's OK so you should see at `http://localhost/cowboys` something like image below.
+
+![From Source Tutorial Result](/assets/from-source-tutorial-result.png)
 
 ## What's next?
 

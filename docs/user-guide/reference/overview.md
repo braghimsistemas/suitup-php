@@ -6,8 +6,7 @@ organized.
 
 ## Structure
 
-Get know the way that Suitup is structured to give you
-the better.
+First of all 
 
 to be continued ...
 

@@ -45,7 +45,8 @@ nav:
       - Functions outstand: user-guide/reference/overview.md
   - Troubleshooting:
     - Github Issues: troubleshooting/issues.md
-  - Contributors: contributors/index.md
+  - Contributors:
+    - How to contribute: contributors/index.md
   - About:
     - Overview: about/index.md
     - Comparing to Suitup 1: about/compatibility.md
