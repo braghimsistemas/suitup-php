@@ -353,7 +353,7 @@ The page content itself, this content is not shared over none other page.
 
 If everything it's OK so you should see at `http://localhost/cowboys` something like image below.
 
-![From Source Tutorial Result](/assets/from-source-tutorial-result.png)
+![From Source Tutorial Result](https://braghimsistemas.github.io/suitup-php/assets/from-source-tutorial-result.png)
 
 ## What's next?
 

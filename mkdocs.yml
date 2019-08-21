@@ -43,6 +43,26 @@ nav:
       - Form Validation: user-guide/reference/overview.md
       - Pagination: user-guide/reference/overview.md
       - Functions outstand: user-guide/reference/overview.md
+    - Old Version:
+      - Português (Brasil):
+        - 1. Instalação: user-guide/old-version/ptbr/1.-Instalação.md
+        - 1.1 Constantes padrão: user-guide/old-version/ptbr/1.1-Constantes-padrão.md
+        - 2. Controllers e Views: user-guide/old-version/ptbr/2.-Controllers-e-Views.md
+        - 2.1 MvcAbstractController: user-guide/old-version/ptbr/2.1-MvcAbstractController.md
+        - 2.2 ErrorController: user-guide/old-version/ptbr/2.2-ErrorController.md
+        - 2.3 Paginação: user-guide/old-version/ptbr/2.3-Paginação.md
+        - 2.4 Debug: user-guide/old-version/ptbr/2.4-Debug.md
+        - 3. Layouts: user-guide/old-version/ptbr/3.-Layouts.md
+        - 4. Formulários: user-guide/old-version/ptbr/4.-Formulários.md
+        - 4.1 Validações: user-guide/old-version/ptbr/4.1-Validações.md
+        - 4.2 Filtros: user-guide/old-version/ptbr/4.2-Filtros.md
+        - 4.3 Validação Personalizada: user-guide/old-version/ptbr/4.3-Validação-Personalizada.md
+        - 4.4 Filtro Personalizado: user-guide/old-version/ptbr/4.4-Filtro-Personalizado.md
+        - 5. Banco de dados: user-guide/old-version/ptbr/5.-Banco-de-dados.md
+        - 5.1 database.config.php: user-guide/old-version/ptbr/5.1-database.config.php.md
+        - 5.2 Monitoramento de SQL: user-guide/old-version/ptbr/5.2-Monitoramento-de-SQL.md
+        - 6. Rotas: user-guide/old-version/ptbr/6.-Rotas.md
+        - 7. Funções: user-guide/old-version/ptbr/7.-Funções.md
   - Troubleshooting:
     - Github Issues: troubleshooting/issues.md
   - Contributors:
