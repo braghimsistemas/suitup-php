@@ -477,6 +477,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#the-result" title="The Result" class="md-nav__link">
+    The Result
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#whats-next" title="What's next?" class="md-nav__link">
     What's next?
   </a>
@@ -992,6 +999,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#the-result" title="The Result" class="md-nav__link">
+    The Result
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#whats-next" title="What's next?" class="md-nav__link">
     What's next?
   </a>
@@ -1222,7 +1236,7 @@ the system will load everything, even the Suitup itself.</p>
 <span class="p">}</span>
 
 <span class="c1">// Let&#39;s start Suitup Framework</span>
-<span class="nv">$mvc</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">SuitupStart</span><span class="p">(</span><span class="s1">&#39;modules/&#39;</span><span class="p">);</span>
+<span class="nv">$mvc</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">SuitUpStart</span><span class="p">(</span><span class="s1">&#39;modules/&#39;</span><span class="p">);</span>
 
 <span class="c1">// Sql monitoring</span>
 <span class="nv">$mvc</span><span class="o">-&gt;</span><span class="na">setSqlMonitor</span><span class="p">(</span><span class="nx">DEVELOPMENT</span><span class="p">);</span>
@@ -1289,7 +1303,7 @@ inside to ensure that it will work properly</strong></p>
 15</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="cp">&lt;?php</span>
 <span class="k">namespace</span> <span class="nx">ModuleDefault\Controllers</span><span class="p">;</span>
 
-<span class="k">use</span> <span class="nx">Suitup\Mvc\MvcAbstractController</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">SuitUp\Mvc\MvcAbstractController</span><span class="p">;</span>
 
 <span class="k">class</span> <span class="nc">AbstractController</span> <span class="k">extends</span> <span class="nx">MvcAbstractController</span>
 <span class="p">{</span>
@@ -1377,7 +1391,18 @@ have to include header and footer html files inside your template pages.</p>
 26
 27
 28
-29</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="cp">&lt;!doctype html&gt;</span>
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="cp">&lt;!doctype html&gt;</span>
 <span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&quot;en&quot;</span><span class="p">&gt;</span>
   <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
     <span class="c">&lt;!-- Required meta tags --&gt;</span>
@@ -1390,10 +1415,20 @@ have to include header and footer html files inside your template pages.</p>
     <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Hello, world!<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
   <span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
   <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;container&quot;</span><span class="p">&gt;</span>
-      <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Suitup PHP Framework<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
-      <span class="p">&lt;</span><span class="nt">h3</span><span class="p">&gt;</span>ModuleDefault<span class="p">&lt;/</span><span class="nt">h3</span><span class="p">&gt;</span>
-      <span class="p">&lt;</span><span class="nt">h4</span><span class="p">&gt;</span>From Source Tutorial<span class="p">&lt;/</span><span class="nt">h4</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;container mt-3&quot;</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;row&quot;</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;col-12 col-sm-8&quot;</span><span class="p">&gt;</span>
+          <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Suitup PHP Framework<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;col-12 col-sm-4 text-right&quot;</span><span class="p">&gt;</span>
+          <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://github.com/braghimsistemas/suitup-php&quot;</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;btn btn-warning&quot;</span><span class="p">&gt;&lt;</span><span class="nt">i</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;fab fa-github-alt&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">i</span><span class="p">&gt;</span> View on github<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+      <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">h4</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://braghimsistemas.github.io/suitup-php/user-guide/getting-started/from-source/&quot;</span> <span class="na">target</span><span class="o">=</span><span class="s">&quot;_blank&quot;</span><span class="p">&gt;</span>
+          From Source Tutorial
+        <span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+      <span class="p">&lt;/</span><span class="nt">h4</span><span class="p">&gt;</span>
 
       <span class="cp">&lt;?php echo $content; ?&gt;</span>
     <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
@@ -1404,6 +1439,7 @@ have to include header and footer html files inside your template pages.</p>
     <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js&quot;</span> <span class="na">integrity</span><span class="o">=</span><span class="s">&quot;sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49&quot;</span> <span class="na">crossorigin</span><span class="o">=</span><span class="s">&quot;anonymous&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
     <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js&quot;</span> <span class="na">integrity</span><span class="o">=</span><span class="s">&quot;sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy&quot;</span> <span class="na">crossorigin</span><span class="o">=</span><span class="s">&quot;anonymous&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
     <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://cdnjs.cloudflare.com/ajax/libs/holder/2.9.0/holder.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://kit.fontawesome.com/7578043df8.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
   <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
 <span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
 </pre></div>
@@ -1434,7 +1470,33 @@ have to include header and footer html files inside your template pages.</p>
 20
 21
 22
-23</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c">&lt;!-- The content created automatically --&gt;</span>
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;alert alert-success&quot;</span> <span class="na">role</span><span class="o">=</span><span class="s">&quot;alert&quot;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">button</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;button&quot;</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;close&quot;</span> <span class="na">data-dismiss</span><span class="o">=</span><span class="s">&quot;alert&quot;</span> <span class="na">aria-label</span><span class="o">=</span><span class="s">&quot;Close&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">span</span> <span class="na">aria-hidden</span><span class="o">=</span><span class="s">&quot;true&quot;</span><span class="p">&gt;</span><span class="ni">&amp;times;</span><span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+
+  <span class="p">&lt;</span><span class="nt">h4</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;alert-heading&quot;</span><span class="p">&gt;</span>Well done!<span class="p">&lt;/</span><span class="nt">h4</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Aww yeah, you successfully completed all the steps right to create your first site with Suitup PHP Framework!<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">hr</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">p</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;mb-0&quot;</span><span class="p">&gt;</span>
+    Now keep learning going to the next step into 
+    <span class="p">&lt;</span><span class="nt">a</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;alert-link&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://braghimsistemas.github.io/suitup-php/user-guide/reference/overview/&quot;</span><span class="p">&gt;</span>Reference documents<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>.
+  <span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+
 <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;row&quot;</span><span class="p">&gt;</span>
   <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;col-6&quot;</span><span class="p">&gt;</span>
     <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;card&quot;</span><span class="p">&gt;</span>
@@ -1460,6 +1522,9 @@ have to include header and footer html files inside your template pages.</p>
 </pre></div>
 </td></tr></table>
 
+<h2 id="the-result">The Result<a class="headerlink" href="#the-result" title="Permanent link">&para;</a></h2>
+<p>If everything it's OK so you should see at <code>http://localhost/cowboys</code> something like image below.</p>
+<p><img alt="From Source Tutorial Result" src="/assets/from-source-tutorial-result.png" /></p>
 <h2 id="whats-next">What's next?<a class="headerlink" href="#whats-next" title="Permanent link">&para;</a></h2>
 <p>Check out the <a href="/user-guide/reference/overview/">reference guide</a> to get the most out of this project.</p>
                 
