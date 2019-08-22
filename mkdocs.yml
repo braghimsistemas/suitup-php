@@ -63,6 +63,25 @@ nav:
         - 5.2 Monitoramento de SQL: user-guide/old-version/ptbr/5.2-Monitoramento-de-SQL.md
         - 6. Rotas: user-guide/old-version/ptbr/6.-Rotas.md
         - 7. Funções: user-guide/old-version/ptbr/7.-Funções.md
+      - English:
+        - 1. Install: user-guide/old-version/en/1.-Install.md
+        - 1.1 Default Constants: user-guide/old-version/en/1.1-Default-Constants.md
+        - 2. Controllers and Views: user-guide/old-version/en/2.-Controllers-and-Views.md
+        - 2.1 MvcAbstractController: user-guide/old-version/en/2.1-MvcAbstractController.md
+        - 2.2 ErrorController: user-guide/old-version/en/2.2-ErrorController.md
+        - 2.3 Pagination: user-guide/old-version/en/2.3-Pagination.md
+        - 2.4 Debug: user-guide/old-version/en/2.4-Debug.md
+        - 3. Layouts: user-guide/old-version/en/3.-Layouts.md
+        - 4. Forms: user-guide/old-version/en/4.-Forms.md
+        - 4.1 Validation: user-guide/old-version/en/4.1-Validation.md
+        - 4.2 Filters: user-guide/old-version/en/4.2-Filters.md
+        - 4.3 Personal Validation: user-guide/old-version/en/4.3-Personal-Validation.md
+        - 4.4 Personal Filter: user-guide/old-version/en/4.4-Personal-Filter.md
+        - 5. Database: user-guide/old-version/en/5.-Database.md
+        - 5.1 database.config.php: user-guide/old-version/en/5.1-database.config.php.md
+        - 5.2 SQL Monitoring: user-guide/old-version/en/5.2-SQL-Monitoring.md
+        - 6. Routes: user-guide/old-version/en/6.-Routes.md
+        - 7. Functions: user-guide/old-version/en/7.-Functions.md
   - Troubleshooting:
     - Github Issues: troubleshooting/issues.md
   - Contributors:
