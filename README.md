@@ -1,4 +1,5 @@
-# SuitUp 2 -- PHP Framework
+# Suitup PHP Framework
+
 > Legendary web applications
 
 [![Build Status](https://travis-ci.org/braghimsistemas/suitup-php.svg?branch=version2.0)](https://travis-ci.org/braghimsistemas/suitup-php)
@@ -9,7 +10,7 @@
 [![License](https://poser.pugx.org/braghim-sistemas/suitup-php/license)](https://packagist.org/packages/braghim-sistemas/suitup-php)
 
 ### Composer
-`composer require braghim-sistemas/suitup-php`
+`composer require braghim-sistemas/suitup-php ^2`
 
 ### Getting Started
 
@@ -21,9 +22,9 @@ While you write the code for an application there is a lot of code you probably 
 
 _SuitUp_ is a PHP\* OOP\*\* framework which helps you to do what you have to do quickly, it's focused on productivity without forget about security and good practices.
 
-    \* Works on [PHP](//php.net) applications based
-    
-    \*\* OOP - [Object-oriented programming](//en.wikipedia.org/wiki/Object-oriented_programming) where programming projects works with _objects_ concepts.
+> \* Works on [PHP](//php.net) applications based
+> 
+> \*\* OOP - [Object-oriented programming](//en.wikipedia.org/wiki/Object-oriented_programming) where programming projects works with _objects_ concepts.
 
 ### Modules
 You can write different and separate applications in the same project which will be accessed just changing the base URL.
@@ -32,6 +33,7 @@ You can write different and separate applications in the same project which will
 It means, roughly, that you will write PHP and HTML separate and all logic is organized to make a more readable and easy maintainer project
 
 ---
+
 ### Why we keep this project?
 At the start, we created this project just for personal use, because the usual frameworks wasn't giving us the speed and facility we expected from a framework PHP. We just want to create a web project as quick as possible. So we created SuitUp, a framework which you can create your web project truly fast and everything is really patterned. We are really happy and satisfied with the results we got with SuitUp yet here.
 
@@ -50,4 +52,3 @@ Everyone is welcome to contribute with _SuitUp PHP Framework_. Just fork it, mak
 ---
 
 Made with love by Braghim Sistemas.
-Thank you very much!
