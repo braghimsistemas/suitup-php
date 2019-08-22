@@ -9,7 +9,7 @@ title: Suitup Framework - Legendary web applications
 [![Latest Unstable Version](https://poser.pugx.org/braghim-sistemas/suitup-php/v/unstable)](https://packagist.org/packages/braghim-sistemas/suitup-php)
 [![License](https://poser.pugx.org/braghim-sistemas/suitup-php/license)](https://packagist.org/packages/braghim-sistemas/suitup-php)
 
-`composer require braghim-sistemas/suitup-php dev-version2.0`
+`composer require braghim-sistemas/suitup-php ^2`
 
 # Getting Started
 Let us walk you through our [Tutorial](user-guide/getting-started/index.md) project and show you how Suitup can help you
