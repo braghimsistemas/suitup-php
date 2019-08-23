@@ -1,0 +1,5 @@
+
+/** Menu bar color **/
+[data-md-color-primary=deep-purple] .md-tabs {
+    background-color: #5e4190;
+}

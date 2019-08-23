@@ -67,7 +67,7 @@
     <link rel="stylesheet" href="../../../assets/fonts/material-icons.css">
     
     
-      <link rel="stylesheet" href="../../../css/extra-style.css">
+      <link rel="stylesheet" href="../../../assets/css/extra-style.css">
     
     
       
@@ -455,7 +455,7 @@
 
 
   <li class="md-nav__item">
-    <a href="./" title="Abstract Controller" class="md-nav__link">
+    <a href="../abstract-controller.md" title="Abstract Controller" class="md-nav__link">
       Abstract Controller
     </a>
   </li>
@@ -665,6 +665,53 @@
   <a href="#structure" title="Structure" class="md-nav__link">
     Structure
   </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-index-file-rewrite-mod" title="The index file (rewrite mod)" class="md-nav__link">
+    The index file (rewrite mod)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-about-routes" title="What about routes?" class="md-nav__link">
+    What about routes?
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#default-routes" title="Default Routes" class="md-nav__link">
+    Default Routes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#personal-routes" title="Personal Routes" class="md-nav__link">
+    Personal Routes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#database-connection" title="Database connection" class="md-nav__link">
+    Database connection
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1357,6 +1404,53 @@
     Structure
   </a>
   
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-index-file-rewrite-mod" title="The index file (rewrite mod)" class="md-nav__link">
+    The index file (rewrite mod)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-about-routes" title="What about routes?" class="md-nav__link">
+    What about routes?
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#default-routes" title="Default Routes" class="md-nav__link">
+    Default Routes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#personal-routes" title="Personal Routes" class="md-nav__link">
+    Personal Routes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#database-connection" title="Database connection" class="md-nav__link">
+    Database connection
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1388,8 +1482,58 @@
 to build your website or system fast and really well
 organized.</p>
 <h2 id="structure">Structure<a class="headerlink" href="#structure" title="Permanent link">&para;</a></h2>
-<p>First of all </p>
-<p>to be continued ...</p>
+<h3 id="the-index-file-rewrite-mod">The index file (rewrite mod)<a class="headerlink" href="#the-index-file-rewrite-mod" title="Permanent link">&para;</a></h3>
+<p>First of all you need to understand that Suitup works
+with <code>mod_rewrite</code>. It means that all the URL routes
+will load, for first, the same <code>index.php</code> file in the
+document root of the project. Except resources files like
+css, js, jpg, png, txt...</p>
+<p>Remember that to make it works you will need to set up the
+properly <code>.htaccess</code> file. You will find more about it <a href="/user-guide/getting-started/from-source/">here</a>.</p>
+<h3 id="what-about-routes">What about routes?<a class="headerlink" href="#what-about-routes" title="Permanent link">&para;</a></h3>
+<p>Suitup build automatic routes using three obvious parameters
+that are: module name, controller name and the current action.</p>
+<h4 id="default-routes">Default Routes<a class="headerlink" href="#default-routes" title="Permanent link">&para;</a></h4>
+<p>Module = ModuleDefault (folder name)</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="cp">&lt;?php</span>
+<span class="k">namespace</span> <span class="nx">ModuleDefault\Controllers</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">IndexController</span> <span class="k">extends</span> <span class="nx">AbstractController</span>
+<span class="p">{</span>
+  <span class="k">public</span> <span class="k">function</span> <span class="nf">indexAction</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// Here is where the legends begins...</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>
+
+<div class="admonition note">
+<p class="admonition-title">AbstractController</p>
+<p>It's actually a <em>middle class</em> that stands for <code>SuitUp\Mvc\MvcAbstractController</code> class. Keep reading about it in <a href="/user-guide/reference/abstract-controller">this section</a>, this is one of the most important things about Suitup.</p>
+</div>
+<h4 id="personal-routes">Personal Routes<a class="headerlink" href="#personal-routes" title="Permanent link">&para;</a></h4>
+<p>Yes! You can set your own routes, of course. To do that you
+just need to create one file by module like bellow. Read more about the contents of this files <a href="/user-guide/reference/routes">here</a>.</p>
+<p><code>config/default.routes.php</code> to the module default.</p>
+<p><code>config/admin.routes.php</code> to the module admin.</p>
+<h3 id="database-connection">Database connection<a class="headerlink" href="#database-connection" title="Permanent link">&para;</a></h3>
+<p>All you got to do to setup the database connection is to
+configure the <code>config/database.config.php</code> file as shown
+detailed <a href="/user-guide/reference/models-database-workflow">here</a>.</p>
+<div class="admonition abstract">
+<p class="admonition-title">Help wanted</p>
+<p>We really need help to improve Suitup compatibility
+with other kinds of database than MySql. Come on and
+<a href="/contributors/">contribute</a> with us.</p>
+</div>
 <h2 id="workflow">Workflow<a class="headerlink" href="#workflow" title="Permanent link">&para;</a></h2>
 <p>The path that Suitup system takes to run properly.</p>
 <p>to be continued ...</p>
