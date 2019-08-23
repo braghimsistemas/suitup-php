@@ -16,7 +16,7 @@ theme:
   logo:
     icon: person_pin_circle
 extra_css:
-  - css/extra-style.css
+  - assets/css/extra-style.css
 nav:
   - User Guide:
     - Home: index.md
@@ -28,7 +28,7 @@ nav:
       - Overview: user-guide/reference/overview.md
       - Routes: user-guide/reference/overview.md
       - Controllers & Actions: user-guide/reference/overview.md
-      - Abstract Controller: user-guide/reference/overview.md
+      - Abstract Controller: user-guide/reference/abstract-controller.md
       - Error Controller: user-guide/reference/overview.md
       - Modules: user-guide/reference/overview.md
       - Views & Layouts: user-guide/reference/overview.md

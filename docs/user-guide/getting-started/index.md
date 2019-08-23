@@ -228,5 +228,18 @@ like with that.
 </VirtualHost>
 ```
 
+### PHP Built-in web server
+
+As PHP Built-in web server doesn't allow to configure something like the mod rewrite
+it's not possible to properly run Suitup with this method. Actually, you can start a
+built-in web server with PHP itself and Suitup will work, but only for the home page.
+I know... It's sad...
+
+There is some workarounds, but trust me, doesn't worth while...
+
+Don't know what is it? Read more [here](https://www.php.net/manual/en/features.commandline.webserver.php).
+
+---
+
 That's it. Your apache server is ready to run Suitup framework.
 
