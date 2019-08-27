@@ -1,6 +1,7 @@
 site_name: Suitup Framework
 site_description: Awesome PHP Framework with high productivity
 site_author: https://www.thizer.com
+site_url: https://suitupframework.com/
 
 repo_name: braghimsistemas/suitup-php
 repo_url: https://github.com/braghimsistemas/suitup-php
@@ -27,11 +28,11 @@ nav:
     - Reference documents:
       - Overview: user-guide/reference/overview.md
       - Routes: user-guide/reference/overview.md
-      - Controllers & Actions: user-guide/reference/overview.md
+      - Controllers \& Actions: user-guide/reference/overview.md
       - Abstract Controller: user-guide/reference/abstract-controller.md
       - Error Controller: user-guide/reference/overview.md
       - Modules: user-guide/reference/overview.md
-      - Views & Layouts: user-guide/reference/overview.md
+      - Views \& Layouts: user-guide/reference/overview.md
       - Models (database):
         - Workflow ((IMPORTANT)): user-guide/reference/overview.md
         - Business: user-guide/reference/overview.md
