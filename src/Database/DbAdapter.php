@@ -187,6 +187,17 @@ class DbAdapter implements DbAdapterInterface
   }
 
   /**
+   * A shortcut to get the current default adapter instance.
+   *
+   * Ps.: Shortcut to AbstractGateway::getDefaultAdapter()
+   *
+   * @return \SuitUp\Database\DbAdapterInterface
+   */
+  public static function getDefaultAdapter(): ?DbAdapterInterface {
+    return AbstractGateway::getDefaultAdapter();
+  }
+
+  /**
    * Begin a transaction in the database
    *
    * @return bool
