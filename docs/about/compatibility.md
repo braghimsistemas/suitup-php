@@ -1,7 +1,7 @@
 # Comparing to Suitup 1
 
 We keep great compatibility with previous version talking about construct a project with Suitup of course, but there are
-some differences as the list below. 
+some differences as the list below.
 
 ## Database connection
 You can keep the usual file `config/database.config.php` but now its contents must to be like that:
@@ -29,11 +29,15 @@ To begin/commit/rollBack transactions use the methods below:
   - `Suitup\Database\DbAdapter::beginTransaction()`
   - `Suitup\Database\DbAdapter::commit()`
   - `Suitup\Database\DbAdapter::rollBack()`
-  
+
+## **deprecated** ~~MvcAbstractController::uploadFile method~~
+
+This method no longer exists because it depends on `verot/class.upload.php` class, so you can implements your own upload function by copying [from here](https://github.com/braghimsistemas/suitup-php/blob/v1/src/Mvc/MvcAbstractController.php#L454) or create your own by yourself.
+
 ## Layout Messages
 
 To capture the messages from layout in the previous version there was a variable available called `$layoutMessages`, but
 now its name is just `$messages`.
 
-  
+
 
