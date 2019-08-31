@@ -263,19 +263,24 @@ abstract class AbstractGateway
 
     // columns
     foreach (array_keys($data) as $column) {
-      $sql .= $column . ", ";
+      $sql .= "`$column`, ";
     }
     $sql = trim($sql, ', ') . ") VALUES (";
 
     // Values
     foreach ($data as $column => $value) {
+
       if (! is_null($value)) {
-        $sql .= ":" . $column . ", ";
+
+        // Generate a random code to make sure that column bind name will not repeat
+        $columnCode = preg_replace('/[^a-zA-Z0-9]/', '', $column). rand(0, 999);
+
+        $sql .= ":$columnCode, ";
 
         // Safe query
-        $this->db->bind($column, $value);
+        $this->db->bind($columnCode, $value);
       } else {
-        $sql .= $column . " = NULL, ";
+        $sql .= "NULL, ";
       }
     }
     $sql = trim($sql, ', ') . ")";
@@ -303,13 +308,17 @@ abstract class AbstractGateway
 
     // Columns
     foreach ($data as $column => $value) {
+
+      // Generate a random code to make sure that column bind name will not repeat
+      $columnCode = preg_replace('/[^a-zA-Z0-9]/', '', $column). rand(0, 999);
+
       if (! is_null($value)) {
-        $sql .= $column . " = :" . $column . ", ";
+        $sql .= "`$column` = :$columnCode, ";
 
         // Safe query
-        $this->db->bind($column, $value);
+        $this->db->bind($columnCode, $value);
       } else {
-        $sql .= $column . " = NULL, ";
+        $sql .= "`$column` = NULL, ";
       }
     }
 
@@ -317,7 +326,7 @@ abstract class AbstractGateway
     if ($this->onUpdate && is_array($this->onUpdate)) {
       foreach ($this->onUpdate as $column => $value) {
         if (! isset($data[$column])) {
-          $sql .= $column . " = " . str_replace(';', '', $value) . ", ";
+          $sql .= "`$column` = " . str_replace(';', '', $value) . ", ";
         }
       }
     }
@@ -333,7 +342,7 @@ abstract class AbstractGateway
       // Where
       $sql .= " WHERE ";
       foreach ($where as $column => $value) {
-        $sql .= $column . " = :w_" . $column . " AND ";
+        $sql .= "`$column` = :w_$column AND ";
 
         // Safe query
         $this->db->bind("w_" . $column, $value);
