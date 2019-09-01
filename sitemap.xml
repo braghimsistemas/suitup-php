@@ -31,12 +31,12 @@
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://suitupframework.com/user-guide/reference/overview/</loc>
+     <loc>https://suitupframework.com/user-guide/reference/routes/</loc>
      <lastmod>2019-09-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://suitupframework.com/user-guide/reference/overview/</loc>
+     <loc>https://suitupframework.com/user-guide/reference/controllers-and-actions/</loc>
      <lastmod>2019-09-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
@@ -46,67 +46,72 @@
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://suitupframework.com/user-guide/reference/overview/</loc>
+     <loc>https://suitupframework.com/user-guide/reference/error-controller/</loc>
      <lastmod>2019-09-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://suitupframework.com/user-guide/reference/overview/</loc>
+     <loc>https://suitupframework.com/user-guide/reference/modules/</loc>
      <lastmod>2019-09-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://suitupframework.com/user-guide/reference/overview/</loc>
+     <loc>https://suitupframework.com/user-guide/reference/views-and-layouts/</loc>
      <lastmod>2019-09-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://suitupframework.com/user-guide/reference/overview/</loc>
+     <loc>https://suitupframework.com/user-guide/reference/models/workflow/</loc>
      <lastmod>2019-09-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://suitupframework.com/user-guide/reference/overview/</loc>
+     <loc>https://suitupframework.com/user-guide/reference/models/business/</loc>
      <lastmod>2019-09-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://suitupframework.com/user-guide/reference/overview/</loc>
+     <loc>https://suitupframework.com/user-guide/reference/models/gateways/</loc>
      <lastmod>2019-09-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://suitupframework.com/user-guide/reference/overview/</loc>
+     <loc>https://suitupframework.com/user-guide/reference/models/adapters/</loc>
      <lastmod>2019-09-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://suitupframework.com/user-guide/reference/overview/</loc>
+     <loc>https://suitupframework.com/user-guide/reference/models/sql-queries/</loc>
      <lastmod>2019-09-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://suitupframework.com/user-guide/reference/overview/</loc>
+     <loc>https://suitupframework.com/user-guide/reference/models/sql-monitor/</loc>
      <lastmod>2019-09-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://suitupframework.com/user-guide/reference/overview/</loc>
+     <loc>https://suitupframework.com/user-guide/reference/models/out-of-box/</loc>
      <lastmod>2019-09-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://suitupframework.com/user-guide/reference/overview/</loc>
+     <loc>https://suitupframework.com/user-guide/reference/form/validation/</loc>
      <lastmod>2019-09-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://suitupframework.com/user-guide/reference/overview/</loc>
+     <loc>https://suitupframework.com/user-guide/reference/form/filters/</loc>
      <lastmod>2019-09-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://suitupframework.com/user-guide/reference/overview/</loc>
+     <loc>https://suitupframework.com/user-guide/reference/pagination/</loc>
+     <lastmod>2019-09-01</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    <url>
+     <loc>https://suitupframework.com/user-guide/reference/functions-outstand/</loc>
      <lastmod>2019-09-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
