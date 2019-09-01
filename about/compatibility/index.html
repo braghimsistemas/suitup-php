@@ -441,8 +441,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../../user-guide/reference/overview/" title="Controllers \& Actions" class="md-nav__link">
-      Controllers \& Actions
+    <a href="../../user-guide/reference/overview/" title="Controllers & Actions" class="md-nav__link">
+      Controllers & Actions
     </a>
   </li>
 
@@ -489,8 +489,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../../user-guide/reference/overview/" title="Views \& Layouts" class="md-nav__link">
-      Views \& Layouts
+    <a href="../../user-guide/reference/overview/" title="Views & Layouts" class="md-nav__link">
+      Views & Layouts
     </a>
   </li>
 
@@ -1311,6 +1311,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#deprecated-mvcabstractcontrolleruploadfile-method" title="deprecated ~~MvcAbstractController::uploadFile method~~" class="md-nav__link">
+    deprecated ~~MvcAbstractController::uploadFile method~~
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#layout-messages" title="Layout Messages" class="md-nav__link">
     Layout Messages
   </a>
@@ -1386,6 +1393,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#deprecated-mvcabstractcontrolleruploadfile-method" title="deprecated ~~MvcAbstractController::uploadFile method~~" class="md-nav__link">
+    deprecated ~~MvcAbstractController::uploadFile method~~
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#layout-messages" title="Layout Messages" class="md-nav__link">
     Layout Messages
   </a>
@@ -1411,7 +1425,7 @@
                 
                 <h1 id="comparing-to-suitup-1">Comparing to Suitup 1<a class="headerlink" href="#comparing-to-suitup-1" title="Permanent link">&para;</a></h1>
 <p>We keep great compatibility with previous version talking about construct a project with Suitup of course, but there are
-some differences as the list below. </p>
+some differences as the list below.</p>
 <h2 id="database-connection">Database connection<a class="headerlink" href="#database-connection" title="Permanent link">&para;</a></h2>
 <p>You can keep the usual file <code>config/database.config.php</code> but now its contents must to be like that:</p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
@@ -1446,6 +1460,8 @@ some differences as the list below. </p>
 <li><code>Suitup\Database\DbAdapter::commit()</code></li>
 <li><code>Suitup\Database\DbAdapter::rollBack()</code></li>
 </ul>
+<h2 id="deprecated-mvcabstractcontrolleruploadfile-method"><strong>deprecated</strong> ~~MvcAbstractController::uploadFile method~~<a class="headerlink" href="#deprecated-mvcabstractcontrolleruploadfile-method" title="Permanent link">&para;</a></h2>
+<p>This method no longer exists because it depends on <code>verot/class.upload.php</code> class, so you can implements your own upload function by copying <a href="https://github.com/braghimsistemas/suitup-php/blob/v1/src/Mvc/MvcAbstractController.php#L454">from here</a> or create your own by yourself.</p>
 <h2 id="layout-messages">Layout Messages<a class="headerlink" href="#layout-messages" title="Permanent link">&para;</a></h2>
 <p>To capture the messages from layout in the previous version there was a variable available called <code>$layoutMessages</code>, but
 now its name is just <code>$messages</code>.</p>

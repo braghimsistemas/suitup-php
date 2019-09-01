@@ -445,8 +445,8 @@
 
 
   <li class="md-nav__item">
-    <a href="./" title="Controllers \& Actions" class="md-nav__link">
-      Controllers \& Actions
+    <a href="./" title="Controllers & Actions" class="md-nav__link">
+      Controllers & Actions
     </a>
   </li>
 
@@ -493,8 +493,8 @@
 
 
   <li class="md-nav__item">
-    <a href="./" title="Views \& Layouts" class="md-nav__link">
-      Views \& Layouts
+    <a href="./" title="Views & Layouts" class="md-nav__link">
+      Views & Layouts
     </a>
   </li>
 
@@ -1480,6 +1480,8 @@
                 
                 
                 <h1 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h1>
+<p>Even before PHP 7 comes up Suitup already was alive and active. We build this
+project as better as possible over all this years always focused on the productivity.</p>
 <p>Here you will understand how and when Suitup do stuff
 to build your website or system fast and really well
 organized.</p>
@@ -1497,6 +1499,8 @@ properly <code>.htaccess</code> file. You will find more about it <a href="/user
 that are: module name, controller name and the current action.</p>
 <h4 id="default-routes">Default Routes<a class="headerlink" href="#default-routes" title="Permanent link">&para;</a></h4>
 <p>Module = ModuleDefault (folder name)</p>
+<p>Below is the main route of the system so when you access the project with no additional
+URL this is the <code>action</code> dispatched.</p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
 2
 3
@@ -1530,6 +1534,10 @@ just need to create one file by module like bellow. Read more about the contents
 <p>All you got to do to setup the database connection is to
 configure the <code>config/database.config.php</code> file as shown
 detailed <a href="/user-guide/reference/models-database-workflow">here</a>.</p>
+<p>After have the database connection you will want to create two files
+for each database table, <code>Business</code> and <code>Gateway</code>. </p>
+<p>The <code>Business</code> files control the flow of actions over the table
+rows and the <code>Gateway</code> must to efectivelly apply the SQL queries.</p>
 <div class="admonition abstract">
 <p class="admonition-title">Help wanted</p>
 <p>We really need help to improve Suitup compatibility
@@ -1537,8 +1545,21 @@ with other kinds of database than MySql. Come on and
 <a href="/contributors/">contribute</a> with us.</p>
 </div>
 <h2 id="workflow">Workflow<a class="headerlink" href="#workflow" title="Permanent link">&para;</a></h2>
-<p>The path that Suitup system takes to run properly.</p>
-<p>to be continued ...</p>
+<p>When the user access some URL over the project this request will be thrown over the <code>index.php</code> file
+and this file will for first setup the project itself and start the Suitup. After that a method named
+<code>run</code> is called and it will load all requirements needed as follow: Check and setup database connection,
+try to load the current route, if fail try to run the user defined <code>ErrorController</code>, if fail try to run
+the Suitup internal <code>ErrorController</code>. When everything is ok and Suitup load the route successfuly (even
+when it is an <code>ErrorController</code>),
+so first is loaded the <code>Controller</code> class instance and it is followed by its methods right in that order:</p>
+<ul>
+<li>$controller-&gt;preDispatch();</li>
+<li>$controller-&gt;init();</li>
+<li>$controller-&gt;{$frontController-&gt;getActionName()}();</li>
+<li>$controller-&gt;posDispatch();</li>
+<li>$controller-&gt;render();</li>
+</ul>
+<p>The <code>render</code> method will render the view (phtml) file and show the result back.</p>
                 
                   
                 
