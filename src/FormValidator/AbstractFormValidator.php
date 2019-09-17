@@ -374,18 +374,18 @@ abstract class AbstractFormValidator extends Validation
    * @return string
    */
   public function string($value): string {
-    return trim(preg_replace("#<\s*script[^>]*>((.*?)<\s*/\s*script>)?#i", '', $value));
+    return trim(preg_replace("#<\s*script[^>]*>((.*?)<\s*/\s*script>)?#i", '', (string) $value));
   }
 
   /**
    * Remove white spaces from begin and the end of the form field and
    * remove ALL tags
    *
-   * @param mixed $value Form field value to be filtered.
+   * @param string $value Form field value to be filtered.
    * @return string
    */
   public function stringNoTags($value): string {
-    return trim(strip_tags($value));
+    return trim(strip_tags((string) $value));
   }
 
   /**
@@ -395,7 +395,7 @@ abstract class AbstractFormValidator extends Validation
    * @return string
    */
   public function trim($value): string {
-    return trim($value);
+    return trim((string) $value);
   }
 
   /**
@@ -405,7 +405,7 @@ abstract class AbstractFormValidator extends Validation
    * @return string
    */
   public function toDbDate($value): string {
-    return implode('-', array_reverse(explode('/', $value)));
+    return implode('-', array_reverse(explode('/', (string) $value)));
   }
 
   /**

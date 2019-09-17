@@ -252,7 +252,12 @@ class Routes
 
         // Resolve it's params
         if (isset($found['params'])) {
-          $this->setParams($this->resolveParams($found['params'], explode('/', $route)));
+
+          // If the route is empty so we set as an empty array
+          $urlParams = $route ? explode('/', $route) : array();
+
+          // Set params as the resolved params
+          $this->setParams($this->resolveParams($found['params'], $urlParams));
         }
       }
 
@@ -327,8 +332,8 @@ class Routes
           continue;
         }
 
-        // Isn't a Regex param
-        if (! preg_match("/^\/.+\/$/", $param['value'])) {
+        // Isn't a Regex param (begins and ends with bar)
+        if (! preg_match("/^\/.+\/$/", (string) $param['value'])) {
           $result[$param['key']] = $param['value'];
         } else {
           $result[$param['key']] = '';
