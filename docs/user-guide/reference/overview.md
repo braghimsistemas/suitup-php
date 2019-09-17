@@ -1,5 +1,8 @@
 # Overview
 
+Even before PHP 7 comes up Suitup already was alive and active. We build this
+project as better as possible over all this years always focused on the productivity.
+
 Here you will understand how and when Suitup do stuff
 to build your website or system fast and really well
 organized.
@@ -25,6 +28,9 @@ that are: module name, controller name and the current action.
 #### Default Routes
 
 Module = ModuleDefault (folder name)
+
+Below is the main route of the system so when you access the project with no additional
+URL this is the `action` dispatched.
 
 ```php
 <?php
@@ -57,6 +63,12 @@ All you got to do to setup the database connection is to
 configure the `config/database.config.php` file as shown
 detailed [here](/user-guide/reference/models-database-workflow).
 
+After have the database connection you will want to create two files
+for each database table, `Business` and `Gateway`. 
+
+The `Business` files control the flow of actions over the table
+rows and the `Gateway` must to efectivelly apply the SQL queries.
+
 !!! Abstract "Help wanted"
     We really need help to improve Suitup compatibility
     with other kinds of database than MySql. Come on and
@@ -64,6 +76,18 @@ detailed [here](/user-guide/reference/models-database-workflow).
 
 ## Workflow
 
-The path that Suitup system takes to run properly.
+When the user access some URL over the project this request will be thrown over the `index.php` file
+and this file will for first setup the project itself and start the Suitup. After that a method named
+`run` is called and it will load all requirements needed as follow: Check and setup database connection,
+try to load the current route, if fail try to run the user defined `ErrorController`, if fail try to run
+the Suitup internal `ErrorController`. When everything is ok and Suitup load the route successfuly (even
+when it is an `ErrorController`),
+so first is loaded the `Controller` class instance and it is followed by its methods right in that order:
 
-to be continued ...
+  - $controller->preDispatch();
+  - $controller->init();
+  - $controller->{$frontController->getActionName()}();
+  - $controller->posDispatch();
+  - $controller->render();
+
+The `render` method will render the view (phtml) file and show the result back.
