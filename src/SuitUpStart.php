@@ -62,7 +62,7 @@ class SuitUpStart
   /**
    * Current system version
    */
-  const VERSION = '2.0.6';
+  const VERSION = '2.0.7';
 
   /**
    * @var FrontController
@@ -123,6 +123,9 @@ class SuitUpStart
    */
   public function run(): void {
 
+    // It's just an error till prove the opposite
+    $errorAction = 'error';
+
     try {
 
       // This function must to translate all php errors and notices to Exceptions
@@ -135,11 +138,10 @@ class SuitUpStart
       // If is everything ok this will be the one launch.
       $this->controller = $this->builder($this->getConfig());
 
-    } catch (Throwable $originalError) {
+    } catch (\Throwable $originalError) {
       try {
 
         // Define what kind of view will be displayed
-        $errorAction = 'error';
         if ($originalError instanceof NotFoundException) {
           $errorAction = 'not-found';
         }
@@ -147,11 +149,11 @@ class SuitUpStart
         // We got an default-error so let's try to run
         // ErrorController inside the own module
         $this->controller = $this->builder(
-          $this->getConfig()->mockUpTo($errorAction, 'error', 'error'),
+          $this->getConfig()->mockUpTo($errorAction, 'error'),
           $originalError
         );
 
-      } catch (Throwable $e) {
+      } catch (\Throwable $e) {
         try {
 
           // Well now we have to try to launch ErrorController
@@ -161,7 +163,7 @@ class SuitUpStart
           // Try to build it
           $this->controller = $this->builder($frameworkErrorModule, $originalError);
 
-        } catch (Throwable $ex) {
+        } catch (\Throwable $ex) {
 
           // Sadly it came till here, it's such a shame and we
           // made everything that was possible. Now it's your
