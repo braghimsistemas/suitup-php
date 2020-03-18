@@ -62,7 +62,7 @@ class SuitUpStart
   /**
    * Current system version
    */
-  const VERSION = '2.0.8';
+  const VERSION = '2.0.9';
 
   /**
    * @var FrontController
