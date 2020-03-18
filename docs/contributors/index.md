@@ -39,11 +39,12 @@ Download and install python 3, there's no secrets here.
 
 ### mkdocs Server
 
+    $ cd /path/to/suitup/root/
     $ mkdocs serve
 
 ## Deploy to Github pages
 
-After the work done deploy your changes to the `gh-pages`
+After work have been done deploy your changes to the `gh-pages`
 
 See some more information about it [here](https://www.mkdocs.org/user-guide/deploying-your-docs/)
 
@@ -51,11 +52,9 @@ See some more information about it [here](https://www.mkdocs.org/user-guide/depl
 
 -----
 
-## Learn how to write it right
+## Learn how to make it better
 
-Our documentation is made under MkDocs with Material Theme, to learn a bit more mkdocs [click here](https://www.mkdocs.org/) and to get the best out of the Material Theme [click here](https://squidfunk.github.io/mkdocs-material/)
-
-#### CodeHilite - The right syntax to the code
+Our documentation was made under MkDocs with Material Theme, to learn more about mkdocs [click here](https://www.mkdocs.org/) and to get the best of Material Theme [click here](https://squidfunk.github.io/mkdocs-material/).
 
 [CodeHilite][1] is an extension that adds syntax highlighting to code blocks
 and is included in the standard Markdown library. The highlighting process is
@@ -77,6 +76,8 @@ CodeHilite parses code blocks and wraps them in `pre` tags. If [Pygments][2]
 is installed, which is a generic syntax highlighter with support for over
 [300 languages][4], CodeHilite will also highlight the code block. Pygments can
 be installed with the following command:
+
+[4]: https://pygments.org/languages/
 
 ``` sh
 pip install pygments

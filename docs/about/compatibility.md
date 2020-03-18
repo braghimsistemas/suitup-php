@@ -18,7 +18,7 @@ return array(
 );
 ```
 
-  > Note the 'adapter' key that was included. So will be possible to create connection to
+  > Note the **'adapter'** key that was included. So will be possible to create connection to
   another kind of database as postgres or DB2, but it is not implemented yet.
   Maybe you can help us with that... Why not? =)
 
@@ -30,7 +30,7 @@ To begin/commit/rollBack transactions use the methods below:
   - `Suitup\Database\DbAdapter::commit()`
   - `Suitup\Database\DbAdapter::rollBack()`
 
-## **deprecated** ~~MvcAbstractController::uploadFile method~~
+## **deprecated** ~~MvcAbstractController::uploadFile()~~
 
 This method no longer exists because it depends on `verot/class.upload.php` class, so you can implements your own upload function by copying [from here](https://github.com/braghimsistemas/suitup-php/blob/v1/src/Mvc/MvcAbstractController.php#L454) or create your own by yourself.
 
