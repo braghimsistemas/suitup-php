@@ -179,6 +179,9 @@ abstract class MvcAbstractController
     // Add login variable to be rendered with view
     $this->view['login'] = self::getLogin();
 
+    // Append the full URL to the views
+    $this->view['fullUrl'] = $this->getFullUrl();
+
     // Append the base URL to the views
     $this->view['baseUrl'] = $this->baseUrl();
 
@@ -415,6 +418,15 @@ abstract class MvcAbstractController
    */
   public function getViewVar($name) {
     return $this->isViewVar($name) ? $this->view[$name] : false;
+  }
+
+  /**
+   * Return the full filled URL from the current page.
+   *
+   * @return string
+   */
+  public function getFullUrl(): string {
+    return getenv('REQUEST_SCHEME') . '://' . getenv('HTTP_HOST') . getenv('REQUEST_URI');
   }
 
   /**
